@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>تسجيل جديد | Golden Ledger</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;family=Cairo:wght@400;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "secondary-container": "#e2e0fc",
+            "surface-container": "#eeeeec",
+            "secondary-fixed-dim": "#c6c4df",
+            "background": "#f9f9f7",
+            "on-primary": "#ffffff",
+            "outline": "#817563",
+            "error": "#ba1a1a",
+            "tertiary-fixed-dim": "#b5c8e0",
+            "primary-container": "#986d00",
+            "on-tertiary-fixed-variant": "#36485c",
+            "on-secondary-fixed-variant": "#45455b",
+            "secondary": "#1A1A2E",
+            "tertiary-container": "#64768b",
+            "tertiary-fixed": "#d1e4fc",
+            "secondary-fixed": "#e2e0fc",
+            "inverse-on-surface": "#f1f1ef",
+            "inverse-surface": "#2f3130",
+            "surface": "#f9f9f7",
+            "on-tertiary": "#ffffff",
+            "on-error": "#ffffff",
+            "on-background": "#1a1c1b",
+            "outline-variant": "#d3c4af",
+            "surface-bright": "#f9f9f7",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed-dim": "#f7bd48",
+            "on-surface-variant": "#4f4535",
+            "tertiary": "#4c5e72",
+            "surface-tint": "#7b5800",
+            "on-secondary": "#ffffff",
+            "surface-container-high": "#e8e8e6",
+            "on-primary-fixed-variant": "#5d4200",
+            "primary": "#B8860B",
+            "on-tertiary-container": "#fdfcff",
+            "on-surface": "#1a1c1b",
+            "on-primary-container": "#fffbff",
+            "surface-dim": "#dadad8",
+            "surface-container-low": "#f4f4f2",
+            "on-tertiary-fixed": "#091d2e",
+            "surface-variant": "#e2e3e1",
+            "on-primary-fixed": "#271900",
+            "primary-fixed": "#ffdea6",
+            "on-secondary-container": "#63627a",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#1a1a2e",
+            "inverse-primary": "#f7bd48"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "1rem",
+            "xl": "1.25rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans", "Cairo", "sans-serif"],
+            "body": ["Inter", "Cairo", "sans-serif"],
+            "label": ["Inter", "Cairo", "sans-serif"]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    .bg-editorial-gradient {
+      background: linear-gradient(135deg, #1A1A2E 0%, #2A2A45 100%);
+    }
+
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(24px);
+    }
+  </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+  <main class="min-h-screen flex flex-col md:flex-row-reverse">
+    <!-- Left Side: Brand & Benefits Content -->
+    <section
+      class="hidden md:flex md:w-2/5 bg-editorial-gradient text-white p-12 flex-col justify-between relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 pointer-events-none"
+        data-alt="faint luxury geometric pattern inspired by traditional islamic art in deep gold on navy background">
+        <div class="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+      </div>
+      <div class="relative z-10">
+        <a href="../index.html" class="flex items-center gap-3 mb-16">
+          <div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+            <span class="material-symbols-outlined text-white">account_balance</span>
+          </div>
+          <span class="font-headline text-2xl font-bold tracking-tight text-primary">أفكار بـ 100 دولار</span>
+        </a>
+        <div class="space-y-12">
+          <div>
+            <h1 class="font-headline text-4xl font-extrabold leading-tight mb-4">انطلق نحو مستقبل مالي <span
+                class="text-primary">استثنائي</span></h1>
+            <p class="text-white/70 text-lg leading-relaxed">انضم إلى النخبة في عالم التمويل والاستثمار، حيث تلتقي
+              الأفكار الريادية برؤوس الأموال الذكية.</p>
+          </div>
+          <div class="space-y-8">
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1"
+                style="font-variation-settings: 'FILL' 1;">verified</span>
+              <div>
+                <h3 class="font-headline text-lg font-bold">بيئة استثمارية آمنة</h3>
+                <p class="text-white/60 text-sm">نطبق أعلى معايير الأمان والخصوصية لكل معاملة مالية.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1"
+                style="font-variation-settings: 'FILL' 1;">insights</span>
+              <div>
+                <h3 class="font-headline text-lg font-bold">تحليلات دقيقة</h3>
+                <p class="text-white/60 text-sm">بيانات فورية وتقارير شاملة تدعم قراراتك الاستثمارية.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <span class="material-symbols-outlined text-primary mt-1"
+                style="font-variation-settings: 'FILL' 1;">hub</span>
+              <div>
+                <h3 class="font-headline text-lg font-bold">شبكة تواصل عالمية</h3>
+                <p class="text-white/60 text-sm">تواصل مباشر مع رواد الأعمال والمستثمرين من جميع أنحاء العالم.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative z-10 pt-12 border-t border-white/10 flex flex-wrap gap-6 items-center">
+        <div class="flex items-center gap-2 opacity-60">
+          <span class="material-symbols-outlined text-sm">shield</span>
+          <span class="text-xs">عضوية معتمدة ISO</span>
+        </div>
+        <div class="flex items-center gap-2 opacity-60">
+          <span class="material-symbols-outlined text-sm">gpp_good</span>
+          <span class="text-xs">بيانات مشفرة بالكامل</span>
+        </div>
+      </div>
+    </section>
+    <!-- Right Side: Registration Form Content -->
+    <section
+      class="flex-1 bg-surface-container-low px-6 py-12 md:px-24 md:py-20 flex flex-col justify-center overflow-y-auto">
+      <div class="max-w-xl mx-auto w-full">
+        <header class="mb-10 text-center md:text-right">
+          <h2 class="font-headline text-3xl font-extrabold text-secondary tracking-tight mb-2">ابدأ رحلتك المالية اليوم
+          </h2>
+          <p class="text-on-surface-variant">انضم إلى أكثر من ٥٠,٠٠٠ مستثمر ورائد أعمال في Golden Ledger</p>
+        </header>
+        <form class="space-y-6">
+          <!-- Personal Details -->
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label class="font-label text-sm font-semibold text-secondary" for="full_name">الاسم الكامل</label>
+              <input
+                class="w-full px-4 py-3 bg-surface-container-lowest rounded-lg border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary transition-all outline-none"
+                id="full_name" placeholder="محمد أحمد" type="text" />
+            </div>
+            <div class="space-y-2">
+              <label class="font-label text-sm font-semibold text-secondary" for="email">البريد الإلكتروني</label>
+              <input
+                class="w-full px-4 py-3 bg-surface-container-lowest rounded-lg border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary transition-all outline-none"
+                id="email" placeholder="example@ledger.com" type="email" />
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="font-label text-sm font-semibold text-secondary" for="password">كلمة المرور</label>
+                <input
+                  class="w-full px-4 py-3 bg-surface-container-lowest rounded-lg border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary transition-all outline-none"
+                  id="password" placeholder="••••••••" type="password" />
+              </div>
+              <div class="space-y-2">
+                <label class="font-label text-sm font-semibold text-secondary" for="confirm_password">تأكيد كلمة
+                  المرور</label>
+                <input
+                  class="w-full px-4 py-3 bg-surface-container-lowest rounded-lg border-0 ring-1 ring-outline-variant focus:ring-2 focus:ring-primary transition-all outline-none"
+                  id="confirm_password" placeholder="••••••••" type="password" />
+              </div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <input class="mt-1 rounded text-primary focus:ring-primary border-outline-variant" id="terms"
+              type="checkbox" />
+            <label class="text-sm text-on-surface-variant leading-relaxed" for="terms">أوافق على <a
+                class="text-primary font-bold hover:underline" href="../Terms and Conditions.html">شروط الخدمة</a> و <a
+                class="text-primary font-bold hover:underline" href="#">سياسة الخصوصية</a> الخاصة بـ Golden
+              Ledger.</label>
+          </div>
+          <button
+            class="w-full py-4 bg-primary text-white font-headline font-bold rounded-lg hover:bg-primary-container transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2"
+            type="submit">
+            <span>إنشاء الحساب الآن</span>
+            <span class="material-symbols-outlined text-xl">arrow_back</span>
+          </button>
+        </form>
+        <div class="mt-8 flex flex-col items-center gap-6">
+          <div class="flex items-center gap-4 w-full">
+            <div class="h-px bg-outline-variant flex-1"></div>
+            <span class="text-xs text-on-surface-variant font-medium">أو سجل عبر</span>
+            <div class="h-px bg-outline-variant flex-1"></div>
+          </div>
+          <div class="w-full">
+            <button
+              class="w-full py-3 border border-outline-variant rounded-lg flex items-center justify-center gap-3 hover:bg-surface-container transition-colors bg-white">
+              <img alt="google" class="w-5 h-5" data-alt="google logo in its authentic company colors"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjb_h-xl-sZGM_5JkslKcSMNBL1nG53BtElOnny9WQlrPr7JEw-W_-MXu4ItLQ_6B4SjtRXpOHD7xAZaPm4Vm23TtPnV8ibARsEAlUp-ntQgMtrK1-W61m7j3xVK_nNrgaP8hiDWP9vFXsSglTJ81aPEzg0KSN3TDCm9EIzgctlJNAQC6y2ilJpRmcCrgeZvB7GolKLOWRiB78yAUC0oIN3c-HvNd-Y-bdfHntlT0zIdhn6cG6Ac2SbX968e66fjHWxgwCs-4tk5s" />
+              <span class="text-sm font-bold text-secondary">التسجيل باستخدام Google</span>
+            </button>
+          </div>
+          <p class="text-on-surface-variant text-sm">لديك حساب بالفعل؟ <a class="text-primary font-bold hover:underline"
+              href="login.html">تسجيل الدخول</a></p>
+        </div>
+      </div>
+      <!-- Footer Small Links -->
+      <footer
+        class="mt-16 max-w-xl mx-auto w-full flex justify-between items-center text-[10px] text-on-surface-variant opacity-60">
+        <span>© 2024 Golden Ledger Fintech. جميع الحقوق محفوظة.</span>
+        <div class="flex gap-4">
+          <a class="hover:text-primary transition-colors" href="../contact-us.html">الدعم الفني</a>
+          <a class="hover:text-primary transition-colors" href="#">سياسة الكوكيز</a>
+        </div>
+      </footer>
+    </section>
+  </main>
+</body>
+
+</html>

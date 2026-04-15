@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Cairo:wght@400;600;700;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-dim": "#dadad8",
+            "on-error": "#ffffff",
+            "on-background": "#1a1c1b",
+            "surface-variant": "#e2e3e1",
+            "on-secondary-container": "#63627a",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#1a1a2e",
+            "on-primary-fixed": "#271900",
+            "on-error-container": "#93000a",
+            "on-primary-container": "#fffbff",
+            "primary": "#785600",
+            "on-tertiary-fixed": "#091d2e",
+            "inverse-primary": "#f7bd48",
+            "tertiary": "#4c5e72",
+            "surface-container-low": "#f4f4f2",
+            "secondary": "#1a1a2e",
+            "primary-fixed": "#ffdea6",
+            "on-primary-fixed-variant": "#5d4200",
+            "primary-container": "#986d00",
+            "secondary-container": "#e2e0fc",
+            "on-secondary": "#ffffff",
+            "inverse-surface": "#2f3130",
+            "inverse-on-surface": "#f1f1ef",
+            "on-tertiary-fixed-variant": "#36485c",
+            "on-surface": "#1a1c1b",
+            "tertiary-fixed-dim": "#b5c8e0",
+            "surface-container-lowest": "#ffffff",
+            "on-primary": "#ffffff",
+            "background": "#f9f9f7",
+            "tertiary-fixed": "#d1e4fc",
+            "surface": "#f9f9f7",
+            "surface-container": "#eeeeec",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-container": "#fdfcff",
+            "primary-fixed-dim": "#f7bd48",
+            "tertiary-container": "#64768b",
+            "surface-container-high": "#e8e8e6",
+            "surface-bright": "#f9f9f7",
+            "on-secondary-fixed-variant": "#45455b",
+            "surface-container-highest": "#e2e3e1",
+            "secondary-fixed-dim": "#c6c4df",
+            "surface-tint": "#7b5800",
+            "on-surface-variant": "#4f4535",
+            "secondary-fixed": "#e2e0fc",
+            "outline-variant": "#d3c4af",
+            "error": "#ba1a1a",
+            "outline": "#817563",
+            "deep-navy": "#1A1A2E"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Cairo", "Plus Jakarta Sans"],
+            "body": ["Inter", "Cairo"],
+            "label": ["Inter", "Cairo"]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    body {
+      font-family: 'Inter', 'Cairo', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    .font-headline {
+      font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .editorial-shadow {
+      box-shadow: 0 32px 48px -4px rgba(26, 28, 27, 0.05);
+    }
+
+    .glass-header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(24px);
+    }
+  </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface">
+  <!-- TopNavBar -->
+  <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm">
+    <nav class="flex flex-row justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+      <!-- Right: Logo -->
+      <div class="flex items-center">
+        <a class="text-xl font-bold text-deep-navy dark:text-slate-100 font-headline transition-all duration-300 ease-in-out hover:opacity-80"
+          href="index.html">أفكار بـ 100 دولار</a>
+      </div>
+      <!-- Center: Navigation Links -->
+      <div class="hidden md:flex gap-8 items-center absolute left-1/2 -translate-x-1/2">
+        <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+          href="index.html">الرئيسية</a>
+        <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+          href="archive.html">الأرشيف</a>
+        <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+          href="sponsores.html">الرعاة</a>
+        <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+          href="about.html">من نحن</a>
+        <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+          href="contact-us.html">تواصل معنا</a>
+      </div>
+      <!-- Left: Actions -->
+      <div class="flex gap-4 items-center">
+        <a href="auth/login.html"
+          class="px-5 py-2 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 transition-all scale-95 active:scale-90 font-headline">تسجيل
+          الدخول</a>
+        <a href="auth/register.html"
+          class="px-5 py-2 bg-primary text-on-primary font-bold rounded-lg hover:shadow-md transition-all scale-95 active:scale-90 font-headline">إنشاء
+          حساب</a>
+      </div>
+    </nav>
+  </header>
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="bg-secondary text-white py-24 px-8 overflow-hidden relative">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row-reverse items-center gap-16">
+        <div class="md:w-1/2 z-10">
+          <h1 class="text-4xl md:text-6xl font-black leading-tight mb-8">
+            نحن نؤمن أن كل فكرة تستحق فرصة
+          </h1>
+          <p class="text-xl text-surface-variant max-w-xl leading-relaxed mb-10">
+            من قلب التحديات المالية، ولدنا لنمكّن العقول المبدعة من تحويل أفكارها البسيطة إلى مشاريع قائمة بتمويلات ذكية
+            تبدأ من 100 دولار فقط.
+          </p>
+          <div class="flex gap-4">
+            <button
+              class="bg-primary hover:bg-primary-container px-8 py-4 rounded-xl font-bold text-lg transition-all">اكتشف
+              الأفكار</button>
+            <button
+              class="border border-outline-variant/30 px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all">كيف
+              نعمل؟</button>
+          </div>
+        </div>
+        <div class="md:w-1/2 relative">
+          <div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+          <img alt="Digital Innovation"
+            class="rounded-3xl editorial-shadow relative z-10 border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
+            data-alt="Abstract futuristic visualization of floating golden circuits and glowing nodes on a deep navy background, elegant and tech-focused"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4vgEmdJRyUxWT85Dgd6ZwmMLZ6_CgTuo_bZLM-15f0VfDjV-bqU4wS46vRi7P-iZItUHsclbyh7jZ0HbmV_2D0KRvZu2kQ0FBsRvvQJYgPNzJkML0L9pB2hmo0eD62ymukMpm_Vt7CM9SME7EcSjLWT5SWZkGRFBm6tnblRI0oBGfAZNDW0Ko-9MP2zckvGR4MrcFedgJbegfqxJy4wK1Kj93KRTv6l6F8Rf0RDrAsY8D647x_84x3FlGX3yUtmAdYxMtpTOULoE" />
+        </div>
+      </div>
+    </section>
+    <!-- Mission & Vision -->
+    <section class="py-24 px-8 bg-surface">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+        <div class="space-y-12">
+          <div class="flex items-start gap-6">
+            <div class="bg-primary-container/10 p-4 rounded-2xl">
+              <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">lightbulb</span>
+            </div>
+            <div>
+              <h3 class="text-3xl font-black text-secondary mb-4">مهمتنا</h3>
+              <p class="text-lg text-on-surface-variant leading-relaxed">
+                سد الفجوة بين الأفكار الخلاقة ومصادر التمويل الأولية عبر منصة شفافة تجمع المبدعين بالمستثمرين الذين
+                يؤمنون بالقيمة قبل الأرقام.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-6">
+            <div class="bg-primary-container/10 p-4 rounded-2xl">
+              <span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">visibility</span>
+            </div>
+            <div>
+              <h3 class="text-3xl font-black text-secondary mb-4">رؤيتنا</h3>
+              <p class="text-lg text-on-surface-variant leading-relaxed">
+                أن نصبح السجل الذهبي لكل رائد أعمال يبدأ من الصفر، محولين 100 دولار إلى حجر الأساس لإمبراطوريات تجارية
+                كبرى.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="relative bg-surface-container-low p-12 rounded-3xl border border-outline-variant/10">
+          <p class="text-2xl font-headline font-medium text-secondary italic leading-relaxed text-right">
+            "الابتكار ليس حكراً على من يملكون الملايين، بل هو حق لكل من يمتلك الشجاعة لرسم مسار جديد بـ 100 دولار فقط."
+          </p>
+          <div class="mt-8 flex items-center gap-4 justify-end">
+            <div class="text-right">
+              <p class="font-bold text-secondary">فريق الإدارة</p>
+              <p class="text-sm text-on-surface-variant">السجل الذهبي</p>
+            </div>
+            <div class="w-12 h-1 bg-primary"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Impact Metrics -->
+    <section class="bg-primary-container/5 py-20 px-8 border-y border-outline-variant/10">
+      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <p class="text-5xl md:text-6xl font-black text-primary mb-2">1,500+</p>
+          <p class="text-secondary font-bold">فكرة مُقدمة</p>
+        </div>
+        <div class="text-center">
+          <p class="text-5xl md:text-6xl font-black text-primary mb-2">45,000+</p>
+          <p class="text-secondary font-bold">مُصوّت نشط</p>
+        </div>
+        <div class="text-center">
+          <p class="text-5xl md:text-6xl font-black text-primary mb-2">85</p>
+          <p class="text-secondary font-bold">فائز محظوظ</p>
+        </div>
+        <div class="text-center">
+          <p class="text-5xl md:text-6xl font-black text-primary mb-2">$10M+</p>
+          <p class="text-secondary font-bold">استثمارات لاحقة</p>
+        </div>
+      </div>
+    </section>
+    <!-- Core Values -->
+    <section class="py-24 px-8 bg-surface">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl font-black text-secondary mb-4">قيمنا الجوهرية</h2>
+          <p class="text-on-surface-variant max-w-2xl mx-auto">المبادئ التي تحكم كل تفاعل داخل منصتنا لضمان بيئة عادلة
+            ومحفزة للجميع</p>
+        </div>
+        <div class="grid md:grid-cols-4 gap-8">
+          <div
+            class="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-outline-variant/5 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-primary text-3xl mb-6">rocket_launch</span>
+            <h4 class="text-xl font-bold text-secondary mb-3">الابتكار</h4>
+            <p class="text-on-surface-variant text-sm leading-relaxed">نسعى دائماً خلف الأفكار التي تكسر القواعد
+              التقليدية للسوق.</p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-outline-variant/5 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-primary text-3xl mb-6">groups</span>
+            <h4 class="text-xl font-bold text-secondary mb-3">المجتمع</h4>
+            <p class="text-on-surface-variant text-sm leading-relaxed">قوتنا تكمن في جمهورنا الذي يقيّم ويدعم الأفكار
+              بكل شغف.</p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-outline-variant/5 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-primary text-3xl mb-6">gavel</span>
+            <h4 class="text-xl font-bold text-secondary mb-3">الشفافية</h4>
+            <p class="text-on-surface-variant text-sm leading-relaxed">عمليات التصويت والتمويل واضحة ومعلنة للجميع دون
+              استثناء.</p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-8 rounded-2xl editorial-shadow border border-outline-variant/5 hover:scale-[1.02] transition-transform">
+            <span class="material-symbols-outlined text-primary text-3xl mb-6">bolt</span>
+            <h4 class="text-xl font-bold text-secondary mb-3">السرعة</h4>
+            <p class="text-on-surface-variant text-sm leading-relaxed">من الفكرة إلى التمويل في وقت قياسي يواكب تسارع
+              العصر.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Founding Story -->
+    <section class="py-24 px-8 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+        <div class="md:w-1/2">
+          <div class="relative">
+            <div class="absolute -bottom-6 -left-6 w-full h-full border-2 border-primary rounded-3xl"></div>
+            <img alt="Founder Portrait" class="rounded-3xl relative z-10 editorial-shadow"
+              data-alt="Professional portrait of a middle-eastern man in a business casual suit, warm confident smile, modern office background with soft lighting"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRWXYBtDY5262YQECmriYAZMWZx9NgZoqDXOE5FlJgrnHzt0WHO3mjKBQGkD2TUGnLu6qwNK2vsGBhDkk8S-sUyr1wTJ-f8N2HPMaCdqR-PjTFkjeszpXu4nXubtiyQSUkakXhXD5HVZgHulQLjhuLbFQyy4y_hvFoQwPMvkNAZXr2rDyELxRhyRo50ET7HKHU_vFMMwscXQePz-AKkd2V13kfiXNe8rlf8aTt6cmVWkvMIT_ITMYnvxLC_To9-6jWz4MZ65ZgUoA" />
+          </div>
+        </div>
+        <div class="md:w-1/2 text-right">
+          <span class="text-primary font-bold tracking-widest uppercase mb-4 block">قصة البداية</span>
+          <h2 class="text-4xl font-black text-secondary mb-8 leading-tight">كيف بدأت رحلة الـ 100 دولار في عام 2020؟
+          </h2>
+          <p class="text-lg text-on-surface-variant leading-relaxed mb-6">
+            في ذروة المتغيرات العالمية عام 2020، لاحظنا أن هناك آلاف العقول التي تمتلك أفكاراً ذكية ولكنها تفتقر إلى
+            "الدفعة الأولى". لم تكن المشكلة في الملايين، بل في غياب من يؤمن بالخطوة الأولى.
+          </p>
+          <p class="text-lg text-on-surface-variant leading-relaxed mb-10">
+            بدأنا كمدونة بسيطة لاستعراض الأفكار، واليوم نحن منصة متكاملة تدير استثمارات وتدعم مشاريع غيرت حياة العشرات.
+            هدفنا لم يتغير: جعل ريادة الأعمال متاحة للجميع.
+          </p>
+          <div class="bg-white p-6 rounded-2xl inline-block border border-outline-variant/10 shadow-sm">
+            <p class="font-bold text-secondary text-xl">عمر الجابر</p>
+            <p class="text-primary">المؤسس والمدير التنفيذي</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Partner Logos -->
+    <section class="py-12 px-8 bg-surface border-t border-outline-variant/10 overflow-hidden">
+      <div class="max-w-7xl mx-auto">
+        <p class="text-center text-sm font-bold text-outline uppercase tracking-widest mb-8">شركاء النجاح والممولون</p>
+        <div class="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-40 grayscale">
+          <span class="text-2xl font-bold font-headline">FINTECH_CO</span>
+          <span class="text-2xl font-bold font-headline">GLOBAL_VENTURES</span>
+          <span class="text-2xl font-bold font-headline">ARAB_TECH</span>
+          <span class="text-2xl font-bold font-headline">INNOVATE_HUB</span>
+          <span class="text-2xl font-bold font-headline">SEED_FUND</span>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="w-full bg-[#1A1A2E] text-white pt-16 pb-8 px-6">
+    <div class="max-w-7xl mx-auto">
+      <!-- Sitemap Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        <!-- Column 1: Brand Info -->
+        <div class="space-y-6">
+          <a class="text-2xl font-black font-headline text-white block" href="index.html">
+            أفكار بـ <span class="text-[#f7bd48]">100 دولار</span>
+          </a>
+          <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+            المنصة العربية الأولى لدعم وتمويل الأفكار الصغيرة والمبتكرة التي تبدأ بميزانية لا تتجاوز الـ 100 دولار. نحول
+            أفكارك إلى واقع ملموس.
+          </p>
+        </div>
+        <!-- Column 2: Quick Links -->
+        <div>
+          <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">الروابط السريعة</h5>
+          <ul class="space-y-4">
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                href="index.html">الرئيسية</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                href="archive.html">الأرشيف</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                href="sponsores.html">الرعاة</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium" href="info.html">من
+                نحن</a></li>
+          </ul>
+        </div>
+        <!-- Column 3: Support -->
+        <div>
+          <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">الدعم</h5>
+          <ul class="space-y-4">
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium" href="#">الأسئلة
+                الشائعة</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium" href="#">تواصل
+                معنا</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                href="Terms and Conditions.html">شروط
+                الاستخدام</a></li>
+            <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium" href="#">سياسة
+                الخصوصية</a></li>
+          </ul>
+        </div>
+        <!-- Column 4: Follow Us -->
+        <div>
+          <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">تابعنا</h5>
+          <div class="flex gap-4">
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all group"
+              href="#">
+              <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z">
+                </path>
+              </svg>
+            </a>
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+              href="#">
+              <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                </path>
+              </svg>
+            </a>
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+              href="#">
+              <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                <path
+                  d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                </path>
+              </svg>
+            </a>
+            <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+              href="#">
+              <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z">
+                </path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Bottom Copyright -->
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm text-gray-400 font-body">
+          © 2024 أفكار بـ 100 دولار. جميع الحقوق محفوظة.
+        </p>
+        <div class="flex gap-4">
+          <img alt="Visa" class="h-6 opacity-50 hover:opacity-100 transition-opacity"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi7I2EsDDJi9wV9fhiD7hWAyWvQ1tEvNglIoGHXlj3hxpb0SAh2o0UBg2Cep9hgMruGUP1is6A7ACyTxtKNN6KRhCgj2nI5dH8c-f26sHlyTSS0sUk-HuZS22vQ4fPn8qUAiYQHYDHzHeBuS5zJCNegt2Fo0pDCGtdRqBT8SvIgGMe6xdC8kp5KG2KusTsPyGW_HNX0i47iJVCM1T8kVkPTDsJY1m3IOmPDsB6ER4HKTb9fXtpXF3KwlJTyZijhMJXuWQ_g1X7ilY" />
+          <img alt="Mastercard" class="h-6 opacity-50 hover:opacity-100 transition-opacity"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSG0dV2jz9JTJrmjwxmvyFyH9Xf13tKfhRsS6ye3VVmyu7MrfsV6Rwn51bNoG5Qzs8kchLrYfZlW2QUYDlQjodzE36QBp9VWrozFP9iOQpaUPulh4O7wnGtzoWDwX0lexiXvQpR6hYzf8et1dIRoewDSQzqEu4Qrq_VB3u0mVl0jgJxHYwwgyJ9ELlmZKCQN5dbkzjwX2uRZRHMQ9I_Bp4x5E0AR-KjQcCOQAJR-ofQSkgKkA9zZBOAzHJuFDxzN5C07u7LqRKhtI" />
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

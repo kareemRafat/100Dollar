@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=Cairo:wght@400;600;700;800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dadad8",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1a1c1b",
+                        "primary-container": "#986d00",
+                        "tertiary-fixed-dim": "#b5c8e0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#7b5800",
+                        "primary": "#785600",
+                        "inverse-surface": "#2f3130",
+                        "secondary-fixed-dim": "#c6c4df",
+                        "on-secondary-fixed-variant": "#45455b",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#4c5e72",
+                        "surface-container": "#eeeeec",
+                        "on-secondary-fixed": "#1a1a2e",
+                        "on-tertiary-container": "#fdfcff",
+                        "on-primary-container": "#fffbff",
+                        "outline-variant": "#d3c4af",
+                        "on-background": "#1a1c1b",
+                        "tertiary-fixed": "#d1e4fc",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#f7bd48",
+                        "primary-fixed-dim": "#f7bd48",
+                        "on-tertiary-fixed": "#091d2e",
+                        "outline": "#817563",
+                        "on-tertiary-fixed-variant": "#36485c",
+                        "surface-container-highest": "#e2e3e1",
+                        "surface-bright": "#f9f9f7",
+                        "surface": "#f9f9f7",
+                        "secondary-container": "#e2e0fc",
+                        "inverse-on-surface": "#f1f1ef",
+                        "tertiary-container": "#64768b",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdea6",
+                        "secondary-fixed": "#e2e0fc",
+                        "on-primary-fixed": "#271900",
+                        "secondary": "#5d5c74",
+                        "surface-variant": "#e2e3e1",
+                        "on-surface-variant": "#4f4535",
+                        "on-primary-fixed-variant": "#5d4200",
+                        "background": "#f9f9f7",
+                        "surface-container-high": "#e8e8e6",
+                        "on-secondary-container": "#63627a",
+                        "surface-container-low": "#f4f4f2",
+                        "deep-navy": "#1A1A2E"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Cairo", "Plus Jakarta Sans"],
+                        "body": ["Inter", "Cairo"],
+                        "label": ["Inter", "Cairo"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', 'Cairo', sans-serif;
+        }
+
+        .font-headline {
+            font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+
+        .ambient-shadow {
+            box-shadow: 0 32px 48px -4px rgba(26, 28, 27, 0.05);
+        }
+
+        .arabic-dynamic-padding {
+            padding-right: 32px;
+            padding-left: 24px;
+        }
+    </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased">
+    <!-- TopNavBar -->
+    <header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl shadow-sm">
+        <nav class="flex flex-row justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+            <!-- Right: Logo -->
+            <div class="flex items-center">
+                <a class="text-xl font-bold text-deep-navy dark:text-slate-100 font-headline transition-all duration-300 ease-in-out hover:opacity-80"
+                    href="index.html">أفكار بـ 100 دولار</a>
+            </div>
+            <!-- Center: Navigation Links -->
+            <div class="hidden md:flex gap-8 items-center absolute left-1/2 -translate-x-1/2">
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+                    href="index.html">الرئيسية</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+                    href="archive.html">الأرشيف</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+                    href="sponsores.html">الرعاة</a>
+                <a class="text-amber-700 dark:text-amber-500 border-b-2 border-amber-700 dark:border-amber-500 pb-1 font-headline font-medium transition-all duration-300 ease-in-out"
+                    href="about.html">من نحن</a>
+                <a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 font-headline font-medium transition-all duration-300 ease-in-out"
+                    href="contact-us.html">تواصل معنا</a>
+            </div>
+            <!-- Left: Actions -->
+            <div class="flex gap-4 items-center">
+                <a href="auth/login.html"
+                    class="px-5 py-2 text-slate-600 dark:text-slate-400 font-semibold hover:text-slate-900 transition-all scale-95 active:scale-90 font-headline">تسجيل
+                    الدخول</a>
+                <a href="auth/register.html"
+                    class="px-5 py-2 bg-primary text-on-primary font-bold rounded-lg hover:shadow-md transition-all scale-95 active:scale-90 font-headline">إنشاء
+                    حساب</a>
+            </div>
+        </nav>
+    </header>
+    <main class="pt-20 pb-24 flex-grow">
+
+        <!-- Hero Section -->
+        <section class="relative h-[400px] w-full overflow-hidden mb-8">
+            <div class="absolute inset-0 bg-cover bg-center"
+                data-alt="close-up of aesthetic mobile coffee cart with warm lighting and wooden textures in a vibrant city street at sunset"
+                style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD4YdxTZnj6AMbiD0dEu1B_woi6gPwhXRPRcqe9U1S1UErP0Ursj8sHTjGWx9-WDag_aXqZl_3Y7IEkbvq1xwCmI7LA9NvUz_LdBX5NB-ZEYSHADRBDLe48jNDtOu2wfO95P9qWUidf0onVytj1ar9F2bITHeR5FlU7WGG1aFAW_KaF2Ai1i6S1Jq4EYVnJoQF-gNEABg8a3lbLXGKKYQ0znhyVYZO9FCJODHMG0LwXeNnBoUZSg_oooV27asn-9ZmT7HAd7RNzW4k');">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-deep-navy via-deep-navy/60 to-transparent"></div>
+            <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+                <div
+                    class="bg-primary/90 text-on-primary px-4 py-1 rounded-full text-xs font-bold mb-4 tracking-widest uppercase">
+                    مشاريع الأغذية</div>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight font-headline">عربة القهوة
+                    المتنقلة "نكهة الأحياء"</h1>
+                <div class="flex items-center gap-3 text-white/90 font-medium">
+                    <img alt="Saudi Arabia Flag" class="w-6 h-4 rounded-sm"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJbJ_v1yACZ7O5MxZKlGqPZVrKEKyN9tfhxUGRcrQJ4FHpyHMFc8PUk96dTyC0nTsDrzj6uUt0c2pAzNVUVLT0o6aYpICQdbneF9nSoL4Ftkv7aYvpEYUtp77MIYdkVLiU8i0opGiRtdA7hSUx-iS3JFcL9IsP3FHL7lmmO1SxrixUEq5c0WpW1UYUu1dp3yfjRYdVBPJSoMMG6Z2Olb23MJgDMH1cDgSVx5OVZqtGFfdd9v-g43X7qq1WzAceSYXrwhezKPw8GxE" />
+                    <span>صاحب الفكرة: أحمد خالد</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    <span>الرياض، السعودية</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Breadcrumbs -->
+        <nav class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm text-outline mb-4">
+            <a class="hover:text-primary transition-colors" href="index.html">الرئيسية</a>
+            <span class="material-symbols-outlined text-xs">chevron_left</span>
+            <a class="hover:text-primary transition-colors" href="archive.html">الأرشيف</a>
+            <span class="material-symbols-outlined text-xs">chevron_left</span>
+            <span class="text-secondary font-medium">عربة القهوة المتنقلة "نكهة الأحياء"</span>
+        </nav>
+
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            <!-- Sidebar (Right) -->
+            <aside class="lg:col-span-4 order-1 lg:order-2 space-y-6">
+                <!-- Voting Card -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 ambient-shadow border border-outline-variant/10">
+                    <div class="flex flex-col items-center text-center mb-8">
+                        <div class="relative w-32 h-32 flex items-center justify-center mb-6">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle class="text-outline-variant/20" cx="64" cy="64" fill="transparent" r="58"
+                                    stroke="currentColor" stroke-width="8"></circle>
+                                <circle class="text-primary" cx="64" cy="64" fill="transparent" r="58"
+                                    stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="72.88"
+                                    stroke-width="8"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-2xl font-extrabold text-secondary">80%</span>
+                                <span class="text-[10px] text-outline font-bold uppercase tracking-wider">تأييد</span>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-secondary mb-2 font-headline">صوّت لهذه الفكرة</h3>
+                        <p class="text-sm text-outline leading-relaxed">ساهم بصوتك لدعم صاحب الفكرة وزيادة فرص تحويلها
+                            إلى واقع ملموس.</p>
+                    </div>
+                    <button
+                        class="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-lg hover:opacity-90 transition-all active:scale-[0.98] shadow-lg mb-4">صوّت
+                        الآن</button>
+                    <p class="text-[11px] text-center text-outline-variant font-medium">إجمالي الأصوات: 1,240 صوت</p>
+                </div>
+                <!-- Social Share -->
+                <div class="bg-surface-container-low rounded-xl p-6">
+                    <p class="text-sm font-bold text-secondary mb-4 text-center font-headline">شارك الفكرة مع أصدقائك
+                    </p>
+                    <div class="flex justify-between items-center gap-3">
+                        <button
+                            class="flex-1 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center">
+                            <img alt="WhatsApp" class="w-5 h-5"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKk7VoKcW_y5XBlS-oqFpOSG_kjC6-1DbZrixwhYd1yYREbfig7V_7bcwnnN3Y5xAqRKJicOlEGvPKY7jbiYzlMAClN7fiodMICAF16WSXalj6tbunaNK0x5F3trWGmuFQbFQWyr65fkhsC8sliz17MKw440CJoyNmeUyl6p8drHCuEdWtOkAJfs36hPu2wZjdNICEUHrE598ObTt3CZ3juis5R2PYTl0pu7Bh75hQ_VKHY1lksRbK2oyBBCla-GZFcfuIOsaXkvs" />
+                        </button>
+                        <button
+                            class="flex-1 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center">
+                            <img alt="Facebook" class="w-5 h-5"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgaIdUdITZMRsHh70PUAYgLrSG7U9SD8YSq5uXy0kNABcVqh1rHRxIgfPJxBfKLnM_BkkxbjRVXwwPhjgJ2VvG3ZaZRPrxwEt9dE-N9p0y8x9RZOCAIaJ1YKpDX8ev4Unn33J5OEvuf5xc4PNmkIAZE4uWJ3RGvr12AzGnc4E5eR51sbj8qFTNq0sU8jb5Gp3DtSuY9NnX8OStlORPU85-eRbNGY8LZwmQ6_KU24hEckUslceHU_34JLS2DpUYdrxax8zspDXMu40" />
+                        </button>
+                        <button
+                            class="flex-1 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center">
+                            <img alt="X" class="w-5 h-5"
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVYLjsSZ1KTj8VO0B3d8PKvlhrKVTnGP7ejHXEAoGXYU6oTr3IfmPkMWAngzyWvzqdhEqug1qhXqJXQyUbRMsr_gZuVeQCQYaRq8Jso1GlZbuY4VzvdHyNbv651-JKd-46Lr39s1zEh5VnAV4PB6GiCXUmxWaJ6JtfMiKX6TdB-b1kDOAj_dI5adKQBq3RJzdBKGlamB-FsKgThOdnsAbE06Gy6dJn6Nqd7zpmINXXO-8IMN1EhGJugpERm3p2Ts2MvHMXK693uPI" />
+                        </button>
+                        <button
+                            class="flex-1 bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-all flex items-center justify-center">
+                            <span class="material-symbols-outlined text-secondary">content_copy</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+            <!-- Main Content (Left) -->
+            <div class="lg:col-span-8 order-2 lg:order-1 space-y-12">
+                <!-- About Section -->
+                <section
+                    class="bg-surface-container-lowest p-8 lg:p-12 rounded-xl border border-outline-variant/10 arabic-dynamic-padding">
+                    <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-3 font-headline">
+                        <span class="material-symbols-outlined text-primary"
+                            style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+                        حول الفكرة
+                    </h2>
+                    <p class="text-secondary/80 leading-relaxed mb-8 text-lg">
+                        مشروع "نكهة الأحياء" يهدف إلى تقديم تجربة قهوة فاخرة بأسلوب بسيط ومتحرك. تعتمد الفكرة على
+                        استخدام دراجة هوائية معدلة أو عربة يدوية صغيرة مصممة بأناقة لبيع القهوة المقطرة والمشروبات
+                        الباردة في التجمعات الصباحية داخل الأحياء السكنية أو بجانب الحدائق العامة.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="bg-surface-container-low p-6 rounded-xl">
+                            <h4 class="font-bold text-secondary mb-4 flex items-center gap-2 font-headline">
+                                <span class="material-symbols-outlined text-primary">analytics</span>
+                                مميزات المشروع
+                            </h4>
+                            <ul class="space-y-3 text-sm text-secondary/80">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    انعدام تكاليف الإيجار والمرافق الثابتة.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    مرونة عالية في تغيير الموقع حسب الكثافة.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    بناء علاقة مباشرة وشخصية مع سكان الحي.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-surface-container-low p-6 rounded-xl">
+                            <h4 class="font-bold text-secondary mb-4 flex items-center gap-2 font-headline">
+                                <span class="material-symbols-outlined text-primary">payments</span>
+                                نموذج الربح
+                            </h4>
+                            <ul class="space-y-3 text-sm text-secondary/80">
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    هامش ربح مرتفع لكل كوب (يصل لـ 70%).
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    إمكانية التوسع لأسطول عربات مستقبلاً.
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                    تقديم اشتراكات شهرية لسكان العمارة.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-6 flex items-center gap-3 font-headline">
+                        <span class="material-symbols-outlined text-primary">receipt_long</span>
+                        التكلفة الأساسية (100 دولار) تغطي:
+                    </h3>
+                    <div class="space-y-4">
+                        <div
+                            class="flex items-center justify-between p-4 bg-surface rounded-lg border-r-4 border-primary">
+                            <span class="font-medium text-secondary">عربة يدوية خشبية مستعملة (أو بناء يدوي)</span>
+                            <span class="font-bold text-primary">35 دولار</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-between p-4 bg-surface rounded-lg border-r-4 border-primary">
+                            <span class="font-medium text-secondary">أدوات تحضير القهوة المقطرة (V60/Chemex)</span>
+                            <span class="font-bold text-primary">25 دولار</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-between p-4 bg-surface rounded-lg border-r-4 border-primary">
+                            <span class="font-medium text-secondary">مخزون أولي من حبوب القهوة والأكواب الورقية</span>
+                            <span class="font-bold text-primary">30 دولار</span>
+                        </div>
+                        <div
+                            class="flex items-center justify-between p-4 bg-surface rounded-lg border-r-4 border-primary">
+                            <span class="font-medium text-secondary">تصميم الهوية البصرية (ملصقات بسيطة)</span>
+                            <span class="font-bold text-primary">10 دولار</span>
+                        </div>
+                    </div>
+                </section>
+                <!-- Engagement Section -->
+                <section class="space-y-8" id="comments">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-2xl font-bold text-secondary font-headline">التعليقات والمقترحات (24)</h2>
+                        <button class="text-sm font-bold text-primary hover:underline">الأحدث أولاً</button>
+                    </div>
+                    <!-- Comment Cards -->
+                    <div class="space-y-4">
+                        <!-- Comment 1 -->
+                        <div class="bg-surface-container-low p-6 rounded-xl border-r-4 border-primary/20">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white">
+                                        <img alt="User Avatar" class="w-full h-full object-cover"
+                                            data-alt="professional portrait of a smiling middle eastern man with short dark hair and a neat beard"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCly3o8L0B4jpv7sTrfUDtAMIuWJAcocL2in9fnX3OP3aHYMU7oEB6UvZAQZGsUO0xIQXD6-ATDDrJRZb-0hcV4_8skNUj8kgJ2N6hZmeDlCPMObJ66XSmETcxAGRM5pYwA4YBNo2qOrChJjGSFsuPSrZPvED87PxT4bowQmiytkMLUA8UND8PJAaCySz9mFnUheb-APQYYwTeev39-0yQvbW-TUnjtVlpKpAkPgyVFiVLFW2Pei17cQ4JhYf9F5sxxiGPp3wIrQrU" />
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-secondary font-headline">محمد العتيبي</h4>
+                                            <span
+                                                class="text-[10px] bg-secondary text-white px-2 py-0.5 rounded-full">مؤسس
+                                                مشارك</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-xs text-outline">
+                                            <img alt="UAE Flag" class="w-4 h-2.5"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDycTTHwRTGIiRS9gLD_WxoHnmgDt8sonYoYFGJJghzf5hS35kSa1SHhlh5mQycSUiRvFlrPMXZ3cGC3DHu5q3KqNueHwtKcITvj1LuxAmH-ty4SQ4teZ5gsGlhhq-t0W5tVXo7pcrPNYjJKLoukQ4IBOYAAVMhh7ZDpMDMbNsilBbqOzzk5GJhq61QSCyqe4fvjJqOSKuQp1hdJp_qFrilERJTSjwJQQ6a5arNOB18POL30hxjeHYX8GwATNeGpP0N88U5-UkmVDA" />
+                                            <span>دبي، الإمارات</span>
+                                            <span>•</span>
+                                            <span>منذ 2 ساعة</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="flex items-center gap-1 text-primary">
+                                    <span class="material-symbols-outlined text-xl"
+                                        style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                    <span class="text-xs font-bold">12</span>
+                                </button>
+                            </div>
+                            <p class="text-secondary/80 text-sm leading-relaxed">
+                                فكرة ممتازة جداً، اقترح التركيز على جودة البن في البداية لأنها هي ما سيصنع لك زبائن
+                                دائمين. يمكن استبدال العربة الخشبية بصندوق "كولر" أنيق مثبت على دراجة هوائية لتوفير
+                                التكاليف أكثر. بالتوفيق!
+                            </p>
+                        </div>
+                        <!-- Comment 2 -->
+                        <div class="bg-surface-container-low p-6 rounded-xl border-r-4 border-transparent">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white">
+                                        <img alt="User Avatar" class="w-full h-full object-cover"
+                                            data-alt="close-up portrait of a professional young woman with dark hair and a friendly smile in office lighting"
+                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs8yTgSA1SJ-FOGRVE8m3rKyidB-G5gvXdRnfWwohNTt_uDY0fCZEpglfoNu1ZQsOfMbIS-P-ieSIFtytfFGJBVqzmPsZaKKmhlLoielqg9mz3ERdHtKTboA0r3vqNgIChodIFs7JlAwO2VTn1kK66VyztWmM5TRwATMRb_BAK3aBWeI9CIrzkoyhgxt7xAOj1JpEuv4e_-G5EgOsFPgYCf5iTu4_LvYUH6V-w_eDHDVWupXQ8u2vxBOZ-H2y1VQzQiPOoWBRIPW8" />
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="font-bold text-secondary font-headline">سارة محمود</h4>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-xs text-outline">
+                                            <img alt="Egypt Flag" class="w-4 h-2.5"
+                                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBof1Nc9mt6Kde_vySP931D2A229boCje-5EKlDrVGBwjD2diNAl4XF8Som_mEIx_LjUsv0Ar-uh8ULLOAU_eQuJDu5TbjNnPtmRVGSHh7j2S2gNvXD9an9pJ8d4XzR2FoRI0S-rj14QHZPV6hftcrWKYNeWST-oSi1Eoi1QkBnH4WAH9FOrxv90F75-VxiWHDNIENubFFN1a-j48lFGIAJwN6NuXDA9Re2W-4LXiAF9fEeLuuWzh77Wyu1oPOkH0T4rd4tjcfU_SE" />
+                                            <span>القاهرة، مصر</span>
+                                            <span>•</span>
+                                            <span>منذ 5 ساعات</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button
+                                    class="flex items-center gap-1 text-outline hover:text-primary transition-colors">
+                                    <span class="material-symbols-outlined text-xl">favorite</span>
+                                    <span class="text-xs font-bold">4</span>
+                                </button>
+                            </div>
+                            <p class="text-secondary/80 text-sm leading-relaxed">
+                                هل التكلفة تشمل التصاريح القانونية؟ في بعض المدن قد تكون هذه العقبة الوحيدة. بخلاف ذلك
+                                الفكرة قابلة للتكرار في كل حي سكني.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Comment Input -->
+                    <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-outline">person</span>
+                            </div>
+                            <div class="flex-1 space-y-4">
+                                <textarea
+                                    class="w-full bg-surface-container-low border-none rounded-xl p-4 text-sm focus:ring-1 focus:ring-primary h-24 resize-none"
+                                    dir="rtl" placeholder="أضف تعليقك أو مقترحك لتطوير الفكرة..."></textarea>
+                                <div class="flex justify-end">
+                                    <button
+                                        class="bg-primary text-on-primary px-8 py-2.5 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 shadow-md font-headline">إرسال</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-[#1A1A2E] text-white pt-16 pb-8 px-6">
+        <div class="max-w-7xl mx-auto">
+            <!-- Sitemap Columns -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <!-- Column 1: Brand Info -->
+                <div class="space-y-6">
+                    <a class="text-2xl font-black font-headline text-white block" href="index.html">
+                        أفكار بـ <span class="text-[#f7bd48]">100 دولار</span>
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs">
+                        المنصة العربية الأولى لدعم وتمويل الأفكار الصغيرة والمبتكرة التي تبدأ بميزانية لا تتجاوز الـ 100
+                        دولار. نحول أفكارك إلى واقع ملموس.
+                    </p>
+                </div>
+                <!-- Column 2: Quick Links -->
+                <div>
+                    <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">الروابط السريعة</h5>
+                    <ul class="space-y-4">
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="index.html">الرئيسية</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="archive.html">الأرشيف</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="sponsores.html">الرعاة</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="about.html">من نحن</a></li>
+                    </ul>
+                </div>
+                <!-- Column 3: Support -->
+                <div>
+                    <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">الدعم</h5>
+                    <ul class="space-y-4">
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="#">الأسئلة الشائعة</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="#">تواصل معنا</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="Terms and Conditions.html">شروط الاستخدام</a></li>
+                        <li><a class="text-gray-300 hover:text-[#f7bd48] transition-colors text-sm font-medium"
+                                href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <!-- Column 4: Follow Us -->
+                <div>
+                    <h5 class="text-lg font-bold font-headline mb-6 text-[#f7bd48]">تابعنا</h5>
+                    <div class="flex gap-4">
+                        <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all group"
+                            href="#">
+                            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.432 5.631 1.433h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+                            href="#">
+                            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+                            href="#">
+                            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                                <path
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                                </path>
+                            </svg>
+                        </a>
+                        <a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#f7bd48] hover:text-[#1A1A2E] transition-all"
+                            href="#">
+                            <svg class="w-5 h-5 fill-current" viewbox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z">
+                                </path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Bottom Copyright -->
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-400 font-body">
+                    © 2024 أفكار بـ 100 دولار. جميع الحقوق محفوظة.
+                </p>
+                <div class="flex gap-4">
+                    <img alt="Visa" class="h-6 opacity-50 hover:opacity-100 transition-opacity"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi7I2EsDDJi9wV9fhiD7hWAyWvQ1tEvNglIoGHXlj3hxpb0SAh2o0UBg2Cep9hgMruGUP1is6A7ACyTxtKNN6KRhCgj2nI5dH8c-f26sHlyTSS0sUk-HuZS22vQ4fPn8qUAiYQHYDHzHeBuS5zJCNegt2Fo0pDCGtdRqBT8SvIgGMe6xdC8kp5KG2KusTsPyGW_HNX0i47iJVCM1T8kVkPTDsJY1m3IOmPDsB6ER4HKTb9fXtpXF3KwlJTyZijhMJXuWQ_g1X7ilY" />
+                    <img alt="Mastercard" class="h-6 opacity-50 hover:opacity-100 transition-opacity"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSG0dV2jz9JTJrmjwxmvyFyH9Xf13tKfhRsS6ye3VVmyu7MrfsV6Rwn51bNoG5Qzs8kchLrYfZlW2QUYDlQjodzE36QBp9VWrozFP9iOQpaUPulh4O7wnGtzoWDwX0lexiXvQpR6hYzf8et1dIRoewDSQzqEu4Qrq_VB3u0mVl0jgJxHYwwgyJ9ELlmZKCQN5dbkzjwX2uRZRHMQ9I_Bp4x5E0AR-KjQcCOQAJR-ofQSkgKkA9zZBOAzHJuFDxzN5C07u7LqRKhtI" />
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
