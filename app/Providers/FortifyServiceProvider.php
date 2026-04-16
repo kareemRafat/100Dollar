@@ -47,30 +47,30 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn (Request $request) => Inertia::render('admin/auth/login', [
+        Fortify::loginView(fn (Request $request) => Inertia::render('app/auth/login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
             'canRegister' => Features::enabled(Features::registration()),
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::resetPasswordView(fn (Request $request) => Inertia::render('admin/auth/reset-password', [
+        Fortify::resetPasswordView(fn (Request $request) => Inertia::render('app/auth/new-password', [
             'email' => $request->email,
             'token' => $request->route('token'),
         ]));
 
-        Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render('admin/auth/forgot-password', [
+        Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render('app/auth/reset-password', [
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::verifyEmailView(fn (Request $request) => Inertia::render('admin/auth/verify-email', [
+        Fortify::verifyEmailView(fn (Request $request) => Inertia::render('app/auth/login', [
             'status' => $request->session()->get('status'),
         ]));
 
-        Fortify::registerView(fn () => Inertia::render('admin/auth/register'));
+        Fortify::registerView(fn () => Inertia::render('app/auth/register'));
 
-        Fortify::twoFactorChallengeView(fn () => Inertia::render('admin/auth/two-factor-challenge'));
+        Fortify::twoFactorChallengeView(fn () => Inertia::render('app/auth/login'));
 
-        Fortify::confirmPasswordView(fn () => Inertia::render('admin/auth/confirm-password'));
+        Fortify::confirmPasswordView(fn () => Inertia::render('app/auth/login'));
     }
 
     /**

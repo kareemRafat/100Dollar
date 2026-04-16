@@ -1,0 +1,163 @@
+type Props = {
+    category: string;
+    budget: string;
+    title: string;
+    description: string;
+    authorName: string;
+    authorAvatar?: string;
+    authorInitial?: string;
+    timeAgo: string;
+    votes: number;
+    voteProgress: number;
+    onVote?: () => void;
+    isWinner?: boolean;
+    imageUrl?: string;
+    date?: string;
+    variant?: 'home' | 'archive';
+};
+
+export function IdeaCard({
+    category,
+    budget,
+    title,
+    description,
+    authorName,
+    authorAvatar,
+    authorInitial,
+    timeAgo,
+    votes,
+    voteProgress,
+    onVote,
+    isWinner,
+    imageUrl,
+    date,
+    variant = 'home',
+}: Props) {
+    if (variant === 'archive') {
+        return (
+            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-xl">
+                {imageUrl && (
+                    <div className="relative h-40 overflow-hidden sm:h-48">
+                        <img
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            src={imageUrl}
+                            alt={title}
+                        />
+                        {isWinner && (
+                            <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:end-4 sm:top-4">
+                                <span>🏆 فكرة فائزة</span>
+                            </div>
+                        )}
+                    </div>
+                )}
+                <div className="flex flex-1 flex-col p-5 sm:p-8">
+                    <div className="mb-4 flex items-start justify-between">
+                        <span className="text-xs font-bold tracking-widest text-primary uppercase">
+                            {category}
+                        </span>
+                        {date && (
+                            <span className="text-xs text-outline">{date}</span>
+                        )}
+                    </div>
+                    <h3 className="mb-3 font-headline text-xl leading-snug font-bold text-on-surface dark:text-white">
+                        {title}
+                    </h3>
+                    <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-on-surface-variant">
+                        {description}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between border-t border-outline-variant/10 pt-6">
+                        <div className="flex items-center gap-2">
+                            <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-secondary-container text-xs font-bold text-on-secondary-container">
+                                {authorAvatar ? (
+                                    <img
+                                        className="h-full w-full object-cover"
+                                        src={authorAvatar}
+                                        alt={authorName}
+                                    />
+                                ) : (
+                                    authorInitial || authorName[0]
+                                )}
+                            </div>
+                            <span className="text-xs font-medium">
+                                {authorName}
+                            </span>
+                        </div>
+                        <span className="text-lg font-bold text-primary">
+                            {budget}
+                        </span>
+                    </div>
+                </div>
+            </article>
+        );
+    }
+
+    return (
+        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-sm transition-all hover:shadow-xl">
+            <div className="mb-6 flex items-start justify-between">
+                <span className="rounded-md bg-primary-fixed px-3 py-1 text-xs font-bold text-on-primary-fixed">
+                    {category}
+                </span>
+                <div className="flex items-center gap-1 text-primary">
+                    <span className="material-symbols-outlined text-lg">
+                        payments
+                    </span>
+                    <span className="font-bold">{budget}</span>
+                </div>
+            </div>
+            <h3 className="mb-4 font-headline text-2xl leading-snug font-bold text-on-surface dark:text-white">
+                {title}
+            </h3>
+            <p className="mb-8 line-clamp-3 leading-relaxed text-on-surface-variant">
+                {description}
+            </p>
+            <div className="mt-auto">
+                <div className="mb-6 flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed-dim">
+                        {authorAvatar ? (
+                            <img
+                                className="h-full w-full object-cover"
+                                src={authorAvatar}
+                                alt={authorName}
+                            />
+                        ) : (
+                            <span className="text-sm font-bold text-on-surface dark:text-white">
+                                {authorInitial || authorName[0]}
+                            </span>
+                        )}
+                    </div>
+                    <div>
+                        <p className="text-sm font-bold text-on-surface dark:text-white">
+                            {authorName}
+                        </p>
+                        <p className="text-xs text-on-surface-variant">
+                            {timeAgo}
+                        </p>
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <div className="mb-2 flex items-end justify-between">
+                        <span className="text-xs font-bold text-on-surface-variant">
+                            التقدم في التصويت
+                        </span>
+                        <span className="text-lg font-bold text-primary">
+                            {votes} صوت
+                        </span>
+                    </div>
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20">
+                        <div
+                            className="h-full rounded-full bg-gradient-to-l from-primary to-primary-container"
+                            style={{ width: `${voteProgress}%` }}
+                        />
+                    </div>
+                </div>
+                <button
+                    onClick={onVote}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-4 font-bold text-on-surface dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
+                >
+                    <span className="material-symbols-outlined">thumb_up</span>
+                    صوّت الآن
+                </button>
+            </div>
+        </div>
+    );
+}

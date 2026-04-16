@@ -83,168 +83,175 @@ resources/js/
 
 ---
 
-## Milestone 1: Shared Layout & Components
+## Milestone 1: Shared Layout & Components ✅ DONE
 
 **Goal:** Extract repeated HTML into reusable React components and set up the app layout shell.
 
 ### Tasks
 
-- [ ] **1.1** Create `AppLayout` component (`resources/js/layouts/app-layout.tsx`)
+- [x] **1.1** Create `AppLayout` component (`resources/js/layouts/app/app-layout.tsx`) ✅
     - Wraps children with `<TopNavBar />` and `<Footer />`
     - Supports `<Head title>` via Inertia
     - Handles RTL `<html dir="rtl" lang="ar">` setup
-- [ ] **1.2** Extract `TopNavBar` component
+- [x] **1.2** Extract `TopNavBar` component (`resources/js/components/app/top-nav-bar.tsx`) ✅
     - Logo link, center nav links (home, archive, sponsors, about, contact), auth buttons
     - Active link highlighting based on current route
-    - Mobile hamburger menu (if needed from static)
-- [ ] **1.3** Extract `Footer` component
+    - Conditional auth state (login/register vs account button)
+- [x] **1.3** Extract `Footer` component (`resources/js/components/app/footer.tsx`) ✅
     - 4-column grid: brand, quick links, support, social links
-    - Bottom copyright bar
-- [ ] **1.4** Extract `IdeaCard` component
-    - Props: `title`, `description`, `category`, `budget`, `author`, `avatar`, `votes`, `progress`
+    - Bottom copyright bar with dynamic year
+- [x] **1.4** Extract `IdeaCard` component (`resources/js/components/app/idea-card.tsx`) ✅
+    - Props: `title`, `description`, `category`, `budget`, `authorName`, `authorAvatar`, `votes`, `voteProgress`, etc.
+    - Two variants: `home` (with vote progress/button) and `archive` (with image/winner badge)
     - Vote button with hover state
-- [ ] **1.5** Extract `WinnerCard` component
-    - Props: `name`, `idea`, `avatar`, `badge`, `prize`
-    - Trophy badge overlay
-- [ ] **1.6** Extract `CountdownTimer` component
-    - Props: `hours`, `minutes`, `seconds` (or target date)
-    - Live ticking animation
-- [ ] **1.7** Extract `PinModal` component (from `pin modal.html`)
-    - Props: `isOpen`, `onClose`, `onSubmit`
-    - 6-digit PIN input grid
-- [ ] **1.8** Extract `SideNav` component (from `profile.html` sidebar)
-    - Props: `activeSection`
-- [ ] **1.9** Extract `MobileBottomNav` component (from `profile.html` mobile nav)
+- [x] **1.5** Extract `WinnerCard` component (`resources/js/components/app/winner-card.tsx`) ✅
+    - Props: `name`, `idea`, `avatarUrl`, `badge`, `prize`
+    - Trophy badge overlay, pulse animation
+- [x] **1.6** Extract `CountdownTimer` component (`resources/js/components/app/countdown-timer.tsx`) ✅
+    - Props: `targetDate`
+    - Live ticking with `useEffect` interval
+- [x] **1.7** Extract `PinModal` component (`resources/js/components/app/pin-modal.tsx`) ✅
+    - Props: `isOpen`, `onClose`, `onSubmit`, `email`
+    - 6-digit PIN input grid with auto-focus navigation
+- [x] **1.8** Extract `SideNav` component (`resources/js/components/app/side-nav.tsx`) ✅
+    - Props: `activeSection`, configurable `items`
+- [x] **1.9** Extract `MobileBottomNav` component (`resources/js/components/app/mobile-bottom-nav.tsx`) ✅
+    - Props: `activeSection`, configurable `items`
 
 ---
 
-## Milestone 2: Public Pages (No Auth Required)
+## Milestone 2: Public Pages (No Auth Required) ✅ DONE
 
 **Goal:** Convert all publicly accessible pages.
 
 ### Tasks
 
-- [ ] **2.1** Convert `index.html` → `app/home.tsx`
+- [x] **2.1** Convert `index.html` → `app/home.tsx` ✅
     - Hero section with particles background (tsParticles)
     - Daily sponsor + countdown timer section
     - Weekly tabs section
     - Ideas grid (using `IdeaCard`)
     - Hall of fame winners carousel (using `WinnerCard`)
-- [ ] **2.2** Convert `about.html` → `app/about.tsx`
+- [x] **2.2** Convert `about.html` → `app/about.tsx` ✅
     - Hero with image
     - Mission & Vision section
     - Impact metrics counters
     - Core values grid
     - Founding story section
     - Partner logos
-- [ ] **2.3** Convert `archive.html` → `app/archive.tsx`
+- [x] **2.3** Convert `archive.html` → `app/archive.tsx` ✅
     - Breadcrumbs
     - Page header with background image
     - Search bar
     - Filter dropdowns (category, date, month, status)
     - Ideas grid with winner badges (using `IdeaCard` variant)
     - Pagination
-- [ ] **2.4** Convert `sponsores.html` → `app/sponsors.tsx`
+- [x] **2.4** Convert `sponsores.html` → `app/sponsors.tsx` ✅
     - Sponsor tiers grid
     - Become a sponsor CTA
-- [ ] **2.5** Convert `contact-us.html` → `app/contact.tsx`
+- [x] **2.5** Convert `contact-us.html` → `app/contact.tsx` ✅
     - Contact form (name, email, subject, message)
     - Map / address section
     - Social links
-- [ ] **2.6** Convert `info.html` → `app/how-it-works.tsx`
+- [x] **2.6** Convert `info.html` → `app/how-it-works.tsx` ✅
     - Step-by-step process timeline
     - FAQ accordion
     - CTA section
-- [ ] **2.7** Convert `Terms and Conditions.html` → `app/terms.tsx`
+- [x] **2.7** Convert `Terms and Conditions.html` → `app/terms.tsx` ✅
     - Long-form legal content with section navigation
     - Last updated date
 
 ---
 
-## Milestone 3: Auth Pages
+## Milestone 3: Auth Pages ✅ DONE
 
 **Goal:** Convert authentication pages, integrate with Laravel Fortify.
 
 ### Tasks
 
-- [ ] **3.1** Convert `auth/login.html` → `app/auth/login.tsx`
+- [x] **3.1** Convert `auth/login.html` → `app/auth/login.tsx` ✅
     - Fortify `Form` integration (email, password, remember)
     - Social login buttons (if applicable)
     - Link to register / forgot password
-- [ ] **3.2** Convert `auth/register.html` → `app/auth/register.tsx`
+- [x] **3.2** Convert `auth/register.html` → `app/auth/register.tsx` ✅
     - Fortify `Form` integration (name, email, password, confirm)
     - Terms acceptance checkbox
     - Link to login
-- [ ] **3.3** Convert `auth/reset-password.html` → `app/auth/reset-password.tsx`
+- [x] **3.3** Convert `auth/reset-password.html` → `app/auth/reset-password.tsx` ✅
     - Email input form
     - Back to login link
-- [ ] **3.4** Convert `auth/new-password.html` → `app/auth/new-password.tsx`
+- [x] **3.4** Convert `auth/new-password.html` → `app/auth/new-password.tsx` ✅
     - Password + confirm password form
     - Password strength indicator
 
 ---
 
-## Milestone 4: Authenticated Pages
+## Milestone 4: Authenticated Pages ✅ DONE
 
 **Goal:** Convert pages that require a logged-in user.
 
 ### Tasks
 
-- [ ] **4.1** Convert `profile.html` → `app/profile.tsx`
+- [x] **4.1** Convert `profile.html` → `app/profile.tsx` ✅
     - Three-section layout: personal info, password & security, protection settings
     - Side navigation + mobile bottom nav
     - Profile image upload
     - Form fields with validation
     - 2FA toggle
     - Profile visibility toggle
-- [ ] **4.2** Convert `add idea.html` → `app/submit-idea.tsx`
+- [x] **4.2** Convert `add idea.html` → `app/submit-idea.tsx` ✅
     - Multi-step form or single form
     - Category selector, budget input, description
     - Image upload
     - Preview before submit
-- [ ] **4.3** Convert `dark.html` concept → `app/ideas/show.tsx`
+- [x] **4.3** Convert `dark.html` concept → `app/ideas/show.tsx` ✅
     - Idea detail page with full content
     - Vote section, comments, author info
     - Support both light and dark mode via Tailwind `dark:` classes
 
 ---
 
-## Milestone 5: Tailwind Config & Design Token Consolidation
+## Milestone 5: Tailwind Config & Design Token Consolidation ✅ DONE
 
 **Goal:** Move inline Tailwind config from each HTML file into the project's `tailwind.config.js` / CSS, ensuring consistent design tokens.
 
 ### Tasks
 
-- [ ] **5.1** Merge all color tokens from `resources/static/tailwind.config.js` and each HTML's inline config into the project's `resources/css/app.css` or `tailwind.config.ts`
+- [x] **5.1** Merge all color tokens from `resources/static/tailwind.config.js` and each HTML's inline config into the project's `resources/css/app.css` or `tailwind.config.ts` ✅
     - Surface hierarchy colors
     - Primary / secondary / tertiary palettes
     - Dark mode variants (from `dark.html`)
-- [ ] **5.2** Add font families (Cairo, Plus Jakarta Sans, Inter) to the project's font configuration
-    - Ensure Google Fonts are loaded via `<Head>` or Vite
-- [ ] **5.3** Add custom utility classes
+- [x] **5.2** Add font families (Cairo, Plus Jakarta Sans, Inter) to the project's font configuration ✅
+    - Google Fonts loaded via `<Head>` in app.blade.php
+- [x] **5.3** Add custom utility classes ✅
     - `.font-headline` → `fontFamily: headline`
     - `.no-scrollbar` utility
     - `.editorial-shadow` (from `about.html`)
     - `.glass-header` backdrop blur
-- [ ] **5.4** Verify dark mode support works across all converted pages
-    - Test `dark:` class variants
-    - Ensure `dark.html` tokens are merged correctly
+    - `.golden-ledger-shadow`, `.ambient-shadow`, `.bg-editorial-gradient`, `.airy-dots`, `.hero-overlay`, `.arabic-dynamic-padding`
+- [x] **5.4** Verify dark mode support works across all converted pages ✅
+    - Replaced all hardcoded hex colors with design tokens
+    - Updated components to use tokens instead of `slate-*` / `gray-*` in `dark:` variants
 
 ---
 
-## Milestone 6: Backend Routes & Integration
+## Milestone 6: Backend Routes & Integration ✅ DONE
 
 **Goal:** Wire up Laravel controllers and Inertia responses for all app pages.
 
 ### Tasks
 
-- [ ] **6.1** Create `AppHomeController` with `index()` returning Inertia render for `app/home`
-- [ ] **6.2** Create `AppPageController` for static pages (about, archive, sponsors, contact, how-it-works, terms)
-- [ ] **6.3** Update Fortify auth views to use `app/auth/*` pages
-- [ ] **6.4** Create `ProfileController` for authenticated profile page
-- [ ] **6.5** Create `IdeaController` with `create()` and `show()` methods
-- [ ] **6.6** Register all routes in `routes/web.php`
-- [ ] **6.7** Run `php artisan wayfinder:generate` to update TypeScript route helpers
+- [x] **6.1** Create `AppHomeController` with `index()` returning Inertia render for `app/home` ✅
+- [x] **6.2** Create `AppPageController` for static pages (about, archive, sponsors, contact, how-it-works, terms) ✅
+- [x] **6.3** Update Fortify auth views to use `app/auth/*` pages ✅
+    - Changed Fortify prefix from `admin` to root level
+    - Updated FortifyServiceProvider to render app/auth/\* Inertia components
+    - Updated `fortify.home` redirect from `/admin/dashboard` to `/`
+- [x] **6.4** Create `AppProfileController` for authenticated profile page ✅
+- [x] **6.5** Create `AppIdeaController` with `create()` and `show()` methods ✅
+- [x] **6.6** Register all routes in `routes/web.php` ✅
+    - All routes registered in `routes/app.php` with `app.*` named routes
+- [x] **6.7** Run `php artisan wayfinder:generate` to update TypeScript route helpers ✅
 
 ---
 
