@@ -344,12 +344,22 @@
     }
 
     .airy-dots {
-        background-image: radial-gradient(#d3c4af 0.5px, transparent 0.5px);
-        background-size: 24px 24px;
+        position: relative;
     }
 
-    .dark .airy-dots {
-        background-image: radial-gradient(#4a4a6a 0.5px, transparent 0.5px);
+    .airy-dots::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23785600' fill-opacity='0.15'/%3E%3C/svg%3E");
+        mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .dark .airy-dots::before {
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23f7bd48' fill-opacity='0.1'/%3E%3C/svg%3E");
+        mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
     }
 
     .hero-overlay {
