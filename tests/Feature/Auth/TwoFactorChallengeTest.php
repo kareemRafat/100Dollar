@@ -31,6 +31,34 @@ test('two factor challenge can be rendered', function () {
     $this->post(route('login'), [
         'email' => $user->email,
         'password' => 'password',
+        '_auth_context' => 'app',
+    ]);
+
+    $this->get(route('two-factor.login'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('app/auth/two-factor-challenge'),
+        );
+});
+
+test('admin two factor challenge uses the admin auth page', function () {
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+    ]);
+
+    $admin = User::factory()->admin()->create();
+
+    $admin->forceFill([
+        'two_factor_secret' => encrypt('test-secret'),
+        'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
+        'two_factor_confirmed_at' => now(),
+    ])->save();
+
+    $this->post(route('login'), [
+        'email' => $admin->email,
+        'password' => 'password',
+        '_auth_context' => 'admin',
     ]);
 
     $this->get(route('two-factor.login'))

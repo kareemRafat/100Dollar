@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Support\Auth\AuthContext;
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EnsureUserRole
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
+    public function handle(Request $request, Closure $next, string ...$roles): Response
+    {
+        $user = $request->user();
+
+        if ($user === null) {
+            abort(403);
+        }
+
+        if (! in_array($user->role, $roles, true)) {
+            return redirect()->route(app(AuthContext::class)->homeRouteForUser($user));
+        }
+
+        return $next($request);
+    }
+}

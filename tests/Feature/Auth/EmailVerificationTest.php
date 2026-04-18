@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -13,12 +14,23 @@ beforeEach(function () {
 test('email verification screen can be rendered', function () {
     $user = User::factory()->unverified()->create();
 
-    $response = $this->actingAs($user)->get(route('verification.notice'));
-
-    $response->assertOk();
+    $this->actingAs($user)
+        ->get(route('verification.notice'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('app/auth/verify-email'));
 });
 
-test('email can be verified', function () {
+test('admin email verification screen can be rendered', function () {
+    $admin = User::factory()->admin()->unverified()->create();
+
+    $this->actingAs($admin)
+        ->withSession(['auth_context' => 'admin'])
+        ->get(route('verification.notice'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('admin/auth/verify-email'));
+});
+
+test('user email can be verified', function () {
     $user = User::factory()->unverified()->create();
 
     Event::fake();
@@ -33,6 +45,24 @@ test('email can be verified', function () {
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+    $response->assertRedirect(route('app.home', absolute: false).'?verified=1');
+});
+
+test('admin email can be verified', function () {
+    $admin = User::factory()->admin()->unverified()->create();
+
+    Event::fake();
+
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes(60),
+        ['id' => $admin->id, 'hash' => sha1($admin->email)],
+    );
+
+    $response = $this->actingAs($admin)->get($verificationUrl);
+
+    Event::assertDispatched(Verified::class);
+    expect($admin->fresh()->hasVerifiedEmail())->toBeTrue();
     $response->assertRedirect(route('admin.dashboard', absolute: false).'?verified=1');
 });
 
@@ -70,7 +100,7 @@ test('email is not verified with invalid user id', function () {
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
-test('verified user is redirected to dashboard from verification prompt', function () {
+test('verified user is redirected to app home from verification prompt', function () {
     $user = User::factory()->create();
 
     Event::fake();
@@ -78,7 +108,7 @@ test('verified user is redirected to dashboard from verification prompt', functi
     $response = $this->actingAs($user)->get(route('verification.notice'));
 
     Event::assertNotDispatched(Verified::class);
-    $response->assertRedirect(route('admin.dashboard', absolute: false));
+    $response->assertRedirect(route('app.home', absolute: false));
 });
 
 test('already verified user visiting verification link is redirected without firing event again', function () {
@@ -93,7 +123,7 @@ test('already verified user visiting verification link is redirected without fir
     );
 
     $this->actingAs($user)->get($verificationUrl)
-        ->assertRedirect(route('admin.dashboard', absolute: false).'?verified=1');
+        ->assertRedirect(route('app.home', absolute: false).'?verified=1');
 
     Event::assertNotDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();

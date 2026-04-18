@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -10,9 +11,15 @@ beforeEach(function () {
 });
 
 test('reset password link screen can be rendered', function () {
-    $response = $this->get(route('password.request'));
+    $this->get(route('password.request'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('app/auth/forgot-password'));
+});
 
-    $response->assertOk();
+test('admin reset password link screen can be rendered', function () {
+    $this->get(route('admin.password.request'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('admin/auth/forgot-password'));
 });
 
 test('reset password link can be requested', function () {
@@ -20,7 +27,10 @@ test('reset password link can be requested', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    $this->post(route('password.email'), [
+        'email' => $user->email,
+        '_auth_context' => 'app',
+    ]);
 
     Notification::assertSentTo($user, ResetPassword::class);
 });
@@ -30,12 +40,19 @@ test('reset password screen can be rendered', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    $this->post(route('password.email'), [
+        'email' => $user->email,
+        '_auth_context' => 'app',
+    ]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) {
-        $response = $this->get(route('password.reset', $notification->token));
+        $response = $this->get(route('password.reset', [
+            'token' => $notification->token,
+            'auth_context' => 'app',
+        ]));
 
-        $response->assertOk();
+        $response->assertOk()
+            ->assertInertia(fn (Assert $page) => $page->component('app/auth/reset-password'));
 
         return true;
     });
@@ -46,7 +63,10 @@ test('password can be reset with valid token', function () {
 
     $user = User::factory()->create();
 
-    $this->post(route('password.email'), ['email' => $user->email]);
+    $this->post(route('password.email'), [
+        'email' => $user->email,
+        '_auth_context' => 'app',
+    ]);
 
     Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
         $response = $this->post(route('password.update'), [
@@ -54,11 +74,39 @@ test('password can be reset with valid token', function () {
             'email' => $user->email,
             'password' => 'password',
             'password_confirmation' => 'password',
+            '_auth_context' => 'app',
         ]);
 
         $response
             ->assertSessionHasNoErrors()
             ->assertRedirect(route('login'));
+
+        return true;
+    });
+});
+
+test('admin password reset redirects back to the admin login screen', function () {
+    Notification::fake();
+
+    $admin = User::factory()->admin()->create();
+
+    $this->post(route('password.email'), [
+        'email' => $admin->email,
+        '_auth_context' => 'admin',
+    ]);
+
+    Notification::assertSentTo($admin, ResetPassword::class, function ($notification) use ($admin) {
+        $response = $this->post(route('password.update'), [
+            'token' => $notification->token,
+            'email' => $admin->email,
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            '_auth_context' => 'admin',
+        ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect(route('admin.login'));
 
         return true;
     });

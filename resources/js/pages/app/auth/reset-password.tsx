@@ -1,93 +1,206 @@
 import { Form, Head, Link } from '@inertiajs/react';
+import { useState } from 'react';
 import AuthLayout from '@/layouts/app/auth/auth-layout';
+import { login } from '@/routes';
+import { update } from '@/routes/password';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import PasswordInput from '@/components/password-input';
+import InputError from '@/components/input-error';
 
 type Props = {
-    status?: string;
+    token: string;
+    email: string;
 };
 
-export default function ResetPassword({ status }: Props) {
+export default function ResetPassword({ token, email }: Props) {
+    const [newPassword, setNewPassword] = useState('');
+
+    const hasMinLength = newPassword.length >= 8;
+    const hasSpecialChar = /[@#$!%*?&]/.test(newPassword);
+    const hasNumber = /\d/.test(newPassword);
+    const strength = [hasMinLength, hasSpecialChar, hasNumber].filter(
+        Boolean,
+    ).length;
+    const strengthLabel =
+        strength === 3
+            ? 'قوية'
+            : strength === 2
+              ? 'متوسطة'
+              : strength === 1
+                ? 'ضعيفة'
+                : '';
+    const strengthColor =
+        strength === 3
+            ? 'bg-green-500'
+            : strength === 2
+              ? 'bg-primary'
+              : 'bg-error';
+
     return (
         <AuthLayout>
-            <Head title="استعادة كلمة المرور" />
+            <Head title="تعيين كلمة مرور جديدة" />
 
-            <header className="mb-10 text-right">
-                <Link
-                    className="group text-outline mb-4 inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary"
-                    href="/login"
-                >
-                    <span className="text-sm font-bold">
-                        العودة لتسجيل الدخول
-                    </span>
-                    <span className="material-symbols-outlined text-sm">
-                        arrow_back
-                    </span>
-                </Link>
+            <header className="mb-12 text-right">
                 <h1 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                    استعادة كلمة المرور
+                    تعيين كلمة مرور جديدة
                 </h1>
-                <p className="text-on-surface-variant">
-                    أدخل بريدك الإلكتروني لإرسال رابط الاستعادة
+                <p className="text-on-surface-variant text-lg">
+                    يرجى اختيار كلمة مرور قوية لحماية حسابك واستثماراتك القادمة.
                 </p>
             </header>
 
-            {status && (
-                <div className="mb-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
-                    {status}
-                </div>
-            )}
-
-            <Form action="/forgot-password" method="post" className="space-y-6">
+            <Form
+                {...update.form()}
+                resetOnSuccess={['password', 'password_confirmation']}
+                className="space-y-8"
+            >
                 {({ processing, errors }) => (
                     <>
                         <div className="space-y-2">
-                            <label
-                                className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                htmlFor="email"
-                            >
-                                البريد الإلكتروني
-                            </label>
-                            <div className="relative">
-                                <input
-                                    className="ring-outline-variant w-full rounded-lg bg-surface-container-lowest dark:bg-surface-container-low dark:text-white dark:border-outline-variant/30"
-                                    id="email"
-                                    name="email"
-                                    placeholder="example@ledger.com"
-                                    required
-                                    type="email"
-                                    autoFocus
-                                />
-                            </div>
-                            {errors.email && (
-                                <p className="text-error text-sm">
-                                    {errors.email}
-                                </p>
-                            )}
+                            <Label htmlFor="new_password">كلمة المرور الجديدة</Label>
+                            <PasswordInput
+                                id="new_password"
+                                name="password"
+                                required
+                                placeholder="••••••••"
+                                value={newPassword}
+                                onChange={(e) =>
+                                    setNewPassword(e.target.value)
+                                }
+                                autoFocus
+                                className="h-12 text-right"
+                                dir="rtl"
+                            />
+                            <InputError message={errors.password} />
                         </div>
-                        <button
-                            className="group font-headline flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-4 font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90"
+
+                        <div className="space-y-3 px-1">
+                            <div className="flex items-center justify-between text-xs font-medium">
+                                <span className="text-on-surface-variant">
+                                    قوة كلمة المرور
+                                </span>
+                                {strengthLabel && (
+                                    <span
+                                        className={`font-bold ${strength === 3 ? 'text-green-600' : 'text-primary'}`}
+                                    >
+                                        {strengthLabel}
+                                    </span>
+                                )}
+                            </div>
+                            <div className="bg-outline-variant/20 flex h-1.5 w-full gap-1 overflow-hidden rounded-full">
+                                {[1, 2, 3, 4].map((i) => (
+                                    <div
+                                        key={i}
+                                        className={`h-full w-1/4 rounded-full transition-all ${i <= strength ? strengthColor : 'bg-outline-variant/30'}`}
+                                    />
+                                ))}
+                            </div>
+                            <ul className="text-on-surface-variant flex flex-wrap gap-x-4 gap-y-1 text-[11px] justify-end rtl" dir="rtl">
+                                <li className="flex items-center gap-1">
+                                    <span
+                                        className={`material-symbols-outlined text-[14px] ${hasMinLength ? 'text-primary' : 'text-outline-variant'}`}
+                                        style={
+                                            hasMinLength
+                                                ? {
+                                                      fontVariationSettings:
+                                                          "'FILL' 1",
+                                                  }
+                                                : undefined
+                                        }
+                                    >
+                                        {hasMinLength
+                                            ? 'check_circle'
+                                            : 'radio_button_unchecked'}
+                                    </span>
+                                    8 أحرف على الأقل
+                                </li>
+                                <li className="flex items-center gap-1">
+                                    <span
+                                        className={`material-symbols-outlined text-[14px] ${hasSpecialChar ? 'text-primary' : 'text-outline-variant'}`}
+                                        style={
+                                            hasSpecialChar
+                                                ? {
+                                                      fontVariationSettings:
+                                                          "'FILL' 1",
+                                                  }
+                                                : undefined
+                                        }
+                                    >
+                                        {hasSpecialChar
+                                            ? 'check_circle'
+                                            : 'radio_button_unchecked'}
+                                    </span>
+                                    رمز خاص (@#$)
+                                </li>
+                                <li className="flex items-center gap-1">
+                                    <span
+                                        className={`material-symbols-outlined text-[14px] ${hasNumber ? 'text-primary' : 'text-outline-variant'}`}
+                                        style={
+                                            hasNumber
+                                                ? {
+                                                      fontVariationSettings:
+                                                          "'FILL' 1",
+                                                  }
+                                                : undefined
+                                        }
+                                    >
+                                        {hasNumber
+                                            ? 'check_circle'
+                                            : 'radio_button_unchecked'}
+                                    </span>
+                                    أرقام
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="confirm_password">تأكيد كلمة المرور</Label>
+                            <Input
+                                id="confirm_password"
+                                name="password_confirmation"
+                                type="password"
+                                required
+                                placeholder="••••••••"
+                                className="h-12 text-right"
+                                dir="rtl"
+                            />
+                            <InputError message={errors.password_confirmation} />
+                        </div>
+
+                        <input type="hidden" name="_auth_context" value="app" />
+                        <input type="hidden" name="token" value={token} />
+                        <input type="hidden" name="email" value={email} />
+
+                        <Button
+                            className="h-12 w-full text-lg font-bold"
                             type="submit"
                             disabled={processing}
                         >
-                            <span>إرسال الرابط</span>
-                            <span className="material-symbols-outlined text-xl transition-transform group-hover:-translate-x-1">
-                                send
-                            </span>
-                        </button>
+                            <span>تحديث كلمة المرور</span>
+                            {processing && <Spinner className="size-5" />}
+                        </Button>
+
+                        <div className="mt-6 text-center">
+                            <Link
+                                className="flex items-center justify-center gap-2 font-bold text-primary transition-colors hover:underline"
+                                href={login()}
+                            >
+                                <span className="material-symbols-outlined text-sm">
+                                    arrow_forward
+                                </span>
+                                العودة إلى تسجيل الدخول
+                            </Link>
+                        </div>
                     </>
                 )}
             </Form>
 
-            <div className="mt-12 text-center">
-                <p className="text-on-surface-variant text-sm">
-                    تواجه مشكلة؟{' '}
-                    <Link
-                        className="font-bold text-primary underline decoration-2 underline-offset-4 hover:underline"
-                        href="/contact"
-                    >
-                        تواصل مع الدعم الفني
-                    </Link>
-                </p>
-            </div>
+            <footer className="text-on-surface-variant mt-16 text-center text-[10px] opacity-60">
+                <span>© 2026 أفكار بـ 100 دولار. جميع الحقوق محفوظة.</span>
+            </footer>
         </AuthLayout>
     );
 }

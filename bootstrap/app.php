@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Middleware\EnsureUserRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Support\Auth\AuthContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -24,6 +27,19 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+        $middleware->alias([
+            'role' => EnsureUserRole::class,
+        ]);
+        $middleware->redirectGuestsTo(function (Request $request): string {
+            return $request->is('admin') || $request->is('admin/*')
+                ? route('admin.login')
+                : route('login');
+        });
+        $middleware->redirectUsersTo(function (Request $request): string {
+            return route(
+                app(AuthContext::class)->homeRouteForUser($request->user()),
+            );
+        });
 
         $middleware->web(append: [
             HandleAppearance::class,

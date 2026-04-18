@@ -24,11 +24,19 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت', 'عمان', 'قطر', 'البحرين'];
+        
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'user',
+            'phone' => fake()->phoneNumber(),
+            'country' => fake()->randomElement($countries),
+            'nationality' => fake()->randomElement($countries),
+            'avatar' => null,
+            'is_active' => true,
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
@@ -47,14 +55,22 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model has two-factor authentication configured.
+     * Indicate that the user is an admin.
      */
-    public function withTwoFactor(): static
+    public function admin(): static
     {
         return $this->state(fn (array $attributes) => [
-            'two_factor_secret' => encrypt('secret'),
-            'two_factor_recovery_codes' => encrypt(json_encode(['recovery-code-1'])),
-            'two_factor_confirmed_at' => now(),
+            'role' => 'admin',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is inactive.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_active' => false,
         ]);
     }
 }

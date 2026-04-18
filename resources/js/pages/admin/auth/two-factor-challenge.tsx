@@ -62,6 +62,12 @@ export default function TwoFactorChallenge() {
                 >
                     {({ errors, processing, clearErrors }) => (
                         <>
+                            <input
+                                type="hidden"
+                                name="_auth_context"
+                                value="admin"
+                            />
+
                             {showRecoveryInput ? (
                                 <>
                                     <Input

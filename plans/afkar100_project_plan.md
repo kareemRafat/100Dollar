@@ -160,18 +160,18 @@ Fortify::loginView(fn () => Inertia::render('app/pages/auth/Login'));
 
 ### 🗄️ قاعدة البيانات — Migrations
 
-- [ ] Migration: `users`
-- [ ] Migration: `ideas`
-- [ ] Migration: `votes`
-- [ ] Migration: `comments`
-- [ ] Migration: `comment_likes`
-- [ ] Migration: `user_follows`
-- [ ] Migration: `idea_follows`
-- [ ] Migration: `notifications`
-- [ ] Migration: `sponsors`
-- [ ] Migration: `prize_records`
-- [ ] إضافة Indexes على الحقول الأكثر استخداماً في الاستعلامات
-- [ ] إضافة Unique Constraints: `(idea_id, voter_email)` في votes، `(follower_id, following_id)` في user_follows، `(user_id, idea_id)` في idea_follows
+- [x] Migration: `users`
+- [x] Migration: `ideas`
+- [x] Migration: `votes`
+- [x] Migration: `comments`
+- [x] Migration: `comment_likes`
+- [x] Migration: `user_follows`
+- [x] Migration: `idea_follows`
+- [x] Migration: `notifications`
+- [x] Migration: `sponsors`
+- [x] Migration: `prize_records`
+- [x] إضافة Indexes على الحقول الأكثر استخداماً في الاستعلامات
+- [x] إضافة Unique Constraints: `(idea_id, voter_email)` في votes، `(follower_id, following_id)` في user_follows، `(user_id, idea_id)` في idea_follows
 
 ---
 
@@ -243,16 +243,16 @@ Route::middleware('guest')->group(function () {
 
 ### 🧩 Models & Relationships
 
-- [ ] Model: `User` مع علاقات `hasMany` للأفكار والتعليقات والمتابعات والإشعارات
-- [ ] Model: `Idea` مع علاقات `belongsTo` و `hasMany`
-- [ ] Model: `Vote` مع scope للتحقق من التكرار
-- [ ] Model: `Comment` مع `hasMany` للإعجابات
-- [ ] Model: `CommentLike`
-- [ ] Model: `UserFollow`
-- [ ] Model: `IdeaFollow`
-- [ ] Model: `Notification`
-- [ ] Model: `Sponsor`
-- [ ] Model: `PrizeRecord`
+- [x] Model: `User` مع علاقات `hasMany` للأفكار والتعليقات والمتابعات والإشعارات
+- [x] Model: `Idea` مع علاقات `belongsTo` و `hasMany`
+- [x] Model: `Vote` مع scope للتحقق من التكرار
+- [x] Model: `Comment` مع `hasMany` للإعجابات
+- [x] Model: `CommentLike`
+- [x] Model: `UserFollow`
+- [x] Model: `IdeaFollow`
+- [x] Model: `Notification`
+- [x] Model: `Sponsor`
+- [x] Model: `PrizeRecord`
 
 ---
 
@@ -260,51 +260,51 @@ Route::middleware('guest')->group(function () {
 
 > تُستخدم في الاختبارات (Testing) وفي توليد بيانات تجريبية واقعية للعرض على الرعاة.
 
-- [ ] Factory: `UserFactory`
-  - [ ] حقول عربية واقعية للاسم (name_first, name_last)
-  - [ ] إيميل فريد لكل مستخدم
-  - [ ] رقم هاتف عشوائي مع مفتاح دولة
-  - [ ] دول عربية عشوائية (الأردن، السعودية، مصر، الإمارات...)
-  - [ ] State: `admin()` لإنشاء مستخدم بدور المدير
-  - [ ] State: `unverified()` لمستخدم غير مفعّل الإيميل
+- [x] Factory: `UserFactory`
+  - [x] حقول عربية واقعية للاسم (name_first, name_last)
+  - [x] إيميل فريد لكل مستخدم
+  - [x] رقم هاتف عشوائي مع مفتاح دولة
+  - [x] دول عربية عشوائية (الأردن، السعودية، مصر، الإمارات...)
+  - [x] State: `admin()` لإنشاء مستخدم بدور المدير
+  - [x] State: `unverified()` لمستخدم غير مفعّل الإيميل
 
-- [ ] Factory: `IdeaFactory`
-  - [ ] عناوين أفكار عربية واقعية (مشاريع صغيرة حقيقية)
-  - [ ] أوصاف تفصيلية لكل فكرة
-  - [ ] تصنيفات متنوعة: تجارة، تقنية، خدمات، غذاء، تعليم...
-  - [ ] submission_day عشوائي (0→6)
-  - [ ] week_number و year تلقائيان
-  - [ ] State: `pending()` — status = pending
-  - [ ] State: `approved()` — status = approved مع approved_at
-  - [ ] State: `rejected()` — status = rejected مع rejection_reason
-  - [ ] State: `winner()` — is_winner = true مع winner_announced_at
-  - [ ] State: `withImage()` — إرفاق صورة placeholder
+- [x] Factory: `IdeaFactory`
+  - [x] عناوين أفكار عربية واقعية (مشاريع صغيرة حقيقية)
+  - [x] أوصاف تفصيلية لكل فكرة
+  - [x] تصنيفات متنوعة: تجارة، تقنية، خدمات، غذاء، تعليم...
+  - [x] submission_day عشوائي (0→6)
+  - [x] week_number و year تلقائيان
+  - [x] State: `pending()` — status = pending
+  - [x] State: `approved()` — status = approved مع approved_at
+  - [x] State: `rejected()` — status = rejected مع rejection_reason
+  - [x] State: `winner()` — is_winner = true مع winner_announced_at
+  - [x] State: `withImage()` — إرفاق صورة placeholder
 
-- [ ] Factory: `VoteFactory`
-  - [ ] voter_email فريد لكل فكرة
-  - [ ] otp_verified_at محدد (صوت مؤكد)
-  - [ ] ip_address عشوائي
+- [x] Factory: `VoteFactory`
+  - [x] voter_email فريد لكل فكرة
+  - [x] otp_verified_at محدد (صوت مؤكد)
+  - [x] ip_address عشوائي
 
-- [ ] Factory: `CommentFactory`
-  - [ ] تعليقات عربية واقعية تحسيناً للأفكار
-  - [ ] likes_count عشوائي بين 0 و 50
+- [x] Factory: `CommentFactory`
+  - [x] تعليقات عربية واقعية تحسيناً للأفكار
+  - [x] likes_count عشوائي بين 0 و 50
 
-- [ ] Factory: `SponsorFactory`
-  - [ ] أسماء شركات عربية واقعية
-  - [ ] day_of_week من 0 إلى 6 (فريد لكل راعٍ)
-  - [ ] contract_start = بداية السنة الحالية
-  - [ ] contract_end = نهاية السنة الحالية
-  - [ ] State: `active()` و `inactive()`
+- [x] Factory: `SponsorFactory`
+  - [x] أسماء شركات عربية واقعية
+  - [x] day_of_week من 0 إلى 6 (فريد لكل راعٍ)
+  - [x] contract_start = بداية السنة الحالية
+  - [x] contract_end = نهاية السنة الحالية
+  - [x] State: `active()` و `inactive()`
 
-- [ ] Factory: `NotificationFactory`
-  - [ ] جميع أنواع الإشعارات الخمسة
-  - [ ] State: `unread()` — is_read = false
-  - [ ] State: `read()` — is_read = true مع read_at
+- [x] Factory: `NotificationFactory`
+  - [x] جميع أنواع الإشعارات الخمسة
+  - [x] State: `unread()` — is_read = false
+  - [x] State: `read()` — is_read = true مع read_at
 
-- [ ] Factory: `UserFollowFactory`
-- [ ] Factory: `IdeaFollowFactory`
-- [ ] Factory: `PrizeRecordFactory`
-  - [ ] State: `pending()` و `delivered()`
+- [x] Factory: `UserFollowFactory`
+- [x] Factory: `IdeaFollowFactory`
+- [x] Factory: `PrizeRecordFactory`
+  - [x] State: `pending()` و `delivered()`
 
 ---
 
@@ -320,49 +320,49 @@ AdminSeeder → SponsorSeeder → UserSeeder → IdeaSeeder
 → PrizeRecordSeeder → NotificationSeeder
 ```
 
-- [ ] Seeder: `DatabaseSeeder` — يُنظّم استدعاء جميع الـ Seeders بالترتيب الصحيح
+- [x] Seeder: `DatabaseSeeder` — يُنظّم استدعاء جميع الـ Seeders بالترتيب الصحيح
 
-- [ ] Seeder: `AdminSeeder`
-  - [ ] إنشاء حساب أدمن ثابت: `admin@afkar100.com` / `password`
-  - [ ] إنشاء حساب Demo Admin للعرض على الرعاة
+- [x] Seeder: `AdminSeeder`
+  - [x] إنشاء حساب أدمن ثابت: `admin@afkar100.com` / `password`
+  - [x] إنشاء حساب Demo Admin للعرض على الرعاة
 
-- [ ] Seeder: `SponsorSeeder`
-  - [ ] إنشاء 7 رعاة — راعٍ لكل يوم من الأسبوع
-  - [ ] أسماء شركات عربية واقعية أو placeholder احترافي
-  - [ ] ربط كل راعٍ بيومه (day_of_week 0→6)
+- [x] Seeder: `SponsorSeeder`
+  - [x] إنشاء 7 رعاة — راعٍ لكل يوم من الأسبوع
+  - [x] أسماء شركات عربية واقعية أو placeholder احترافي
+  - [x] ربط كل راعٍ بيومه (day_of_week 0→6)
 
-- [ ] Seeder: `UserSeeder`
-  - [ ] إنشاء 50 مستخدم تجريبي بـ `UserFactory`
-  - [ ] 10 مستخدمين من كل دولة: الأردن، السعودية، مصر، الإمارات، الكويت
+- [x] Seeder: `UserSeeder`
+  - [x] إنشاء 50 مستخدم تجريبي بـ `UserFactory`
+  - [x] 10 مستخدمين من كل دولة: الأردن، السعودية، مصر، الإمارات، الكويت
 
-- [ ] Seeder: `IdeaSeeder`
-  - [ ] إنشاء 7 أفكار معتمدة — فكرة لكل يوم من الأسبوع الحالي (للتصويت الحي)
-  - [ ] إنشاء 49 فكرة معتمدة للأسابيع السبعة الماضية (للأرشيف)
-  - [ ] إنشاء 7 أفكار فائزة — فائز لكل يوم من الأسبوع الماضي
-  - [ ] إنشاء 10 أفكار قيد الانتظار (pending) للوحة تحكم المدير
-  - [ ] إنشاء 5 أفكار مرفوضة مع أسباب رفض
+- [x] Seeder: `IdeaSeeder`
+  - [x] إنشاء 7 أفكار معتمدة — فكرة لكل يوم من الأسبوع الحالي (للتصويت الحي)
+  - [x] إنشاء 49 فكرة معتمدة للأسابيع السبعة الماضية (للأرشيف)
+  - [x] إنشاء 7 أفكار فائزة — فائز لكل يوم من الأسبوع الماضي
+  - [x] إنشاء 10 أفكار قيد الانتظار (pending) للوحة تحكم المدير
+  - [x] إنشاء 5 أفكار مرفوضة مع أسباب رفض
 
-- [ ] Seeder: `VoteSeeder`
-  - [ ] إنشاء أصوات تجريبية للأفكار الحالية (بين 50 و 500 صوت لكل فكرة)
-  - [ ] تحديث votes_count في جدول ideas بعد الإنشاء
-  - [ ] التأكد من عدم تكرار (idea_id + voter_email)
+- [x] Seeder: `VoteSeeder`
+  - [x] إنشاء أصوات تجريبية للأفكار الحالية (بين 50 و 500 صوت لكل فكرة)
+  - [x] تحديث votes_count في جدول ideas بعد الإنشاء
+  - [x] التأكد من عدم تكرار (idea_id + voter_email)
 
-- [ ] Seeder: `CommentSeeder`
-  - [ ] إنشاء 3 إلى 8 تعليقات لكل فكرة معتمدة
-  - [ ] تعليقات عربية واقعية تحاكي تحسيناً حقيقياً للأفكار
-  - [ ] إنشاء إعجابات عشوائية على التعليقات عبر `CommentLike`
+- [x] Seeder: `CommentSeeder`
+  - [x] إنشاء 3 إلى 8 تعليقات لكل فكرة معتمدة
+  - [x] تعليقات عربية واقعية تحاكي تحسيناً حقيقياً للأفكار
+  - [x] إنشاء إعجابات عشوائية على التعليقات عبر `CommentLike`
 
-- [ ] Seeder: `FollowSeeder`
-  - [ ] إنشاء متابعات عشوائية بين المستخدمين (user_follows)
-  - [ ] إنشاء متابعات عشوائية للأفكار (idea_follows)
+- [x] Seeder: `FollowSeeder`
+  - [x] إنشاء متابعات عشوائية بين المستخدمين (user_follows)
+  - [x] إنشاء متابعات عشوائية للأفكار (idea_follows)
 
-- [ ] Seeder: `PrizeRecordSeeder`
-  - [ ] إنشاء سجل جائزة لكل فكرة فائزة مرتبطاً بالراعي المناسب لليوم
-  - [ ] نصف الجوائز بحالة `delivered`، النصف الآخر `pending`
+- [x] Seeder: `PrizeRecordSeeder`
+  - [x] إنشاء سجل جائزة لكل فكرة فائزة مرتبطاً بالراعي المناسب لليوم
+  - [x] نصف الجوائز بحالة `delivered`، النصف الآخر `pending`
 
-- [ ] Seeder: `NotificationSeeder`
-  - [ ] إنشاء إشعارات تجريبية متنوعة الأنواع الخمسة لكل مستخدم
-  - [ ] بعضها مقروء (is_read = true) وبعضها غير مقروء
+- [x] Seeder: `NotificationSeeder`
+  - [x] إنشاء إشعارات تجريبية متنوعة الأنواع الخمسة لكل مستخدم
+  - [x] بعضها مقروء (is_read = true) وبعضها غير مقروء
 
 ---
 

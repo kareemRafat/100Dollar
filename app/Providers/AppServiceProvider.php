@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Support\Auth\AuthContext;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -46,5 +48,15 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null,
         );
+
+        ResetPassword::createUrlUsing(function (object $user, string $token): string {
+            $context = app(AuthContext::class)->contextForRole($user->role ?? null);
+
+            return route('password.reset', [
+                'token' => $token,
+                'email' => $user->getEmailForPasswordReset(),
+                'auth_context' => $context,
+            ]);
+        });
     }
 }

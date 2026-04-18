@@ -15,7 +15,7 @@ Route::get('/contact', [AppPageController::class, 'contact'])->name('app.contact
 Route::get('/how-it-works', [AppPageController::class, 'howItWorks'])->name('app.info');
 Route::get('/terms', [AppPageController::class, 'terms'])->name('app.terms');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile', [AppProfileController::class, 'edit'])->name('app.profile');
     Route::get('/ideas/create', [AppIdeaController::class, 'create'])->name('app.ideas.create');
     Route::get('/ideas/{id}', [AppIdeaController::class, 'show'])->name('app.ideas.show');

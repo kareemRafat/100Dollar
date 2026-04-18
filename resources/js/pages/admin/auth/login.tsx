@@ -7,9 +7,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { register } from '@/routes';
+import { login } from '@/routes/admin';
 import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+import { request } from '@/routes/admin/password';
 
 type Props = {
     status?: string;
@@ -33,6 +33,12 @@ export default function Login({
             >
                 {({ processing, errors }) => (
                     <>
+                        <input
+                            type="hidden"
+                            name="_auth_context"
+                            value="admin"
+                        />
+
                         <div className="grid gap-6">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
@@ -97,7 +103,7 @@ export default function Login({
                         {canRegister && (
                             <div className="text-center text-sm text-muted-foreground">
                                 Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
+                                <TextLink href={login()} tabIndex={5}>
                                     Sign up
                                 </TextLink>
                             </div>

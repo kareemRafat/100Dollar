@@ -15,20 +15,21 @@ test('sends verification notification', function () {
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
+        ->from(route('verification.notice'))
         ->post(route('verification.send'))
-        ->assertRedirect(route('app.home'));
+        ->assertRedirect(route('verification.notice'));
 
     Notification::assertSentTo($user, VerifyEmail::class);
 });
 
-test('does not send verification notification if email is verified', function () {
+test('does not send verification notification if email is already verified', function () {
     Notification::fake();
 
     $user = User::factory()->create();
 
     $this->actingAs($user)
         ->post(route('verification.send'))
-        ->assertRedirect(route('admin.dashboard', absolute: false));
+        ->assertRedirect(route('app.home', absolute: false));
 
     Notification::assertNothingSent();
 });

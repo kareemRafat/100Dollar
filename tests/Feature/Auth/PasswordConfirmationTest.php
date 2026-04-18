@@ -11,6 +11,20 @@ test('confirm password screen can be rendered', function () {
     $response->assertOk();
 
     $response->assertInertia(fn (Assert $page) => $page
+        ->component('app/auth/confirm-password'),
+    );
+});
+
+test('admin confirm password screen can be rendered', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)
+        ->withSession(['auth_context' => 'admin'])
+        ->get(route('password.confirm'));
+
+    $response->assertOk();
+
+    $response->assertInertia(fn (Assert $page) => $page
         ->component('admin/auth/confirm-password'),
     );
 });

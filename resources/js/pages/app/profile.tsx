@@ -68,7 +68,7 @@ export default function Profile({ user }: Props) {
             <div className="md:flex md:min-h-screen">
                 <SideNav activeSection={activeSection} items={sideNavItems} />
 
-                <main className="w-full max-w-5xl flex-1 p-6 pb-24 md:p-12 md:pb-12">
+                <main className="w-full flex-1 p-6 pb-24 md:p-12 md:pb-12">
                     <header className="mb-12">
                         <h1 className="mb-2 text-4xl font-black text-secondary">
                             إدارة حسابك
@@ -146,7 +146,7 @@ export default function Profile({ user }: Props) {
                                             defaultValue={user.email}
                                         />
                                     </div>
-                                    <div className="space-y-2">
+                                    <div className="space-y-2 sm:col-span-full ">
                                         <label className="pr-1 text-sm font-bold text-secondary">
                                             رقم الهاتف
                                         </label>

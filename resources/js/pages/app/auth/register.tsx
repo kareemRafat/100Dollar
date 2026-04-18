@@ -1,160 +1,154 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
 import AuthLayout from '@/layouts/app/auth/auth-layout';
+import { login } from '@/routes';
+import { store } from '@/routes/register';
+import { contact, terms } from '@/routes/app';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import PasswordInput from '@/components/password-input';
+import InputError from '@/components/input-error';
+
+import { Spinner } from '@/components/ui/spinner';
 
 type Props = {
     canLogin: boolean;
 };
 
 export default function Register({ canLogin }: Props) {
-    const [showPassword, setShowPassword] = useState(false);
-
     return (
         <AuthLayout>
             <Head title="تسجيل جديد" />
 
-            <header className="mb-10 text-center md:text-right">
+            <header className="mb-10 text-right">
                 <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                    ابدأ رحلتك المالية اليوم
+                    ابدأ رحلتك اليوم
                 </h2>
                 <p className="text-on-surface-variant">
-                    انضم إلى أكثر من ٥٠,٠٠٠ مستثمر ورائد أعمال في Golden Ledger
+                    انضم إلى مجتمع المبدعين وابدأ في مشاركة أفكارك مع العالم
                 </p>
             </header>
 
             <Form
-                action="/register"
-                method="post"
+                {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 className="space-y-6"
             >
                 {({ processing, errors }) => (
                     <>
-                        <div className="space-y-4">
+                        <input type="hidden" name="_auth_context" value="app" />
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <label
-                                    className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                    htmlFor="name"
-                                >
-                                    الاسم الكامل
-                                </label>
-                                <input
-                                    className="bg-surface-container-lowest ring-outline-variant w-full rounded-lg px-4 py-3 ring-1 transition-all outline-none focus:ring-2 focus:ring-primary dark:placeholder:text-slate-500"
+                                <Label htmlFor="name" className="text-right block w-full">الاسم الكامل</Label>
+                                <Input
                                     id="name"
                                     name="name"
                                     type="text"
                                     required
                                     autoFocus
                                     placeholder="محمد أحمد"
+                                    className="h-12 text-right"
+                                    dir="rtl"
                                 />
-                                {errors.name && (
-                                    <p className="text-error text-sm">
-                                        {errors.name}
-                                    </p>
-                                )}
+                                <InputError message={errors.name} />
                             </div>
                             <div className="space-y-2">
-                                <label
-                                    className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                    htmlFor="email"
-                                >
-                                    البريد الإلكتروني
-                                </label>
-                                <input
-                                    className="bg-surface-container-lowest ring-outline-variant w-full rounded-lg px-4 py-3 ring-1 transition-all outline-none focus:ring-2 focus:ring-primary dark:placeholder:text-slate-500"
+                                <Label htmlFor="email" className="text-right block w-full">البريد الإلكتروني</Label>
+                                <Input
                                     id="email"
                                     name="email"
                                     type="email"
                                     required
-                                    placeholder="example@ledger.com"
+                                    placeholder="example@domain.com"
+                                    className="h-12 text-right"
+                                    dir="rtl"
                                 />
-                                {errors.email && (
-                                    <p className="text-error text-sm">
-                                        {errors.email}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <label
-                                        className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                        htmlFor="password"
-                                    >
-                                        كلمة المرور
-                                    </label>
-                                    <div className="relative">
-                                        <input
-                                            className="bg-surface-container-lowest ring-outline-variant w-full rounded-lg px-4 py-3 ring-1 transition-all outline-none focus:ring-2 focus:ring-primary dark:placeholder:text-slate-500"
-                                            id="password"
-                                            name="password"
-                                            type={
-                                                showPassword
-                                                    ? 'text'
-                                                    : 'password'
-                                            }
-                                            required
-                                            placeholder="••••••••"
-                                        />
-                                        <button
-                                            className="text-on-surface-variant/60 absolute top-1/2 left-3 -translate-y-1/2 transition-colors hover:text-primary"
-                                            type="button"
-                                            onClick={() =>
-                                                setShowPassword(!showPassword)
-                                            }
-                                        >
-                                            <span className="material-symbols-outlined text-xl">
-                                                {showPassword
-                                                    ? 'visibility_off'
-                                                    : 'visibility'}
-                                            </span>
-                                        </button>
-                                    </div>
-                                    {errors.password && (
-                                        <p className="text-error text-sm">
-                                            {errors.password}
-                                        </p>
-                                    )}
-                                </div>
-                                <div className="space-y-2">
-                                    <label
-                                        className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                        htmlFor="password_confirmation"
-                                    >
-                                        تأكيد كلمة المرور
-                                    </label>
-                                    <input
-                                        className="bg-surface-container-lowest ring-outline-variant w-full rounded-lg px-4 py-3 ring-1 transition-all outline-none focus:ring-2 focus:ring-primary dark:placeholder:text-slate-500"
-                                        id="password_confirmation"
-                                        name="password_confirmation"
-                                        type="password"
-                                        required
-                                        placeholder="••••••••"
-                                    />
-                                    {errors.password_confirmation && (
-                                        <p className="text-error text-sm">
-                                            {errors.password_confirmation}
-                                        </p>
-                                    )}
-                                </div>
+                                <InputError message={errors.email} />
                             </div>
                         </div>
 
-                        <div className="flex items-start gap-3">
-                            <input
-                                className="border-outline-variant mt-1 rounded text-primary focus:ring-primary"
-                                id="terms"
-                                name="terms"
-                                type="checkbox"
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                             <div className="space-y-2">
+                                <Label htmlFor="phone" className="text-right block w-full">رقم الهاتف</Label>
+                                <Input
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    required
+                                    placeholder="+962 7XXXXXXXX"
+                                    className="h-12 text-right"
+                                    dir="ltr"
+                                />
+                                <InputError message={errors.phone} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="country" className="text-right block w-full">دولة الإقامة</Label>
+                                <Input
+                                    id="country"
+                                    name="country"
+                                    type="text"
+                                    required
+                                    placeholder="الأردن"
+                                    className="h-12 text-right"
+                                    dir="rtl"
+                                />
+                                <InputError message={errors.country} />
+                            </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="nationality" className="text-right block w-full">الجنسية</Label>
+                            <Input
+                                id="nationality"
+                                name="nationality"
+                                type="text"
                                 required
+                                placeholder="أردني"
+                                className="h-12 text-right"
+                                dir="rtl"
                             />
-                            <label
-                                className="text-on-surface-variant text-sm leading-relaxed"
+                            <InputError message={errors.nationality} />
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="password">كلمة المرور</Label>
+                                <PasswordInput
+                                    id="password"
+                                    name="password"
+                                    required
+                                    placeholder="••••••••"
+                                    className="h-12 text-right"
+                                    dir="rtl"
+                                />
+                                <InputError message={errors.password} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="password_confirmation">تأكيد كلمة المرور</Label>
+                                <Input
+                                    id="password_confirmation"
+                                    name="password_confirmation"
+                                    type="password"
+                                    required
+                                    placeholder="••••••••"
+                                    className="h-12 text-right"
+                                    dir="rtl"
+                                />
+                                <InputError message={errors.password_confirmation} />
+                            </div>
+                        </div>
+
+                        <div className="flex items-start justify-end gap-3">
+                            <Label
+                                className="text-on-surface-variant text-sm leading-relaxed cursor-pointer text-right"
                                 htmlFor="terms"
                             >
                                 أوافق على{' '}
                                 <Link
                                     className="font-bold text-primary hover:underline"
-                                    href="/terms"
+                                    href={terms()}
                                 >
                                     شروط الخدمة
                                 </Link>{' '}
@@ -165,53 +159,57 @@ export default function Register({ canLogin }: Props) {
                                 >
                                     سياسة الخصوصية
                                 </Link>{' '}
-                                الخاصة بـ Golden Ledger.
-                            </label>
+                                الخاصة بالمنصة.
+                            </Label>
+                            <Checkbox id="terms" name="terms" required className="mt-1" />
                         </div>
 
-                        <button
-                            className="font-headline hover:bg-primary-container flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-4 font-bold text-white shadow-lg shadow-primary/20 transition-all"
+                        <Button
+                            className="h-12 w-full text-lg font-bold"
                             type="submit"
                             disabled={processing}
                         >
                             <span>إنشاء الحساب الآن</span>
-                            <span className="material-symbols-outlined text-xl">
-                                arrow_back
-                            </span>
-                        </button>
+                            {processing ? (
+                                <Spinner className="size-5" />
+                            ) : (
+                                <span className="material-symbols-outlined text-xl">
+                                    arrow_back
+                                </span>
+                            )}
+                        </Button>
                     </>
                 )}
             </Form>
 
             <div className="mt-8 flex flex-col items-center gap-6">
                 <div className="flex w-full items-center gap-4">
-                    <div className="bg-outline-variant h-px flex-1" />
+                    <div className="bg-outline-variant/30 h-px flex-1" />
                     <span className="text-on-surface-variant text-xs font-medium">
                         أو سجل عبر
                     </span>
-                    <div className="bg-outline-variant h-px flex-1" />
+                    <div className="bg-outline-variant/30 h-px flex-1" />
                 </div>
                 <div className="w-full">
-                    <button
-                        className="border-outline-variant hover:bg-surface-container flex w-full items-center justify-center gap-3 rounded-lg border bg-surface-container-lowest dark:bg-surface-container-low dark:text-white dark:border-outline-variant/30"
+                    <Button
+                        variant="outline"
+                        className="h-12 w-full bg-surface-container-lowest font-bold dark:bg-surface-container-low"
                         type="button"
                     >
                         <img
-                            alt="google"
+                            alt="Google"
                             className="h-5 w-5"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjb_h-xl-sZGM_5JkslKcSMNBL1nG53BtElOnny9WQlrPr7JEw-W_-MXu4ItLQ_6B4SjtRXpOHD7xAZaPm4Vm23TtPnV8ibARsEAlUp-ntQgMtrK1-W61m7j3xVK_nNrgaP8hiDWP9vFXsSglTJ81aPEzg0KSN3TDCm9EIzgctlJNAQC6y2ilJpRmcCrgeZvB7GolKLOWRiB78yAUC0oIN3c-HvNd-Y-bdfHntlT0zIdhn6cG6Ac2SbX968e66fjHWxgwCs-4tk5s"
+                            src="https://www.google.com/favicon.ico"
                         />
-                        <span className="text-sm font-bold text-on-surface dark:text-white">
-                            التسجيل باستخدام Google
-                        </span>
-                    </button>
+                        <span>التسجيل باستخدام Google</span>
+                    </Button>
                 </div>
                 {canLogin && (
                     <p className="text-on-surface-variant text-sm">
                         لديك حساب بالفعل؟{' '}
                         <Link
                             className="font-bold text-primary hover:underline"
-                            href="/login"
+                            href={login()}
                         >
                             تسجيل الدخول
                         </Link>
@@ -220,11 +218,11 @@ export default function Register({ canLogin }: Props) {
             </div>
 
             <footer className="text-on-surface-variant mx-auto mt-16 flex w-full max-w-xl items-center justify-between text-[10px] opacity-60">
-                <span>© 2024 Golden Ledger Fintech. جميع الحقوق محفوظة.</span>
+                <span>© 2026 أفكار بـ 100 دولار. جميع الحقوق محفوظة.</span>
                 <div className="flex gap-4">
                     <Link
                         className="transition-colors hover:text-primary"
-                        href="/contact"
+                        href={contact()}
                     >
                         الدعم الفني
                     </Link>

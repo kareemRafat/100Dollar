@@ -1,6 +1,16 @@
 import { Form, Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
 import AuthLayout from '@/layouts/app/auth/auth-layout';
+import { register } from '@/routes';
+import { store } from '@/routes/login';
+import { request } from '@/routes/password';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import PasswordInput from '@/components/password-input';
+import InputError from '@/components/input-error';
+
+import { Spinner } from '@/components/ui/spinner';
 
 type Props = {
     status?: string;
@@ -13,8 +23,6 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: Props) {
-    const [showPassword, setShowPassword] = useState(false);
-
     return (
         <AuthLayout>
             <Head title="تسجيل الدخول" />
@@ -24,119 +32,87 @@ export default function Login({
                     مرحباً بك مجدداً
                 </h2>
                 <p className="text-on-surface-variant">
-                    سجل الدخول للوصول إلى محفظتك الاستثمارية
+                    سجل الدخول للوصول إلى حسابك ومتابعة أفكارك
                 </p>
             </header>
 
             {status && (
-                <div className="mb-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
+                <div className="mb-6 rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
                     {status}
                 </div>
             )}
 
             <Form
-                action="/login"
-                method="post"
+                {...store.form()}
                 resetOnSuccess={['password']}
                 className="space-y-6"
             >
                 {({ processing, errors }) => (
                     <>
+                        <input type="hidden" name="_auth_context" value="app" />
+
                         <div className="space-y-2">
-                            <label
-                                className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                htmlFor="email"
-                            >
-                                البريد الإلكتروني
-                            </label>
-                            <input
-                                className="ring-outline-variant w-full rounded-lg bg-surface-container-lowest dark:bg-surface-container-low dark:text-white dark:border-outline-variant/30 dark:placeholder:text-slate-500"
+                            <Label htmlFor="email" className="text-right block w-full">البريد الإلكتروني</Label>
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
                                 required
                                 autoFocus
-                                placeholder="example@ledger.com"
+                                placeholder="example@domain.com"
+                                className="h-12 text-right"
+                                dir="rtl"
                             />
-                            {errors.email && (
-                                <p className="text-error text-sm">
-                                    {errors.email}
-                                </p>
-                            )}
+                            <InputError message={errors.email} />
                         </div>
 
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <label
-                                    className="font-label text-sm font-semibold text-on-surface dark:text-white"
-                                    htmlFor="password"
-                                >
-                                    كلمة المرور
-                                </label>
+                                <Label htmlFor="password">كلمة المرور</Label>
                                 {canResetPassword && (
                                     <Link
                                         className="text-xs font-bold text-primary hover:underline"
-                                        href="/forgot-password"
+                                        href={request()}
                                     >
                                         نسيت كلمة المرور؟
                                     </Link>
                                 )}
                             </div>
-                            <div className="relative flex items-center">
-                                <input
-                                    className="ring-outline-variant w-full rounded-lg bg-surface-container-lowest dark:bg-surface-container-low dark:text-white dark:border-outline-variant/30 dark:placeholder:text-slate-500"
-                                    id="password"
-                                    name="password"
-                                    type={showPassword ? 'text' : 'password'}
-                                    required
-                                    placeholder="••••••••"
-                                />
-                                <button
-                                    className="text-on-surface-variant/60 absolute left-3 transition-colors hover:text-primary"
-                                    type="button"
-                                    onClick={() =>
-                                        setShowPassword(!showPassword)
-                                    }
-                                >
-                                    <span className="material-symbols-outlined text-xl">
-                                        {showPassword
-                                            ? 'visibility_off'
-                                            : 'visibility'}
-                                    </span>
-                                </button>
-                            </div>
-                            {errors.password && (
-                                <p className="text-error text-sm">
-                                    {errors.password}
-                                </p>
-                            )}
+                            <PasswordInput
+                                id="password"
+                                name="password"
+                                required
+                                placeholder="••••••••"
+                                className="h-12 text-right"
+                                dir="rtl"
+                            />
+                            <InputError message={errors.password} />
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <input
-                                className="border-outline-variant rounded text-primary focus:ring-primary"
-                                id="remember-me"
-                                name="remember"
-                                type="checkbox"
-                            />
-                            <label
-                                className="text-on-surface-variant cursor-pointer text-sm"
+                        <div className="flex items-center justify-end gap-3">
+                            <Label
+                                className="text-on-surface-variant cursor-pointer text-sm font-normal"
                                 htmlFor="remember-me"
                             >
                                 تذكرني على هذا الجهاز
-                            </label>
+                            </Label>
+                            <Checkbox id="remember-me" name="remember" />
                         </div>
 
-                        <button
-                            className="font-headline flex w-full items-center justify-center gap-2 rounded-lg bg-primary py-4 font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary/90"
+                        <Button
+                            className="h-12 w-full text-lg font-bold"
                             type="submit"
                             disabled={processing}
                         >
                             <span>تسجيل الدخول</span>
-                            <span className="material-symbols-outlined text-xl">
-                                login
-                            </span>
-                        </button>
+                            {processing ? (
+                                <Spinner className="size-5" />
+                            ) : (
+                                <span className="material-symbols-outlined text-xl">
+                                    login
+                                </span>
+                            )}
+                        </Button>
                     </>
                 )}
             </Form>
@@ -150,26 +126,25 @@ export default function Login({
                     <div className="bg-outline-variant/30 h-px flex-1" />
                 </div>
                 <div className="w-full">
-                    <button
-                        className="border-outline-variant/30 hover:bg-surface-container flex w-full items-center justify-center gap-3 rounded-lg border bg-surface-container-lowest dark:bg-surface-container-low dark:text-white dark:border-outline-variant/30"
+                    <Button
+                        variant="outline"
+                        className="h-12 w-full bg-surface-container-lowest font-bold dark:bg-surface-container-low"
                         type="button"
                     >
                         <img
                             alt="Google"
                             className="h-5 w-5"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjb_h-xl-sZGM_5JkslKcSMNBL1nG53BtElOnny9WQlrPr7JEw-W_-MXu4ItLQ_6B4SjtRXpOHD7xAZaPm4Vm23TtPnV8ibARsEAlUp-ntQgMtrK1-W61m7j3xVK_nNrgaP8hiDWP9vFXsSglTJ81aPEzg0KSN3TDCm9EIzgctlJNAQC6y2ilJpRmcCrgeZvB7GolKLOWRiB78yAUC0oIN3c-HvNd-Y-bdfHntlT0zIdhn6cG6Ac2SbX968e66fjHWxgwCs-4tk5s"
+                            src="https://www.google.com/favicon.ico"
                         />
-                        <span className="text-sm font-bold text-on-surface dark:text-white">
-                            المتابعة باستخدام Google
-                        </span>
-                    </button>
+                        <span>المتابعة باستخدام Google</span>
+                    </Button>
                 </div>
                 {canRegister && (
                     <p className="text-on-surface-variant text-sm">
                         ليس لديك حساب؟{' '}
                         <Link
                             className="font-bold text-primary hover:underline"
-                            href="/register"
+                            href={register()}
                         >
                             أنشئ حساباً جديداً
                         </Link>

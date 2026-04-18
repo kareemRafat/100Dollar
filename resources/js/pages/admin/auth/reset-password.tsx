@@ -19,11 +19,13 @@ export default function ResetPassword({ token, email }: Props) {
 
             <Form
                 {...update.form()}
-                transform={(data) => ({ ...data, token, email })}
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
+                        <input type="hidden" name="_auth_context" value="admin" />
+                        <input type="hidden" name="token" value={token} />
+
                         <div className="grid gap-2">
                             <Label htmlFor="email">Email</Label>
                             <Input
