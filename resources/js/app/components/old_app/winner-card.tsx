@@ -14,24 +14,24 @@ export function WinnerCard({
     prize = '100$',
 }: Props) {
     return (
-        <div className="group relative w-80 flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-8 shadow-lg transition-all duration-500 hover:shadow-2xl dark:bg-surface-container-low">
-            <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-l from-primary to-transparent" />
+        <div className="group relative w-80 flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-8 shadow-lg transition-all duration-500 hover:shadow-2xl dark:bg-card">
+            <div className="absolute top-0 start-0 h-1 w-full bg-gradient-to-l from-primary to-transparent" />
             <div className="relative mx-auto mb-6 h-32 w-32">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
                 {avatarUrl ? (
                     <img
-                        className="relative z-10 h-full w-full rounded-full border-4 border-surface-container-lowest object-cover shadow-xl dark:border-surface-container"
+                        className="relative z-10 h-full w-full rounded-full border-4 border-surface-container-lowest object-cover shadow-xl dark:border-card"
                         src={avatarUrl}
                         alt={name}
                     />
                 ) : (
-                    <div className="relative z-10 flex h-full w-full items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary/10 shadow-xl dark:border-surface-container">
+                    <div className="relative z-10 flex h-full w-full items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary/10 shadow-xl dark:border-card">
                         <span className="text-2xl font-bold text-primary">
                             {name[0]}
                         </span>
                     </div>
                 )}
-                <div className="absolute -right-2 -bottom-2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-surface-container">
+                <div className="absolute -end-2 -bottom-2 z-20 flex h-10 w-10 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
                     <span className="material-symbols-outlined text-xl">
                         emoji_events
                     </span>

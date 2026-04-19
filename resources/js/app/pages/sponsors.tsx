@@ -84,7 +84,7 @@ export default function Sponsors() {
         <AppLayout activeRoute="/sponsors">
             <Head title="الرعاة" />
 
-            <section className="relative flex min-h-[500px] items-center justify-center overflow-hidden">
+            <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[400px]">
                 <div className="absolute inset-0 z-0">
                     <img
                         alt="Business Partnership"
@@ -99,8 +99,8 @@ export default function Sponsors() {
                         }}
                     />
                 </div>
-                <div className="relative z-10 mx-auto px-8 py-20 text-center">
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1 text-primary-fixed">
+                <div className="relative z-10 mx-auto px-8 text-center">
+                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1 text-primary-fixed">
                         <span className="relative flex h-2 w-2">
                             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
@@ -109,21 +109,21 @@ export default function Sponsors() {
                             دعم مستمر للابتكار
                         </span>
                     </div>
-                    <h1 className="mb-6 font-headline text-5xl leading-tight font-black text-white md:text-6xl">
+                    <h1 className="mb-4 font-headline text-2xl leading-tight font-black text-white md:text-4xl">
                         شركاؤنا في دعم الابتكار
                     </h1>
-                    <p className="mx-auto mb-8 max-w-2xl text-xl leading-relaxed text-gray-300">
+                    <p className="mx-auto mb-6 max-w-2xl text-sm leading-relaxed text-gray-300">
                         ٧ رعاة يدعمون جائزة يومية بقيمة ١٠٠ دولار طوال العام،
                         لتمكين العقول الشابة من تحويل الأفكار إلى واقع.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-4">
+                    <div className="flex flex-wrap justify-center gap-3">
                         <Link
                             href="/contact"
-                            className="rounded-lg bg-primary px-8 py-3 font-bold text-white transition-all hover:bg-primary-container"
+                            className="rounded-lg bg-primary px-6 py-2 text-sm font-bold text-white transition-all hover:bg-primary-container"
                         >
                             كن راعياً اليوم
                         </Link>
-                        <button className="rounded-lg border border-white/20 bg-white/10 px-8 py-3 font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20">
+                        <button className="rounded-lg border border-white/20 bg-white/10 px-6 py-2 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20">
                             تعرف على الرعاة
                         </button>
                     </div>

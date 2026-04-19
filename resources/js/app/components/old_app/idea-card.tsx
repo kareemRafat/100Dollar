@@ -35,7 +35,7 @@ export function IdeaCard({
 }: Props) {
     if (variant === 'archive') {
         return (
-            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-xl">
+            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-xl dark:bg-card">
                 {imageUrl && (
                     <div className="relative h-40 overflow-hidden sm:h-48">
                         <img
@@ -78,7 +78,7 @@ export function IdeaCard({
                                     authorInitial || authorName[0]
                                 )}
                             </div>
-                            <span className="text-xs font-medium">
+                            <span className="text-xs font-medium dark:text-on-surface-variant">
                                 {authorName}
                             </span>
                         </div>
@@ -92,7 +92,7 @@ export function IdeaCard({
     }
 
     return (
-        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-sm transition-all hover:shadow-xl">
+        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-sm transition-all hover:shadow-xl dark:bg-card">
             <div className="mb-6 flex items-start justify-between">
                 <span className="rounded-md bg-primary-fixed px-3 py-1 text-xs font-bold text-on-primary-fixed">
                     {category}
@@ -112,7 +112,7 @@ export function IdeaCard({
             </p>
             <div className="mt-auto">
                 <div className="mb-6 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed-dim">
+                    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed-dim dark:bg-secondary-container">
                         {authorAvatar ? (
                             <img
                                 className="h-full w-full object-cover"
@@ -143,7 +143,7 @@ export function IdeaCard({
                             {votes} صوت
                         </span>
                     </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20 dark:bg-outline-variant/40">
                         <div
                             className="h-full rounded-full bg-gradient-to-l from-primary to-primary-container"
                             style={{ width: `${voteProgress}%` }}
@@ -152,7 +152,7 @@ export function IdeaCard({
                 </div>
                 <button
                     onClick={onVote}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-4 font-bold text-on-surface dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-4 font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
                 >
                     <span className="material-symbols-outlined">thumb_up</span>
                     صوّت الآن

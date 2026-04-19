@@ -110,7 +110,7 @@ export default function Home() {
                         </Link>
                         <Link
                             href="/how-it-works"
-                            className="rounded-xl border border-outline-variant/20 bg-surface-container-low px-10 py-5 text-center text-xl font-bold text-on-surface dark:text-white transition-all hover:bg-surface-container-highest"
+                            className="rounded-xl border border-outline-variant/20 bg-surface-container-low px-10 py-5 text-center text-xl font-bold text-on-surface dark:text-white transition-all hover:bg-surface-container-high"
                         >
                             كيف نعمل؟
                         </Link>
@@ -121,20 +121,20 @@ export default function Home() {
             <section className="mx-auto mb-20 grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-12">
                 <div className="group relative flex items-center justify-between overflow-hidden rounded-2xl bg-secondary-fixed p-8 md:col-span-4">
                     <div className="relative z-10">
-                        <p className="mb-1 text-sm font-semibold text-on-surface-variant dark:text-slate-400">
+                        <p className="mb-1 text-sm font-semibold text-on-secondary-fixed-variant">
                             راعي جائزة اليوم
                         </p>
-                        <h3 className="mb-4 text-2xl font-bold text-on-surface dark:text-white">
+                        <h3 className="mb-4 text-2xl font-bold text-on-secondary-fixed">
                             اسم الشركة الراعية
                         </h3>
-                        <div className="flex h-10 w-32 items-center justify-center rounded border border-white/20 bg-white/40 backdrop-blur-sm">
-                            <span className="font-bold text-on-surface dark:text-white opacity-50">
+                        <div className="flex h-10 w-32 items-center justify-center rounded border border-on-secondary-fixed/20 bg-on-secondary-fixed/10 backdrop-blur-sm">
+                            <span className="font-bold text-on-secondary-fixed opacity-50">
                                 LOGO
                             </span>
                         </div>
                     </div>
-                    <div className="absolute -bottom-4 -start-4 h-32 w-32 rounded-full bg-primary/20 blur-3xl transition-all group-hover:scale-150" />
-                    <span className="material-symbols-outlined absolute top-1/2 start-8 -translate-y-1/2 scale-150 text-6xl text-on-surface dark:text-white/10">
+                    <div className="absolute -bottom-4 -end-4 h-32 w-32 rounded-full bg-primary/20 blur-3xl transition-all group-hover:scale-150" />
+                    <span className="material-symbols-outlined absolute top-1/2 end-8 -translate-y-1/2 scale-150 text-6xl text-on-secondary-fixed/10">
                         handshake
                     </span>
                 </div>
@@ -143,7 +143,7 @@ export default function Home() {
                         <h4 className="mb-2 font-headline text-xl font-bold text-on-surface dark:text-white">
                             ينتهي التصويت الحالي خلال:
                         </h4>
-                        <p className="text-on-surface-variant">
+                        <p className="text-on-surface-variant dark:text-on-surface-variant">
                             الفرصة ما زالت قائمة لدعم فكرتك المفضلة
                         </p>
                     </div>
@@ -156,7 +156,7 @@ export default function Home() {
                     {weeklyTabs.map((tab, i) => (
                         <button
                             key={tab}
-                            className={`rounded-xl px-8 py-4 font-headline font-bold whitespace-nowrap ${i === 0 ? 'bg-primary text-on-primary shadow-md' : 'bg-surface-container-low text-on-surface-variant transition-all hover:bg-surface-container-high'}`}
+                            className={`rounded-xl px-8 py-4 font-headline font-bold whitespace-nowrap ${i === 0 ? 'bg-primary text-on-primary shadow-md' : 'bg-surface-container-low text-on-surface-variant transition-all hover:bg-surface-container-high dark:text-on-surface-variant'}`}
                         >
                             {tab}
                         </button>
@@ -176,7 +176,7 @@ export default function Home() {
                         <h2 className="font-headline text-4xl font-black text-on-surface dark:text-white md:text-5xl">
                             قاعة المشاهير
                         </h2>
-                        <p className="mt-2 text-lg text-on-surface-variant">
+                        <p className="mt-2 text-lg text-on-surface-variant dark:text-on-surface-variant">
                             مبدعون حولوا أفكارهم إلى واقع بجائزة الـ 100 دولار
                         </p>
                     </div>
@@ -198,7 +198,7 @@ export default function Home() {
                         href="/archive"
                         className="group flex w-80 flex-shrink-0 cursor-pointer snap-start flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low p-8 text-center transition-colors hover:border-primary/50"
                     >
-                        <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-surface-container-high transition-colors group-hover:bg-primary/10">
+                        <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-surface-container-high transition-colors group-hover:bg-primary/10 dark:bg-surface-container-high">
                             <span className="material-symbols-outlined text-5xl text-on-surface-variant transition-colors group-hover:text-primary">
                                 history
                             </span>
@@ -206,7 +206,7 @@ export default function Home() {
                         <p className="font-headline text-xl font-bold text-on-surface dark:text-white">
                             الأرشيف الكامل
                         </p>
-                        <p className="mt-2 text-sm text-on-surface-variant">
+                        <p className="mt-2 text-sm text-on-surface-variant dark:text-on-surface-variant">
                             استعرض جميع الفائزين السابقين منذ انطلاق المنصة
                         </p>
                     </Link>

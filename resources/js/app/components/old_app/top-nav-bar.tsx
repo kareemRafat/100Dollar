@@ -44,7 +44,7 @@ export function TopNavBar({ activeRoute }: Props) {
     };
 
     return (
-        <header className="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-surface/80 backdrop-blur-xl dark:bg-surface-container-lowest/80">
+        <header className="fixed top-0 z-50 w-full border-b border-outline-variant/10 bg-surface/80 backdrop-blur-xl dark:border-white/5 dark:bg-surface/80">
             <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
                 {/* Logo Section */}
                 <div className="flex items-center">
@@ -65,7 +65,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                 'font-headline relative px-3 py-1.5 text-sm font-bold transition-all duration-300',
                                 activeRoute === item.href
                                     ? 'text-primary'
-                                    : 'text-on-surface-variant hover:text-on-surface dark:text-slate-400 dark:hover:text-white',
+                                    : 'text-on-surface-variant hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
                             )}
                             href={item.href}
                         >
@@ -87,13 +87,13 @@ export function TopNavBar({ activeRoute }: Props) {
                                 </Button>
                             </Link>
 
-                            <Button variant="ghost" size="icon" className="rounded-full size-9 text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-white/5">
+                            <Button variant="ghost" size="icon" className="rounded-full size-9 text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant dark:hover:bg-white/5">
                                 <Bell className="size-4.5" />
                             </Button>
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-3 transition-all hover:border-primary/30 dark:bg-surface-container-low">
+                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-3 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
                                         <div className="hidden flex-col items-end sm:flex">
                                             <span className="text-[11px] font-bold text-on-surface dark:text-white">{auth.user.name}</span>
                                         </div>

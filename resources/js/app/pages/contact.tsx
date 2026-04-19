@@ -25,35 +25,29 @@ export default function Contact() {
         <AppLayout activeRoute="/contact">
             <Head title="تواصل معنا" />
 
-            <section className="relative flex h-[400px] items-center justify-center overflow-hidden bg-deep-navy md:h-[500px]">
+            <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-deep-navy md:h-[400px]">
                 <div className="absolute inset-0 z-0">
                     <img
                         alt="Modern illustrative communication background"
-                        className="h-full w-full object-cover opacity-30 mix-blend-luminosity"
+                        className="h-full w-full object-cover opacity-20 mix-blend-luminosity"
                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQmrXjQNj4mqHs1qLAEf1hXrItF0RD87tQiaVV50MiQvqVP02ptbOPzACCAo_vsrefiL1nrJATB1tdhBi5RRff9HjEOjl-zaGGMbTScRAt4EJQazcXFkVtIZwz9x9syXGCYhtWBtrzG4MWe2jV8oyxUBwDLqTJ5UFa1tQ87ZpZW5_8Ghg8vAkmVfFDjHGX-z_RWIK9YNNXXf2BjHych6RF6O6SEaVbu8yerNL9OaqAF8VV_RPiPo_gozxjB97qbBsp-B5e4eiAM8g"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/90 via-deep-navy/80 to-deep-navy/95" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/70 to-deep-navy/90" />
                     <div className="pointer-events-none absolute inset-0 opacity-20">
-                        <span className="material-symbols-outlined absolute top-10 left-10 scale-150 rotate-12 text-primary">
+                        <span className="material-symbols-outlined absolute top-10 start-10 scale-150 rotate-12 text-primary">
                             mail
                         </span>
-                        <span className="material-symbols-outlined absolute right-20 bottom-20 scale-125 -rotate-12 text-primary">
+                        <span className="material-symbols-outlined absolute end-20 bottom-20 scale-125 -rotate-12 text-primary">
                             call
-                        </span>
-                        <span className="material-symbols-outlined absolute top-1/2 left-[15%] text-primary opacity-50">
-                            chat_bubble
-                        </span>
-                        <span className="material-symbols-outlined absolute top-[20%] right-[10%] scale-110 text-primary opacity-40">
-                            location_on
                         </span>
                     </div>
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-                    <h1 className="relative mb-6 inline-block text-4xl font-extrabold text-white drop-shadow-2xl md:text-6xl">
+                    <h1 className="relative mb-6 inline-block font-headline text-2xl font-extrabold text-white md:text-4xl">
                         تواصل معنا
-                        <span className="absolute right-0 -bottom-4 left-0 mx-auto h-1.5 w-24 rounded-full bg-primary shadow-lg" />
+                        <span className="absolute end-0 -bottom-3 start-0 mx-auto h-1 w-16 rounded-full bg-primary shadow-lg" />
                     </h1>
-                    <p className="mx-auto mt-8 max-w-2xl text-lg leading-relaxed font-medium text-gray-200 drop-shadow-lg md:text-xl">
+                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90">
                         نحن هنا للإجابة على استفساراتك ودعم أفكارك الطموحة. لا
                         تتردد في مراسلتنا عبر النموذج أو من خلال قنوات التواصل
                         المباشرة.
