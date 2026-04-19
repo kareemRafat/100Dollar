@@ -20,7 +20,7 @@ class NotificationFactory extends Factory
     {
         $types = ['idea_approved', 'idea_rejected', 'new_comment', 'new_follower', 'idea_won'];
         $type = fake()->randomElement($types);
-        
+
         $titles = [
             'idea_approved' => 'تمت الموافقة على فكرتك',
             'idea_rejected' => 'تم رفض فكرتك',

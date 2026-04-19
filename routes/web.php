@@ -9,8 +9,8 @@ use Laravel\Fortify\Features;
 Route::middleware('guest')->group(function () {
     Route::get('login', function (Request $request) {
         app(AuthContext::class)->remember($request, AuthContext::APP);
-        
-        return Inertia::render('app/auth/login', [
+
+        return Inertia::render('app/pages/auth/login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
             'canRegister' => Features::enabled(Features::registration()),
             'status' => $request->session()->get('status'),
@@ -20,8 +20,8 @@ Route::middleware('guest')->group(function () {
     if (Features::enabled(Features::registration())) {
         Route::get('register', function (Request $request) {
             app(AuthContext::class)->remember($request, AuthContext::APP);
-            
-            return Inertia::render('app/auth/register', [
+
+            return Inertia::render('app/pages/auth/register', [
                 'canLogin' => true,
             ]);
         })->name('register');
@@ -30,8 +30,8 @@ Route::middleware('guest')->group(function () {
     if (Features::enabled(Features::resetPasswords())) {
         Route::get('forgot-password', function (Request $request) {
             app(AuthContext::class)->remember($request, AuthContext::APP);
-            
-            return Inertia::render('app/auth/forgot-password', [
+
+            return Inertia::render('app/pages/auth/forgot-password', [
                 'status' => $request->session()->get('status'),
             ]);
         })->name('password.request');

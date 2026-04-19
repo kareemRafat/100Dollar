@@ -25,7 +25,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت', 'عمان', 'قطر', 'البحرين'];
-        
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),

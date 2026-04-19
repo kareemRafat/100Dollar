@@ -35,7 +35,7 @@ class IdeaSeeder extends Seeder
             for ($day = 0; $day <= 6; $day++) {
                 $sponsor = $sponsors->where('day_of_week', $day)->first();
                 $isWinner = ($day === 0); // Mock one winner per week
-                
+
                 Idea::factory()->approved()->create([
                     'user_id' => $users->random()->id,
                     'sponsor_id' => $sponsor?->id,

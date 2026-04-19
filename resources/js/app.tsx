@@ -12,29 +12,14 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => {
-        // Resolve pages from admin/pages/ or app/pages/
-        const isApp = name.startsWith('app/');
-        const isAdmin = name.startsWith('admin/');
-        
-        let path = '';
-        if (isAdmin) {
-            path = `./admin/pages/${name.replace('admin/', '')}.tsx`;
-        } else if (isApp) {
-            path = `./app/pages/${name.replace('app/', '')}.tsx`;
-        } else {
-            path = `./pages/${name}.tsx`;
-        }
-
-        return resolvePageComponent(path, import.meta.glob('./**/*.tsx'));
-    },
+    resolve: (name) => resolvePageComponent(`/resources/js/${name}.tsx`, import.meta.glob('/resources/js/**/*.tsx')),
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
                 return null;
-            case name.startsWith('admin/auth/'):
+            case name.startsWith('admin/pages/auth/'):
                 return AdminAuthLayout;
-            case name.startsWith('admin/settings/'):
+            case name.startsWith('admin/pages/settings/'):
                 return [AdminLayout, AdminSettingsLayout];
             case name.startsWith('admin/'):
                 return AdminLayout;
@@ -44,17 +29,14 @@ createInertiaApp({
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
-        root.render(<App {...props} />);
-    },
-    strictMode: true,
-    withApp(app) {
-        return (
+        root.render(
             <TooltipProvider delayDuration={0}>
-                {app}
+                <App {...props} />
                 <Toaster />
             </TooltipProvider>
         );
     },
+    strictMode: true,
     progress: {
         color: '#4B5563',
     },

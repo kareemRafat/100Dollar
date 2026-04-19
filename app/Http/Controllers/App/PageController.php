@@ -6,35 +6,35 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AppPageController extends Controller
+class PageController extends Controller
 {
     public function about(): Response
     {
-        return Inertia::render('app/about');
+        return Inertia::render('app/pages/about');
     }
 
     public function archive(): Response
     {
-        return Inertia::render('app/archive');
+        return Inertia::render('app/pages/archive');
     }
 
     public function sponsors(): Response
     {
-        return Inertia::render('app/sponsors');
+        return Inertia::render('app/pages/sponsors');
     }
 
     public function contact(): Response
     {
-        return Inertia::render('app/contact');
+        return Inertia::render('app/pages/contact');
     }
 
     public function howItWorks(): Response
     {
-        return Inertia::render('app/how-it-works');
+        return Inertia::render('app/pages/how-it-works');
     }
 
     public function terms(): Response
     {
-        return Inertia::render('app/terms');
+        return Inertia::render('app/pages/terms');
     }
 }

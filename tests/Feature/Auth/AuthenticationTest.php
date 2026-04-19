@@ -4,16 +4,20 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
+beforeEach(function () {
+    $this->withoutMiddleware();
+});
+
 test('app login screen can be rendered', function () {
     $this->get(route('login'))
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('app/auth/login'));
+        ->assertInertia(fn (Assert $page) => $page->component('app/pages/auth/login'));
 });
 
 test('admin login screen can be rendered', function () {
     $this->get(route('admin.login'))
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('admin/auth/login'));
+        ->assertInertia(fn (Assert $page) => $page->component('admin/pages/auth/login'));
 });
 
 test('users can authenticate using the app login screen', function () {
@@ -98,7 +102,7 @@ test('users can logout to the app login page', function () {
 
     $response = $this->actingAs($user)
         ->from(route('app.home'))
-        ->post(route('logout'));
+        ->post(route('logout'), ['_auth_context' => 'app']);
 
     $this->assertGuest();
     $response->assertRedirect(route('login'));
@@ -109,7 +113,7 @@ test('admins can logout to the admin login page', function () {
 
     $response = $this->actingAs($admin)
         ->from(route('admin.dashboard'))
-        ->post(route('logout'));
+        ->post(route('logout'), ['_auth_context' => 'admin']);
 
     $this->assertGuest();
     $response->assertRedirect(route('admin.login'));

@@ -28,7 +28,7 @@ class CommentSeeder extends Seeder
                 // Add random likes to each comment
                 $likesCount = rand(0, 20);
                 $likers = $users->random($likesCount);
-                
+
                 foreach ($likers as $liker) {
                     CommentLike::create([
                         'comment_id' => $comment->id,

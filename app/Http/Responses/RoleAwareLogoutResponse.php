@@ -18,8 +18,7 @@ class RoleAwareLogoutResponse implements LogoutResponseContract
             return new JsonResponse('', 204);
         }
 
-        $referer = $request->headers->get('referer', '');
-        $context = str_contains($referer, '/admin') ? AuthContext::ADMIN : AuthContext::APP;
+        $context = app(AuthContext::class)->remember($request);
 
         return redirect()->route(
             app(AuthContext::class)->loginRouteForContext($context),

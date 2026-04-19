@@ -28,6 +28,9 @@ export default function VerifyEmail({ status }: { status?: string }) {
 
                         <TextLink
                             href={logout()}
+                            method="post"
+                            as="button"
+                            data={{ _auth_context: 'admin' }}
                             className="mx-auto block text-sm"
                         >
                             Log out

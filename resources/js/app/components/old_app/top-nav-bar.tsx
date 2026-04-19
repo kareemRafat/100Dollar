@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { logout } from '@/routes';
+import { index } from '@/routes/app/ideas';
 
 type Props = {
     activeRoute?: string;
@@ -121,7 +122,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
-                                            <Link href="/my-ideas">
+                                            <Link href={index()}>
                                                 <span>أفكاري</span>
                                                 <Lightbulb className="size-3.5" />
                                             </Link>
@@ -149,7 +150,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
                                     
                                     <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error">
-                                        <Link href={logout()} method="post" as="button" className="w-full">
+                                        <Link href={logout()} method="post" as="button" data={{ _auth_context: 'app' }} className="w-full">
                                             <span>تسجيل الخروج</span>
                                             <LogOut className="size-3.5" />
                                         </Link>

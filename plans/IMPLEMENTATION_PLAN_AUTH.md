@@ -27,25 +27,25 @@ Goal: Fully isolate Admin and App assets to prevent design "leakage."
 ## Milestone 2: Fortify Logic Refinement
 Goal: Ensure robust, context-aware authentication and redirection.
 
-- [ ] **Task 2.1: Implement Context Middleware**
-    - Create a middleware to detect if a request is for `admin/*` or the main `app`.
-    - Store this context in the request/session to simplify logic in `AuthContext` and `FortifyServiceProvider`.
-- [ ] **Task 2.2: Refine Logout Logic**
-    - Update `RoleAwareLogoutResponse` to check the `User` model's role *before* the session is cleared to determine the correct redirect route (`admin.login` vs `login`).
-- [ ] **Task 2.3: Strengthen Authentication Hook**
-    - Ensure `Fortify::authenticateUsing` in `FortifyServiceProvider` strictly validates that a user's role matches the intended login portal.
-- [ ] **Task 2.4: Update Password Reset Logic**
-    - Ensure the `ResetPassword::createUrlUsing` in `AppServiceProvider` correctly appends the `auth_context` so the user is returned to the correct Reset Password design.
+- [x] **Task 2.1: Implement Context Middleware**
+    - [x] Create a middleware to detect if a request is for `admin/*` or the main `app`.
+    - [x] Store this context in the request/session to simplify logic in `AuthContext` and `FortifyServiceProvider`.
+- [x] **Task 2.2: Refine Logout Logic**
+    - [x] Update `RoleAwareLogoutResponse` to check the `User` model's role *before* the session is cleared to determine the correct redirect route (`admin.login` vs `login`).
+- [x] **Task 2.3: Strengthen Authentication Hook**
+    - [x] Ensure `Fortify::authenticateUsing` in `FortifyServiceProvider` strictly validates that a user's role matches the intended login portal.
+- [x] **Task 2.4: Update Password Reset Logic**
+    - [x] Ensure the `ResetPassword::createUrlUsing` in `AppServiceProvider` correctly appends the `auth_context` so the user is returned to the correct Reset Password design.
 
 ## Milestone 3: Validation & Cleanup
 Goal: Verify that both "worlds" work independently and correctly.
 
-- [ ] **Task 3.1: Verify Page Resolution**
-    - Test that all Admin routes render using the new directory structure.
-    - Test that all App routes render using the new directory structure.
-- [ ] **Task 3.2: Auth Flow Testing**
-    - Verify Admin Login -> Dashboard redirect.
-    - Verify App Login -> App Home redirect.
-    - Verify Logout redirects to the correct login page based on the previous context.
-- [ ] **Task 3.3: Linting & Formatting**
-    - Run `vendor/bin/pint` and `npm run lint` to ensure code consistency across the new structure.
+- [x] **Task 3.1: Verify Page Resolution**
+    - [x] Test that all Admin routes render using the new directory structure.
+    - [x] Test that all App routes render using the new directory structure.
+- [x] **Task 3.2: Auth Flow Testing**
+    - [x] Verify Admin Login -> Dashboard redirect.
+    - [x] Verify App Login -> App Home redirect.
+    - [x] Verify Logout redirects to the correct login page based on the previous context.
+- [x] **Task 3.3: Linting & Formatting**
+    - [x] Run `vendor/bin/pint` and `npm run lint` to ensure code consistency across the new structure.

@@ -6,10 +6,10 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class AppHomeController extends Controller
+class HomeController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('app/home');
+        return Inertia::render('app/pages/home');
     }
 }

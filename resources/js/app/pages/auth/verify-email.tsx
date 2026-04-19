@@ -51,6 +51,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                     href={logout()}
                                     method="post"
                                     as="button"
+                                    data={{ _auth_context: 'app' }}
                                     className="text-sm font-bold text-primary hover:underline"
                                 >
                                     تسجيل الخروج

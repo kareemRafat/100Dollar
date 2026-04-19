@@ -1,16 +1,15 @@
 import { Form, Head, Link } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
-import { login } from '@/routes';
-import { store } from '@/routes/register';
-import { contact, terms } from '@/routes/app';
+import InputError from '@/components/input-error';
+import PasswordInput from '@/components/password-input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-import PasswordInput from '@/components/password-input';
-import InputError from '@/components/input-error';
-
 import { Spinner } from '@/components/ui/spinner';
+import { login } from '@/routes';
+import { contact, terms } from '@/routes/app';
+import { store } from '@/routes/register';
 
 type Props = {
     canLogin: boolean;

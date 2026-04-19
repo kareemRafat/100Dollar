@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Settings\ProfileController;
-use App\Http\Controllers\Settings\SecurityController;
+use App\Http\Controllers\Admin\Settings\ProfileController;
+use App\Http\Controllers\Admin\Settings\SecurityController;
 use App\Support\Auth\AuthContext;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,7 +12,7 @@ Route::middleware('guest')->group(function () {
     Route::get('login', function (Request $request) {
         app(AuthContext::class)->remember($request, AuthContext::ADMIN);
 
-        return Inertia::render('admin/auth/login', [
+        return Inertia::render('admin/pages/auth/login', [
             'canResetPassword' => Features::enabled(Features::resetPasswords()),
             'canRegister' => false,
             'status' => $request->session()->get('status'),
@@ -22,14 +22,14 @@ Route::middleware('guest')->group(function () {
     Route::get('forgot-password', function (Request $request) {
         app(AuthContext::class)->remember($request, AuthContext::ADMIN);
 
-        return Inertia::render('admin/auth/forgot-password', [
+        return Inertia::render('admin/pages/auth/forgot-password', [
             'status' => $request->session()->get('status'),
         ]);
     })->name('admin.password.request');
 });
 
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::inertia('dashboard', 'admin/dashboard')->name('admin.dashboard');
+    Route::inertia('/', 'admin/pages/dashboard')->name('admin.dashboard');
 
     Route::redirect('settings', 'settings/profile')->name('admin.settings');
 
@@ -43,5 +43,5 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         ->middleware('throttle:6,1')
         ->name('admin.settings.password.update');
 
-    Route::inertia('settings/appearance', 'admin/settings/appearance')->name('admin.settings.appearance.edit');
+    Route::inertia('settings/appearance', 'admin/pages/settings/appearance')->name('admin.settings.appearance.edit');
 });

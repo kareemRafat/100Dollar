@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import AppLayout from '@/layouts/app/app-layout';
+import AppLayout from '@/app/layouts/app-layout';
 
 type Idea = {
     id: number;
