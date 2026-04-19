@@ -1,3 +1,4 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 import { cn } from '@/lib/utils';
@@ -58,31 +59,30 @@ const sponsors = [
     },
 ];
 
-const sponsorBenefits = [
-    {
-        icon: 'visibility',
-        title: 'ظهور أسبوعي',
-        description:
-            'تصل علامتك التجارية لآلاف المبتكرين والباحثين عن فرص استثمارية أسبوعياً من خلال قنواتنا المختلفة.',
-    },
-    {
-        icon: 'handshake',
-        title: 'ارتباط بالابتكار',
-        description:
-            'ساهم في ترسيخ اسم مؤسستك كداعم أساسي للأفكار الإبداعية والمشاريع الريادية في المنطقة.',
-    },
-    {
-        icon: 'analytics',
-        title: 'تقرير دوري',
-        description:
-            'تحصل على تقارير تفصيلية عن أداء رعايتك، عدد المشاهدات، والتفاعل مع الفائزين برعايتكم.',
-    },
-];
-
 export default function Sponsors() {
+    const { __ } = useLang();
+
+    const sponsorBenefits = [
+        {
+            icon: 'visibility',
+            title: __('messages.sponsors.benefit_visibility_title'),
+            description: __('messages.sponsors.benefit_visibility_desc'),
+        },
+        {
+            icon: 'handshake',
+            title: __('messages.sponsors.benefit_connection_title'),
+            description: __('messages.sponsors.benefit_connection_desc'),
+        },
+        {
+            icon: 'analytics',
+            title: __('messages.sponsors.benefit_report_title'),
+            description: __('messages.sponsors.benefit_report_desc'),
+        },
+    ];
+
     return (
         <AppLayout activeRoute="/sponsors">
-            <Head title="الرعاة" />
+            <Head title={__('messages.nav.sponsors')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[400px]">
                 <div className="absolute inset-0 z-0">
@@ -106,25 +106,24 @@ export default function Sponsors() {
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                         </span>
                         <span className="text-sm font-bold">
-                            دعم مستمر للابتكار
+                            {__('messages.sponsors.hero_badge')}
                         </span>
                     </div>
                     <h1 className="mb-4 font-headline text-2xl leading-tight font-black text-white md:text-4xl">
-                        شركاؤنا في دعم الابتكار
+                        {__('messages.sponsors.hero_title')}
                     </h1>
                     <p className="mx-auto mb-6 max-w-2xl text-sm leading-relaxed text-gray-300">
-                        ٧ رعاة يدعمون جائزة يومية بقيمة ١٠٠ دولار طوال العام،
-                        لتمكين العقول الشابة من تحويل الأفكار إلى واقع.
+                        {__('messages.sponsors.hero_desc')}
                     </p>
                     <div className="flex flex-wrap justify-center gap-3">
                         <Link
                             href="/contact"
                             className="rounded-lg bg-primary px-6 py-2 text-sm font-bold text-white transition-all hover:bg-primary-container"
                         >
-                            كن راعياً اليوم
+                            {__('messages.sponsors.become_sponsor_button')}
                         </Link>
                         <button className="rounded-lg border border-white/20 bg-white/10 px-6 py-2 text-sm font-bold text-white backdrop-blur-sm transition-all hover:bg-white/20">
-                            تعرف على الرعاة
+                            {__('messages.sponsors.meet_sponsors_button')}
                         </button>
                     </div>
                 </div>
@@ -142,7 +141,7 @@ export default function Sponsors() {
                                         textOrientation: 'mixed',
                                     }}
                                 >
-                                    الرعاة
+                                    {__('messages.nav.sponsors')}
                                 </span>
                             </div>
                             <div className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-3">
@@ -166,14 +165,14 @@ export default function Sponsors() {
                                                         </span>
                                                     </div>
                                                     <h3 className="mb-2 font-headline text-xl font-black text-on-surface/80 dark:text-white/80">
-                                                        متاح للرعاية
+                                                        {__('messages.sponsors.available_for_sponsorship')}
                                                     </h3>
                                                 </div>
                                                 <Link
                                                     href="/contact"
                                                     className="mt-4 w-full rounded-lg bg-deep-navy py-3 text-center text-sm font-bold text-primary transition-all hover:bg-surface-container-high dark:bg-surface-container-lowest dark:hover:bg-surface-container-low"
                                                 >
-                                                    تواصل معنا
+                                                    {__('messages.nav.contact')}
                                                 </Link>
                                             </div>
                                         ) : (
@@ -188,7 +187,7 @@ export default function Sponsors() {
                                                 {sponsor.isToday && (
                                                     <div className="absolute -top-3 left-6">
                                                         <span className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-white shadow-lg ring-4 ring-surface-container-lowest dark:ring-surface-container-low">
-                                                            اليوم
+                                                            {__('messages.sponsors.today_badge')}
                                                         </span>
                                                     </div>
                                                 )}
@@ -220,7 +219,7 @@ export default function Sponsors() {
                                                 </div>
                                                 <div className="border-t border-outline-variant/30 pt-4 text-center">
                                                     <p className="text-primary font-black text-lg">
-                                                        ١٠٠ دولار / أسبوعياً
+                                                        {__('messages.sponsors.weekly_prize')}
                                                     </p>
                                                 </div>
                                             </div>
@@ -238,11 +237,10 @@ export default function Sponsors() {
                     <div className="absolute bottom-0 left-0 -mb-24 -ml-24 h-48 w-48 rounded-full bg-primary/5" />
                     <div className="relative z-10 mb-12 text-center">
                         <h2 className="mb-4 font-headline text-4xl leading-tight font-black text-on-surface dark:text-white">
-                            كن راعياً لإلهام الشباب
+                            {__('messages.sponsors.inspire_youth_title')}
                         </h2>
                         <p className="mx-auto max-w-xl text-on-surface dark:text-white">
-                            اربط علامتك التجارية بالابتكار والنمو وادعم صناع
-                            المستقبل.
+                            {__('messages.sponsors.inspire_youth_desc')}
                         </p>
                     </div>
                     <div className="relative z-10 mb-12 grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -270,7 +268,7 @@ export default function Sponsors() {
                             href="/contact"
                             className="rounded-xl bg-primary px-12 py-4 font-headline text-lg font-bold text-on-primary shadow-lg shadow-primary/20 transition-all hover:-translate-y-1 hover:opacity-90"
                         >
-                            تواصل معنا للرعاية
+                            {__('messages.sponsors.contact_for_sponsorship')}
                         </Link>
                     </div>
                 </div>

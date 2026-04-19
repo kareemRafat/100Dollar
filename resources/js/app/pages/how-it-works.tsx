@@ -1,95 +1,90 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 
-const faqItems = [
-    {
-        question: 'كيف أشارك بفكرتي في المنصة؟',
-        answer: 'يمكنك تقديم فكرتك من خلال إنشاء حساب مجاني ثم النقر على زر "قدّم فكرتك الآن". املأ النموذج بتفاصيل فكرتك بما في ذلك الوصف والميزانية المتوقعة والفئة المناسبة.',
-    },
-    {
-        question: 'ما هي معايير قبول الأفكار؟',
-        answer: 'يجب أن تكون الفكرة أصلية وقابلة للتنفيذ بميزانية لا تتجاوز 100 دولار. كما يُشترط أن تكون الفكرة غير منفذة كمشروع تجاري قائم وأن لا تنتهك حقوق الملكية الفكرية للغير.',
-    },
-    {
-        question: 'كيف يتم التصويت للأفكار؟',
-        answer: 'يتم التصويت من خلال نظام تقني يمنع التكرار. لكل مستخدم مسجل صوت واحد لكل فكرة. تشكل أصوات الجمهور ٤٠٪ من النتيجة النهائية بينما تعود الـ ٦٠٪ المتبقية لتقييم لجنة الخبراء.',
-    },
-    {
-        question: 'متى يتم إعلان الفائزين؟',
-        answer: 'يتم إعلان الفائز بشكل يومي بعد انتهاء فترة التصويت المحددة. يتم التواصل مع الفائز عبر البريد الإلكتروني المسجل خلال ١٤ يوماً من الإعلان.',
-    },
-    {
-        question: 'هل يمكنني سحب فكرتي بعد تقديمها؟',
-        answer: 'نعم، يمكنك سحب فكرتك في أي وقت قبل بدء فترة التصويت. بعد بدء التصويت، لا يمكن سحب الفكرة ولكن يمكنك تعديل بعض التفاصيل غير الجوهرية.',
-    },
-    {
-        question: 'كيف أكون راعياً لجائزة يومية؟',
-        answer: 'يمكنك التواصل معنا عبر صفحة "تواصل معنا" واختيار موضوع "رعاية". سيقوم فريقنا بالرد عليك خلال ٤٨ ساعة عمل لمناقشة تفاصيل الرعاية والفوائد المرتبطة بها.',
-    },
-];
-
-const steps = [
-    {
-        number: '٠١',
-        title: 'سجّل حسابك',
-        description:
-            'أنشئ حسابك المجاني في أقل من دقيقة واحدة وابدأ رحلتك.',
-        icon: 'person_add',
-    },
-    {
-        number: '٠٢',
-        title: 'قدّم فكرتك',
-        description:
-            'اكتب تفاصيل فكرتك الإبداعية مع تحديد الميزانية المطلوبة والفئة المناسبة.',
-        icon: 'edit_note',
-    },
-    {
-        number: '٠٣',
-        title: 'صوّت ودعم',
-        description:
-            'شارك في التصويت للأفكار التي تؤمن بها وساعد في اختيار الفائز اليومي.',
-        icon: 'how_to_vote',
-    },
-    {
-        number: '٠٤',
-        title: 'اربح الجائزة',
-        description:
-            'الفكرة الحاصلة على أعلى التقييمات تفوز بجائزة ١٠٠ دولار لتنفيذ المشروع.',
-        icon: 'emoji_events',
-    },
-];
-
 export default function HowItWorks() {
+    const { __ } = useLang();
+
+    const faqItems = [
+        {
+            question: __('messages.how_it_works.faq_q1', { defaultValue: 'كيف أشارك بفكرتي في المنصة؟' }),
+            answer: __('messages.how_it_works.faq_a1', { defaultValue: 'يمكنك تقديم فكرتك من خلال إنشاء حساب مجاني ثم النقر على زر "قدّم فكرتك الآن". املأ النموذج بتفاصيل فكرتك بما في ذلك الوصف والميزانية المتوقعة والفئة المناسبة.' }),
+        },
+        {
+            question: __('messages.how_it_works.faq_q2', { defaultValue: 'ما هي معايير قبول الأفكار؟' }),
+            answer: __('messages.how_it_works.faq_a2', { defaultValue: 'يجب أن تكون الفكرة أصلية وقابلة للتنفيذ بميزانية لا تتجاوز 100 دولار. كما يُشترط أن تكون الفكرة غير منفذة كمشروع تجاري قائم وأن لا تنتهك حقوق الملكية الفكرية للغير.' }),
+        },
+        {
+            question: __('messages.how_it_works.faq_q3', { defaultValue: 'كيف يتم التصويت للأفكار؟' }),
+            answer: __('messages.how_it_works.faq_a3', { defaultValue: 'يتم التصويت من خلال نظام تقني يمنع التكرار. لكل مستخدم مسجل صوت واحد لكل فكرة. تشكل أصوات الجمهور ٤٠٪ من النتيجة النهائية بينما تعود الـ ٦٠٪ المتبقية لتقييم لجنة الخبراء.' }),
+        },
+        {
+            question: __('messages.how_it_works.faq_q4', { defaultValue: 'متى يتم إعلان الفائزين؟' }),
+            answer: __('messages.how_it_works.faq_a4', { defaultValue: 'يتم إعلان الفائز بشكل يومي بعد انتهاء فترة التصويت المحددة. يتم التواصل مع الفائز عبر البريد الإلكتروني المسجل خلال ١٤ يوماً من الإعلان.' }),
+        },
+        {
+            question: __('messages.how_it_works.faq_q5', { defaultValue: 'هل يمكنني سحب فكرتي بعد تقديمها؟' }),
+            answer: __('messages.how_it_works.faq_a5', { defaultValue: 'نعم، يمكنك سحب فكرتك في أي وقت قبل بدء فترة التصويت. بعد بدء التصويت، لا يمكن سحب الفكرة ولكن يمكنك تعديل بعض التفاصيل غير الجوهرية.' }),
+        },
+        {
+            question: __('messages.how_it_works.faq_q6', { defaultValue: 'كيف أكون راعياً لجائزة يومية؟' }),
+            answer: __('messages.how_it_works.faq_a6', { defaultValue: 'يمكنك التواصل معنا عبر صفحة "تواصل معنا" واختيار موضوع "رعاية". سيقوم فريقنا بالرد عليك خلال ٤٨ ساعة عمل لمناقشة تفاصيل الرعاية والفوائد المرتبطة بها.' }),
+        },
+    ];
+
+    const steps = [
+        {
+            number: '01',
+            title: __('messages.how_it_works.step1_title'),
+            description: __('messages.how_it_works.step1_desc'),
+            icon: 'person_add',
+        },
+        {
+            number: '02',
+            title: __('messages.how_it_works.step2_title'),
+            description: __('messages.how_it_works.step2_desc'),
+            icon: 'edit_note',
+        },
+        {
+            number: '03',
+            title: __('messages.how_it_works.step3_title'),
+            description: __('messages.how_it_works.step3_desc'),
+            icon: 'how_to_vote',
+        },
+        {
+            number: '04',
+            title: __('messages.how_it_works.step4_title'),
+            description: __('messages.how_it_works.step4_desc'),
+            icon: 'emoji_events',
+        },
+    ];
+
     return (
         <AppLayout activeRoute="/how-it-works">
-            <Head title="كيف نعمل" />
+            <Head title={__('messages.ui.how_it_works')} />
 
-            <section className="relative flex h-[400px] items-center justify-center overflow-hidden bg-secondary md:h-[500px]">
+            <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-secondary md:h-[400px]">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/90 via-deep-navy/80 to-deep-navy" />
                     <div className="pointer-events-none absolute inset-0 opacity-10">
-                        <span className="material-symbols-outlined absolute top-20 right-[20%] scale-150 text-primary">
+                        <span className="material-symbols-outlined absolute top-20 end-[20%] scale-150 text-primary">
                             lightbulb
                         </span>
-                        <span className="material-symbols-outlined absolute bottom-20 left-[15%] scale-125 text-primary">
+                        <span className="material-symbols-outlined absolute bottom-20 start-[15%] scale-125 text-primary">
                             rocket_launch
-                        </span>
-                        <span className="material-symbols-outlined absolute top-1/3 left-[40%] text-primary opacity-50">
-                            psychology
                         </span>
                     </div>
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
-                    <div className="mb-6 inline-block rounded-full bg-primary/90 px-4 py-1 text-xs font-bold tracking-widest text-on-primary uppercase">
-                        كيف نعمل
+                    <div className="mb-4 inline-block rounded-full bg-primary/90 px-4 py-1 text-xs font-bold tracking-widest text-on-primary uppercase">
+                        {__('messages.how_it_works.hero_badge')}
                     </div>
-                    <h1 className="mb-6 font-headline text-4xl leading-tight font-extrabold text-white md:text-6xl">
-                        من الفكرة إلى التمويل في{' '}
-                        <span className="text-inverse-primary">أربع خطوات</span>
+                    <h1 className="mb-4 font-headline text-2xl leading-tight font-extrabold text-white md:text-4xl">
+                        {__('messages.how_it_works.hero_title')}{' '}
+                        <span className="text-inverse-primary">{__('messages.how_it_works.hero_steps')}</span>
                     </h1>
-                    <p className="mx-auto max-w-2xl text-lg leading-relaxed text-gray-300">
-                        عملية بسيطة وشفافة تحول أفكارك الإبداعية إلى مشاريع
-                        حقيقية بدعم من مجتمعنا وشركائنا.
+                    <p className="mx-auto max-w-2xl text-sm leading-relaxed text-gray-300">
+                        {__('messages.how_it_works.hero_desc')}
                     </p>
                 </div>
             </section>
@@ -116,9 +111,9 @@ export default function HowItWorks() {
                                     </p>
                                 </div>
                                 {index < steps.length - 1 && (
-                                    <div className="absolute top-1/2 -left-4 hidden -translate-y-1/2 lg:block">
-                                        <span className="material-symbols-outlined text-3xl text-primary/30">
-                                            arrow_back
+                                    <div className="absolute top-1/2 -start-4 hidden -translate-y-1/2 lg:block">
+                                        <span className="material-symbols-outlined text-3xl text-primary/30 rtl:rotate-180">
+                                            arrow_forward
                                         </span>
                                     </div>
                                 )}
@@ -132,11 +127,10 @@ export default function HowItWorks() {
                 <div className="mx-auto max-w-4xl">
                     <div className="mb-16 text-center">
                         <h2 className="mb-4 text-4xl font-black text-on-surface dark:text-white">
-                            الأسئلة الشائعة
+                            {__('messages.how_it_works.faq_title')}
                         </h2>
                         <p className="mx-auto max-w-2xl text-on-surface-variant">
-                            إجابات على أكثر الأسئلة تكراراً حول آلية عمل المنصة
-                            وشروط المشاركة
+                            {__('messages.how_it_works.faq_desc')}
                         </p>
                     </div>
                     <div className="space-y-4">
@@ -164,33 +158,32 @@ export default function HowItWorks() {
 
             <section className="relative overflow-hidden bg-secondary px-8 py-24">
                 <div className="absolute inset-0 opacity-10">
-                    <span className="material-symbols-outlined absolute top-10 right-[10%] scale-150 text-primary">
+                    <span className="material-symbols-outlined absolute top-10 end-[10%] scale-150 text-primary">
                         celebration
                     </span>
-                    <span className="material-symbols-outlined absolute bottom-10 left-[15%] scale-125 text-primary">
+                    <span className="material-symbols-outlined absolute bottom-10 start-[15%] scale-125 text-primary">
                         stars
                     </span>
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl text-center">
                     <h2 className="mb-6 font-headline text-4xl font-black text-white md:text-5xl">
-                        جاهز لبدء رحلتك؟
+                        {__('messages.how_it_works.ready_title')}
                     </h2>
                     <p className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-gray-300">
-                        انضم إلى آلاف المبتكرين الذين بدأوا مشاريعهم بـ 100
-                        دولار فقط. فكرتك القادمة قد تغير حياتك!
+                        {__('messages.how_it_works.ready_desc')}
                     </p>
                     <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                         <Link
                             href="/submit-idea"
                             className="rounded-xl bg-primary px-10 py-5 text-xl font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 hover:bg-primary-container"
                         >
-                            قدّم فكرتك الآن
+                            {__('messages.ui.submit_your_idea_now')}
                         </Link>
                         <Link
                             href="/archive"
                             className="rounded-xl border border-white/20 px-10 py-5 text-xl font-bold text-white transition-all hover:bg-white/10"
                         >
-                            تصفح الأفكار
+                            {__('messages.how_it_works.browse_ideas')}
                         </Link>
                     </div>
                 </div>

@@ -1,10 +1,10 @@
-import { Head, Link } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
-import { IdeaCard } from '@/app/components/old_app/idea-card';
-import { WinnerCard } from '@/app/components/old_app/winner-card';
-import { CountdownTimer } from '@/app/components/old_app/countdown-timer';
-import { ParticlesBackground } from '@/app/components/old_app/particles-background';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Head, Link } from '@inertiajs/react';
+import { CountdownTimer } from '@/app/components/old_app/countdown-timer';
+import { IdeaCard } from '@/app/components/old_app/idea-card';
+import { ParticlesBackground } from '@/app/components/old_app/particles-background';
+import { WinnerCard } from '@/app/components/old_app/winner-card';
+import AppLayout from '@/app/layouts/app-layout';
 
 const sampleIdeas = [
     {
@@ -91,28 +91,26 @@ export default function Home() {
                         {__('messages.welcome')}
                     </div>
                     <h1 className="mb-8 max-w-4xl font-headline text-5xl leading-tight font-black text-on-surface dark:text-white md:text-7xl">
-                        شارك فكرتك واربح{' '}
+                        {__('messages.home.hero_title')}{' '}
                         <span className="mx-2 inline-block -rotate-2 transform rounded-lg bg-primary px-4 py-1 text-white shadow-lg">
-                            100 دولار
+                            {__('messages.for_100')}
                         </span>
                     </h1>
                     <p className="mb-12 max-w-2xl text-lg leading-relaxed text-on-surface-variant dark:text-slate-300 md:text-xl">
-                        منصة تهدف لدعم الأفكار والمشاريع الناشئة التي يمكن البدء
-                        بها بميزانية بسيطة. صوّت لأفضل فكرة أو قدّم فكرتك الخاصة
-                        للمنافسة.
+                        {__('messages.home.hero_desc')}
                     </p>
                     <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
                         <Link
                             href="/submit-idea"
                             className="rounded-xl bg-primary px-10 py-5 text-center text-xl font-bold text-on-primary shadow-lg transition-all hover:translate-y-[-2px]"
                         >
-                            قدّم فكرتك الآن
+                            {__('messages.ui.submit_your_idea_now')}
                         </Link>
                         <Link
                             href="/how-it-works"
                             className="rounded-xl border border-outline-variant/20 bg-surface-container-low px-10 py-5 text-center text-xl font-bold text-on-surface dark:text-white transition-all hover:bg-surface-container-high"
                         >
-                            كيف نعمل؟
+                            {__('messages.ui.how_it_works')}
                         </Link>
                     </div>
                 </div>
@@ -122,10 +120,10 @@ export default function Home() {
                 <div className="group relative flex items-center justify-between overflow-hidden rounded-2xl bg-secondary-fixed p-8 md:col-span-4">
                     <div className="relative z-10">
                         <p className="mb-1 text-sm font-semibold text-on-secondary-fixed-variant">
-                            راعي جائزة اليوم
+                            {__('messages.home.today_sponsor')}
                         </p>
                         <h3 className="mb-4 text-2xl font-bold text-on-secondary-fixed">
-                            اسم الشركة الراعية
+                            {__('messages.home.sponsor_name_placeholder')}
                         </h3>
                         <div className="flex h-10 w-32 items-center justify-center rounded border border-on-secondary-fixed/20 bg-on-secondary-fixed/10 backdrop-blur-sm">
                             <span className="font-bold text-on-secondary-fixed opacity-50">
@@ -141,10 +139,10 @@ export default function Home() {
                 <div className="flex flex-col items-center justify-between rounded-2xl bg-surface-container-low p-8 md:col-span-8 md:flex-row">
                     <div className="mb-6 md:mb-0">
                         <h4 className="mb-2 font-headline text-xl font-bold text-on-surface dark:text-white">
-                            ينتهي التصويت الحالي خلال:
+                            {__('messages.home.voting_ends_in')}
                         </h4>
                         <p className="text-on-surface-variant dark:text-on-surface-variant">
-                            الفرصة ما زالت قائمة لدعم فكرتك المفضلة
+                            {__('messages.home.voting_chance_still')}
                         </p>
                     </div>
                     <CountdownTimer targetDate={votingDeadline} />
@@ -174,17 +172,17 @@ export default function Home() {
                 <div className="mb-12 flex flex-col items-end justify-between gap-4 border-e-4 border-primary pe-6 md:flex-row">
                     <div>
                         <h2 className="font-headline text-4xl font-black text-on-surface dark:text-white md:text-5xl">
-                            قاعة المشاهير
+                            {__('messages.ui.hall_of_fame')}
                         </h2>
                         <p className="mt-2 text-lg text-on-surface-variant dark:text-on-surface-variant">
-                            مبدعون حولوا أفكارهم إلى واقع بجائزة الـ 100 دولار
+                            {__('messages.ui.hall_of_fame_desc')}
                         </p>
                     </div>
                     <Link
                         className="group flex items-center gap-2 font-bold text-primary transition-colors hover:text-primary-container"
                         href="/archive"
                     >
-                        تصفح الأرشيف الكامل
+                        {__('messages.ui.browse_full_archive')}
                         <span className="material-symbols-outlined text-xl transition-transform group-hover:-translate-x-1">
                             arrow_back
                         </span>
@@ -204,10 +202,10 @@ export default function Home() {
                             </span>
                         </div>
                         <p className="font-headline text-xl font-bold text-on-surface dark:text-white">
-                            الأرشيف الكامل
+                            {__('messages.ui.full_archive')}
                         </p>
                         <p className="mt-2 text-sm text-on-surface-variant dark:text-on-surface-variant">
-                            استعرض جميع الفائزين السابقين منذ انطلاق المنصة
+                            {__('messages.ui.full_archive_desc')}
                         </p>
                     </Link>
                 </div>

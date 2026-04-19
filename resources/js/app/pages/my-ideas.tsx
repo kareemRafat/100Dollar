@@ -1,95 +1,96 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-const stats = [
-    {
-        label: 'إجمالي الأفكار',
-        value: '12',
-        unit: 'فكرة',
-        icon: 'lightbulb',
-    },
-    {
-        label: 'إجمالي الأصوات',
-        value: '1,402',
-        unit: 'صوت',
-        icon: 'how_to_vote',
-    },
-    {
-        label: 'الأفكار الفائزة',
-        value: '03',
-        unit: 'جوائز',
-        icon: 'emoji_events',
-    },
-];
-
-const ideas = [
-    {
-        id: 1,
-        category: 'بيئة',
-        title: 'مشروع إعادة تدوير البلاستيك في الأحياء السكنية',
-        status: 'pending',
-        statusLabel: 'قيد الانتظار',
-        date: '12 مايو 2024',
-        currentVotes: 142,
-        targetVotes: 200,
-        progress: 71,
-    },
-    {
-        id: 2,
-        category: 'تكنولوجيا',
-        title: 'منصة رقمية لربط المزارعين المحليين بالمستهلكين',
-        status: 'approved',
-        statusLabel: 'مُعتمَدة',
-        date: '28 أبريل 2024',
-        currentVotes: 856,
-        targetVotes: 1000,
-        progress: 85,
-    },
-    {
-        id: 3,
-        category: 'التعليم',
-        title: 'تطبيق "جسور" لتعليم لغة الإشارة بالذكاء الاصطناعي',
-        status: 'winner',
-        statusLabel: 'فائزة 🏆',
-        date: '15 مارس 2024',
-        currentVotes: 2410,
-        targetVotes: null,
-        progress: 100,
-        funded: true,
-    },
-    {
-        id: 4,
-        category: 'الصحة',
-        title: 'نظام ذكي لمراقبة استهلاك الأدوية لكبار السن',
-        status: 'approved',
-        statusLabel: 'مُعتمَدة',
-        date: '02 فبراير 2024',
-        currentVotes: 420,
-        targetVotes: 500,
-        progress: 84,
-    },
-];
-
 export default function MyIdeas() {
+    const { __ } = useLang();
+
+    const stats = [
+        {
+            label: __('messages.my_ideas.stats_total_ideas'),
+            value: '12',
+            unit: __('messages.my_ideas.unit_idea'),
+            icon: 'lightbulb',
+        },
+        {
+            label: __('messages.my_ideas.stats_total_votes'),
+            value: '1,402',
+            unit: __('messages.my_ideas.unit_vote'),
+            icon: 'how_to_vote',
+        },
+        {
+            label: __('messages.my_ideas.stats_winning_ideas'),
+            value: '03',
+            unit: __('messages.my_ideas.unit_prizes'),
+            icon: 'emoji_events',
+        },
+    ];
+
+    const ideas = [
+        {
+            id: 1,
+            category: 'بيئة',
+            title: 'مشروع إعادة تدوير البلاستيك في الأحياء السكنية',
+            status: 'pending',
+            statusLabel: __('messages.my_ideas.filter_pending'),
+            date: '12 مايو 2024',
+            currentVotes: 142,
+            targetVotes: 200,
+            progress: 71,
+        },
+        {
+            id: 2,
+            category: 'تكنولوجيا',
+            title: 'منصة رقمية لربط المزارعين المحليين بالمستهلكين',
+            status: 'approved',
+            statusLabel: __('messages.my_ideas.filter_approved'),
+            date: '28 أبريل 2024',
+            currentVotes: 856,
+            targetVotes: 1000,
+            progress: 85,
+        },
+        {
+            id: 3,
+            category: 'التعليم',
+            title: 'تطبيق "جسور" لتعليم لغة الإشارة بالذكاء الاصطناعي',
+            status: 'winner',
+            statusLabel: __('messages.my_ideas.filter_winner') + ' 🏆',
+            date: '15 مارس 2024',
+            currentVotes: 2410,
+            targetVotes: null,
+            progress: 100,
+            funded: true,
+        },
+        {
+            id: 4,
+            category: 'الصحة',
+            title: 'نظام ذكي لمراقبة استهلاك الأدوية لكبار السن',
+            status: 'approved',
+            statusLabel: __('messages.my_ideas.filter_approved'),
+            date: '02 فبراير 2024',
+            currentVotes: 420,
+            targetVotes: 500,
+            progress: 84,
+        },
+    ];
     return (
         <AppLayout activeRoute="/my-ideas">
             <Head title="أفكاري" />
 
             <main className="flex-grow">
                 {/* Hero Section */}
-                <section className="relative flex h-[380px] items-center justify-center overflow-hidden bg-[#0F172A]">
+                <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-[#0F172A] md:h-[400px]">
                     <div className="absolute inset-0 z-0">
                         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80"></div>
-                        {/* You can add a background image here if needed */}
                     </div>
                     <div className="relative z-10 text-center">
-                        <h1 className="mb-4 font-headline text-5xl font-extrabold tracking-tight text-white md:text-6xl">
-                            أفكاري
+                        <h1 className="mb-4 font-headline text-4xl font-extrabold tracking-tight text-white md:text-6xl">
+                            {__('messages.my_ideas.hero_title')}
                         </h1>
-                        <p className="font-body mx-auto max-w-xl px-6 text-lg text-white/80">
-                            أدر سجل ابتكاراتك وتابع رحلة تحول أفكارك إلى واقع ملموس في السجل الذهبي
+                        <p className="font-body mx-auto max-w-xl px-6 text-sm text-white/80">
+                            {__('messages.my_ideas.hero_desc')}
                         </p>
                     </div>
                 </section>
@@ -129,36 +130,35 @@ export default function MyIdeas() {
                     {/* Filter & Search Section */}
                     <div className="mb-10 flex flex-col items-center justify-between gap-6 rounded-xl bg-surface-container-low p-6 md:flex-row dark:bg-surface-container-high">
                         <div className="relative w-full md:w-96">
-                            <span className="material-symbols-outlined absolute top-1/2 right-4 -translate-y-1/2 text-on-surface-variant">
+                            <span className="material-symbols-outlined absolute top-1/2 end-4 -translate-y-1/2 text-on-surface-variant">
                                 search
                             </span>
                             <Input
-                                className="h-12 border-none bg-surface-container-lowest pr-12 pl-4 text-right focus:ring-1 focus:ring-primary dark:bg-surface-container-low"
-                                placeholder="ابحث في أفكارك..."
-                                dir="rtl"
+                                className="h-12 border-none bg-surface-container-lowest ps-12 pe-4 focus:ring-1 focus:ring-primary dark:bg-surface-container-low dark:text-white"
+                                placeholder={__('messages.my_ideas.search_placeholder')}
                             />
                         </div>
                         <div className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 md:w-auto md:pb-0">
                             <Button className="rounded-full px-6 font-bold" variant="default">
-                                الكل
+                                {__('messages.my_ideas.filter_all')}
                             </Button>
                             <Button
                                 className="rounded-full px-6 font-bold"
                                 variant="secondary"
                             >
-                                قيد الانتظار
+                                {__('messages.my_ideas.filter_pending')}
                             </Button>
                             <Button
                                 className="rounded-full px-6 font-bold"
                                 variant="secondary"
                             >
-                                مُعتمدة
+                                {__('messages.my_ideas.filter_approved')}
                             </Button>
                             <Button
                                 className="rounded-full px-6 font-bold"
                                 variant="secondary"
                             >
-                                فائزة
+                                {__('messages.my_ideas.filter_winner')}
                             </Button>
                         </div>
                     </div>
@@ -170,12 +170,12 @@ export default function MyIdeas() {
                                 key={idea.id}
                                 className={`group flex h-full flex-col rounded-xl border p-8 transition-all duration-300 hover:shadow-xl ${
                                     idea.status === 'winner'
-                                        ? 'relative overflow-hidden border-2 border-primary/20 bg-surface-container-lowest shadow-lg dark:bg-surface-container-low'
-                                        : 'border-outline-variant/5 bg-surface-container-lowest dark:bg-surface-container-low'
+                                        ? 'relative overflow-hidden border-2 border-primary/20 bg-surface-container-lowest shadow-lg dark:bg-card'
+                                        : 'border-outline-variant/5 bg-surface-container-lowest dark:bg-card'
                                 }`}
                             >
                                 {idea.status === 'winner' && (
-                                    <div className="absolute top-0 left-0 h-24 w-24 rotate-45 -translate-x-12 -translate-y-12 bg-primary/10"></div>
+                                    <div className="absolute top-0 start-0 h-24 w-24 rotate-45 -translate-x-12 -translate-y-12 bg-primary/10"></div>
                                 )}
                                 <div className="mb-6 flex items-start justify-between relative z-10">
                                     <span
@@ -196,7 +196,7 @@ export default function MyIdeas() {
                                         </span>
                                     </div>
                                 </div>
-                                <h3 className="mb-4 text-right text-xl font-bold leading-tight text-on-surface dark:text-white">
+                                <h3 className="mb-4 text-xl font-bold leading-tight text-on-surface dark:text-white">
                                     {idea.title}
                                 </h3>
                                 <div className="mb-6 flex items-center gap-2 relative z-10">
@@ -212,7 +212,7 @@ export default function MyIdeas() {
                                         {(idea.status === 'pending' ||
                                             idea.status === 'approved') && (
                                             <span
-                                                className={`ml-2 h-1.5 w-1.5 rounded-full ${
+                                                className={`me-2 h-1.5 w-1.5 rounded-full ${
                                                     idea.status === 'pending'
                                                         ? 'bg-amber-500'
                                                         : 'bg-green-500'
@@ -221,7 +221,7 @@ export default function MyIdeas() {
                                         )}
                                         {idea.statusLabel}
                                     </span>
-                                    <span className="mr-auto text-xs text-on-surface-variant dark:text-slate-400">
+                                    <span className="ms-auto text-xs text-on-surface-variant dark:text-slate-400">
                                         {idea.date}
                                     </span>
                                 </div>
@@ -229,8 +229,8 @@ export default function MyIdeas() {
                                     <div className="mb-2 flex items-end justify-between">
                                         <span className="text-xs font-bold text-on-surface-variant dark:text-slate-400">
                                             {idea.status === 'winner'
-                                                ? 'الأصوات النهائية'
-                                                : 'الأصوات الحالية'}
+                                                ? __('messages.my_ideas.final_votes')
+                                                : __('messages.my_ideas.current_votes')}
                                         </span>
                                         <span className="text-sm font-bold text-primary">
                                             {idea.currentVotes.toLocaleString()}
@@ -248,7 +248,7 @@ export default function MyIdeas() {
                                             <span className="material-symbols-outlined text-base">
                                                 workspace_premium
                                             </span>
-                                            تم تمويل المشروع بنجاح
+                                            {__('messages.my_ideas.funded_success')}
                                         </div>
                                     )}
                                 </div>
@@ -266,10 +266,10 @@ export default function MyIdeas() {
                                 </span>
                             </div>
                             <h3 className="text-lg font-bold text-on-surface-variant transition-colors group-hover:text-primary dark:text-slate-400">
-                                شارك فكرة جديدة
+                                {__('messages.my_ideas.share_new_idea')}
                             </h3>
                             <p className="mt-2 px-4 text-center text-sm text-on-surface-variant dark:text-slate-400">
-                                حول رؤيتك إلى مشروع حقيقي ونافس في المسابقات القادمة
+                                {__('messages.my_ideas.share_new_idea_desc')}
                             </p>
                         </Link>
                     </div>

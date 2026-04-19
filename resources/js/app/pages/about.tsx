@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
+import { Head } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 
 const partners = [
@@ -9,39 +10,40 @@ const partners = [
     'SEED_FUND',
 ];
 
-const coreValues = [
-    {
-        icon: 'rocket_launch',
-        title: 'الابتكار',
-        description:
-            'نسعى دائماً خلف الأفكار التي تكسر القواعد التقليدية للسوق.',
-    },
-    {
-        icon: 'groups',
-        title: 'المجتمع',
-        description: 'قوتنا تكمن في جمهورنا الذي يقيّم ويدعم الأفكار بكل شغف.',
-    },
-    {
-        icon: 'gavel',
-        title: 'الشفافية',
-        description: 'عمليات التصويت والتمويل واضحة ومعلنة للجميع دون استثناء.',
-    },
-    {
-        icon: 'bolt',
-        title: 'السرعة',
-        description: 'من الفكرة إلى التمويل في وقت قياسي يواكب تسارع العصر.',
-    },
-];
-
 export default function About() {
+    const { __ } = useLang();
+
+    const coreValues = [
+        {
+            icon: 'rocket_launch',
+            title: __('messages.about.value_innovation_title'),
+            description: __('messages.about.value_innovation_desc'),
+        },
+        {
+            icon: 'groups',
+            title: __('messages.about.value_community_title'),
+            description: __('messages.about.value_community_desc'),
+        },
+        {
+            icon: 'gavel',
+            title: __('messages.about.value_transparency_title'),
+            description: __('messages.about.value_transparency_desc'),
+        },
+        {
+            icon: 'bolt',
+            title: __('messages.about.value_speed_title'),
+            description: __('messages.about.value_speed_desc'),
+        },
+    ];
+
     return (
         <AppLayout activeRoute="/about">
-            <Head title="من نحن" />
+            <Head title={__('messages.nav.about')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-[#0F172A] md:h-[400px]">
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80"></div>
-                    
+
                     {/* Airy dots texture layer */}
                     <div className="airy-dots absolute inset-0 opacity-40"></div>
 
@@ -55,16 +57,14 @@ export default function About() {
                             <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
                         </span>
                         <span className="text-sm font-bold">
-                            تعرف علينا
+                            {__('messages.about.get_to_know_us')}
                         </span>
                     </div>
                     <h1 className="mb-4 font-headline text-2xl leading-tight font-extrabold text-white md:text-4xl">
-                        نحن نؤمن أن كل فكرة تستحق فرصة
+                        {__('messages.about.hero_title')}
                     </h1>
                     <p className="mx-auto max-w-2xl text-sm leading-relaxed text-white/80">
-                        من قلب التحديات المالية، ولدنا لنمكّن العقول المبدعة من
-                        تحويل أفكارها البسيطة إلى مشاريع قائمة بتمويلات ذكية
-                        تبدأ من 100 دولار فقط.
+                        {__('messages.about.hero_desc')}
                     </p>
                 </div>
             </section>
@@ -80,13 +80,10 @@ export default function About() {
                             </div>
                             <div>
                                 <h3 className="mb-3 text-2xl font-black text-on-surface dark:text-white">
-                                    مهمتنا
+                                    {__('messages.about.mission_title')}
                                 </h3>
                                 <p className="text-on-surface-variant text-base leading-relaxed">
-                                    سد الفجوة بين الأفكار الخلاقة ومصادر التمويل
-                                    الأولية عبر منصة شفافة تجمع المبدعين
-                                    بالمستثمرين الذين يؤمنون بالقيمة قبل
-                                    الأرقام.
+                                    {__('messages.about.mission_desc')}
                                 </p>
                             </div>
                         </div>
@@ -98,29 +95,25 @@ export default function About() {
                             </div>
                             <div>
                                 <h3 className="mb-3 text-2xl font-black text-on-surface dark:text-white">
-                                    رؤيتنا
+                                    {__('messages.about.vision_title')}
                                 </h3>
                                 <p className="text-on-surface-variant text-base leading-relaxed">
-                                    أن نصبح السجل الذهبي لكل رائد أعمال يبدأ من
-                                    الصفر، محولين 100 دولار إلى حجر الأساس
-                                    لإمبراطوريات تجارية كبرى.
+                                    {__('messages.about.vision_desc')}
                                 </p>
                             </div>
                         </div>
                     </div>
                     <div className="border-outline-variant/10 bg-surface-container-low relative rounded-3xl border p-10">
                         <p className="font-headline text-right text-xl leading-relaxed font-medium text-on-surface dark:text-white italic">
-                            "الابتكار ليس حكراً على من يملكون الملايين، بل هو حق
-                            لكل من يمتلك الشجاعة لرسم مسار جديد بـ 100 دولار
-                            فقط."
+                            "{__('messages.about.quote')}"
                         </p>
                         <div className="mt-8 flex items-center justify-end gap-4">
                             <div className="text-right">
                                 <p className="font-bold text-on-surface dark:text-white text-base">
-                                    فريق الإدارة
+                                    {__('messages.about.management_team')}
                                 </p>
                                 <p className="text-on-surface-variant text-xs">
-                                    السجل الذهبي
+                                    {__('messages.about.golden_ledger')}
                                 </p>
                             </div>
                             <div className="h-1 w-10 bg-primary" />
@@ -135,26 +128,26 @@ export default function About() {
                         <p className="mb-1 text-4xl font-black text-primary md:text-5xl">
                             1,500+
                         </p>
-                        <p className="text-sm font-bold text-on-surface dark:text-white">فكرة مُقدمة</p>
+                        <p className="text-sm font-bold text-on-surface dark:text-white">{__('messages.about.stats_ideas')}</p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-4xl font-black text-primary md:text-5xl">
                             45,000+
                         </p>
-                        <p className="text-sm font-bold text-on-surface dark:text-white">مُصوّت نشط</p>
+                        <p className="text-sm font-bold text-on-surface dark:text-white">{__('messages.about.stats_voters')}</p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-4xl font-black text-primary md:text-5xl">
                             85
                         </p>
-                        <p className="text-sm font-bold text-on-surface dark:text-white">فائز محظوظ</p>
+                        <p className="text-sm font-bold text-on-surface dark:text-white">{__('messages.about.stats_winners')}</p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-4xl font-black text-primary md:text-5xl">
                             $10M+
                         </p>
                         <p className="text-sm font-bold text-on-surface dark:text-white">
-                            استثمارات لاحقة
+                            {__('messages.about.stats_investments')}
                         </p>
                     </div>
                 </div>
@@ -164,11 +157,10 @@ export default function About() {
                 <div className="mx-auto max-w-7xl">
                     <div className="mb-14 text-center">
                         <h2 className="mb-3 text-3xl font-black text-on-surface dark:text-white">
-                            قيمنا الجوهرية
+                            {__('messages.about.core_values_title')}
                         </h2>
                         <p className="text-on-surface-variant mx-auto max-w-2xl text-sm">
-                            المبادئ التي تحكم كل تفاعل داخل منصتنا لضمان بيئة
-                            عادلة ومحفزة للجميع
+                            {__('messages.about.core_values_desc')}
                         </p>
                     </div>
                     <div className="grid gap-6 md:grid-cols-4">
@@ -206,29 +198,23 @@ export default function About() {
                     </div>
                     <div className="text-right md:w-1/2">
                         <span className="mb-3 block text-xs font-bold tracking-widest text-primary uppercase">
-                            قصة البداية
+                            {__('messages.about.story_badge')}
                         </span>
                         <h2 className="mb-6 text-3xl leading-tight font-black text-on-surface dark:text-white">
-                            كيف بدأت رحلة الـ 100 دولار في عام 2020؟
+                            {__('messages.about.story_title')}
                         </h2>
                         <p className="text-on-surface-variant mb-5 text-base leading-relaxed">
-                            في ذروة المتغيرات العالمية عام 2020، لاحظنا أن هناك
-                            آلاف العقول التي تمتلك أفكاراً ذكية ولكنها تفتقر إلى
-                            "الدفعة الأولى". لم تكن المشكلة في الملايين، بل في
-                            غياب من يؤمن بالخطوة الأولى.
+                            {__('messages.about.story_p1')}
                         </p>
                         <p className="text-on-surface-variant mb-8 text-base leading-relaxed">
-                            بدأنا كمدونة بسيطة لاستعراض الأفكار، واليوم نحن منصة
-                            متكاملة تدير استثمارات وتدعم مشاريع غيرت حياة
-                            العشرات. هدفنا لم يتغير: جعل ريادة الأعمال متاحة
-                            للجميع.
+                            {__('messages.about.story_p2')}
                         </p>
                         <div className="border-outline-variant/10 inline-block rounded-2xl border bg-surface-container-lowest p-5 shadow-sm">
                             <p className="text-lg font-bold text-on-surface dark:text-white">
-                                عمر الجابر
+                                {__('messages.about.founder_name')}
                             </p>
                             <p className="text-primary text-sm">
-                                المؤسس والمدير التنفيذي
+                                {__('messages.about.founder_title')}
                             </p>
                         </div>
                     </div>
@@ -238,7 +224,7 @@ export default function About() {
             <section className="border-outline-variant/10 bg-surface overflow-hidden border-t px-8 py-12">
                 <div className="mx-auto max-w-7xl">
                     <p className="text-outline mb-8 text-center text-sm font-bold tracking-widest uppercase">
-                        شركاء النجاح والممولون
+                        {__('messages.about.partners_title')}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-12 opacity-40 grayscale md:gap-24">
                         {partners.map((partner) => (

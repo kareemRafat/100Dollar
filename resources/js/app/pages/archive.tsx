@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
+import { Head } from '@inertiajs/react';
 import { IdeaCard } from '@/app/components/old_app/idea-card';
 import AppLayout from '@/app/layouts/app-layout';
 
@@ -101,9 +102,11 @@ const archiveIdeas = [
 const paginationPages = [1, 2, 3, 12];
 
 export default function Archive() {
+    const { __ } = useLang();
+
     return (
         <AppLayout activeRoute="/archive">
-            <Head title="أرشيف المشاريع" />
+            <Head title={__('messages.nav.archive')} />
 
             <header className="relative mb-8 h-[300px] w-full overflow-hidden md:h-[400px]">
                 <div
@@ -116,15 +119,14 @@ export default function Archive() {
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-navy via-deep-navy/70 to-transparent" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
                     <div className="mb-4 rounded-full bg-primary/90 px-4 py-1 text-xs font-bold tracking-widest text-on-primary uppercase shadow-xl">
-                        أرشيف الأفكار
+                        {__('messages.archive.hero_badge')}
                     </div>
                     <h1 className="mb-4 font-headline text-4xl leading-tight font-extrabold text-white md:text-5xl">
-                        أرشيف المشاريع{' '}
-                        <span className="text-inverse-primary">الذهبي</span>
+                        {__('messages.archive.hero_title')}{' '}
+                        <span className="text-inverse-primary">{__('messages.archive.golden')}</span>
                     </h1>
                     <p className="max-w-2xl text-lg leading-relaxed text-white/80">
-                        تصفح جميع الأفكار التي تم طرحها واستكشف المشاريع الفائزة
-                        التي بدأت برأس مال لا يتجاوز 100 دولار.
+                        {__('messages.archive.hero_desc')}
                     </p>
                 </div>
             </header>
@@ -138,7 +140,7 @@ export default function Archive() {
                     </div>
                     <input
                         className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest"
-                        placeholder="ابحث عن فكرة، مجال، أو كاتب..."
+                        placeholder={__('messages.archive.search_placeholder')}
                         type="text"
                     />
                 </div>
@@ -151,7 +153,7 @@ export default function Archive() {
                             </span>
                             <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
                                 <option className="dark:bg-surface-container-low">
-                                    كل المجالات
+                                    {__('messages.archive.all_fields')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
                                     تجارة إلكترونية
@@ -170,13 +172,13 @@ export default function Archive() {
                             </span>
                             <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
                                 <option className="dark:bg-surface-container-low">
-                                    اليوم
+                                    {__('messages.archive.today')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
-                                    أمس
+                                    {__('messages.archive.yesterday')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
-                                    هذا الأسبوع
+                                    {__('messages.archive.this_week')}
                                 </option>
                             </select>
                         </div>
@@ -186,7 +188,7 @@ export default function Archive() {
                             </span>
                             <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
                                 <option className="dark:bg-surface-container-low">
-                                    كل الشهور
+                                    {__('messages.archive.all_months')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
                                     يناير
@@ -205,13 +207,13 @@ export default function Archive() {
                             </span>
                             <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
                                 <option className="dark:bg-surface-container-low">
-                                    كل الحالات
+                                    {__('messages.archive.all_statuses')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
-                                    فائزة 🏆
+                                    {__('messages.archive.winner_status')}
                                 </option>
                                 <option className="dark:bg-surface-container-low">
-                                    غير فائزة
+                                    {__('messages.archive.non_winner_status')}
                                 </option>
                             </select>
                         </div>
@@ -219,7 +221,7 @@ export default function Archive() {
                             <span className="material-symbols-outlined text-sm">
                                 filter_list_off
                             </span>
-                            مسح التصفية
+                            {__('messages.archive.clear_filter')}
                         </button>
                     </div>
                 </div>
@@ -241,17 +243,17 @@ export default function Archive() {
                         </span>
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-bold text-on-primary">
-                        ١
+                        1
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-surface-container-high dark:text-on-surface">
-                        ٢
+                        2
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-surface-container-high dark:text-on-surface">
-                        ٣
+                        3
                     </button>
                     <span className="text-outline">...</span>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg transition-all hover:bg-surface-container-high dark:text-on-surface">
-                        ١٢
+                        12
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-outline-variant/30 text-outline transition-all hover:bg-primary hover:text-white">
                         <span className="material-symbols-outlined text-sm">

@@ -18,22 +18,24 @@ import { logout } from '@/routes';
 import { index } from '@/routes/app/ideas';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Switch } from '@/components/ui/switch';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     activeRoute?: string;
 };
 
-const navItems: NavItem[] = [
-    { title: 'الرئيسية', href: '/' },
-    { title: 'الأرشيف', href: '/archive' },
-    { title: 'الرعاة', href: '/sponsors' },
-    { title: 'من نحن', href: '/about' },
-    { title: 'تواصل معنا', href: '/contact' },
-];
-
 export function TopNavBar({ activeRoute }: Props) {
     const { auth } = usePage().props;
     const { appearance, updateAppearance } = useAppearance();
+    const { __ } = useLang();
+
+    const navItems: NavItem[] = [
+        { title: __('messages.nav.home'), href: '/' },
+        { title: __('messages.nav.archive'), href: '/archive' },
+        { title: __('messages.nav.sponsors'), href: '/sponsors' },
+        { title: __('messages.nav.about'), href: '/about' },
+        { title: __('messages.nav.contact'), href: '/contact' },
+    ];
 
     const getInitials = (name: string) => {
         return name
@@ -52,7 +54,7 @@ export function TopNavBar({ activeRoute }: Props) {
                         className="font-headline text-xl font-black tracking-tighter text-secondary transition-all hover:opacity-80 dark:text-white"
                         href="/"
                     >
-                        <span className="text-primary">أفكار</span> بـ 100$
+                        <span className="text-primary">{__('messages.ideas')}</span> {__('messages.for_100')}
                     </Link>
                 </div>
 
@@ -83,7 +85,7 @@ export function TopNavBar({ activeRoute }: Props) {
                         <div className="flex items-center gap-1">
                             <Link href="/ideas/create" className="hidden lg:block ms-2">
                                 <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
-                                    قدم فكرتك
+                                    {__('messages.ui.submit_your_idea')}
                                 </Button>
                             </Link>
 
@@ -119,13 +121,13 @@ export function TopNavBar({ activeRoute }: Props) {
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
                                             <Link href="/profile">
-                                                <span>الملف الشخصي</span>
+                                                <span>{__('messages.auth.profile')}</span>
                                                 <UserIcon className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
                                             <Link href={index()}>
-                                                <span>أفكاري</span>
+                                                <span>{__('messages.auth.my_ideas')}</span>
                                                 <Lightbulb className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
@@ -146,7 +148,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                 onCheckedChange={(checked) => updateAppearance(checked ? 'dark' : 'light')} 
                                             />
                                             <div className="flex items-center gap-2.5">
-                                                <span>{appearance === 'dark' ? 'الوضع المضيء' : 'الوضع الليلي'}</span>
+                                                <span>{appearance === 'dark' ? __('messages.ui.light_mode') : __('messages.ui.dark_mode')}</span>
                                                 {appearance === 'dark' ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
                                             </div>
                                         </DropdownMenuItem>
@@ -158,7 +160,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                     
                                     <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error">
                                         <Link href={logout()} method="post" as="button" data={{ _auth_context: 'app' }} className="w-full">
-                                            <span>تسجيل الخروج</span>
+                                            <span>{__('messages.auth.logout')}</span>
                                             <LogOut className="size-3.5" />
                                         </Link>
                                     </DropdownMenuItem>
@@ -171,11 +173,11 @@ export function TopNavBar({ activeRoute }: Props) {
                                 className="px-3 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400"
                                 href="/login"
                             >
-                                تسجيل الدخول
+                                {__('messages.auth.login')}
                             </Link>
                             <Link href="/register">
                                 <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02]">
-                                    إنشاء حساب
+                                    {__('messages.auth.register')}
                                 </Button>
                             </Link>
                         </div>

@@ -10,22 +10,25 @@ import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
 import { contact, terms } from '@/routes/app';
 import { store } from '@/routes/register';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     canLogin: boolean;
 };
 
 export default function Register({ canLogin }: Props) {
+    const { __ } = useLang();
+
     return (
         <AuthLayout>
-            <Head title="تسجيل جديد" />
+            <Head title={__('messages.register.hero_title')} />
 
             <header className="mb-10 text-right">
                 <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                    ابدأ رحلتك اليوم
+                    {__('messages.register.welcome_title')}
                 </h2>
                 <p className="text-on-surface-variant">
-                    انضم إلى مجتمع المبدعين وابدأ في مشاركة أفكارك مع العالم
+                    {__('messages.register.subtitle')}
                 </p>
             </header>
 
@@ -40,21 +43,21 @@ export default function Register({ canLogin }: Props) {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <Label htmlFor="name" className="text-right block w-full">الاسم الكامل</Label>
+                                <Label htmlFor="name" className="text-right block w-full">{__('messages.register.full_name')}</Label>
                                 <Input
                                     id="name"
                                     name="name"
                                     type="text"
                                     required
                                     autoFocus
-                                    placeholder="محمد أحمد"
+                                    placeholder={__('messages.register.full_name_placeholder')}
                                     className="h-12 text-right"
                                     dir="rtl"
                                 />
                                 <InputError message={errors.name} />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="email" className="text-right block w-full">البريد الإلكتروني</Label>
+                                <Label htmlFor="email" className="text-right block w-full">{__('messages.login.email_label')}</Label>
                                 <Input
                                     id="email"
                                     name="email"
@@ -70,26 +73,26 @@ export default function Register({ canLogin }: Props) {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                              <div className="space-y-2">
-                                <Label htmlFor="phone" className="text-right block w-full">رقم الهاتف</Label>
+                                <Label htmlFor="phone" className="text-right block w-full">{__('messages.register.phone_label')}</Label>
                                 <Input
                                     id="phone"
                                     name="phone"
                                     type="tel"
                                     required
-                                    placeholder="+962 7XXXXXXXX"
+                                    placeholder={__('messages.register.phone_placeholder')}
                                     className="h-12 text-right"
                                     dir="ltr"
                                 />
                                 <InputError message={errors.phone} />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="country" className="text-right block w-full">دولة الإقامة</Label>
+                                <Label htmlFor="country" className="text-right block w-full">{__('messages.register.country_residence')}</Label>
                                 <Input
                                     id="country"
                                     name="country"
                                     type="text"
                                     required
-                                    placeholder="الأردن"
+                                    placeholder={__('messages.register.country_placeholder')}
                                     className="h-12 text-right"
                                     dir="rtl"
                                 />
@@ -98,13 +101,13 @@ export default function Register({ canLogin }: Props) {
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="nationality" className="text-right block w-full">الجنسية</Label>
+                            <Label htmlFor="nationality" className="text-right block w-full">{__('messages.register.nationality')}</Label>
                             <Input
                                 id="nationality"
                                 name="nationality"
                                 type="text"
                                 required
-                                placeholder="أردني"
+                                placeholder={__('messages.register.nationality_placeholder')}
                                 className="h-12 text-right"
                                 dir="rtl"
                             />
@@ -113,7 +116,7 @@ export default function Register({ canLogin }: Props) {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-2">
-                                <Label htmlFor="password">كلمة المرور</Label>
+                                <Label htmlFor="password">{__('messages.login.password_label')}</Label>
                                 <PasswordInput
                                     id="password"
                                     name="password"
@@ -125,7 +128,7 @@ export default function Register({ canLogin }: Props) {
                                 <InputError message={errors.password} />
                             </div>
                             <div className="space-y-2">
-                                <Label htmlFor="password_confirmation">تأكيد كلمة المرور</Label>
+                                <Label htmlFor="password_confirmation">{__('messages.register.confirm_password')}</Label>
                                 <Input
                                     id="password_confirmation"
                                     name="password_confirmation"
@@ -144,21 +147,21 @@ export default function Register({ canLogin }: Props) {
                                 className="text-on-surface-variant text-sm leading-relaxed cursor-pointer text-right"
                                 htmlFor="terms"
                             >
-                                أوافق على{' '}
+                                {__('messages.register.agree_terms')}{' '}
                                 <Link
                                     className="font-bold text-primary hover:underline"
                                     href={terms()}
                                 >
-                                    شروط الخدمة
+                                    {__('messages.register.terms_of_service')}
                                 </Link>{' '}
-                                و{' '}
+                                {__('messages.register.and')}{' '}
                                 <Link
                                     className="font-bold text-primary hover:underline"
                                     href="#"
                                 >
-                                    سياسة الخصوصية
+                                    {__('messages.register.privacy_policy')}
                                 </Link>{' '}
-                                الخاصة بالمنصة.
+                                .
                             </Label>
                             <Checkbox id="terms" name="terms" required className="mt-1" />
                         </div>
@@ -168,7 +171,7 @@ export default function Register({ canLogin }: Props) {
                             type="submit"
                             disabled={processing}
                         >
-                            <span>إنشاء الحساب الآن</span>
+                            <span>{__('messages.register.submit_button')}</span>
                             {processing ? (
                                 <Spinner className="size-5" />
                             ) : (
@@ -185,7 +188,7 @@ export default function Register({ canLogin }: Props) {
                 <div className="flex w-full items-center gap-4">
                     <div className="bg-outline-variant/30 h-px flex-1" />
                     <span className="text-on-surface-variant text-xs font-medium">
-                        أو سجل عبر
+                        {__('messages.login.or_continue_with')}
                     </span>
                     <div className="bg-outline-variant/30 h-px flex-1" />
                 </div>
@@ -200,36 +203,36 @@ export default function Register({ canLogin }: Props) {
                             className="h-5 w-5"
                             src="https://www.google.com/favicon.ico"
                         />
-                        <span>التسجيل باستخدام Google</span>
+                        <span>{__('messages.login.google_login')}</span>
                     </Button>
                 </div>
                 {canLogin && (
                     <p className="text-on-surface-variant text-sm">
-                        لديك حساب بالفعل؟{' '}
+                        {__('messages.register.have_account')}{' '}
                         <Link
                             className="font-bold text-primary hover:underline"
                             href={login()}
                         >
-                            تسجيل الدخول
+                            {__('messages.login.login_button')}
                         </Link>
                     </p>
                 )}
             </div>
 
             <footer className="text-on-surface-variant mx-auto mt-16 flex w-full max-w-xl items-center justify-between text-[10px] opacity-60">
-                <span>© 2026 أفكار بـ 100 دولار. جميع الحقوق محفوظة.</span>
+                <span>© {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}</span>
                 <div className="flex gap-4">
                     <Link
                         className="transition-colors hover:text-primary"
                         href={contact()}
                     >
-                        الدعم الفني
+                        {__('messages.footer.support')}
                     </Link>
                     <Link
                         className="transition-colors hover:text-primary"
                         href="#"
                     >
-                        سياسة الكوكيز
+                        {__('messages.footer.privacy')}
                     </Link>
                 </div>
             </footer>

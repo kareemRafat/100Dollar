@@ -1,6 +1,9 @@
 import { Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 export function Footer() {
+    const { __ } = useLang();
+
     return (
         <footer className="w-full bg-deep-navy px-6 pt-16 pb-8 text-white">
             <div className="mx-auto max-w-7xl">
@@ -10,21 +13,16 @@ export function Footer() {
                             className="block font-headline text-2xl font-black text-white"
                             href="/"
                         >
-                            أفكار بـ{' '}
-                            <span className="text-primary-fixed-dim">
-                                100 دولار
-                            </span>
+                            {__('messages.ideas')} <span className="text-primary-fixed-dim">{__('messages.for_100')}</span>
                         </Link>
                         <p className="max-w-xs text-sm leading-relaxed text-gray-400">
-                            المنصة العربية الأولى لدعم وتمويل الأفكار الصغيرة
-                            والمبتكرة التي تبدأ بميزانية لا تتجاوز الـ 100
-                            دولار. نحول أفكارك إلى واقع ملموس.
+                            {__('messages.footer.description')}
                         </p>
                     </div>
 
                     <div>
                         <h5 className="mb-6 font-headline text-lg font-bold text-primary-fixed-dim">
-                            الروابط السريعة
+                            {__('messages.footer.quick_links')}
                         </h5>
                         <ul className="space-y-4">
                             <li>
@@ -32,7 +30,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/"
                                 >
-                                    الرئيسية
+                                    {__('messages.nav.home')}
                                 </Link>
                             </li>
                             <li>
@@ -40,7 +38,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/archive"
                                 >
-                                    الأرشيف
+                                    {__('messages.nav.archive')}
                                 </Link>
                             </li>
                             <li>
@@ -48,7 +46,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/sponsors"
                                 >
-                                    الرعاة
+                                    {__('messages.nav.sponsors')}
                                 </Link>
                             </li>
                             <li>
@@ -56,7 +54,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/about"
                                 >
-                                    من نحن
+                                    {__('messages.nav.about')}
                                 </Link>
                             </li>
                         </ul>
@@ -64,7 +62,7 @@ export function Footer() {
 
                     <div>
                         <h5 className="mb-6 font-headline text-lg font-bold text-primary-fixed-dim">
-                            الدعم
+                            {__('messages.footer.support')}
                         </h5>
                         <ul className="space-y-4">
                             <li>
@@ -72,7 +70,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/faq"
                                 >
-                                    الأسئلة الشائعة
+                                    {__('messages.footer.faq')}
                                 </Link>
                             </li>
                             <li>
@@ -80,7 +78,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/contact"
                                 >
-                                    تواصل معنا
+                                    {__('messages.nav.contact')}
                                 </Link>
                             </li>
                             <li>
@@ -88,7 +86,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/terms"
                                 >
-                                    شروط الاستخدام
+                                    {__('messages.footer.terms')}
                                 </Link>
                             </li>
                             <li>
@@ -96,7 +94,7 @@ export function Footer() {
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
                                     href="/privacy"
                                 >
-                                    سياسة الخصوصية
+                                    {__('messages.footer.privacy')}
                                 </Link>
                             </li>
                         </ul>
@@ -104,7 +102,7 @@ export function Footer() {
 
                     <div>
                         <h5 className="mb-6 font-headline text-lg font-bold text-primary-fixed-dim">
-                            تابعنا
+                            {__('messages.footer.follow_us')}
                         </h5>
                         <div className="flex gap-4">
                             <a
@@ -161,8 +159,7 @@ export function Footer() {
 
                 <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
                     <p className="font-body text-sm text-gray-400">
-                        © {new Date().getFullYear()} أفكار بـ 100 دولار. جميع
-                        الحقوق محفوظة.
+                        © {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}
                     </p>
                 </div>
             </div>

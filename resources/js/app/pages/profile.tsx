@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { SideNav } from '@/app/components/old_app/side-nav';
 import { MobileBottomNav } from '@/app/components/old_app/mobile-bottom-nav';
 import AppLayout from '@/app/layouts/app-layout';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     user: {
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export default function Profile({ user }: Props) {
+    const { __ } = useLang();
     const [activeSection, setActiveSection] = useState('personal-info');
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
     const [profileVisible, setProfileVisible] = useState(false);
@@ -22,19 +24,19 @@ export default function Profile({ user }: Props) {
     const sideNavItems = [
         {
             id: 'personal-info',
-            label: 'المعلومات الشخصية',
+            label: __('messages.profile.personal_info'),
             icon: 'person',
             href: '#personal-info',
         },
         {
             id: 'password-security',
-            label: 'كلمة المرور والأمان',
+            label: __('messages.profile.password_security'),
             icon: 'shield',
             href: '#password-security',
         },
         {
             id: 'protection',
-            label: 'إعدادات الحماية',
+            label: __('messages.profile.protection_settings'),
             icon: 'lock_person',
             href: '#protection',
         },
@@ -43,19 +45,19 @@ export default function Profile({ user }: Props) {
     const mobileNavItems = [
         {
             id: 'personal-info',
-            label: 'الشخصية',
+            label: __('messages.profile.personal_tab'),
             icon: 'person',
             href: '#personal-info',
         },
         {
             id: 'password-security',
-            label: 'الأمان',
+            label: __('messages.profile.security_tab'),
             icon: 'shield',
             href: '#password-security',
         },
         {
             id: 'protection',
-            label: 'الحماية',
+            label: __('messages.profile.protection_tab'),
             icon: 'lock_person',
             href: '#protection',
         },
@@ -63,25 +65,24 @@ export default function Profile({ user }: Props) {
 
     return (
         <AppLayout activeRoute="/profile">
-            <Head title="إدارة حسابك" />
+            <Head title={__('messages.profile.hero_title')} />
 
             <div className="md:flex md:min-h-screen">
                 <SideNav activeSection={activeSection} items={sideNavItems} />
 
                 <main className="w-full flex-1 p-6 pb-24 md:p-12 md:pb-12">
                     <header className="mb-12">
-                        <h1 className="mb-2 text-4xl font-black text-secondary">
-                            إدارة حسابك
+                        <h1 className="mb-2 text-4xl font-black text-secondary dark:text-white">
+                            {__('messages.profile.hero_title')}
                         </h1>
-                        <p className="text-secondary opacity-60">
-                            خصص بياناتك الشخصية وحافظ على أمان استثماراتك في
-                            السجل الذهبي.
+                        <p className="text-secondary dark:text-slate-400 opacity-60">
+                            {__('messages.profile.hero_desc')}
                         </p>
                     </header>
 
                     <div className="grid gap-12">
                         <section
-                            className="rounded-xl border-r-4 border-primary bg-surface-container-lowest p-8 shadow-sm"
+                            className="rounded-xl border-e-4 border-primary bg-surface-container-lowest p-8 shadow-sm dark:bg-card"
                             id="personal-info"
                             onClick={() => setActiveSection('personal-info')}
                         >
@@ -89,8 +90,8 @@ export default function Profile({ user }: Props) {
                                 <span className="material-symbols-outlined text-3xl text-primary">
                                     account_circle
                                 </span>
-                                <h2 className="text-2xl font-bold text-secondary">
-                                    المعلومات الشخصية
+                                <h2 className="text-2xl font-bold text-secondary dark:text-white">
+                                    {__('messages.profile.personal_info')}
                                 </h2>
                             </div>
                             <div className="flex flex-col gap-10 md:flex-row">
@@ -117,41 +118,41 @@ export default function Profile({ user }: Props) {
                                         </label>
                                     </div>
                                     <div className="text-center">
-                                        <p className="text-sm font-bold text-secondary">
-                                            صورة الحساب
+                                        <p className="text-sm font-bold text-secondary dark:text-white">
+                                            {__('messages.profile.account_image')}
                                         </p>
                                         <p className="text-xs text-secondary/60">
-                                            JPG أو PNG بحد أقصى 5 ميجابايت
+                                            {__('messages.profile.image_hint')}
                                         </p>
                                     </div>
                                 </div>
                                 <div className="grid flex-1 grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-2">
-                                        <label className="pr-1 text-sm font-bold text-secondary">
-                                            الاسم الكامل
+                                        <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                            {__('messages.profile.full_name')}
                                         </label>
                                         <input
-                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary dark:text-white transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
                                             type="text"
                                             defaultValue={user.name}
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="pr-1 text-sm font-bold text-secondary">
-                                            البريد الإلكتروني
+                                        <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                            {__('messages.profile.email')}
                                         </label>
                                         <input
-                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary dark:text-white transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
                                             type="email"
                                             defaultValue={user.email}
                                         />
                                     </div>
                                     <div className="space-y-2 sm:col-span-full ">
-                                        <label className="pr-1 text-sm font-bold text-secondary">
-                                            رقم الهاتف
+                                        <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                            {__('messages.profile.phone')}
                                         </label>
                                         <input
-                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-right text-secondary transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-end text-secondary dark:text-white transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
                                             dir="ltr"
                                             type="tel"
                                             defaultValue={
@@ -160,15 +161,14 @@ export default function Profile({ user }: Props) {
                                         />
                                     </div>
                                     <div className="space-y-2 md:col-span-2">
-                                        <label className="pr-1 text-sm font-bold text-secondary">
-                                            النبذة الشخصية
+                                        <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                            {__('messages.profile.bio')}
                                         </label>
                                         <textarea
-                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                            className="w-full rounded-lg border-none bg-surface-container-low p-3 text-secondary dark:text-white transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
                                             rows={3}
                                             defaultValue={
-                                                user.bio ||
-                                                'مستثمر مهتم بالأفكار الناشئة والتقنيات المالية الحديثة.'
+                                                user.bio || __('messages.profile.bio_placeholder')
                                             }
                                         />
                                     </div>
@@ -177,47 +177,47 @@ export default function Profile({ user }: Props) {
                         </section>
 
                         <section
-                            className="rounded-xl border-r-4 border-deep-navy bg-surface-container-lowest p-8 shadow-sm"
+                            className="rounded-xl border-e-4 border-deep-navy bg-surface-container-lowest p-8 shadow-sm dark:bg-card"
                             id="password-security"
                             onClick={() =>
                                 setActiveSection('password-security')
                             }
                         >
                             <div className="mb-8 flex items-center gap-4">
-                                <span className="material-symbols-outlined text-3xl text-secondary">
+                                <span className="material-symbols-outlined text-3xl text-secondary dark:text-white">
                                     lock
                                 </span>
-                                <h2 className="text-2xl font-bold text-secondary">
-                                    كلمة المرور والأمان
+                                <h2 className="text-2xl font-bold text-secondary dark:text-white">
+                                    {__('messages.profile.password_security')}
                                 </h2>
                             </div>
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                                 <div className="space-y-2">
-                                    <label className="pr-1 text-sm font-bold text-secondary">
-                                        كلمة المرور الحالية
+                                    <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                        {__('messages.profile.current_password')}
                                     </label>
                                     <input
-                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary dark:text-white"
                                         placeholder="••••••••"
                                         type="password"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="pr-1 text-sm font-bold text-secondary">
-                                        كلمة المرور الجديدة
+                                    <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                        {__('messages.profile.new_password')}
                                     </label>
                                     <input
-                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary dark:text-white"
                                         placeholder="••••••••"
                                         type="password"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="pr-1 text-sm font-bold text-secondary">
-                                        تأكيد كلمة المرور
+                                    <label className="pe-1 text-sm font-bold text-secondary dark:text-white">
+                                        {__('messages.profile.confirm_password')}
                                     </label>
                                     <input
-                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
+                                        className="w-full rounded-lg border-none bg-surface-container-low p-3 transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary dark:text-white"
                                         placeholder="••••••••"
                                         type="password"
                                     />
@@ -228,13 +228,13 @@ export default function Profile({ user }: Props) {
                                     className="rounded-lg bg-secondary px-6 py-2 font-bold text-white transition-colors hover:bg-secondary/90"
                                     type="button"
                                 >
-                                    تحديث كلمة المرور
+                                    {__('messages.profile.update_password')}
                                 </button>
                             </div>
                         </section>
 
                         <section
-                            className="rounded-xl border-r-4 border-[#D3C4AF] bg-surface-container-lowest p-8 shadow-sm"
+                            className="rounded-xl border-e-4 border-[#D3C4AF] bg-surface-container-lowest p-8 shadow-sm dark:bg-card"
                             id="protection"
                             onClick={() => setActiveSection('protection')}
                         >
@@ -242,25 +242,24 @@ export default function Profile({ user }: Props) {
                                 <span className="material-symbols-outlined text-3xl text-outline">
                                     verified_user
                                 </span>
-                                <h2 className="text-2xl font-bold text-secondary">
-                                    إعدادات الحماية والخصوصية
+                                <h2 className="text-2xl font-bold text-secondary dark:text-white">
+                                    {__('messages.profile.protection_privacy')}
                                 </h2>
                             </div>
                             <div className="space-y-6">
                                 <div className="flex items-center justify-between rounded-lg bg-surface-container-low p-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="rounded-md bg-white p-2 shadow-sm">
+                                        <div className="rounded-md bg-white dark:bg-surface-container-highest p-2 shadow-sm">
                                             <span className="material-symbols-outlined text-primary">
                                                 phonelink_lock
                                             </span>
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-secondary">
-                                                المصادقة الثنائية (2FA)
+                                            <h4 className="font-bold text-secondary dark:text-white">
+                                                {__('messages.profile.two_factor_title')}
                                             </h4>
-                                            <p className="text-sm text-secondary/60">
-                                                إضافة طبقة حماية إضافية لحسابك
-                                                عبر رسائل SMS.
+                                            <p className="text-sm text-secondary/60 dark:text-slate-400">
+                                                {__('messages.profile.two_factor_desc')}
                                             </p>
                                         </div>
                                     </div>
@@ -280,18 +279,17 @@ export default function Profile({ user }: Props) {
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg bg-surface-container-low p-4">
                                     <div className="flex items-center gap-4">
-                                        <div className="rounded-md bg-white p-2 shadow-sm">
+                                        <div className="rounded-md bg-white dark:bg-surface-container-highest p-2 shadow-sm">
                                             <span className="material-symbols-outlined text-primary">
                                                 visibility
                                             </span>
                                         </div>
                                         <div>
-                                            <h4 className="font-bold text-secondary">
-                                                ظهور الملف الشخصي
+                                            <h4 className="font-bold text-secondary dark:text-white">
+                                                {__('messages.profile.visibility_title')}
                                             </h4>
-                                            <p className="text-sm text-secondary/60">
-                                                السماح للمستثمرين الآخرين برؤية
-                                                اهتماماتك الاستثمارية.
+                                            <p className="text-sm text-secondary/60 dark:text-slate-400">
+                                                {__('messages.profile.visibility_desc')}
                                             </p>
                                         </div>
                                     </div>
@@ -314,16 +312,16 @@ export default function Profile({ user }: Props) {
 
                         <div className="mb-20 flex items-center justify-end gap-4">
                             <button
-                                className="rounded-lg px-8 py-3 font-bold text-secondary transition-colors hover:bg-surface-container-high"
+                                className="rounded-lg px-8 py-3 font-bold text-secondary dark:text-white transition-colors hover:bg-surface-container-high"
                                 type="button"
                             >
-                                إلغاء
+                                {__('messages.profile.cancel')}
                             </button>
                             <button
                                 className="rounded-lg bg-primary px-12 py-3 font-bold text-white shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95"
                                 type="button"
                             >
-                                حفظ جميع التغييرات
+                                {__('messages.profile.save_changes')}
                             </button>
                         </div>
                     </div>

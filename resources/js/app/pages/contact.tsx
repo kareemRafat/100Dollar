@@ -1,29 +1,32 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 
-const contactCards = [
-    {
-        icon: 'mail',
-        label: 'البريد الإلكتروني',
-        value: 'contact@goldenledger.sa',
-    },
-    {
-        icon: 'chat',
-        label: 'واتساب',
-        value: '+966 50 000 0000',
-        dir: 'ltr' as const,
-    },
-    {
-        icon: 'schedule',
-        label: 'ساعات العمل',
-        value: 'الأحد - الخميس: 9ص - 6م',
-    },
-];
-
 export default function Contact() {
+    const { __ } = useLang();
+
+    const contactCards = [
+        {
+            icon: 'mail',
+            label: __('messages.contact.email_card_label'),
+            value: 'contact@goldenledger.sa',
+        },
+        {
+            icon: 'chat',
+            label: __('messages.contact.whatsapp_card_label'),
+            value: '+966 50 000 0000',
+            dir: 'ltr' as const,
+        },
+        {
+            icon: 'schedule',
+            label: __('messages.contact.working_hours_card_label'),
+            value: __('messages.contact.working_hours_value'),
+        },
+    ];
+
     return (
         <AppLayout activeRoute="/contact">
-            <Head title="تواصل معنا" />
+            <Head title={__('messages.nav.contact')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-deep-navy md:h-[400px]">
                 <div className="absolute inset-0 z-0">
@@ -44,13 +47,11 @@ export default function Contact() {
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                     <h1 className="relative mb-6 inline-block font-headline text-2xl font-extrabold text-white md:text-4xl">
-                        تواصل معنا
+                        {__('messages.contact.hero_title')}
                         <span className="absolute end-0 -bottom-3 start-0 mx-auto h-1 w-16 rounded-full bg-primary shadow-lg" />
                     </h1>
                     <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90">
-                        نحن هنا للإجابة على استفساراتك ودعم أفكارك الطموحة. لا
-                        تتردد في مراسلتنا عبر النموذج أو من خلال قنوات التواصل
-                        المباشرة.
+                        {__('messages.contact.hero_desc')}
                     </p>
                 </div>
             </section>
@@ -59,49 +60,49 @@ export default function Contact() {
                 <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
                     <div className="rounded-xl border-outline-variant/30 bg-surface-container-lowest p-8 shadow-sm md:p-12 lg:col-span-7">
                         <h2 className="mb-8 text-2xl font-bold text-on-surface dark:text-white">
-                            أرسل لنا رسالة
+                            {__('messages.contact.send_message_title')}
                         </h2>
                         <form className="space-y-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="flex flex-col gap-2">
-                                    <label className="pr-2 text-sm font-bold text-on-surface-variant">
-                                        الاسم
+                                    <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                        {__('messages.contact.name_label')}
                                     </label>
                                     <input
                                         className="rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
-                                        placeholder="أدخل اسمك الكامل"
+                                        placeholder={__('messages.contact.name_placeholder')}
                                         type="text"
                                     />
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="pr-2 text-sm font-bold text-on-surface-variant">
-                                        البريد الإلكتروني
+                                    <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                        {__('messages.contact.email_label')}
                                     </label>
                                     <input
                                         className="rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
-                                        placeholder="example@domain.com"
+                                        placeholder={__('messages.contact.email_placeholder')}
                                         type="email"
                                     />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label className="pr-2 text-sm font-bold text-on-surface-variant">
-                                    الموضوع
+                                <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                    {__('messages.contact.subject_label')}
                                 </label>
                                 <select className="appearance-none rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all focus:ring-1 focus:ring-primary">
-                                    <option>استفسار عام</option>
-                                    <option>رعاية</option>
-                                    <option>شكوى</option>
-                                    <option>أخرى</option>
+                                    <option>{__('messages.contact.subject_general')}</option>
+                                    <option>{__('messages.contact.subject_sponsorship')}</option>
+                                    <option>{__('messages.contact.subject_complaint')}</option>
+                                    <option>{__('messages.contact.subject_other')}</option>
                                 </select>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label className="pr-2 text-sm font-bold text-on-surface-variant">
-                                    الرسالة
+                                <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                    {__('messages.contact.message_label')}
                                 </label>
                                 <textarea
                                     className="h-28 resize-none rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
-                                    placeholder="اكتب رسالتك هنا..."
+                                    placeholder={__('messages.contact.message_placeholder')}
                                     rows={5}
                                 />
                             </div>
@@ -109,7 +110,7 @@ export default function Contact() {
                                 className="w-full rounded-lg bg-primary px-12 py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95 md:w-auto"
                                 type="submit"
                             >
-                                إرسال
+                                {__('messages.contact.send_button')}
                             </button>
                         </form>
                     </div>
@@ -154,18 +155,17 @@ export default function Contact() {
                 <div className="mt-16 flex flex-col items-center justify-between gap-8 rounded-2xl border-primary/10 bg-primary/5 p-8 text-center md:flex-row md:p-12 md:text-right">
                     <div>
                         <h3 className="mb-2 text-2xl font-extrabold text-on-surface dark:text-white">
-                            هل أنت شركة وتريد رعاية يوم؟
+                            {__('messages.contact.sponsor_cta_title')}
                         </h3>
                         <p className="text-on-surface-variant">
-                            ساهم في دعم الابتكار وكن شريكاً في نجاح الأفكار
-                            السعودية القادمة.
+                            {__('messages.contact.sponsor_cta_desc')}
                         </p>
                     </div>
                     <Link
                         href="/sponsors"
                         className="rounded-lg bg-deep-navy px-8 py-3 font-bold whitespace-nowrap text-primary transition-all hover:bg-deep-navy/90"
                     >
-                        اعرف المزيد
+                        {__('messages.contact.learn_more')}
                     </Link>
                 </div>
             </section>

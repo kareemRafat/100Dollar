@@ -10,6 +10,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 
 type Props = {
@@ -23,16 +24,18 @@ export default function Login({
     canResetPassword,
     canRegister,
 }: Props) {
+    const { __ } = useLang();
+
     return (
         <AuthLayout>
-            <Head title="تسجيل الدخول" />
+            <Head title={__('messages.login.hero_title')} />
 
             <header className="mb-10 text-right">
                 <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                    مرحباً بك مجدداً
+                    {__('messages.login.welcome_back')}
                 </h2>
                 <p className="text-on-surface-variant">
-                    سجل الدخول للوصول إلى حسابك ومتابعة أفكارك
+                    {__('messages.login.subtitle')}
                 </p>
             </header>
 
@@ -52,7 +55,7 @@ export default function Login({
                         <input type="hidden" name="_auth_context" value="app" />
 
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="text-right block w-full">البريد الإلكتروني</Label>
+                            <Label htmlFor="email" className="text-right block w-full">{__('messages.login.email_label')}</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -68,13 +71,13 @@ export default function Login({
 
                         <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                                <Label htmlFor="password">كلمة المرور</Label>
+                                <Label htmlFor="password">{__('messages.login.password_label')}</Label>
                                 {canResetPassword && (
                                     <Link
                                         className="text-xs font-bold text-primary hover:underline"
                                         href={request()}
                                     >
-                                        نسيت كلمة المرور؟
+                                        {__('messages.login.forgot_password')}
                                     </Link>
                                 )}
                             </div>
@@ -94,7 +97,7 @@ export default function Login({
                                 className="text-on-surface-variant cursor-pointer text-sm font-normal"
                                 htmlFor="remember-me"
                             >
-                                تذكرني على هذا الجهاز
+                                {__('messages.login.remember_me')}
                             </Label>
                             <Checkbox id="remember-me" name="remember" />
                         </div>
@@ -104,7 +107,7 @@ export default function Login({
                             type="submit"
                             disabled={processing}
                         >
-                            <span>تسجيل الدخول</span>
+                            <span>{__('messages.login.login_button')}</span>
                             {processing ? (
                                 <Spinner className="size-5" />
                             ) : (
@@ -121,7 +124,7 @@ export default function Login({
                 <div className="flex w-full items-center gap-4">
                     <div className="bg-outline-variant/30 h-px flex-1" />
                     <span className="text-on-surface-variant text-xs font-medium">
-                        أو المتابعة عبر
+                        {__('messages.login.or_continue_with')}
                     </span>
                     <div className="bg-outline-variant/30 h-px flex-1" />
                 </div>
@@ -136,17 +139,17 @@ export default function Login({
                             className="h-5 w-5"
                             src="https://www.google.com/favicon.ico"
                         />
-                        <span>المتابعة باستخدام Google</span>
+                        <span>{__('messages.login.google_login')}</span>
                     </Button>
                 </div>
                 {canRegister && (
                     <p className="text-on-surface-variant text-sm">
-                        ليس لديك حساب؟{' '}
+                        {__('messages.login.no_account')}{' '}
                         <Link
                             className="font-bold text-primary hover:underline"
                             href={register()}
                         >
-                            أنشئ حساباً جديداً
+                            {__('messages.login.create_account')}
                         </Link>
                     </p>
                 )}
