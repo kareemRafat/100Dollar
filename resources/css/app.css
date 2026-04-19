@@ -371,8 +371,8 @@
     }
 
     .arabic-dynamic-padding {
-        padding-right: 32px;
-        padding-left: 24px;
+        padding-inline-end: 32px;
+        padding-inline-start: 24px;
     }
 
     .tonal-shift {

@@ -4,6 +4,7 @@ import { IdeaCard } from '@/app/components/old_app/idea-card';
 import { WinnerCard } from '@/app/components/old_app/winner-card';
 import { CountdownTimer } from '@/app/components/old_app/countdown-timer';
 import { ParticlesBackground } from '@/app/components/old_app/particles-background';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 const sampleIdeas = [
     {
@@ -74,9 +75,11 @@ const votingDeadline = new Date(
 );
 
 export default function Home() {
+    const { __ } = useLang();
+
     return (
         <AppLayout activeRoute="/">
-            <Head title="أفكار بـ 100 دولار" />
+            <Head title={__('messages.welcome')} />
 
             <section className="airy-dots relative flex flex-col items-center overflow-hidden bg-surface py-20 text-center md:py-32">
                 <ParticlesBackground />
@@ -85,7 +88,7 @@ export default function Home() {
                         <span className="material-symbols-outlined text-sm">
                             rocket_launch
                         </span>
-                        فرصتك اليوم لتبدأ مشروعك الصغير
+                        {__('messages.welcome')}
                     </div>
                     <h1 className="mb-8 max-w-4xl font-headline text-5xl leading-tight font-black text-on-surface dark:text-white md:text-7xl">
                         شارك فكرتك واربح{' '}
@@ -130,8 +133,8 @@ export default function Home() {
                             </span>
                         </div>
                     </div>
-                    <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-primary/20 blur-3xl transition-all group-hover:scale-150" />
-                    <span className="material-symbols-outlined absolute top-1/2 left-8 -translate-y-1/2 scale-150 text-6xl text-on-surface dark:text-white/10">
+                    <div className="absolute -bottom-4 -start-4 h-32 w-32 rounded-full bg-primary/20 blur-3xl transition-all group-hover:scale-150" />
+                    <span className="material-symbols-outlined absolute top-1/2 start-8 -translate-y-1/2 scale-150 text-6xl text-on-surface dark:text-white/10">
                         handshake
                     </span>
                 </div>
@@ -168,7 +171,7 @@ export default function Home() {
             </section>
 
             <section className="mx-auto mb-24 max-w-7xl px-6">
-                <div className="mb-12 flex flex-col items-end justify-between gap-4 border-r-4 border-primary pr-6 md:flex-row">
+                <div className="mb-12 flex flex-col items-end justify-between gap-4 border-e-4 border-primary pe-6 md:flex-row">
                     <div>
                         <h2 className="font-headline text-4xl font-black text-on-surface dark:text-white md:text-5xl">
                             قاعة المشاهير

@@ -42,18 +42,18 @@
 
 ### ⚙️ إعداد المشروع
 
-- [ ] إنشاء مشروع Laravel 13 جديد مع Starter Kit (Fortify + Inertia + React)
-- [ ] تثبيت وضبط Inertia.js 3 مع React
-- [ ] ضبط TypeScript في جانب React
-- [ ] إعداد قاعدة البيانات MySQL
-- [ ] ضبط Laravel Sanctum للمصادقة
-- [ ] إضافة Middleware `CheckRole` للتحقق من دور المستخدم (admin/user)
-- [ ] إعداد Laravel Queue
-- [ ] إعداد Laravel Scheduler
-- [ ] ضبط بيئة البريد الإلكتروني (SMTP / Mailtrap للتطوير)
-- [ ] إعداد Laravel Storage لرفع الملفات والصور
-- [ ] ضبط متغيرات البيئة `.env`
-- [ ] إعداد Git repository وهيكل الفروع (main / develop / feature)
+- [x] إنشاء مشروع Laravel 13 جديد مع Starter Kit (Fortify + Inertia + React)
+- [x] تثبيت وضبط Inertia.js 3 مع React
+- [x] ضبط TypeScript في جانب React
+- [x] إعداد قاعدة البيانات MySQL
+- [x] ضبط Laravel Sanctum للمصادقة
+- [x] إضافة Middleware `CheckRole` للتحقق من دور المستخدم (admin/user)
+- [x] إعداد Laravel Queue
+- [x] إعداد Laravel Scheduler
+- [x] ضبط بيئة البريد الإلكتروني (SMTP / Mailtrap للتطوير)
+- [x] إعداد Laravel Storage لرفع الملفات والصور
+- [x] ضبط متغيرات البيئة `.env`
+- [x] إعداد Git repository وهيكل الفروع (main / develop / feature)
 
 ---
 
@@ -61,78 +61,6 @@
 
 > كل domain معزول تماماً — الأدمن في مجلده والموقع في مجلده والمشترك في `shared/`.
 
-```
-resources/js/
-│
-├── admin/                        ← كل حاجة خاصة بالأدمن
-│   ├── layouts/
-│   │   └── AdminLayout.tsx
-│   ├── pages/
-│   │   ├── auth/
-│   │   │   ├── Login.tsx
-│   │   │   ├── confirm-password.tsx
-│   │   │   ├── forgot-password.tsx
-│   │   │   ├── VerifyEmail.tsx
-│   │   │   ├── two-factor-challenge.tsx
-│   │   │   └── ForgotPassword.tsx
-│   │   ├── Dashboard.tsx
-│   │   ├── ideas/
-│   │   │   ├── Index.tsx
-│   │   │   └── Review.tsx
-│   │   ├── users/
-│   │   │   └── Index.tsx
-│   │   ├── sponsors/
-│   │   │   └── Index.tsx
-│   │   └── winners/
-│   │       └── Index.tsx
-│   ├── components/
-│   │   ├── Sidebar.tsx
-│   │   ├── StatsCard.tsx
-│   │   └── IdeaTable.tsx
-│   └── types/
-│       └── admin.ts
-│
-├── app/                          ← كل حاجة خاصة بالموقع
-│   ├── layouts/
-│   │   └── AppLayout.tsx
-│   ├── pages/
-│   │   ├── auth/
-│   │   │   ├── Login.tsx
-│   │   │   ├── Register.tsx
-│   │   │   ├── VerifyEmail.tsx
-│   │   │   ├── ResetPassword.tsx
-│   │   │   └── ForgotPassword.tsx
-│   │   ├── Home.tsx
-│   │   ├── IdeaDetail.tsx
-│   │   ├── SubmitIdea.tsx
-│   │   ├── Archive.tsx
-│   │   ├── Profile.tsx
-│   │   ├── Sponsors.tsx
-│   │   ├── About.tsx
-│   │   ├── Terms.tsx
-│   │   └── Contact.tsx
-│   ├── components/
-│   │   ├── Navbar.tsx
-│   │   ├── Footer.tsx
-│   │   ├── IdeaCard.tsx
-│   │   ├── VoteModal.tsx
-│   │   ├── CommentSection.tsx
-│   │   └── CountdownTimer.tsx
-│   └── types/
-│       ├── idea.ts
-│       ├── user.ts
-│       └── notification.ts
-│
-└── shared/                       ← المشترك بين الأدمن والموقع
-    ├── components/
-    │   └── Toast.tsx
-    ├── hooks/
-    │   ├── useVote.ts
-    │   ├── useFollow.ts
-    │   └── useNotifications.ts
-    └── types/
-        └── global.ts
-```
 
 **ملاحظة Inertia:** بتبعت اسم الـ component من Laravel كالتالي:
 
@@ -146,17 +74,7 @@ Fortify::loginView(fn () => Inertia::render('admin/pages/auth/Login'));
 Fortify::loginView(fn () => Inertia::render('app/pages/auth/Login'));
 ```
 
-**مهام إنشاء الهيكل:**
 
-- [ ] إنشاء مجلد `resources/js/admin/` بالهيكل الكامل
-- [ ] إنشاء مجلد `resources/js/app/` بالهيكل الكامل
-- [ ] إنشاء مجلد `resources/js/shared/` بالهيكل الكامل
-- [ ] نقل صفحات Starter Kit من `pages/auth/` إلى `admin/pages/auth/` ← **الخيار 2**
-- [ ] تعديل مسارات Fortify في `FortifyServiceProvider` لتشير إلى `admin/pages/auth/`
-- [ ] حذف صفحات Starter Kit الافتراضية غير المستخدمة (Welcome.tsx, Dashboard.tsx القديم)
-- [ ] ضبط `wayfinder` و `inertia` resolve path ليتعرف على المجلدات الجديدة في `vite.config.ts`
-
----
 
 ### 🗄️ قاعدة البيانات — Migrations
 

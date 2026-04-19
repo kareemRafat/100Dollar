@@ -16,6 +16,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { logout } from '@/routes';
 import { index } from '@/routes/app/ideas';
+import LanguageSwitcher from '@/components/language-switcher';
+import { Switch } from '@/components/ui/switch';
 
 type Props = {
     activeRoute?: string;
@@ -69,7 +71,7 @@ export function TopNavBar({ activeRoute }: Props) {
                         >
                             {item.title}
                             {activeRoute === item.href && (
-                                <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary" />
+                                <span className="absolute bottom-0 start-3 end-3 h-0.5 rounded-full bg-primary" />
                             )}
                         </Link>
                     ))}
@@ -79,7 +81,7 @@ export function TopNavBar({ activeRoute }: Props) {
                 <div className="flex items-center gap-2">
                     {auth.user ? (
                         <div className="flex items-center gap-1">
-                            <Link href="/ideas/create" className="hidden lg:block ml-2">
+                            <Link href="/ideas/create" className="hidden lg:block ms-2">
                                 <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
                                     قدم فكرتك
                                 </Button>
@@ -91,7 +93,7 @@ export function TopNavBar({ activeRoute }: Props) {
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pr-3 transition-all hover:border-primary/30 dark:bg-surface-container-low">
+                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-3 transition-all hover:border-primary/30 dark:bg-surface-container-low">
                                         <div className="hidden flex-col items-end sm:flex">
                                             <span className="text-[11px] font-bold text-on-surface dark:text-white">{auth.user.name}</span>
                                         </div>
@@ -133,18 +135,23 @@ export function TopNavBar({ activeRoute }: Props) {
 
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem 
-                                            className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5"
-                                            onClick={() => updateAppearance(appearance === 'dark' ? 'light' : 'dark')}
+                                            className="cursor-pointer rounded-lg py-2 flex items-center justify-between gap-2.5 text-xs font-bold focus:bg-primary/5"
+                                            onSelect={(e) => {
+                                                e.preventDefault();
+                                                updateAppearance(appearance === 'dark' ? 'light' : 'dark');
+                                            }}
                                         >
-                                            <span>{appearance === 'dark' ? 'الوضع المضيء' : 'الوضع الليلي'}</span>
-                                            {appearance === 'dark' ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+                                            <Switch 
+                                                checked={appearance === 'dark'} 
+                                                onCheckedChange={(checked) => updateAppearance(checked ? 'dark' : 'light')} 
+                                            />
+                                            <div className="flex items-center gap-2.5">
+                                                <span>{appearance === 'dark' ? 'الوضع المضيء' : 'الوضع الليلي'}</span>
+                                                {appearance === 'dark' ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+                                            </div>
                                         </DropdownMenuItem>
 
-                                        <DropdownMenuItem className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5">
-                                            <span className="text-[9px] text-primary bg-primary/10 px-1.5 py-0.5 rounded-full ml-auto">AR</span>
-                                            <span>اللغة العربية</span>
-                                            <Globe className="size-3.5" />
-                                        </DropdownMenuItem>
+                                        <LanguageSwitcher />
                                     </DropdownMenuGroup>
 
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
