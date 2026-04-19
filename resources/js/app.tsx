@@ -1,15 +1,33 @@
 import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createRoot } from 'react-dom/client';
 import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
-import AdminAuthLayout from '@/layouts/admin/admin-auth-layout';
-import AdminLayout from '@/layouts/admin/admin-layout';
-import AdminSettingsLayout from '@/layouts/admin/settings-layout';
+import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
+import AdminLayout from '@/admin/layouts/admin-layout';
+import AdminSettingsLayout from '@/admin/layouts/settings-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
+    resolve: (name) => {
+        // Resolve pages from admin/pages/ or app/pages/
+        const isApp = name.startsWith('app/');
+        const isAdmin = name.startsWith('admin/');
+        
+        let path = '';
+        if (isAdmin) {
+            path = `./admin/pages/${name.replace('admin/', '')}.tsx`;
+        } else if (isApp) {
+            path = `./app/pages/${name.replace('app/', '')}.tsx`;
+        } else {
+            path = `./pages/${name}.tsx`;
+        }
+
+        return resolvePageComponent(path, import.meta.glob('./**/*.tsx'));
+    },
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
@@ -23,6 +41,10 @@ createInertiaApp({
             default:
                 return null;
         }
+    },
+    setup({ el, App, props }) {
+        const root = createRoot(el);
+        root.render(<App {...props} />);
     },
     strictMode: true,
     withApp(app) {
