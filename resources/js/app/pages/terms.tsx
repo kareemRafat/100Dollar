@@ -1,76 +1,79 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 const sections = [
     {
         id: 'definitions',
         number: '٠١',
-        title: 'تعريفات',
+        title: 'definitions_title',
         content: [
-            'تُعرف هذه الوثيقة بـ "اتفاقية الاستخدام"، ويُشار إلى "الدفتر الذهبي" بالمنصة. المُشارك هو أي فرد أو جهة قانونية تقوم بتسجيل حساب أو تقديم فكرة استثمارية عبر القنوات الرسمية للمنصة.',
-            'الفكرة الاستثمارية: هي المحتوى المعرفي أو المقترح التجاري الذي يتم رفعه من قبل المستخدم لغرض التقييم أو المشاركة في المسابقات القائمة.',
+            'definitions_content_1',
+            'definitions_content_2',
         ],
     },
     {
         id: 'participation',
         number: '٠٢',
-        title: 'شروط المشاركة',
+        title: 'participation_title',
         content: [
-            'يجب أن يكون المشارك قد أتم سن الثامنة عشرة عاماً أو يمتلك موافقة صريحة من وليه الشرعي. تقتصر المشاركة على الأفكار الأصلية التي لم يسبق تنفيذها كمشروع تجاري قائم برأس مال يتجاوز الحد المسموح به في شروط المسابقة المحددة.',
+            'participation_content_1',
         ],
         list: [
-            'الالتزام بالهوية والآداب العامة المعمول بها.',
-            'تقديم بيانات دقيقة وصحيحة عند التسجيل.',
-            'عدم المشاركة بأفكار تنتهك حقوق الملكية الفكرية للغير.',
+            'participation_list_1',
+            'participation_list_2',
+            'participation_list_3',
         ],
     },
     {
         id: 'intellectual-property',
         number: '٠٣',
-        title: 'ملكية الأفكار',
+        title: 'intellectual_property_title',
         highlight: true,
         content: [
-            'تظل الملكية الفكرية للأفكار المقدمة ملكاً للمشارك الأصلي، ومع ذلك، بمجرد تقديم الفكرة، يمنح المشارك "الدفتر الذهبي" حقاً غير حصري، عالمياً، ومجانياً لعرض ونشر الفكرة لأغراض التسويق والتصويت. في حال فوز الفكرة بالجائزة الكبرى، يتم توقيع اتفاقية منفصلة لتنظيم حقوق الاستثمار والتنفيذ.',
+            'intellectual_property_content_1',
         ],
     },
     {
         id: 'voting',
         number: '٠٤',
-        title: 'آلية التصويت',
+        title: 'voting_title',
         content: [
-            'يتم احتساب الأصوات من خلال نظام تقني يمنع التكرار أو التلاعب. يحق لكل مستخدم مسجل التصويت مرة واحدة لكل فكرة. تشكل أصوات الجمهور ٤٠٪ من النتيجة النهائية، بينما تعود الـ ٦٠٪ المتبقية لتقييم لجنة الخبراء المتخصصة بناءً على معايير الجدوى والابتكار.',
+            'voting_content_1',
         ],
     },
     {
         id: 'prizes',
         number: '٠٥',
-        title: 'الجوائز',
+        title: 'prizes_title',
         content: [
-            'الجوائز المعلنة هي جوائز تشجيعية أو تمويلية تخضع لشروط الجهات المانحة. سيتم التواصل مع الفائزين عبر البريد الإلكتروني المسجل خلال ١٤ يوماً من إعلان النتائج الرسمية. لا يمكن استبدال الجوائز العينية بمبالغ نقدية إلا في الحالات التي تنص عليها شروط المسابقة صراحة.',
+            'prizes_content_1',
         ],
     },
     {
         id: 'disclaimer',
         number: '٠٦',
-        title: 'إخلاء المسؤولية',
+        title: 'disclaimer_title',
         content: [
-            'منصة "الدفتر الذهبي" غير مسؤولة عن أي خسائر مادية أو معنوية قد تنتج عن تنفيذ الأفكار المطروحة دون دراسة جدوى متكاملة. المنصة هي وسيط يربط المبتكرين بالفرص، ولا نتحمل مسؤولية فشل أي مشروع في مراحل التنفيذ اللاحقة.',
+            'disclaimer_content_1',
         ],
     },
 ];
 
 export default function Terms() {
+    const { __ } = useLang();
+
     return (
         <AppLayout>
-            <Head title="الشروط والأحكام" />
+            <Head title={__('messages.terms.title')} />
 
             <div className="mx-auto max-w-7xl px-8 pt-32 pb-16">
                 <header className="mb-12">
                     <h1 className="mb-4 text-4xl leading-tight font-extrabold tracking-tight text-on-surface dark:text-white md:text-5xl">
-                        الشروط والأحكام
+                        {__('messages.terms.title')}
                     </h1>
                     <p className="text-on-surface-variant text-sm font-medium">
-                        آخر تحديث: ٢٤ مايو ٢٠٢٤
+                        {__('messages.terms.last_updated')}
                     </p>
                     <div className="bg-outline-variant/30 mt-8 h-px w-full" />
                 </header>
@@ -84,7 +87,7 @@ export default function Terms() {
                                 className="scroll-mt-32"
                             >
                                 <h2 className="mb-6 text-2xl font-bold text-on-surface dark:text-white">
-                                    {section.title}
+                                    {__(`messages.terms.${section.title}`)}
                                 </h2>
                                 {section.highlight ? (
                                     <div className="bg-surface-container-lowest golden-ledger-shadow rounded-lg border-r-4 border-primary p-8">
@@ -99,18 +102,18 @@ export default function Terms() {
                                                 gavel
                                             </span>
                                             <span className="text-lg font-bold">
-                                                بند الملكية الفكرية
+                                                {__('messages.terms.intellectual_property_highlight_title')}
                                             </span>
                                         </div>
                                         <p className="leading-loose font-medium text-on-surface dark:text-white">
-                                            {section.content[0]}
+                                            {__(`messages.terms.${section.content[0]}`)}
                                         </p>
                                     </div>
                                 ) : (
                                     <div className="space-y-4 leading-loose text-on-surface dark:text-white/80">
                                         {section.content.map(
                                             (paragraph, idx) => (
-                                                <p key={idx}>{paragraph}</p>
+                                                <p key={idx}>{__(paragraph)}</p>
                                             ),
                                         )}
                                         {section.list && (
@@ -118,7 +121,7 @@ export default function Terms() {
                                                 {section.list.map(
                                                     (item, idx) => (
                                                         <li key={idx}>
-                                                            {item}
+                                                            {__(`messages.terms.${item}`)}
                                                         </li>
                                                     ),
                                                 )}
@@ -133,7 +136,7 @@ export default function Terms() {
                     <aside className="md:w-1/4">
                         <div className="bg-surface-container-low sticky top-32 rounded-xl p-8">
                             <h3 className="mb-6 text-lg font-bold text-on-surface dark:text-white">
-                                فهرس المحتوى
+                                {__('messages.terms.content_index_title')}
                             </h3>
                             <nav className="space-y-4">
                                 {sections.map((section) => (
@@ -146,7 +149,7 @@ export default function Terms() {
                                             {section.number}
                                         </span>
                                         <span className="group-hover:underline">
-                                            {section.title}
+                                            {__(`messages.terms.${section.title}`)}
                                         </span>
                                     </a>
                                 ))}

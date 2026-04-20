@@ -5,7 +5,7 @@ return [
     'submit_idea' => 'Submit your idea',
     'ideas_100' => 'Ideas for $100',
     'ideas' => 'Ideas',
-    'for_100' => 'for $100',
+    'for_100' => '100 $',
 
     'nav' => [
         'home' => 'Home',
@@ -258,6 +258,65 @@ return [
         'create_account' => 'Create a new account',
     ],
 
+    'forgot_password' => [
+        'hero_title' => 'Recover Password',
+        'back_to_login' => 'Back to Login',
+        'subtitle' => 'Enter your email to receive a recovery link',
+        'send_link' => 'Send Link',
+        'problem_contact_support' => 'Having a problem?',
+        'contact_support' => 'Contact technical support',
+    ],
+
+    'reset_password' => [
+        'hero_title' => 'Set New Password',
+        'subtitle' => 'Please choose a strong password to protect your account and future investments.',
+        'new_password_label' => 'New Password',
+        'confirm_password_label' => 'Confirm Password',
+        'update_button' => 'Update Password',
+        'strength_label' => 'Password Strength',
+        'strength_weak' => 'Weak',
+        'strength_medium' => 'Medium',
+        'strength_strong' => 'Strong',
+        'requirement_min_length' => 'At least 8 characters',
+        'requirement_special_char' => 'Special character (@#$)',
+        'requirement_numbers' => 'Numbers',
+    ],
+
+    'confirm_password' => [
+        'hero_title' => 'Confirm Password',
+        'subtitle' => 'This is a secure area of the application. Please confirm your password before continuing.',
+        'password_label' => 'Password',
+        'confirm_button' => 'Confirm',
+    ],
+
+    'two_factor_challenge' => [
+        'title' => 'Two-factor Authentication',
+        'description' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
+        'recovery_code_title' => 'Recovery Code',
+        'recovery_code_description' => 'Please confirm access to your account by entering one of your emergency recovery codes.',
+        'continue_button' => 'Continue',
+        'toggle_auth_code' => 'Use an authentication code instead',
+        'toggle_recovery_code' => 'Use a recovery code instead',
+        'recovery_code_placeholder' => 'Enter recovery code',
+    ],
+
+    'verify_email' => [
+        'hero_title' => 'Verify Your Email',
+        'subtitle' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+        'resent_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
+        'resend_button' => 'Resend Verification Email',
+        'edit_profile' => 'Edit Profile',
+        'logout' => 'Logout',
+    ],
+
+    'auth_layout' => [
+        'invest_future' => 'Invest in your future,',
+        'one_idea_at_time' => 'one idea at a time.',
+        'quote' => 'Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful.',
+        'iso_certified' => 'ISO Certified Membership',
+        'encrypted_data' => 'Fully Encrypted Data',
+    ],
+
     'register' => [
         'hero_title' => 'New Registration',
         'welcome_title' => 'Start your journey today',
@@ -272,7 +331,7 @@ return [
         'nationality_placeholder' => 'Saudi',
         'confirm_password' => 'Confirm Password',
         'agree_terms' => 'I agree to the',
-        'terms_of_service' => 'Terms of Service',
+        'terms_of_service' => 'Terms of Service and Privacy Policy',
         'and' => 'and',
         'privacy_policy' => 'Privacy Policy',
         'submit_button' => 'Create account now',

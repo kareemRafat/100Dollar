@@ -1,3 +1,4 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head, Link } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -10,7 +11,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 
 type Props = {
@@ -30,7 +30,7 @@ export default function Login({
         <AuthLayout>
             <Head title={__('messages.login.hero_title')} />
 
-            <header className="mb-10 text-right">
+            <header className="mb-10 text-start">
                 <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
                     {__('messages.login.welcome_back')}
                 </h2>
@@ -55,7 +55,7 @@ export default function Login({
                         <input type="hidden" name="_auth_context" value="app" />
 
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="text-right block w-full">{__('messages.login.email_label')}</Label>
+                            <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -63,8 +63,8 @@ export default function Login({
                                 required
                                 autoFocus
                                 placeholder="example@domain.com"
-                                className="h-12 text-right"
-                                dir="rtl"
+                                className="h-12 text-start"
+                                tabIndex={1}
                             />
                             <InputError message={errors.email} />
                         </div>
@@ -86,20 +86,20 @@ export default function Login({
                                 name="password"
                                 required
                                 placeholder="••••••••"
-                                className="h-12 text-right"
-                                dir="rtl"
+                                className="h-12 text-start"
+                                tabIndex={2}
                             />
                             <InputError message={errors.password} />
                         </div>
 
-                        <div className="flex items-center justify-end gap-3">
+                        <div className="flex items-center justify-start gap-3">
+                            <Checkbox id="remember-me" name="remember" />
                             <Label
                                 className="text-on-surface-variant cursor-pointer text-sm font-normal"
                                 htmlFor="remember-me"
                             >
                                 {__('messages.login.remember_me')}
                             </Label>
-                            <Checkbox id="remember-me" name="remember" />
                         </div>
 
                         <Button

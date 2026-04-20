@@ -12,35 +12,37 @@ import {
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { store } from '@/routes/two-factor/login';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 export default function TwoFactorChallenge() {
+    const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
     const [code, setCode] = useState('');
 
     const content = useMemo(() => {
         if (showRecoveryInput) {
             return {
-                title: 'Recovery code',
-                description:
-                    'Use one of your recovery codes to finish signing in.',
-                toggleText: 'Use an authentication code instead',
+                title: __('messages.two_factor_challenge.recovery_code_title'),
+                description: __('messages.two_factor_challenge.recovery_code_description'),
+                toggleText: __('messages.two_factor_challenge.toggle_auth_code'),
+                placeholder: __('messages.two_factor_challenge.recovery_code_placeholder'),
             };
         }
 
         return {
-            title: 'Authentication code',
-            description:
-                'Enter the code from your authenticator application.',
-            toggleText: 'Use a recovery code instead',
+            title: __('messages.two_factor_challenge.title'),
+            description: __('messages.two_factor_challenge.description'),
+            toggleText: __('messages.two_factor_challenge.toggle_recovery_code'),
+            placeholder: '••••••',
         };
     }, [showRecoveryInput]);
 
     return (
         <AuthLayout>
-            <Head title="Two-factor authentication" />
+            <Head title={__('messages.two_factor_challenge.title')} />
 
             <div className="space-y-6">
-                <div className="space-y-2 text-right">
+                <div className="space-y-2 text-start">
                     <h1 className="text-2xl font-bold text-on-surface dark:text-white">
                         {content.title}
                     </h1>
@@ -68,7 +70,7 @@ export default function TwoFactorChallenge() {
                                     <Input
                                         name="recovery_code"
                                         type="text"
-                                        placeholder="Enter recovery code"
+                                        placeholder={content.placeholder}
                                         autoFocus={showRecoveryInput}
                                         required
                                     />
@@ -103,7 +105,7 @@ export default function TwoFactorChallenge() {
                             )}
 
                             <Button type="submit" className="w-full" disabled={processing}>
-                                Continue
+                                {__('messages.two_factor_challenge.continue_button')}
                             </Button>
 
                             <button

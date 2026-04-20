@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import PasswordInput from '@/components/password-input';
 import InputError from '@/components/input-error';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     token: string;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export default function ResetPassword({ token, email }: Props) {
+    const { __ } = useLang();
     const [newPassword, setNewPassword] = useState('');
 
     const hasMinLength = newPassword.length >= 8;
@@ -24,13 +26,14 @@ export default function ResetPassword({ token, email }: Props) {
     const strength = [hasMinLength, hasSpecialChar, hasNumber].filter(
         Boolean,
     ).length;
+    
     const strengthLabel =
         strength === 3
-            ? 'قوية'
+            ? __('messages.reset_password.strength_strong')
             : strength === 2
-              ? 'متوسطة'
+              ? __('messages.reset_password.strength_medium')
               : strength === 1
-                ? 'ضعيفة'
+                ? __('messages.reset_password.strength_weak')
                 : '';
     const strengthColor =
         strength === 3
@@ -41,14 +44,14 @@ export default function ResetPassword({ token, email }: Props) {
 
     return (
         <AuthLayout>
-            <Head title="تعيين كلمة مرور جديدة" />
+            <Head title={__('messages.reset_password.hero_title')} />
 
-            <header className="mb-12 text-right">
+            <header className="mb-12 text-start">
                 <h1 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                    تعيين كلمة مرور جديدة
+                    {__('messages.reset_password.hero_title')}
                 </h1>
                 <p className="text-on-surface-variant text-lg">
-                    يرجى اختيار كلمة مرور قوية لحماية حسابك واستثماراتك القادمة.
+                    {__('messages.reset_password.subtitle')}
                 </p>
             </header>
 
@@ -60,7 +63,7 @@ export default function ResetPassword({ token, email }: Props) {
                 {({ processing, errors }) => (
                     <>
                         <div className="space-y-2">
-                            <Label htmlFor="new_password">كلمة المرور الجديدة</Label>
+                            <Label htmlFor="new_password">{__('messages.reset_password.new_password_label')}</Label>
                             <PasswordInput
                                 id="new_password"
                                 name="password"
@@ -71,8 +74,7 @@ export default function ResetPassword({ token, email }: Props) {
                                     setNewPassword(e.target.value)
                                 }
                                 autoFocus
-                                className="h-12 text-right"
-                                dir="rtl"
+                                className="h-12 text-start"
                             />
                             <InputError message={errors.password} />
                         </div>
@@ -80,7 +82,7 @@ export default function ResetPassword({ token, email }: Props) {
                         <div className="space-y-3 px-1">
                             <div className="flex items-center justify-between text-xs font-medium">
                                 <span className="text-on-surface-variant">
-                                    قوة كلمة المرور
+                                    {__('messages.reset_password.strength_label')}
                                 </span>
                                 {strengthLabel && (
                                     <span
@@ -98,7 +100,7 @@ export default function ResetPassword({ token, email }: Props) {
                                     />
                                 ))}
                             </div>
-                            <ul className="text-on-surface-variant flex flex-wrap gap-x-4 gap-y-1 text-[11px] justify-end rtl" dir="rtl">
+                            <ul className="text-on-surface-variant flex flex-wrap gap-x-4 gap-y-1 text-[11px] justify-start" dir="auto">
                                 <li className="flex items-center gap-1">
                                     <span
                                         className={`material-symbols-outlined text-[14px] ${hasMinLength ? 'text-primary' : 'text-outline-variant'}`}
@@ -115,7 +117,7 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    8 أحرف على الأقل
+                                    {__('messages.reset_password.requirement_min_length')}
                                 </li>
                                 <li className="flex items-center gap-1">
                                     <span
@@ -133,7 +135,7 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    رمز خاص (@#$)
+                                    {__('messages.reset_password.requirement_special_char')}
                                 </li>
                                 <li className="flex items-center gap-1">
                                     <span
@@ -151,21 +153,20 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    أرقام
+                                    {__('messages.reset_password.requirement_numbers')}
                                 </li>
                             </ul>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="confirm_password">تأكيد كلمة المرور</Label>
+                            <Label htmlFor="confirm_password">{__('messages.reset_password.confirm_password_label')}</Label>
                             <Input
                                 id="confirm_password"
                                 name="password_confirmation"
                                 type="password"
                                 required
                                 placeholder="••••••••"
-                                className="h-12 text-right"
-                                dir="rtl"
+                                className="h-12 text-start"
                             />
                             <InputError message={errors.password_confirmation} />
                         </div>
@@ -179,7 +180,7 @@ export default function ResetPassword({ token, email }: Props) {
                             type="submit"
                             disabled={processing}
                         >
-                            <span>تحديث كلمة المرور</span>
+                            <span>{__('messages.reset_password.update_button')}</span>
                             {processing && <Spinner className="size-5" />}
                         </Button>
 
@@ -188,10 +189,10 @@ export default function ResetPassword({ token, email }: Props) {
                                 className="flex items-center justify-center gap-2 font-bold text-primary transition-colors hover:underline"
                                 href={login()}
                             >
-                                <span className="material-symbols-outlined text-sm">
-                                    arrow_forward
+                                <span className="material-symbols-outlined text-sm rtl:rotate-180">
+                                    arrow_back
                                 </span>
-                                العودة إلى تسجيل الدخول
+                                {__('messages.forgot_password.back_to_login')}
                             </Link>
                         </div>
                     </>
@@ -199,7 +200,7 @@ export default function ResetPassword({ token, email }: Props) {
             </Form>
 
             <footer className="text-on-surface-variant mt-16 text-center text-[10px] opacity-60">
-                <span>© 2026 أفكار بـ 100 دولار. جميع الحقوق محفوظة.</span>
+                <span>© {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}</span>
             </footer>
         </AuthLayout>
     );

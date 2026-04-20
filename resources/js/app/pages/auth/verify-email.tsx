@@ -4,25 +4,28 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const { __ } = useLang();
+
     return (
         <AuthLayout>
-            <Head title="تأكيد البريد الإلكتروني" />
+            <Head title={__('messages.verify_email.hero_title')} />
 
-            <div className="space-y-6 text-right">
+            <div className="space-y-6 text-start">
                 <header className="mb-10">
                     <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
-                        أكد بريدك الإلكتروني
+                        {__('messages.verify_email.hero_title')}
                     </h2>
                     <p className="text-on-surface-variant">
-                        يرجى تأكيد عنوان بريدك الإلكتروني لمتابعة استخدام حسابك والبدء في مشاركة أفكارك.
+                        {__('messages.verify_email.subtitle')}
                     </p>
                 </header>
 
                 {status === 'verification-link-sent' && (
                     <div className="rounded-lg bg-green-50 px-4 py-3 text-sm font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
-                        تم إرسال رابط تأكيد جديد إلى بريدك الإلكتروني.
+                        {__('messages.verify_email.resent_link_sent')}
                     </div>
                 )}
 
@@ -36,7 +39,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             />
 
                             <Button className="h-12 w-full text-lg font-bold" disabled={processing}>
-                                <span>إعادة إرسال بريد التأكيد</span>
+                                <span>{__('messages.verify_email.resend_button')}</span>
                                 {processing ? (
                                     <Spinner className="size-5" />
                                 ) : (
@@ -54,7 +57,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                     data={{ _auth_context: 'app' }}
                                     className="text-sm font-bold text-primary hover:underline"
                                 >
-                                    تسجيل الخروج
+                                    {__('messages.verify_email.logout')}
                                 </Link>
                             </div>
                         </>

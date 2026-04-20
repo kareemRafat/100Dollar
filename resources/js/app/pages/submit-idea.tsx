@@ -32,8 +32,8 @@ export default function SubmitIdea() {
                 </div>
             </section>
 
-            <main className="bg-surface flex-grow px-6 py-16">
-                <div className="text-outline mx-auto mb-8 flex max-w-[800px] items-center gap-2 text-sm">
+            <main className="bg-surface dark:bg-surface flex-grow px-6 py-16">
+                <div className="text-outline dark:text-slate-400 mx-auto mb-8 flex max-w-[800px] items-center gap-2 text-sm">
                     <Link
                         className="transition-colors hover:text-primary"
                         href="/"
@@ -49,14 +49,14 @@ export default function SubmitIdea() {
                 </div>
 
                 <div className="mx-auto max-w-[800px]">
-                    <div className="border-outline-variant/10 bg-surface-container-lowest relative overflow-hidden rounded-xl border p-8 shadow-xl md:p-12">
+                    <div className="border-outline-variant/10 bg-surface-container-lowest dark:bg-card relative overflow-hidden rounded-xl border p-8 shadow-xl md:p-12">
                         <form className="relative z-10 space-y-8">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.country_label')}
                                     </label>
-                                    <select className="bg-surface-container-low w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white focus:ring-2 focus:ring-primary">
+                                    <select className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary">
                                         <option>{__('messages.submit_idea.country_placeholder')}</option>
                                         <option>{__('messages.submit_idea.saudi_arabia')}</option>
                                         <option>{__('messages.submit_idea.uae')}</option>
@@ -69,7 +69,7 @@ export default function SubmitIdea() {
                                         {__('messages.submit_idea.city_label')}
                                     </label>
                                     <input
-                                        className="bg-surface-container-low w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white focus:ring-2 focus:ring-primary"
+                                        className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                         placeholder={__('messages.submit_idea.city_placeholder')}
                                         type="text"
                                     />
@@ -80,7 +80,7 @@ export default function SubmitIdea() {
                                 <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.category_label')}
                                 </label>
-                                <select className="bg-surface-container-low w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white focus:ring-2 focus:ring-primary">
+                                <select className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary">
                                     <option>{__('messages.submit_idea.category_placeholder')}</option>
                                     <option>تجارة إلكترونية</option>
                                     <option>خدمات منزلية</option>
@@ -95,7 +95,7 @@ export default function SubmitIdea() {
                                     {__('messages.submit_idea.title_label')}
                                 </label>
                                 <input
-                                    className="bg-surface-container-low w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white focus:ring-2 focus:ring-primary"
+                                    className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                     placeholder={__('messages.submit_idea.title_placeholder')}
                                     type="text"
                                 />
@@ -106,7 +106,7 @@ export default function SubmitIdea() {
                                     {__('messages.submit_idea.details_label')}
                                 </label>
                                 <textarea
-                                    className="bg-surface-container-low w-full resize-none rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white focus:ring-2 focus:ring-primary"
+                                    className="bg-surface-container-low dark:bg-surface-container-high w-full resize-none rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                     placeholder={__('messages.submit_idea.details_placeholder')}
                                     rows={6}
                                 />
@@ -116,14 +116,14 @@ export default function SubmitIdea() {
                                 <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.image_label')}
                                 </label>
-                                <div className="group border-outline-variant bg-surface-container-low hover:bg-surface-container flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all hover:border-primary">
+                                <div className="group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all hover:border-primary dark:hover:border-primary">
                                     <span className="material-symbols-outlined mb-3 text-5xl text-primary transition-transform group-hover:scale-110">
                                         add_photo_alternate
                                     </span>
                                     <p className="font-headline text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.image_placeholder')}
                                     </p>
-                                    <p className="text-outline mt-1 text-xs">
+                                    <p className="text-outline mt-1 text-xs dark:text-slate-400">
                                         {__('messages.submit_idea.image_hint')}
                                     </p>
                                 </div>
@@ -133,7 +133,7 @@ export default function SubmitIdea() {
                                 <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.file_label')}
                                 </label>
-                                <div className="border-outline-variant/10 bg-surface-container-low flex items-center gap-4 rounded-lg border p-4">
+                                <div className="border-outline-variant/10 bg-surface-container-low dark:bg-surface-container-high flex items-center gap-4 rounded-lg border p-4">
                                     <span className="material-symbols-outlined text-primary">
                                         upload_file
                                     </span>
@@ -149,10 +149,10 @@ export default function SubmitIdea() {
                                 </div>
                             </div>
 
-                            <div className="border-outline-variant/20 space-y-4 border-t pt-6">
+                            <div className="border-outline-variant/20 dark:border-outline-variant/10 space-y-4 border-t pt-6">
                                 <label className="group flex cursor-pointer items-start gap-3">
                                     <input
-                                        className="border-outline-variant mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary"
+                                        className="border-outline-variant dark:border-outline-variant/30 mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary dark:bg-surface-container-high"
                                         type="checkbox"
                                     />
                                     <span className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white">
@@ -161,7 +161,7 @@ export default function SubmitIdea() {
                                 </label>
                                 <label className="group flex cursor-pointer items-start gap-3">
                                     <input
-                                        className="border-outline-variant mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary"
+                                        className="border-outline-variant dark:border-outline-variant/30 mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary dark:bg-surface-container-high"
                                         type="checkbox"
                                     />
                                     <span className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white">

@@ -12,7 +12,11 @@ type TimeLeft = {
 
 function calculateTimeLeft(target: Date): TimeLeft {
     const diff = target.getTime() - Date.now();
-    if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
+
+    if (diff <= 0) {
+        return { hours: 0, minutes: 0, seconds: 0 }
+    }
+
     return {
         hours: Math.floor(diff / (1000 * 60 * 60)),
         minutes: Math.floor((diff / (1000 * 60)) % 60),
@@ -23,10 +27,10 @@ function calculateTimeLeft(target: Date): TimeLeft {
 function TimeBlock({ value, label }: { value: number; label: string }) {
     return (
         <div className="flex flex-col items-center">
-            <div className="bg-surface-container-lowest flex h-16 w-16 items-center justify-center rounded-xl text-3xl font-bold text-primary shadow-sm">
+            <div className="bg-surface-container-lowest flex h-14 w-14 items-center justify-center rounded-xl text-2xl font-bold text-primary shadow-sm">
                 {String(value).padStart(2, '0')}
             </div>
-            <span className="text-on-surface-variant mt-2 text-xs font-bold">
+            <span className="text-on-surface-variant mt-2 text-[10px] font-bold">
                 {label}
             </span>
         </div>
@@ -42,6 +46,7 @@ export function CountdownTimer({ targetDate }: Props) {
         const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft(targetDate));
         }, 1000);
+        
         return () => clearInterval(timer);
     }, [targetDate]);
 

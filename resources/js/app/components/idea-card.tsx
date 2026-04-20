@@ -92,27 +92,27 @@ export function IdeaCard({
     }
 
     return (
-        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-sm transition-all hover:shadow-xl dark:bg-card">
-            <div className="mb-6 flex items-start justify-between">
+        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card">
+            <div className="mb-4 flex items-start justify-between">
                 <span className="rounded-md bg-primary-fixed px-3 py-1 text-xs font-bold text-on-primary-fixed">
                     {category}
                 </span>
                 <div className="flex items-center gap-1 text-primary">
-                    <span className="material-symbols-outlined text-lg">
+                    <span className="material-symbols-outlined text-base">
                         payments
                     </span>
-                    <span className="font-bold">{budget}</span>
+                    <span className="text-sm font-bold">{budget}</span>
                 </div>
             </div>
-            <h3 className="mb-4 font-headline text-2xl leading-snug font-bold text-on-surface dark:text-white">
+            <h3 className="mb-3 font-headline text-xl leading-snug font-bold text-on-surface dark:text-white">
                 {title}
             </h3>
-            <p className="mb-8 line-clamp-3 leading-relaxed text-on-surface-variant">
+            <p className="mb-6 line-clamp-3 text-sm leading-relaxed text-on-surface-variant">
                 {description}
             </p>
             <div className="mt-auto">
-                <div className="mb-6 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed-dim dark:bg-secondary-container">
+                <div className="mb-4 flex items-center gap-3">
+                    <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-secondary-fixed-dim dark:bg-secondary-container">
                         {authorAvatar ? (
                             <img
                                 className="h-full w-full object-cover"
@@ -120,7 +120,7 @@ export function IdeaCard({
                                 alt={authorName}
                             />
                         ) : (
-                            <span className="text-sm font-bold text-on-surface dark:text-white">
+                            <span className="text-xs font-bold text-on-surface dark:text-white">
                                 {authorInitial || authorName[0]}
                             </span>
                         )}
@@ -139,7 +139,7 @@ export function IdeaCard({
                         <span className="text-xs font-bold text-on-surface-variant">
                             التقدم في التصويت
                         </span>
-                        <span className="text-lg font-bold text-primary">
+                        <span className="text-base font-bold text-primary">
                             {votes} صوت
                         </span>
                     </div>
@@ -152,9 +152,9 @@ export function IdeaCard({
                 </div>
                 <button
                     onClick={onVote}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-4 font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-3 text-sm font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
                 >
-                    <span className="material-symbols-outlined">thumb_up</span>
+                    <span className="material-symbols-outlined text-xl">thumb_up</span>
                     صوّت الآن
                 </button>
             </div>

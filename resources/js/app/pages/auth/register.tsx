@@ -20,14 +20,14 @@ export default function Register({ canLogin }: Props) {
     const { __ } = useLang();
 
     return (
-        <AuthLayout>
+        <AuthLayout maxWidth="max-w-4xl">
             <Head title={__('messages.register.hero_title')} />
 
-            <header className="mb-10 text-right">
-                <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
+            <header className="mb-8 text-start">
+                <h2 className="font-headline mb-1.5 text-2xl font-extrabold tracking-tight text-on-surface dark:text-white md:text-3xl">
                     {__('messages.register.welcome_title')}
                 </h2>
-                <p className="text-on-surface-variant">
+                <p className="text-on-surface-variant text-sm">
                     {__('messages.register.subtitle')}
                 </p>
             </header>
@@ -35,15 +35,15 @@ export default function Register({ canLogin }: Props) {
             <Form
                 {...store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
-                className="space-y-6"
+                className="space-y-5"
             >
                 {({ processing, errors }) => (
                     <>
                         <input type="hidden" name="_auth_context" value="app" />
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label htmlFor="name" className="text-right block w-full">{__('messages.register.full_name')}</Label>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="name" className="block w-full text-xs">{__('messages.register.full_name')}</Label>
                                 <Input
                                     id="name"
                                     name="name"
@@ -51,100 +51,95 @@ export default function Register({ canLogin }: Props) {
                                     required
                                     autoFocus
                                     placeholder={__('messages.register.full_name_placeholder')}
-                                    className="h-12 text-right"
-                                    dir="rtl"
+                                    className="h-10 text-start text-sm"
                                 />
                                 <InputError message={errors.name} />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="email" className="text-right block w-full">{__('messages.login.email_label')}</Label>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="email" className="block w-full text-xs">{__('messages.login.email_label')}</Label>
                                 <Input
                                     id="email"
                                     name="email"
                                     type="email"
                                     required
                                     placeholder="example@domain.com"
-                                    className="h-12 text-right"
-                                    dir="rtl"
+                                    className="h-10 text-start text-sm"
                                 />
                                 <InputError message={errors.email} />
                             </div>
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                             <div className="space-y-2">
-                                <Label htmlFor="phone" className="text-right block w-full">{__('messages.register.phone_label')}</Label>
+                             <div className="space-y-1.5">
+                                <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
                                 <Input
                                     id="phone"
                                     name="phone"
                                     type="tel"
                                     required
                                     placeholder={__('messages.register.phone_placeholder')}
-                                    className="h-12 text-right"
+                                    className="h-10 text-start text-sm"
                                     dir="ltr"
                                 />
                                 <InputError message={errors.phone} />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="country" className="text-right block w-full">{__('messages.register.country_residence')}</Label>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="country" className="block w-full text-xs">{__('messages.register.country_residence')}</Label>
                                 <Input
                                     id="country"
                                     name="country"
                                     type="text"
                                     required
                                     placeholder={__('messages.register.country_placeholder')}
-                                    className="h-12 text-right"
-                                    dir="rtl"
+                                    className="h-10 text-start text-sm"
                                 />
                                 <InputError message={errors.country} />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="nationality" className="text-right block w-full">{__('messages.register.nationality')}</Label>
+                        <div className="space-y-1.5">
+                            <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
                             <Input
                                 id="nationality"
                                 name="nationality"
                                 type="text"
                                 required
                                 placeholder={__('messages.register.nationality_placeholder')}
-                                className="h-12 text-right"
-                                dir="rtl"
+                                className="h-10 text-start text-sm"
                             />
                             <InputError message={errors.nationality} />
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
+                            <div className="space-y-1.5">
                                 <Label htmlFor="password">{__('messages.login.password_label')}</Label>
                                 <PasswordInput
                                     id="password"
                                     name="password"
                                     required
                                     placeholder="••••••••"
-                                    className="h-12 text-right"
-                                    dir="rtl"
+                                    className="h-10 text-start text-sm"
                                 />
                                 <InputError message={errors.password} />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="password_confirmation">{__('messages.register.confirm_password')}</Label>
+                            <div className="space-y-1.5">
+                                <Label htmlFor="password_confirmation" className="text-xs">{__('messages.register.confirm_password')}</Label>
                                 <Input
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     type="password"
                                     required
                                     placeholder="••••••••"
-                                    className="h-12 text-right"
-                                    dir="rtl"
+                                    className="h-10 text-start text-sm"
                                 />
                                 <InputError message={errors.password_confirmation} />
                             </div>
                         </div>
 
-                        <div className="flex items-start justify-end gap-3">
+                        <div className="flex items-start justify-start gap-3">
+                            <Checkbox id="terms" name="terms" required className="mt-0.5 h-4 w-4" />
                             <Label
-                                className="text-on-surface-variant text-sm leading-relaxed cursor-pointer text-right"
+                                className="text-on-surface-variant text-xs leading-relaxed cursor-pointer text-start"
                                 htmlFor="terms"
                             >
                                 {__('messages.register.agree_terms')}{' '}
@@ -154,29 +149,20 @@ export default function Register({ canLogin }: Props) {
                                 >
                                     {__('messages.register.terms_of_service')}
                                 </Link>{' '}
-                                {__('messages.register.and')}{' '}
-                                <Link
-                                    className="font-bold text-primary hover:underline"
-                                    href="#"
-                                >
-                                    {__('messages.register.privacy_policy')}
-                                </Link>{' '}
-                                .
                             </Label>
-                            <Checkbox id="terms" name="terms" required className="mt-1" />
                         </div>
 
                         <Button
-                            className="h-12 w-full text-lg font-bold"
+                            className="h-10 w-full text-base font-bold"
                             type="submit"
                             disabled={processing}
                         >
                             <span>{__('messages.register.submit_button')}</span>
                             {processing ? (
-                                <Spinner className="size-5" />
+                                <Spinner className="size-4" />
                             ) : (
-                                <span className="material-symbols-outlined text-xl">
-                                    arrow_back
+                                <span className="material-symbols-outlined text-lg rtl:rotate-180">
+                                    arrow_forward
                                 </span>
                             )}
                         </Button>
@@ -184,10 +170,10 @@ export default function Register({ canLogin }: Props) {
                 )}
             </Form>
 
-            <div className="mt-8 flex flex-col items-center gap-6">
+            <div className="mt-6 flex flex-col items-center gap-5">
                 <div className="flex w-full items-center gap-4">
                     <div className="bg-outline-variant/30 h-px flex-1" />
-                    <span className="text-on-surface-variant text-xs font-medium">
+                    <span className="text-on-surface-variant text-[10px] font-medium">
                         {__('messages.login.or_continue_with')}
                     </span>
                     <div className="bg-outline-variant/30 h-px flex-1" />
@@ -195,19 +181,19 @@ export default function Register({ canLogin }: Props) {
                 <div className="w-full">
                     <Button
                         variant="outline"
-                        className="h-12 w-full bg-surface-container-lowest font-bold dark:bg-surface-container-low"
+                        className="h-10 w-full bg-surface-container-lowest text-sm font-bold dark:bg-surface-container-low"
                         type="button"
                     >
                         <img
                             alt="Google"
-                            className="h-5 w-5"
+                            className="h-4 w-4"
                             src="https://www.google.com/favicon.ico"
                         />
                         <span>{__('messages.login.google_login')}</span>
                     </Button>
                 </div>
                 {canLogin && (
-                    <p className="text-on-surface-variant text-sm">
+                    <p className="text-on-surface-variant text-xs">
                         {__('messages.register.have_account')}{' '}
                         <Link
                             className="font-bold text-primary hover:underline"
@@ -219,7 +205,7 @@ export default function Register({ canLogin }: Props) {
                 )}
             </div>
 
-            <footer className="text-on-surface-variant mx-auto mt-16 flex w-full max-w-xl items-center justify-between text-[10px] opacity-60">
+            <footer className="text-on-surface-variant mx-auto mt-12 flex w-full items-center justify-between text-[9px] opacity-60">
                 <span>© {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}</span>
                 <div className="flex gap-4">
                     <Link

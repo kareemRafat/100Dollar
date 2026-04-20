@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head } from '@inertiajs/react';
-import { IdeaCard } from '@/app/components/old_app/idea-card';
+import { IdeaCard } from '@/app/components/idea-card';
 import AppLayout from '@/app/layouts/app-layout';
 
 const archiveIdeas = [
@@ -108,7 +108,7 @@ export default function Archive() {
         <AppLayout activeRoute="/archive">
             <Head title={__('messages.nav.archive')} />
 
-            <header className="relative mb-8 h-[300px] w-full overflow-hidden md:h-[400px]">
+            <header className="relative mb-8 h-[250px] w-full overflow-hidden md:h-[320px]">
                 <div
                     className="absolute inset-0 bg-cover bg-center"
                     style={{
@@ -118,34 +118,36 @@ export default function Archive() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deep-navy via-deep-navy/70 to-transparent" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-                    <div className="mb-4 rounded-full bg-primary/90 px-4 py-1 text-xs font-bold tracking-widest text-on-primary uppercase shadow-xl">
+                    <div className="mb-4 rounded-full bg-primary/90 px-4 py-1 text-[10px] font-bold tracking-widest text-on-primary uppercase shadow-xl">
                         {__('messages.archive.hero_badge')}
                     </div>
-                    <h1 className="mb-4 font-headline text-4xl leading-tight font-extrabold text-white md:text-5xl">
+                    <h1 className="mb-4 font-headline text-3xl leading-tight font-extrabold text-white md:text-4xl">
                         {__('messages.archive.hero_title')}{' '}
-                        <span className="text-inverse-primary">{__('messages.archive.golden')}</span>
+                        <span className="text-inverse-primary dark:text-primary">
+                            {__('messages.archive.golden')}
+                        </span>
                     </h1>
-                    <p className="max-w-2xl text-lg leading-relaxed text-white/80">
+                    <p className="max-w-2xl text-base leading-relaxed text-white/80">
                         {__('messages.archive.hero_desc')}
                     </p>
                 </div>
             </header>
 
-            <div className="mx-auto flex max-w-7xl flex-col px-4 pb-20 sm:px-6">
-                <div className="relative z-10 mx-auto -mt-20 mb-16 w-full max-w-2xl">
+            <div className="mx-auto flex max-w-7xl flex-col px-4 pb-12 sm:px-6">
+                <div className="relative z-10 mx-auto -mt-16 mb-10 w-full max-w-2xl">
                     <div className="pointer-events-none absolute inset-y-0 end-4 flex items-center">
                         <span className="material-symbols-outlined text-outline">
                             search
                         </span>
                     </div>
                     <input
-                        className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest"
+                        className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest dark:border-white dark:border-2"
                         placeholder={__('messages.archive.search_placeholder')}
                         type="text"
                     />
                 </div>
 
-                <div className="mb-12 w-full">
+                <div className="mb-8 w-full">
                     <div className="-mx-4 flex items-start gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-row sm:flex-wrap sm:items-center sm:overflow-visible sm:px-0 sm:pb-0">
                         <div className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 transition-colors hover:bg-surface-container-high">
                             <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
@@ -226,7 +228,7 @@ export default function Archive() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
                     {archiveIdeas.map((idea) => (
                         <IdeaCard
                             key={idea.title}

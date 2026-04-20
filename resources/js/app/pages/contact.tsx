@@ -163,7 +163,7 @@ export default function Contact() {
                     </div>
                     <Link
                         href="/sponsors"
-                        className="rounded-lg bg-deep-navy px-8 py-3 font-bold whitespace-nowrap text-primary transition-all hover:bg-deep-navy/90"
+                        className="rounded-lg bg-deep-navy px-8 py-3 font-bold whitespace-nowrap text-primary-fixed-dim transition-all hover:bg-deep-navy/90"
                     >
                         {__('messages.contact.learn_more')}
                     </Link>
