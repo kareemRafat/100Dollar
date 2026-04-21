@@ -16,11 +16,18 @@ class SetAuthContext
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $context = $request->is('admin') || $request->is('admin/*')
-            ? AuthContext::ADMIN
-            : AuthContext::APP;
+        $context = $request->input('_auth_context')
+            ?? ($request->is('admin') || $request->is('admin/*') ? AuthContext::ADMIN : AuthContext::APP);
 
         app(AuthContext::class)->remember($request, $context);
+
+        if ($context === AuthContext::APP) {
+            $locale = $request->input('_locale') 
+                ?? $request->session()->get('locale') 
+                ?? config('app.locale');
+                
+            app()->setLocale($locale);
+        }
 
         return $next($request);
     }

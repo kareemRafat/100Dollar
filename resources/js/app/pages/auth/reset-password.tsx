@@ -1,4 +1,4 @@
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { login } from '@/routes';
@@ -172,6 +172,7 @@ export default function ResetPassword({ token, email }: Props) {
                         </div>
 
                         <input type="hidden" name="_auth_context" value="app" />
+                        <input type="hidden" name="_locale" value={usePage().props.locale} />
                         <input type="hidden" name="token" value={token} />
                         <input type="hidden" name="email" value={email} />
 

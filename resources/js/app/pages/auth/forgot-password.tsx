@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -51,6 +51,7 @@ export default function ForgotPassword({ status }: Props) {
                 {({ processing, errors }) => (
                     <>
                         <input type="hidden" name="_auth_context" value="app" />
+                        <input type="hidden" name="_locale" value={usePage().props.locale} />
 
                         <div className="space-y-2">
                             <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>
