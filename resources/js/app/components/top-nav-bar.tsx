@@ -93,23 +93,23 @@ export function TopNavBar({ activeRoute }: Props) {
                     {auth.user ? (
                         <div className="flex items-center gap-1">
                             {auth.user.role === 'admin' ? (
-                                <a
-                                    href="/admin"
-                                    className="ms-2 hidden lg:block"
+                                <Button
+                                    asChild
+                                    className="h-9 rounded-lg bg-secondary px-4 text-sm font-bold transition-all hover:scale-[1.02] hover:bg-secondary/90 active:scale-95 ms-2 hidden lg:inline-flex"
                                 >
-                                    <Button className="h-9 rounded-lg bg-secondary px-4 text-sm font-bold transition-all hover:scale-[1.02] hover:bg-secondary/90 active:scale-95">
+                                    <a href="/admin">
                                         {__('messages.ui.dashboard')}
-                                    </Button>
-                                </a>
+                                    </a>
+                                </Button>
                             ) : (
-                                <Link
-                                    href="/ideas/create"
-                                    className="ms-2 hidden lg:block"
+                                <Button
+                                    asChild
+                                    className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden lg:inline-flex"
                                 >
-                                    <Button className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95">
+                                    <Link href="/ideas/create">
                                         {__('messages.ui.submit_your_idea')}
-                                    </Button>
-                                </Link>
+                                    </Link>
+                                </Button>
                             )}
 
                             <Button
@@ -122,9 +122,9 @@ export function TopNavBar({ activeRoute }: Props) {
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-3 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
+                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-1 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
                                         <div className="hidden flex-col items-end sm:flex">
-                                            <span className="text-[11px] font-bold text-on-surface dark:text-white">
+                                            <span className="text-[11px] font-bold text-on-surface dark:text-white pl-1">
                                                 {auth.user.name}
                                             </span>
                                         </div>
@@ -258,17 +258,29 @@ export function TopNavBar({ activeRoute }: Props) {
                         </div>
                     ) : (
                         <div className="flex items-center gap-1">
+                            <Button
+                                asChild
+                                className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden lg:inline-flex"
+                            >
+                                <Link href="/ideas/create">
+                                    {__('messages.ui.submit_your_idea')}
+                                </Link>
+                            </Button>
                             <Link
                                 className="px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400"
                                 href="/login"
                             >
                                 {__('messages.auth.login')}
                             </Link>
-                            <Link href="/register">
-                                <Button className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02]">
+                            <Button
+                                asChild
+                                variant="outline"
+                                className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02]"
+                            >
+                                <Link href="/register">
                                     {__('messages.auth.register')}
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                         </div>
                     )}
                 </div>

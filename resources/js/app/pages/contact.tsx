@@ -50,7 +50,7 @@ export default function Contact() {
                         {__('messages.contact.hero_title')}
                         <span className="absolute end-0 -bottom-3 start-0 mx-auto h-1 w-16 rounded-full bg-primary shadow-lg" />
                     </h1>
-                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90">
+                    <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-white/90">
                         {__('messages.contact.hero_desc')}
                     </p>
                 </div>

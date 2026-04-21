@@ -42,4 +42,15 @@ Route::group([
             })->name('password.request');
         }
     });
+
+    // Email Verification Routes
+    if (Features::enabled(Features::emailVerification())) {
+        Route::get('/email/verify', function (Request $request) {
+            return $request->user()->hasVerifiedEmail()
+                ? redirect('/')
+                : Inertia::render('app/pages/auth/verify-email', [
+                    'status' => session('status'),
+                ]);
+        })->middleware(['auth'])->name('verification.notice');
+    }
 });

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 
 const sponsors = [
     {
-        day: 'السبت',
+        day: 'saturday',
         name: 'لوجستيك كرو',
         description: 'راعي جائزة يوم السبت',
         logoUrl:
@@ -14,7 +14,7 @@ const sponsors = [
         available: false,
     },
     {
-        day: 'الأحد',
+        day: 'sunday',
         name: 'أرامكو للريادة',
         description: 'راعي جائزة يوم الأحد',
         logoUrl:
@@ -23,7 +23,7 @@ const sponsors = [
         available: false,
     },
     {
-        day: 'الاثنين',
+        day: 'monday',
         name: 'منصة فنتك',
         description: 'راعي جائزة يوم الاثنين',
         logoUrl:
@@ -32,7 +32,7 @@ const sponsors = [
         available: false,
     },
     {
-        day: 'الثلاثاء',
+        day: 'tuesday',
         name: 'مدار للحلول',
         description: 'راعي جائزة يوم الثلاثاء',
         logoUrl:
@@ -41,7 +41,7 @@ const sponsors = [
         available: false,
     },
     {
-        day: 'الأربعاء',
+        day: 'wednesday',
         name: '',
         description: '',
         logoUrl: '',
@@ -49,7 +49,7 @@ const sponsors = [
         available: true,
     },
     {
-        day: 'الخميس',
+        day: 'thursday',
         name: 'وكالة إبداع',
         description: 'راعي جائزة يوم الخميس',
         logoUrl:
@@ -61,6 +61,13 @@ const sponsors = [
 
 export default function Sponsors() {
     const { __ } = useLang();
+
+    // Get today's day name in English (lowercase) to match our sponsor keys
+    const todayDay = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+    })
+        .format(new Date())
+        .toLowerCase();
 
     const sponsorBenefits = [
         {
@@ -112,7 +119,7 @@ export default function Sponsors() {
                     <h1 className="mb-4 font-headline text-2xl leading-tight font-black text-white md:text-4xl">
                         {__('messages.sponsors.hero_title')}
                     </h1>
-                    <p className="mx-auto mb-6 max-w-2xl text-sm leading-relaxed text-gray-300">
+                    <p className="mx-auto mb-6 max-w-2xl text-[15px] leading-relaxed text-gray-300">
                         {__('messages.sponsors.hero_desc')}
                     </p>
                     <div className="flex flex-wrap justify-center gap-3">
@@ -147,30 +154,36 @@ export default function Sponsors() {
                             <div className="grid flex-1 grid-cols-1 items-stretch gap-6 md:grid-cols-3">
                                 {sponsors
                                     .slice(startIdx, startIdx + 3)
-                                    .map((sponsor) =>
-                                        sponsor.available ? (
+                                    .map((sponsor) => {
+                                        const isToday =
+                                            sponsor.day === todayDay;
+                                        return sponsor.available ? (
                                             <div
                                                 key={sponsor.day}
-                                                className="group flex flex-col items-center justify-between rounded-2xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low/20 p-8 text-center transition-all duration-300 hover:border-primary/50 dark:bg-surface-container-high/30"
+                                                className="group flex flex-col items-center justify-between rounded-2xl border-2 border-dashed border-outline-variant bg-surface-container-low p-8 text-center transition-all duration-300 hover:border-primary/50 dark:bg-surface-container-high"
                                             >
                                                 <div className="w-full">
                                                     <div className="mb-6 flex justify-center">
-                                                        <span className="rounded-full bg-surface-container-high px-4 py-1.5 text-xs font-bold text-on-surface-variant dark:bg-surface-container-highest dark:text-slate-400">
-                                                            {sponsor.day}
+                                                        <span className="rounded-full bg-surface-container-high px-4 py-1.5 text-xs font-bold text-on-surface-variant dark:bg-surface-container-highest dark:text-slate-300">
+                                                            {__(
+                                                                `messages.sponsors.days.${sponsor.day}`,
+                                                            )}
                                                         </span>
                                                     </div>
-                                                    <div className="mb-6 flex aspect-square w-full items-center justify-center rounded-xl bg-surface-container-high/50 transition-colors group-hover:bg-primary/10">
+                                                    <div className="mb-6 flex aspect-square w-full items-center justify-center rounded-xl bg-surface-container-high transition-colors group-hover:bg-primary/10 dark:bg-surface-container-highest">
                                                         <span className="material-symbols-outlined text-5xl text-outline-variant transition-colors group-hover:text-primary">
                                                             add_circle
                                                         </span>
                                                     </div>
-                                                    <h3 className="mb-2 font-headline text-xl font-black text-on-surface/80 dark:text-white/80">
-                                                        {__('messages.sponsors.available_for_sponsorship')}
+                                                    <h3 className="mb-2 font-headline text-xl font-black text-on-surface dark:text-white">
+                                                        {__(
+                                                            'messages.sponsors.available_for_sponsorship',
+                                                        )}
                                                     </h3>
                                                 </div>
                                                 <Link
                                                     href="/contact"
-                                                    className="mt-4 w-full rounded-lg bg-deep-navy py-3 text-center text-sm font-bold text-primary transition-all hover:bg-surface-container-high dark:bg-surface-container-lowest dark:hover:bg-surface-container-low"
+                                                    className="mt-4 w-full rounded-lg bg-primary py-3 text-center text-sm font-bold text-on-primary transition-all hover:opacity-90 dark:bg-primary dark:text-on-primary"
                                                 >
                                                     {__('messages.nav.contact')}
                                                 </Link>
@@ -180,21 +193,25 @@ export default function Sponsors() {
                                                 key={sponsor.day}
                                                 className={cn(
                                                     'flex flex-col justify-between rounded-2xl border-2 border-primary bg-surface-container-lowest p-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:bg-surface-container-low dark:border-primary/50',
-                                                    sponsor.isToday &&
+                                                    isToday &&
                                                         'relative shadow-xl',
                                                 )}
                                             >
-                                                {sponsor.isToday && (
+                                                {isToday && (
                                                     <div className="absolute -top-3 left-6">
                                                         <span className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-white shadow-lg ring-4 ring-surface-container-lowest dark:ring-surface-container-low">
-                                                            {__('messages.sponsors.today_badge')}
+                                                            {__(
+                                                                'messages.sponsors.today_badge',
+                                                            )}
                                                         </span>
                                                     </div>
                                                 )}
                                                 <div>
                                                     <div className="flex justify-center mb-6">
                                                         <span className="bg-primary text-white text-xs font-bold px-4 py-1.5 rounded-full">
-                                                            {sponsor.day}
+                                                            {__(
+                                                                `messages.sponsors.days.${sponsor.day}`,
+                                                            )}
                                                         </span>
                                                     </div>
                                                     <div className="w-full aspect-square bg-surface-container-low rounded-xl mb-6 flex items-center justify-center overflow-hidden border border-outline-variant/30">
@@ -211,20 +228,27 @@ export default function Sponsors() {
                                                             {sponsor.name}
                                                         </h3>
                                                         <p className="mb-4 text-sm text-on-surface-variant dark:text-slate-400">
-                                                            {
-                                                                sponsor.description
-                                                            }
+                                                            {__(
+                                                                'messages.sponsors.day_sponsor',
+                                                            ).replace(
+                                                                ':day',
+                                                                __(
+                                                                    `messages.sponsors.days.${sponsor.day}`,
+                                                                ),
+                                                            )}
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div className="border-t border-outline-variant/30 pt-4 text-center">
                                                     <p className="text-primary font-black text-lg">
-                                                        {__('messages.sponsors.weekly_prize')}
+                                                        {__(
+                                                            'messages.sponsors.weekly_prize',
+                                                        )}
                                                     </p>
                                                 </div>
                                             </div>
-                                        ),
-                                    )}
+                                        );
+                                    })}
                             </div>
                         </div>
                     ))}
@@ -247,9 +271,9 @@ export default function Sponsors() {
                         {sponsorBenefits.map((benefit) => (
                             <div
                                 key={benefit.icon}
-                                className="rounded-2xl border border-outline-variant/10 bg-surface-container-lowest/80 p-8 shadow-sm backdrop-blur-sm dark:bg-surface-container-low/80"
+                                className="rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-md backdrop-blur-sm transition-all hover:shadow-lg dark:bg-surface-container-highest"
                             >
-                                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/20">
                                     <span className="material-symbols-outlined text-3xl text-primary">
                                         {benefit.icon}
                                     </span>
@@ -257,7 +281,7 @@ export default function Sponsors() {
                                 <h4 className="mb-3 font-headline text-xl font-bold text-on-surface dark:text-white">
                                     {benefit.title}
                                 </h4>
-                                <p className="text-sm leading-relaxed text-on-surface dark:text-white">
+                                <p className="text-sm leading-relaxed text-on-surface-variant dark:text-slate-200">
                                     {benefit.description}
                                 </p>
                             </div>

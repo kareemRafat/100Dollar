@@ -124,6 +124,16 @@ return [
         'benefit_report_title' => 'Periodic Report',
         'benefit_report_desc' => 'You get detailed reports on your sponsorship performance, number of views, and interaction with the winners sponsored by you.',
         'contact_for_sponsorship' => 'Contact us for sponsorship',
+        'day_sponsor' => ':day Prize Sponsor',
+        'days' => [
+            'saturday' => 'Saturday',
+            'sunday' => 'Sunday',
+            'monday' => 'Monday',
+            'tuesday' => 'Tuesday',
+            'wednesday' => 'Wednesday',
+            'thursday' => 'Thursday',
+            'friday' => 'Friday',
+        ],
     ],
 
     'archive' => [
@@ -303,7 +313,7 @@ return [
 
     'verify_email' => [
         'hero_title' => 'Verify Your Email',
-        'subtitle' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+        'subtitle' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? ",
         'resent_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
         'resend_button' => 'Resend Verification Email',
         'edit_profile' => 'Edit Profile',

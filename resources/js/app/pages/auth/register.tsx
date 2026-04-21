@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Form, Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
@@ -18,6 +18,27 @@ type Props = {
 
 export default function Register({ canLogin }: Props) {
     const { __ } = useLang();
+    const { locale } = usePage().props;
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        name: '',
+        email: '',
+        phone: '',
+        country: '',
+        nationality: '',
+        password: '',
+        password_confirmation: '',
+        terms: false,
+        _auth_context: 'app',
+        _locale: locale,
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(store.url(), {
+            onFinish: () => reset('password', 'password_confirmation'),
+        });
+    };
 
     return (
         <AuthLayout maxWidth="max-w-4xl">
@@ -32,145 +53,157 @@ export default function Register({ canLogin }: Props) {
                 </p>
             </header>
 
-            <Form
-                {...store.form()}
-                resetOnSuccess={['password', 'password_confirmation']}
-                className="space-y-5"
-            >
-                {({ processing, errors }) => (
-                    <>
-                        <input type="hidden" name="_auth_context" value="app" />
-                        <input type="hidden" name="_locale" value={window.location.pathname.split('/')[1]} />
+            <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div className="space-y-2">
+                        <Label htmlFor="name">{__('messages.register.full_name')}</Label>
 
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label htmlFor="name">{__('messages.register.full_name')}</Label>
+                        <Input
+                            id="name"
+                            name="name"
+                            type="text"
+                            value={data.name}
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                            autoFocus
+                            placeholder={__('messages.register.full_name_placeholder')}
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.name} />
+                    </div>
+                    <div className="space-y-1.5">
+                        <Label htmlFor="email" className="block w-full text-xs">{__('messages.login.email_label')}</Label>
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                            placeholder="example@domain.com"
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.email} />
+                    </div>
+                </div>
 
-                                <Input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    required
-                                    autoFocus
-                                    placeholder={__('messages.register.full_name_placeholder')}
-                                    className="h-10 text-start text-sm"
-                                />
-                                <InputError message={errors.name} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label htmlFor="email" className="block w-full text-xs">{__('messages.login.email_label')}</Label>
-                                <Input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    required
-                                    placeholder="example@domain.com"
-                                    className="h-10 text-start text-sm"
-                                />
-                                <InputError message={errors.email} />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                             <div className="space-y-1.5">
-                                <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
-                                <Input
-                                    id="phone"
-                                    name="phone"
-                                    type="tel"
-                                    required
-                                    placeholder={__('messages.register.phone_placeholder')}
-                                    className="h-10 text-start text-sm"
-                                    dir="ltr"
-                                />
-                                <InputError message={errors.phone} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label htmlFor="country" className="block w-full text-xs">{__('messages.register.country_residence')}</Label>
-                                <Input
-                                    id="country"
-                                    name="country"
-                                    type="text"
-                                    required
-                                    placeholder={__('messages.register.country_placeholder')}
-                                    className="h-10 text-start text-sm"
-                                />
-                                <InputError message={errors.country} />
-                            </div>
-                        </div>
-
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-1.5">
-                            <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
-                            <Input
-                                id="nationality"
-                                name="nationality"
-                                type="text"
-                                required
-                                placeholder={__('messages.register.nationality_placeholder')}
-                                className="h-10 text-start text-sm"
-                            />
-                            <InputError message={errors.nationality} />
-                        </div>
+                        <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
+                        <Input
+                            id="phone"
+                            name="phone"
+                            type="tel"
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            required
+                            placeholder={__('messages.register.phone_placeholder')}
+                            className="h-10 text-start text-sm"
+                            dir="ltr"
+                        />
+                        <InputError message={errors.phone} />
+                    </div>
+                    <div className="space-y-1.5">
+                        <Label htmlFor="country" className="block w-full text-xs">{__('messages.register.country_residence')}</Label>
+                        <Input
+                            id="country"
+                            name="country"
+                            type="text"
+                            value={data.country}
+                            onChange={(e) => setData('country', e.target.value)}
+                            required
+                            placeholder={__('messages.register.country_placeholder')}
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.country} />
+                    </div>
+                </div>
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-1.5">
-                                <Label htmlFor="password" className="block w-full text-xs">{__('messages.login.password_label')}</Label>
-                                <PasswordInput
-                                    id="password"
-                                    name="password"
-                                    required
-                                    placeholder="••••••••"
-                                    className="h-10 text-start text-sm"
-                                />
-                                <InputError message={errors.password} />
-                            </div>
-                            <div className="space-y-1.5">
-                                <Label htmlFor="password_confirmation" className="block w-full text-xs">{__('messages.register.confirm_password')}</Label>
-                                <Input
-                                    id="password_confirmation"
-                                    name="password_confirmation"
-                                    type="password"
-                                    required
-                                    placeholder="••••••••"
-                                    className="h-10 text-start text-sm"
-                                />
-                                <InputError message={errors.password_confirmation} />
-                            </div>
-                        </div>
+                <div className="space-y-1.5">
+                    <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
+                    <Input
+                        id="nationality"
+                        name="nationality"
+                        type="text"
+                        value={data.nationality}
+                        onChange={(e) => setData('nationality', e.target.value)}
+                        required
+                        placeholder={__('messages.register.nationality_placeholder')}
+                        className="h-10 text-start text-sm"
+                    />
+                    <InputError message={errors.nationality} />
+                </div>
 
-                        <div className="flex items-start justify-start gap-3">
-                            <Checkbox id="terms" name="terms" required className="mt-0.5 h-4 w-4" />
-                            <Label
-                                className="text-on-surface-variant text-xs leading-relaxed cursor-pointer text-start"
-                                htmlFor="terms"
-                            >
-                                {__('messages.register.agree_terms')}{' '}
-                                <Link
-                                    className="font-bold text-primary hover:underline"
-                                    href={terms()}
-                                >
-                                    {__('messages.register.terms_of_service')}
-                                </Link>{' '}
-                            </Label>
-                        </div>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="space-y-1.5">
+                        <Label htmlFor="password" className="block w-full text-xs">{__('messages.login.password_label')}</Label>
+                        <PasswordInput
+                            id="password"
+                            name="password"
+                            value={data.password}
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                            placeholder="••••••••"
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.password} />
+                    </div>
+                    <div className="space-y-1.5">
+                        <Label htmlFor="password_confirmation" className="block w-full text-xs">{__('messages.register.confirm_password')}</Label>
+                        <Input
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            type="password"
+                            value={data.password_confirmation}
+                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            required
+                            placeholder="••••••••"
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.password_confirmation} />
+                    </div>
+                </div>
 
-                        <Button
-                            className="h-10 w-full text-base font-bold"
-                            type="submit"
-                            disabled={processing}
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-start justify-start gap-3">
+                        <Checkbox
+                            id="terms"
+                            name="terms"
+                            required
+                            checked={data.terms}
+                            onCheckedChange={(checked) => setData('terms', checked === true)}
+                            className="mt-0.5 h-4 w-4"
+                        />
+                        <Label
+                            className="text-on-surface-variant text-xs leading-relaxed cursor-pointer text-start"
+                            htmlFor="terms"
                         >
-                            <span>{__('messages.register.submit_button')}</span>
-                            {processing ? (
-                                <Spinner className="size-4" />
-                            ) : (
-                                <span className="material-symbols-outlined text-lg rtl:rotate-180">
-                                    arrow_forward
-                                </span>
-                            )}
-                        </Button>
-                    </>
-                )}
-            </Form>
+                            {__('messages.register.agree_terms')}{' '}
+                            <Link
+                                className="font-bold text-primary hover:underline"
+                                href={terms()}
+                            >
+                                {__('messages.register.terms_of_service')}
+                            </Link>{' '}
+                        </Label>
+                    </div>
+                    <InputError message={errors.terms} />
+                </div>
+                <Button
+                    className="h-10 w-full text-base font-bold"
+                    type="submit"
+                    disabled={processing}
+                >
+                    <span>{__('messages.register.submit_button')}</span>
+                    {processing ? (
+                        <Spinner className="size-4" />
+                    ) : (
+                        <span className="material-symbols-outlined text-lg rtl:rotate-180">
+                            arrow_forward
+                        </span>
+                    )}
+                </Button>
+            </form>
 
             <div className="mt-6 flex flex-col items-center gap-5">
                 <div className="flex w-full items-center gap-4">

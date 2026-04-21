@@ -1,13 +1,14 @@
-import { Form, Head, Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
+import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     const { __ } = useLang();
+    const { locale } = usePage().props;
 
     return (
         <AuthLayout>
@@ -15,7 +16,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
 
             <div className="space-y-6 text-start">
                 <header className="mb-10">
-                    <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                    <h2 className="font-headline mb-2 text-2xl font-extrabold tracking-tight text-on-surface dark:text-white">
                         {__('messages.verify_email.hero_title')}
                     </h2>
                     <p className="text-on-surface-variant">
@@ -41,7 +42,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             <Button className="h-12 w-full text-lg font-bold" disabled={processing}>
                                 <span>{__('messages.verify_email.resend_button')}</span>
                                 {processing ? (
-                                    <Spinner className="size-5" />
+                                    <Spinner className="size-4" />
                                 ) : (
                                     <span className="material-symbols-outlined text-xl">
                                         mail
@@ -54,7 +55,10 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                     href={logout()}
                                     method="post"
                                     as="button"
-                                    data={{ _auth_context: 'app' }}
+                                    data={{
+                                        _auth_context: 'app',
+                                        _locale: locale,
+                                    }}
                                     className="text-sm font-bold text-primary hover:underline"
                                 >
                                     {__('messages.verify_email.logout')}
