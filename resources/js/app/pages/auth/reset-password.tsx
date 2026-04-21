@@ -188,7 +188,7 @@ export default function ResetPassword({ token, email }: Props) {
                         <div className="mt-6 text-center">
                             <Link
                                 className="flex items-center justify-center gap-2 font-bold text-primary transition-colors hover:underline"
-                                href={login()}
+                                href={login.url()}
                             >
                                 <span className="material-symbols-outlined text-sm rtl:rotate-180">
                                     arrow_back

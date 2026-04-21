@@ -1,4 +1,4 @@
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from '@/components/ui/sonner';
@@ -29,6 +29,21 @@ createInertiaApp({
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
+        const locale = props.initialPage.props.locale;
+
+        // Initial setup
+        const dir = locale === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.setAttribute('dir', dir);
+        document.documentElement.setAttribute('lang', locale as string);
+
+        // Listen for navigation changes (like language switching)
+        router.on('success', (event) => {
+            const nextLocale = event.detail.page.props.locale;
+            const nextDir = nextLocale === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.setAttribute('dir', nextDir);
+            document.documentElement.setAttribute('lang', nextLocale as string);
+        });
+
         root.render(
             <TooltipProvider delayDuration={0}>
                 <App {...props} />
@@ -44,3 +59,4 @@ createInertiaApp({
 
 // This will set light / dark mode on load...
 initializeTheme();
+

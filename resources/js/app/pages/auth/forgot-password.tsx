@@ -24,7 +24,7 @@ export default function ForgotPassword({ status }: Props) {
             <header className="mb-10 text-start">
                 <Link
                     className="group text-on-surface-variant mb-4 inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary"
-                    href={login()}
+                    href={login.url()}
                 >
                     <span className="material-symbols-outlined text-sm rtl:rotate-180">
                         arrow_back

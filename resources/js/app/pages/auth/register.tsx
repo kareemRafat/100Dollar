@@ -230,12 +230,12 @@ export default function Register({ canLogin }: Props) {
                 {canLogin && (
                     <p className="text-on-surface-variant text-xs">
                         {__('messages.register.have_account')}{' '}
-                        <Link
+                        <a
                             className="font-bold text-primary hover:underline"
-                            href={login()}
+                            href={login.url()}
                         >
                             {__('messages.login.login_button')}
-                        </Link>
+                        </a>
                     </p>
                 )}
             </div>
