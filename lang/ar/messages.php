@@ -29,6 +29,7 @@ return [
         'submit_your_idea' => 'قدّم فكرتك',
         'submit_your_idea_now' => 'قدّم فكرتك الآن',
         'how_it_works' => 'كيف نعمل؟',
+        'dashboard' => 'لوحة التحكم',
         'search' => 'بحث...',
         'hall_of_fame' => 'قاعة المشاهير',
         'hall_of_fame_desc' => 'مبدعون حولوا أفكارهم إلى واقع بجائزة الـ 100 دولار',
@@ -258,6 +259,27 @@ return [
         'create_account' => 'أنشئ حساباً جديداً',
     ],
 
+    'register' => [
+        'hero_title' => 'تسجيل جديد',
+        'welcome_title' => 'ابدأ رحلتك اليوم',
+        'subtitle' => 'انضم إلى مجتمع المبدعين وابدأ في مشاركة أفكارك مع العالم',
+        'full_name' => 'الاسم الكامل',
+        'full_name_placeholder' => 'محمد أحمد',
+        'phone_label' => 'رقم الهاتف',
+        'phone_placeholder' => '+966 5XXXXXXXX',
+        'country_residence' => 'دولة الإقامة',
+        'country_placeholder' => 'المملكة العربية السعودية',
+        'nationality' => 'الجنسية',
+        'nationality_placeholder' => 'سعودي',
+        'confirm_password' => 'تأكيد كلمة المرور',
+        'agree_terms' => 'أوافق على',
+        'terms_of_service' => 'شروط الخدمة و الأحكام',
+        'and' => 'و',
+        'privacy_policy' => 'سياسة الخصوصية',
+        'submit_button' => 'إنشاء الحساب الآن',
+        'have_account' => 'لديك حساب بالفعل؟',
+    ],
+
     'auth_layout' => [
         'invest_future' => 'استثمر في مستقبلك،',
         'one_idea_at_time' => 'فكرة واحدة في كل مرة.',
@@ -338,7 +360,8 @@ return [
         'edit_profile' => 'تعديل الملف الشخصي',
         'logout' => 'تسجيل الخروج',
     ],
-    'terms' => [
+
+    'footer' => [
         'description' => 'المنصة العربية الأولى لدعم وتمويل الأفكار الصغيرة والمبتكرة التي تبدأ بميزانية لا تتجاوز الـ 100 دولار. نحول أفكارك إلى واقع ملموس.',
         'quick_links' => 'الروابط السريعة',
         'support' => 'الدعم',

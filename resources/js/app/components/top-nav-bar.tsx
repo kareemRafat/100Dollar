@@ -1,24 +1,26 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, Globe, LogOut, Moon, Sun, User as UserIcon, Heart, Lightbulb } from 'lucide-react';
-import { useAppearance } from '@/hooks/use-appearance';
-import { cn } from '@/lib/utils';
-import type { NavItem } from '@/types';
+import { Bell, LogOut, Moon, Sun, User as UserIcon, Lightbulb } from 'lucide-react';
+import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { useAppearance } from '@/hooks/use-appearance';
+import { cn } from '@/lib/utils';
 import { logout } from '@/routes';
 import { index } from '@/routes/app/ideas';
-import LanguageSwitcher from '@/components/language-switcher';
-import { Switch } from '@/components/ui/switch';
-import { useLang } from '@erag/lang-sync-inertia/react';
+import type { NavItem } from '@/types';
+
+
+
 
 type Props = {
     activeRoute?: string;
@@ -83,11 +85,19 @@ export function TopNavBar({ activeRoute }: Props) {
                 <div className="flex items-center gap-2">
                     {auth.user ? (
                         <div className="flex items-center gap-1">
-                            <Link href="/ideas/create" className="hidden lg:block ms-2">
-                                <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
-                                    {__('messages.ui.submit_your_idea')}
-                                </Button>
-                            </Link>
+                            {auth.user.role === 'admin' ? (
+                                <Link href="/admin" className="hidden lg:block ms-2">
+                                    <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95 bg-secondary hover:bg-secondary/90">
+                                        {__('messages.ui.dashboard')}
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <Link href="/ideas/create" className="hidden lg:block ms-2">
+                                    <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
+                                        {__('messages.ui.submit_your_idea')}
+                                    </Button>
+                                </Link>
+                            )}
 
                             <Button variant="ghost" size="icon" className="rounded-full size-9 text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant dark:hover:bg-white/5">
                                 <Bell className="size-4.5" />
@@ -107,7 +117,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                         </Avatar>
                                     </button>
                                 </DropdownMenuTrigger>
-                                
+
                                 <DropdownMenuContent className="mt-1 w-56 origin-top-right rounded-xl border-outline-variant/10 p-1 shadow-xl dark:bg-surface-container-low" align="end">
                                     <div className="px-3 py-2">
                                         <div className="flex flex-col text-right">
@@ -115,9 +125,9 @@ export function TopNavBar({ activeRoute }: Props) {
                                             <p className="text-[10px] text-on-surface-variant truncate">{auth.user.email}</p>
                                         </div>
                                     </div>
-                                    
+
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
-                                    
+
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
                                             <Link href="/profile">
@@ -136,16 +146,16 @@ export function TopNavBar({ activeRoute }: Props) {
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
 
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem 
+                                        <DropdownMenuItem
                                             className="cursor-pointer rounded-lg py-2 flex items-center justify-between gap-2.5 text-xs font-bold focus:bg-primary/5"
                                             onSelect={(e) => {
                                                 e.preventDefault();
                                                 updateAppearance(appearance === 'dark' ? 'light' : 'dark');
                                             }}
                                         >
-                                            <Switch 
-                                                checked={appearance === 'dark'} 
-                                                onCheckedChange={(checked) => updateAppearance(checked ? 'dark' : 'light')} 
+                                            <Switch
+                                                checked={appearance === 'dark'}
+                                                onCheckedChange={(checked) => updateAppearance(checked ? 'dark' : 'light')}
                                             />
                                             <div className="flex items-center gap-2.5">
                                                 <span>{appearance === 'dark' ? __('messages.ui.light_mode') : __('messages.ui.dark_mode')}</span>
@@ -157,7 +167,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                     </DropdownMenuGroup>
 
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
-                                    
+
                                     <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error">
                                         <Link href={logout()} method="post" as="button" data={{ _auth_context: 'app' }} className="w-full">
                                             <span>{__('messages.auth.logout')}</span>
@@ -181,6 +191,14 @@ export function TopNavBar({ activeRoute }: Props) {
                                 </Button>
                             </Link>
                         </div>
+                    )}
+
+                    {! auth.user && (
+                        <Link href="/login" className="hidden lg:block ms-1">
+                            <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
+                                {__('messages.ui.submit_your_idea')}
+                            </Button>
+                        </Link>
                     )}
                 </div>
             </nav>

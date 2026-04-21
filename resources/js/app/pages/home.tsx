@@ -5,6 +5,7 @@ import { IdeaCard } from '@/app/components/idea-card';
 import { ParticlesBackground } from '@/app/components/particles-background';
 import { WinnerCard } from '@/app/components/winner-card';
 import AppLayout from '@/app/layouts/app-layout';
+import { usePage } from '@inertiajs/react';
 
 const sampleIdeas = [
     {
@@ -76,6 +77,18 @@ const votingDeadline = new Date(
 
 export default function Home() {
     const { __ } = useLang();
+    const { auth } = usePage().props;
+
+    const submitUrl = ! auth.user
+        ? '/login'
+        : auth.user.role === 'admin'
+          ? '/admin'
+          : '/ideas/create';
+
+    const submitText =
+        auth.user?.role === 'admin'
+            ? __('messages.ui.dashboard')
+            : __('messages.ui.submit_your_idea_now');
 
     return (
         <AppLayout activeRoute="/">
@@ -91,7 +104,9 @@ export default function Home() {
                         {__('messages.welcome')}
                     </div>
                     <h1 className="mb-8 max-w-4xl font-headline text-5xl leading-tight font-black text-on-surface md:text-7xl dark:text-white">
-                        <span className='block'>{__('messages.home.hero_title')}{' '}</span>
+                        <span className="block">
+                            {__('messages.home.hero_title')}{' '}
+                        </span>
                         <span className="mx-2 inline-block -rotate-2 transform rounded-lg bg-primary px-4 py-1 text-white shadow-lg">
                             {__('messages.for_100')}
                         </span>
@@ -101,10 +116,10 @@ export default function Home() {
                     </p>
                     <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
                         <Link
-                            href="/submit-idea"
+                            href={submitUrl}
                             className="rounded-xl bg-primary px-10 py-5 text-center text-xl font-bold text-on-primary shadow-lg transition-all hover:translate-y-[-2px]"
                         >
-                            {__('messages.ui.submit_your_idea_now')}
+                            {submitText}
                         </Link>
                         <Link
                             href="/how-it-works"

@@ -1,3 +1,4 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head, Link } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -10,7 +11,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes';
 import { contact, terms } from '@/routes/app';
 import { store } from '@/routes/register';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     canLogin: boolean;
@@ -112,7 +112,7 @@ export default function Register({ canLogin }: Props) {
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="space-y-1.5">
-                                <Label htmlFor="password">{__('messages.login.password_label')}</Label>
+                                <Label htmlFor="password" className="block w-full text-xs">{__('messages.login.password_label')}</Label>
                                 <PasswordInput
                                     id="password"
                                     name="password"
@@ -123,7 +123,7 @@ export default function Register({ canLogin }: Props) {
                                 <InputError message={errors.password} />
                             </div>
                             <div className="space-y-1.5">
-                                <Label htmlFor="password_confirmation" className="text-xs">{__('messages.register.confirm_password')}</Label>
+                                <Label htmlFor="password_confirmation" className="block w-full text-xs">{__('messages.register.confirm_password')}</Label>
                                 <Input
                                     id="password_confirmation"
                                     name="password_confirmation"

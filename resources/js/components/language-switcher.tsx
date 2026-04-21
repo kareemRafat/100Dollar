@@ -21,7 +21,7 @@ export default function LanguageSwitcher({ variant = 'dropdown' }: { variant?: '
         return (
             <button
                 onClick={() => (window.location.href = otherLanguage.url)}
-                className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-bold text-gray-300 transition-all hover:bg-white/10 hover:text-white"
+                className="flex items-center gap-2 rounded-lg border border-outline-variant/10 bg-surface-container-low px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-all hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10 dark:hover:text-primary"
             >
                 <Globe className="size-3.5" />
                 <span>{otherLanguage.name}</span>
