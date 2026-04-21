@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import LanguageSwitcher from '@/components/language-switcher';
+import AppearanceSwitcher from '@/components/appearance-switcher';
 
 export function Footer() {
     const { __ } = useLang();
@@ -162,7 +163,8 @@ export function Footer() {
                     <p className="font-body text-sm text-gray-400">
                         © {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}
                     </p>
-                    <div className="flex items-center gap-4 text-white">
+                    <div className="flex items-center gap-3">
+                        <AppearanceSwitcher />
                         <LanguageSwitcher variant="standalone" />
                     </div>
                 </div>
