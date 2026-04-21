@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 class RoleAwareRegisterResponse implements RegisterResponseContract
 {
     /**
@@ -18,8 +20,13 @@ class RoleAwareRegisterResponse implements RegisterResponseContract
             return new JsonResponse('', 201);
         }
 
+        $locale = $request->input('_locale') ?: app()->getLocale();
+
         return redirect()->intended(
-            route(app(AuthContext::class)->authenticatedRouteForUser($request->user())),
+            LaravelLocalization::getLocalizedURL(
+                $locale,
+                route(app(AuthContext::class)->authenticatedRouteForUser($request->user()))
+            )
         );
     }
 }

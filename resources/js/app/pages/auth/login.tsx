@@ -53,6 +53,7 @@ export default function Login({
                 {({ processing, errors }) => (
                     <>
                         <input type="hidden" name="_auth_context" value="app" />
+                        <input type="hidden" name="_locale" value={window.location.pathname.split('/')[1]} />
 
                         <div className="space-y-2">
                             <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>

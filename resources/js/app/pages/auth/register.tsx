@@ -40,10 +40,12 @@ export default function Register({ canLogin }: Props) {
                 {({ processing, errors }) => (
                     <>
                         <input type="hidden" name="_auth_context" value="app" />
+                        <input type="hidden" name="_locale" value={window.location.pathname.split('/')[1]} />
 
-                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                            <div className="space-y-1.5">
-                                <Label htmlFor="name" className="block w-full text-xs">{__('messages.register.full_name')}</Label>
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="name">{__('messages.register.full_name')}</Label>
+
                                 <Input
                                     id="name"
                                     name="name"

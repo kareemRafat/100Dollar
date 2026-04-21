@@ -1,6 +1,13 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
-import { Bell, LogOut, Moon, Sun, User as UserIcon, Lightbulb } from 'lucide-react';
+import {
+    Bell,
+    LogOut,
+    Moon,
+    Sun,
+    User as UserIcon,
+    Lightbulb,
+} from 'lucide-react';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -19,15 +26,12 @@ import { logout } from '@/routes';
 import { index } from '@/routes/app/ideas';
 import type { NavItem } from '@/types';
 
-
-
-
 type Props = {
     activeRoute?: string;
 };
 
 export function TopNavBar({ activeRoute }: Props) {
-    const { auth } = usePage().props;
+    const { auth, locale } = usePage().props;
     const { appearance, updateAppearance } = useAppearance();
     const { __ } = useLang();
 
@@ -56,7 +60,10 @@ export function TopNavBar({ activeRoute }: Props) {
                         className="font-headline text-xl font-black tracking-tighter text-secondary transition-all hover:opacity-80 dark:text-white"
                         href="/"
                     >
-                        <span className="text-primary">{__('messages.ideas')}</span> {__('messages.for_100')}
+                        <span className="text-primary">
+                            {__('messages.ideas')}
+                        </span>{' '}
+                        {__('messages.for_100')}
                     </Link>
                 </div>
 
@@ -66,7 +73,7 @@ export function TopNavBar({ activeRoute }: Props) {
                         <Link
                             key={item.title}
                             className={cn(
-                                'font-headline relative px-3 py-1.5 text-sm font-bold transition-all duration-300',
+                                'relative px-3 py-1.5 font-headline text-[15px] font-bold transition-all duration-300',
                                 activeRoute === item.href
                                     ? 'text-primary'
                                     : 'text-on-surface-variant hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
@@ -75,7 +82,7 @@ export function TopNavBar({ activeRoute }: Props) {
                         >
                             {item.title}
                             {activeRoute === item.href && (
-                                <span className="absolute bottom-0 start-3 end-3 h-0.5 rounded-full bg-primary" />
+                                <span className="absolute start-3 end-3 bottom-0 h-0.5 rounded-full bg-primary" />
                             )}
                         </Link>
                     ))}
@@ -86,20 +93,30 @@ export function TopNavBar({ activeRoute }: Props) {
                     {auth.user ? (
                         <div className="flex items-center gap-1">
                             {auth.user.role === 'admin' ? (
-                                <Link href="/admin" className="hidden lg:block ms-2">
-                                    <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95 bg-secondary hover:bg-secondary/90">
+                                <a
+                                    href="/admin"
+                                    className="ms-2 hidden lg:block"
+                                >
+                                    <Button className="h-9 rounded-lg bg-secondary px-4 text-sm font-bold transition-all hover:scale-[1.02] hover:bg-secondary/90 active:scale-95">
                                         {__('messages.ui.dashboard')}
                                     </Button>
-                                </Link>
+                                </a>
                             ) : (
-                                <Link href="/ideas/create" className="hidden lg:block ms-2">
-                                    <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
+                                <Link
+                                    href="/ideas/create"
+                                    className="ms-2 hidden lg:block"
+                                >
+                                    <Button className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95">
                                         {__('messages.ui.submit_your_idea')}
                                     </Button>
                                 </Link>
                             )}
 
-                            <Button variant="ghost" size="icon" className="rounded-full size-9 text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant dark:hover:bg-white/5">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="size-9 rounded-full text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant dark:hover:bg-white/5"
+                            >
                                 <Bell className="size-4.5" />
                             </Button>
 
@@ -107,10 +124,15 @@ export function TopNavBar({ activeRoute }: Props) {
                                 <DropdownMenuTrigger asChild>
                                     <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-3 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
                                         <div className="hidden flex-col items-end sm:flex">
-                                            <span className="text-[11px] font-bold text-on-surface dark:text-white">{auth.user.name}</span>
+                                            <span className="text-[11px] font-bold text-on-surface dark:text-white">
+                                                {auth.user.name}
+                                            </span>
                                         </div>
                                         <Avatar className="size-7">
-                                            <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
+                                            <AvatarImage
+                                                src={auth.user.avatar}
+                                                alt={auth.user.name}
+                                            />
                                             <AvatarFallback className="bg-primary text-[9px] font-bold text-white">
                                                 {getInitials(auth.user.name)}
                                             </AvatarFallback>
@@ -118,26 +140,47 @@ export function TopNavBar({ activeRoute }: Props) {
                                     </button>
                                 </DropdownMenuTrigger>
 
-                                <DropdownMenuContent className="mt-1 w-56 origin-top-right rounded-xl border-outline-variant/10 p-1 shadow-xl dark:bg-surface-container-low" align="end">
+                                <DropdownMenuContent
+                                    className="mt-1 w-56 origin-top-right rounded-xl border-outline-variant/10 p-1 shadow-xl dark:bg-surface-container-low"
+                                    align="end"
+                                >
                                     <div className="px-3 py-2">
                                         <div className="flex flex-col text-right">
-                                            <p className="text-xs font-bold text-on-surface dark:text-white">{auth.user.name}</p>
-                                            <p className="text-[10px] text-on-surface-variant truncate">{auth.user.email}</p>
+                                            <p className="text-xs font-bold text-on-surface dark:text-white">
+                                                {auth.user.name}
+                                            </p>
+                                            <p className="truncate text-[10px] text-on-surface-variant">
+                                                {auth.user.email}
+                                            </p>
                                         </div>
                                     </div>
 
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
 
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
+                                        <DropdownMenuItem
+                                            asChild
+                                            className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary"
+                                        >
                                             <Link href="/profile">
-                                                <span>{__('messages.auth.profile')}</span>
+                                                <span>
+                                                    {__(
+                                                        'messages.auth.profile',
+                                                    )}
+                                                </span>
                                                 <UserIcon className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
-                                        <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary">
+                                        <DropdownMenuItem
+                                            asChild
+                                            className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary"
+                                        >
                                             <Link href={index()}>
-                                                <span>{__('messages.auth.my_ideas')}</span>
+                                                <span>
+                                                    {__(
+                                                        'messages.auth.my_ideas',
+                                                    )}
+                                                </span>
                                                 <Lightbulb className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
@@ -147,19 +190,41 @@ export function TopNavBar({ activeRoute }: Props) {
 
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem
-                                            className="cursor-pointer rounded-lg py-2 flex items-center justify-between gap-2.5 text-xs font-bold focus:bg-primary/5"
+                                            className="flex cursor-pointer items-center justify-between gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5"
                                             onSelect={(e) => {
                                                 e.preventDefault();
-                                                updateAppearance(appearance === 'dark' ? 'light' : 'dark');
+                                                updateAppearance(
+                                                    appearance === 'dark'
+                                                        ? 'light'
+                                                        : 'dark',
+                                                );
                                             }}
                                         >
                                             <Switch
                                                 checked={appearance === 'dark'}
-                                                onCheckedChange={(checked) => updateAppearance(checked ? 'dark' : 'light')}
+                                                onCheckedChange={(checked) =>
+                                                    updateAppearance(
+                                                        checked
+                                                            ? 'dark'
+                                                            : 'light',
+                                                    )
+                                                }
                                             />
                                             <div className="flex items-center gap-2.5">
-                                                <span>{appearance === 'dark' ? __('messages.ui.light_mode') : __('messages.ui.dark_mode')}</span>
-                                                {appearance === 'dark' ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+                                                <span>
+                                                    {appearance === 'dark'
+                                                        ? __(
+                                                              'messages.ui.light_mode',
+                                                          )
+                                                        : __(
+                                                              'messages.ui.dark_mode',
+                                                          )}
+                                                </span>
+                                                {appearance === 'dark' ? (
+                                                    <Sun className="size-3.5" />
+                                                ) : (
+                                                    <Moon className="size-3.5" />
+                                                )}
                                             </div>
                                         </DropdownMenuItem>
 
@@ -168,9 +233,23 @@ export function TopNavBar({ activeRoute }: Props) {
 
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />
 
-                                    <DropdownMenuItem asChild className="cursor-pointer rounded-lg py-2 justify-end gap-2.5 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error">
-                                        <Link href={logout()} method="post" as="button" data={{ _auth_context: 'app' }} className="w-full">
-                                            <span>{__('messages.auth.logout')}</span>
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error"
+                                    >
+                                        <Link
+                                            href={logout()}
+                                            method="post"
+                                            as="button"
+                                            data={{
+                                                _auth_context: 'app',
+                                                _locale: locale,
+                                            }}
+                                            className="w-full"
+                                        >
+                                            <span>
+                                                {__('messages.auth.logout')}
+                                            </span>
                                             <LogOut className="size-3.5" />
                                         </Link>
                                     </DropdownMenuItem>
@@ -180,25 +259,17 @@ export function TopNavBar({ activeRoute }: Props) {
                     ) : (
                         <div className="flex items-center gap-1">
                             <Link
-                                className="px-3 py-2 text-xs font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400"
+                                className="px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400"
                                 href="/login"
                             >
                                 {__('messages.auth.login')}
                             </Link>
                             <Link href="/register">
-                                <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02]">
+                                <Button className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02]">
                                     {__('messages.auth.register')}
                                 </Button>
                             </Link>
                         </div>
-                    )}
-
-                    {! auth.user && (
-                        <Link href="/login" className="hidden lg:block ms-1">
-                            <Button className="h-9 rounded-lg px-4 text-xs font-bold transition-all hover:scale-[1.02] active:scale-95">
-                                {__('messages.ui.submit_your_idea')}
-                            </Button>
-                        </Link>
                     )}
                 </div>
             </nav>

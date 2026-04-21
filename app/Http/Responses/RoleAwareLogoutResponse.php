@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 class RoleAwareLogoutResponse implements LogoutResponseContract
 {
     /**
@@ -19,9 +21,13 @@ class RoleAwareLogoutResponse implements LogoutResponseContract
         }
 
         $context = app(AuthContext::class)->remember($request);
+        $locale = $request->input('_locale') ?: app()->getLocale();
 
-        return redirect()->route(
-            app(AuthContext::class)->loginRouteForContext($context),
+        return redirect()->to(
+            LaravelLocalization::getLocalizedURL(
+                $locale,
+                route(app(AuthContext::class)->loginRouteForContext($context))
+            )
         );
     }
 }

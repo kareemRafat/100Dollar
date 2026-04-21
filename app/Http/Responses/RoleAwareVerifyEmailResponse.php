@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
 
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
 class RoleAwareVerifyEmailResponse implements VerifyEmailResponseContract
 {
     /**
@@ -19,7 +21,10 @@ class RoleAwareVerifyEmailResponse implements VerifyEmailResponseContract
         }
 
         return redirect()->intended(
-            route(app(AuthContext::class)->homeRouteForUser($request->user())).'?verified=1',
+            LaravelLocalization::getLocalizedURL(
+                app()->getLocale(),
+                route(app(AuthContext::class)->homeRouteForUser($request->user())).'?verified=1'
+            )
         );
     }
 }

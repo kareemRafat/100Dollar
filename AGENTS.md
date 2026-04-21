@@ -151,6 +151,8 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 # Do Things the Laravel Way
 
+- Controllers are organized into sub-directories: `app/Http/Controllers/App` for the main application and `app/Http/Controllers/Admin` for the administration panel.
+- Use `php artisan make:controller App/NameController` or `php artisan make:controller Admin/NameController` to maintain this structure.
 - Use `php artisan make:` commands to create new files (i.e. migrations, controllers, models, etc.). You can list available Artisan commands using `php artisan list` and check their parameters with `php artisan [command] --help`.
 - If you're creating a generic PHP class, use `php artisan make:class`.
 - Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
