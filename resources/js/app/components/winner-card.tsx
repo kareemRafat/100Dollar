@@ -14,7 +14,7 @@ export function WinnerCard({
     prize = '100$',
 }: Props) {
     return (
-        <div className="group relative w-72 flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-2xl dark:bg-card">
+        <div className="group relative w-72 flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card">
             <div className="absolute top-0 start-0 h-1 w-full bg-gradient-to-l from-primary to-transparent" />
             <div className="relative mx-auto mb-4 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />

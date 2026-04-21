@@ -1,6 +1,6 @@
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { usePage } from '@inertiajs/react';
 import { Globe } from 'lucide-react';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
 export default function LanguageSwitcher({ variant = 'dropdown' }: { variant?: 'dropdown' | 'standalone' }) {
     const { languages, locale } = usePage().props;

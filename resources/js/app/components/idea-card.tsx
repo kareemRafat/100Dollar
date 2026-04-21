@@ -35,7 +35,7 @@ export function IdeaCard({
 }: Props) {
     if (variant === 'archive') {
         return (
-            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-xl dark:bg-card">
+            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card">
                 {imageUrl && (
                     <div className="relative h-40 overflow-hidden sm:h-48">
                         <img

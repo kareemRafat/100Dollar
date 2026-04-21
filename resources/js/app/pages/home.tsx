@@ -1,11 +1,12 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { useCallback, useEffect, useState } from 'react';
 import { CountdownTimer } from '@/app/components/countdown-timer';
 import { IdeaCard } from '@/app/components/idea-card';
 import { ParticlesBackground } from '@/app/components/particles-background';
 import { WinnerCard } from '@/app/components/winner-card';
 import AppLayout from '@/app/layouts/app-layout';
-import { usePage } from '@inertiajs/react';
 
 const sampleIdeas = [
     {
@@ -59,6 +60,16 @@ const sampleWinners = [
         idea: 'صندوق الوجبات الصحية لطلبة المدارس بمكونات طبيعية وطازجة يومياً.',
         badge: 'فائزة الخميس',
     },
+    {
+        name: 'أحمد محمود',
+        idea: 'منصة لتبادل الكتب المستعملة بين طلاب الجامعات.',
+        badge: 'فائز الأربعاء',
+    },
+    {
+        name: 'سارة أحمد',
+        idea: 'تطبيق لتعليم الحرف اليدوية التقليدية للأطفال.',
+        badge: 'فائزة الثلاثاء',
+    },
 ];
 
 const weeklyTabs = [
@@ -77,7 +88,50 @@ const votingDeadline = new Date(
 
 export default function Home() {
     const { __ } = useLang();
-    const { auth } = usePage().props;
+    const { auth, locale } = usePage().props;
+    const isRtl = locale === 'ar';
+
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        direction: isRtl ? 'rtl' : 'ltr',
+        align: 'start',
+        containScroll: 'trimSnaps',
+    });
+
+    const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+    const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
+
+    const scrollPrev = useCallback(
+        () => emblaApi && emblaApi.scrollPrev(),
+        [emblaApi],
+    );
+    const scrollNext = useCallback(
+        () => emblaApi && emblaApi.scrollNext(),
+        [emblaApi],
+    );
+
+    const onSelect = useCallback((emblaApi: any) => {
+        setPrevBtnDisabled(! emblaApi.canScrollPrev());
+        setNextBtnDisabled(! emblaApi.canScrollNext());
+    }, []);
+
+    useEffect(() => {
+        if (! emblaApi) {
+            return;
+        }
+
+        const syncButtons = () => {
+            onSelect(emblaApi);
+        };
+
+        syncButtons();
+        emblaApi.on('reInit', syncButtons);
+        emblaApi.on('select', syncButtons);
+
+        return () => {
+            emblaApi.off('reInit', syncButtons);
+            emblaApi.off('select', syncButtons);
+        };
+    }, [emblaApi, onSelect]);
 
     const submitUrl = ! auth.user
         ? '/login'
@@ -184,7 +238,7 @@ export default function Home() {
             </section>
 
             <section className="mx-auto mb-20 max-w-7xl px-6">
-                <div className="mb-10 flex flex-col items-end justify-between gap-4 border-e-4 border-primary pe-6 md:flex-row">
+                <div className="mb-10 flex flex-col items-end justify-between gap-4 border-s-4 border-primary ps-6 md:flex-row">
                     <div>
                         <h2 className="font-headline text-3xl font-black text-on-surface md:text-4xl dark:text-white">
                             {__('messages.ui.hall_of_fame')}
@@ -193,36 +247,73 @@ export default function Home() {
                             {__('messages.ui.hall_of_fame_desc')}
                         </p>
                     </div>
-                    <Link
-                        className="group flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-container"
-                        href="/archive"
-                    >
-                        {__('messages.ui.browse_full_archive')}
-                        <span className="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">
-                            arrow_back
-                        </span>
-                    </Link>
-                </div>
-                <div className="no-scrollbar flex snap-x gap-6 overflow-x-auto pb-10">
-                    {sampleWinners.map((winner) => (
-                        <WinnerCard key={winner.name} {...winner} />
-                    ))}
-                    <Link
-                        href="/archive"
-                        className="group flex w-72 flex-shrink-0 cursor-pointer snap-start flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low p-6 text-center transition-colors hover:border-primary/50"
-                    >
-                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-high transition-colors group-hover:bg-primary/10 dark:bg-surface-container-high">
-                            <span className="material-symbols-outlined text-4xl text-on-surface-variant transition-colors group-hover:text-primary">
-                                history
-                            </span>
+                    <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={scrollPrev}
+                                disabled={prevBtnDisabled}
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-high text-on-surface transition-all hover:bg-primary hover:text-on-primary disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                            >
+                                <span className="material-symbols-outlined">
+                                    {isRtl ? 'chevron_right' : 'chevron_left'}
+                                </span>
+                            </button>
+                            <button
+                                onClick={scrollNext}
+                                disabled={nextBtnDisabled}
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-high text-on-surface transition-all hover:bg-primary hover:text-on-primary disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                            >
+                                <span className="material-symbols-outlined">
+                                    {isRtl ? 'chevron_left' : 'chevron_right'}
+                                </span>
+                            </button>
                         </div>
-                        <p className="font-headline text-lg font-bold text-on-surface dark:text-white">
-                            {__('messages.ui.full_archive')}
-                        </p>
-                        <p className="mt-2 text-xs text-on-surface-variant dark:text-on-surface-variant">
-                            {__('messages.ui.full_archive_desc')}
-                        </p>
-                    </Link>
+                        <Link
+                            className="group flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-container"
+                            href="/archive"
+                        >
+                            {__('messages.ui.browse_full_archive')}
+                            <span className="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">
+                                {isRtl ? 'arrow_back' : 'arrow_forward'}
+                            </span>
+                        </Link>
+                    </div>
+                </div>
+
+                <div
+                    className="overflow-hidden cursor-grab active:cursor-grabbing select-none touch-pan-y"
+                    ref={emblaRef}
+                >
+                    <div className="flex gap-6 pb-10 select-none">
+                        {sampleWinners.map((winner) => (
+                            <div
+                                key={winner.name}
+                                className="min-w-0 flex-[0_0_auto] select-none pointer-events-none"
+                            >
+                                <div className="pointer-events-auto">
+                                    <WinnerCard {...winner} />
+                                </div>
+                            </div>
+                        ))}
+                        <div className="min-w-0 flex-[0_0_auto]">
+                            <Link
+                                href="/archive"
+                                className="group flex h-full w-72 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low p-6 text-center transition-colors hover:border-primary/50"
+                            >
+                                <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-high transition-colors group-hover:bg-primary/10 dark:bg-surface-container-high">
+                                    <span className="material-symbols-outlined text-4xl text-on-surface-variant transition-colors group-hover:text-primary">
+                                        history
+                                    </span>
+                                </div>
+                                <p className="font-headline text-lg font-bold text-on-surface dark:text-white">
+                                    {__('messages.ui.full_archive')}
+                                </p>
+                                <p className="mt-2 text-xs text-on-surface-variant dark:text-on-surface-variant">
+                                    {__('messages.ui.full_archive_desc')}
+                                </p>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </section>
         </AppLayout>
