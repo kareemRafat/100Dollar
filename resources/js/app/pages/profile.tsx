@@ -1,9 +1,9 @@
-import { Form, Head, Link } from '@inertiajs/react';
-import { useState } from 'react';
-import { SideNav } from '@/app/components/side-nav';
-import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
-import AppLayout from '@/app/layouts/app-layout';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Head } from '@inertiajs/react';
+import { useState } from 'react';
+import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
+import { SideNav } from '@/app/components/side-nav';
+import AppLayout from '@/app/layouts/app-layout';
 
 type Props = {
     user: {

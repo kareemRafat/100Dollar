@@ -30,6 +30,7 @@ return [
         'submit_your_idea_now' => 'قدّم فكرتك الآن',
         'how_it_works' => 'كيف نعمل؟',
         'dashboard' => 'لوحة التحكم',
+        'language' => 'اللغة',
         'search' => 'بحث...',
         'hall_of_fame' => 'قاعة المشاهير',
         'hall_of_fame_desc' => 'مبدعون حولوا أفكارهم إلى واقع بجائزة الـ 100 دولار',

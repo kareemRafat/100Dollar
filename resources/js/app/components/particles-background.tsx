@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
 import Particles, { initParticlesEngine } from '@tsparticles/react';
 import { loadSlim } from '@tsparticles/slim';
+import { useEffect, useState } from 'react';
 
 export function ParticlesBackground() {
     const [init, setInit] = useState(false);
@@ -13,7 +13,9 @@ export function ParticlesBackground() {
         });
     }, []);
 
-    if (!init) return null;
+    if (!init) {
+return null;
+}
 
     return (
         <Particles

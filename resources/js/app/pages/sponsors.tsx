@@ -157,6 +157,7 @@ export default function Sponsors() {
                                     .map((sponsor) => {
                                         const isToday =
                                             sponsor.day === todayDay;
+
                                         return sponsor.available ? (
                                             <div
                                                 key={sponsor.day}

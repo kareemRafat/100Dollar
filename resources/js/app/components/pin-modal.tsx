@@ -1,4 +1,5 @@
-import { useState, useRef, type KeyboardEvent, type ChangeEvent } from 'react';
+import { useState, useRef   } from 'react';
+import type {KeyboardEvent, ChangeEvent} from 'react';
 
 type Props = {
     isOpen: boolean;
@@ -11,11 +12,16 @@ export function PinModal({ isOpen, onClose, onSubmit, email }: Props) {
     const [pin, setPin] = useState<string[]>(Array(6).fill(''));
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-    if (!isOpen) return null;
+    if (!isOpen) {
+return null;
+}
 
     function handleChange(index: number, e: ChangeEvent<HTMLInputElement>) {
         const value = e.target.value.slice(-1);
-        if (!/^\d*$/.test(value)) return;
+
+        if (!/^\d*$/.test(value)) {
+return;
+}
 
         const newPin = [...pin];
         newPin[index] = value;

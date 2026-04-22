@@ -1,6 +1,6 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 const sections = [
     {

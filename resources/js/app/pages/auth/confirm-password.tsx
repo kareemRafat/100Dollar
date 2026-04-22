@@ -1,12 +1,12 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head } from '@inertiajs/react';
+import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { store } from '@/routes/password/confirm';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 export default function ConfirmPassword() {
     const { __ } = useLang();

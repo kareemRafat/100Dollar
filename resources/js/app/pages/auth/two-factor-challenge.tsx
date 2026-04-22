@@ -1,6 +1,8 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useMemo, useState } from 'react';
+import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,9 +12,7 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
-import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { store } from '@/routes/two-factor/login';
-import { useLang } from '@erag/lang-sync-inertia/react';
 
 export default function TwoFactorChallenge() {
     const { __ } = useLang();

@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
-import LanguageSwitcher from '@/components/language-switcher';
 import AppearanceSwitcher from '@/components/appearance-switcher';
+import LanguageSwitcher from '@/components/language-switcher';
 
 export function Footer() {
     const { __ } = useLang();

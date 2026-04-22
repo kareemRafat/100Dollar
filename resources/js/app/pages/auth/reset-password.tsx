@@ -1,15 +1,15 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
-import { login } from '@/routes';
-import { update } from '@/routes/password';
+import InputError from '@/components/input-error';
+import PasswordInput from '@/components/password-input';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import PasswordInput from '@/components/password-input';
-import InputError from '@/components/input-error';
-import { useLang } from '@erag/lang-sync-inertia/react';
+import { login } from '@/routes';
+import { update } from '@/routes/password';
 
 type Props = {
     token: string;

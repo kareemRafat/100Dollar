@@ -75,6 +75,7 @@ export default function MyIdeas() {
             progress: 84,
         },
     ];
+
     return (
         <AppLayout activeRoute="/my-ideas">
             <Head title="أفكاري" />
