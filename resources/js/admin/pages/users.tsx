@@ -1,6 +1,7 @@
-import { Head, useForm } from '@inertiajs/react';
-import { Loader2, MoreVertical, Pencil, Trash2, UserPlus } from 'lucide-react';
-import React, { useState } from 'react';
+import { Head, router, useForm } from '@inertiajs/react';
+import { Loader2, Pencil, Search, Trash2, UserPlus } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,14 +14,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Pagination } from '@/components/ui/pagination';
 import {
     Table,
     TableBody,
@@ -37,9 +33,18 @@ import admin from '@/routes/admin';
 interface UsersProps {
     users: {
         data: User[];
-        links: any[];
+        links: {
+            url: string | null;
+            label: string;
+            active: boolean;
+        }[];
         current_page: number;
         last_page: number;
+    };
+    filters: {
+        search?: string;
+        role?: string;
+        status?: string;
     };
 }
 
@@ -54,11 +59,33 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function UsersPage({ users }: UsersProps) {
+export default function UsersPage({ users, filters }: UsersProps) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+    const [search, setSearch] = useState(filters.search || '');
+    const [role, setRole] = useState(filters.role || '');
+    const [status, setStatus] = useState(filters.status || '');
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            const params: any = {};
+            if (search) params.search = search;
+            if (role) params.role = role;
+            if (status) params.status = status;
+            router.get(admin.users.index().url, params, { preserveState: true, replace: true });
+        }, 300);
+        return () => clearTimeout(timeout);
+    }, [search, role, status]);
+
+    const resetFilters = () => {
+        setSearch('');
+        setRole('');
+        setStatus('');
+        router.get(admin.users.index().url);
+    };
 
     const createForm = useForm({
         name: '',
@@ -86,6 +113,7 @@ export default function UsersPage({ users }: UsersProps) {
             onSuccess: () => {
                 setIsCreateModalOpen(false);
                 createForm.reset();
+                toast.success('تم إنشاء المستخدم بنجاح');
             },
         });
     };
@@ -110,6 +138,7 @@ export default function UsersPage({ users }: UsersProps) {
             onSuccess: () => {
                 setIsEditModalOpen(false);
                 editForm.reset();
+                toast.success('تم تحديث المستخدم بنجاح');
             },
         });
     };
@@ -125,6 +154,7 @@ export default function UsersPage({ users }: UsersProps) {
         deleteForm.delete(admin.users.destroy(selectedUser.id).url, {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);
+                toast.success('تم حذف المستخدم بنجاح');
             },
         });
     };
@@ -132,7 +162,6 @@ export default function UsersPage({ users }: UsersProps) {
     return (
         <>
             <Head title="إدارة المستخدمين" />
-
             <div className="space-y-6 p-6">
                 <div className="flex items-center justify-between">
                     <div>
@@ -146,10 +175,43 @@ export default function UsersPage({ users }: UsersProps) {
                 </div>
 
                 <Card>
-                    <CardHeader>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
                         <CardTitle>قائمة المستخدمين</CardTitle>
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
+                                <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    type="search"
+                                    placeholder="بحث..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    className="w-64 pr-9"
+                                />
+                            </div>
+                            <Select value={role || 'all'} onValueChange={(v) => setRole(v === 'all' ? '' : v)}>
+                                <SelectTrigger className="w-32">
+                                    <SelectValue placeholder="الدور" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">الكل</SelectItem>
+                                    <SelectItem value="admin">مدير</SelectItem>
+                                    <SelectItem value="user">مستخدم</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select value={status || 'all'} onValueChange={(v) => setStatus(v === 'all' ? '' : v)}>
+                                <SelectTrigger className="w-32">
+                                    <SelectValue placeholder="الحالة" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">الكل</SelectItem>
+                                    <SelectItem value="active">نشط</SelectItem>
+                                    <SelectItem value="inactive">معطل</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Button variant="outline" onClick={resetFilters}>إعادة تعيين</Button>
+                        </div>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
                         <Table>
                             <TableHeader>
                                 <TableRow>
@@ -171,36 +233,35 @@ export default function UsersPage({ users }: UsersProps) {
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant={user.is_active ? 'success' : 'destructive'} className={user.is_active ? 'bg-green-100 text-green-800' : ''}>
+                                            <Badge variant={user.is_active ? 'default' : 'destructive'} className={user.is_active ? 'bg-green-100 text-green-800' : ''}>
                                                 {user.is_active ? 'نشط' : 'معطل'}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-end">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <MoreVertical className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem onClick={() => handleEditClick(user)}>
-                                                        <Pencil className="ml-2 h-4 w-4" />
-                                                        تعديل
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => handleDeleteClick(user)}
-                                                        className="text-red-600 focus:text-red-600"
-                                                    >
-                                                        <Trash2 className="ml-2 h-4 w-4" />
-                                                        حذف
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
+                                            <div className="flex items-center justify-end gap-2">
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => handleEditClick(user)}
+                                                    className="h-8 w-8 text-primary hover:bg-primary/10"
+                                                >
+                                                    <Pencil className="h-4 w-4" />
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    onClick={() => handleDeleteClick(user)}
+                                                    className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                                >
+                                                    <Trash2 className="h-4 w-4" />
+                                                </Button>
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
+                        <Pagination links={users.links} />
                     </CardContent>
                 </Card>
             </div>
@@ -245,7 +306,7 @@ export default function UsersPage({ users }: UsersProps) {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="role">الدور</Label>
-                                <Select onValueChange={v => createForm.setData('role', v)} defaultValue={createForm.data.role}>
+                                <Select value={createForm.data.role} onValueChange={(v: 'admin' | 'user') => createForm.setData('role', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="اختر الدور" />
                                     </SelectTrigger>
@@ -315,7 +376,7 @@ export default function UsersPage({ users }: UsersProps) {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="edit-role">الدور</Label>
-                                <Select onValueChange={v => editForm.setData('role', v)} value={editForm.data.role}>
+                                <Select value={editForm.data.role} onValueChange={(v: 'admin' | 'user') => editForm.setData('role', v)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="اختر الدور" />
                                     </SelectTrigger>
@@ -347,13 +408,13 @@ export default function UsersPage({ users }: UsersProps) {
 
             {/* Delete Modal */}
             <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-                <DialogContent>
-                    <form onSubmit={handleDeleteSubmit}>
+                <DialogContent className="p-6">
+                    <form onSubmit={handleDeleteSubmit} className="space-y-4">
                         <DialogHeader>
-                            <DialogTitle>حذف المستخدم</DialogTitle>
-                            <DialogDescription>هل أنت متأكد من حذف المستخدم {selectedUser?.name}؟ لا يمكن التراجع عن هذا الإجراء.</DialogDescription>
+                            <DialogTitle className="text-start">حذف المستخدم</DialogTitle>
+                            <DialogDescription className="text-start">هل أنت متأكد من حذف المستخدم {selectedUser?.name}؟ لا يمكن التراجع عن هذا الإجراء.</DialogDescription>
                         </DialogHeader>
-                        <DialogFooter>
+                        <DialogFooter className="mt-6 flex flex-row items-center justify-start gap-2">
                             <Button type="button" variant="outline" onClick={() => setIsDeleteModalOpen(false)}>إلغاء</Button>
                             <Button type="submit" variant="destructive" disabled={deleteForm.processing}>
                                 {deleteForm.processing && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}

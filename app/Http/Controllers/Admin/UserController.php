@@ -16,13 +16,30 @@ class UserController extends Controller
     /**
      * Display a listing of the users.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $search = $request->input('search');
+        $role = $request->input('role');
+        $status = $request->input('status');
+
+        $users = User::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
+            })
+            ->when($role, function ($query, $role) {
+                $query->where('role', $role);
+            })
+            ->when($status !== null, function ($query) use ($status) {
+                $query->where('is_active', $status === 'active');
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
         return Inertia::render('admin/pages/users', [
-            'users' => User::query()
-                ->latest()
-                ->paginate(10)
-                ->withQueryString(),
+            'users' => $users,
+            'filters' => $request->only(['search', 'role', 'status']),
         ]);
     }
 
