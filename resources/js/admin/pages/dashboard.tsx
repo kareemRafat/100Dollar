@@ -1,11 +1,12 @@
 import { Head } from '@inertiajs/react';
+import AdminLayout from '@/admin/layouts/admin-layout';
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
-import { dashboard } from '@/routes/admin';
+import admin from '@/routes/admin';
 
 export default function Dashboard() {
     return (
         <>
-            <Head title="Dashboard" />
+            <Head title="لوحة التحكم" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
@@ -26,11 +27,15 @@ export default function Dashboard() {
     );
 }
 
-Dashboard.layout = {
-    breadcrumbs: [
-        {
-            title: 'Dashboard',
-            href: dashboard(),
-        },
-    ],
-};
+Dashboard.layout = (page: React.ReactNode) => (
+    <AdminLayout
+        breadcrumbs={[
+            {
+                title: 'لوحة التحكم',
+                href: admin.dashboard().url,
+            },
+        ]}
+    >
+        {page}
+    </AdminLayout>
+);

@@ -31,6 +31,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::inertia('/', 'admin/pages/dashboard')->name('admin.dashboard');
 
+    Route::get('users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+    Route::post('users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
+    Route::patch('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+
     Route::redirect('settings', 'settings/profile')->name('admin.settings');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('admin.settings.profile.edit');
