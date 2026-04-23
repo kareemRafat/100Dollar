@@ -1,71 +1,65 @@
-import { Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
+import type { LucideIcon } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
     id: string;
     label: string;
-    icon: string;
+    icon: LucideIcon;
     href: string;
 };
 
 type Props = {
     activeSection: string;
     items?: NavItem[];
+    onItemClick?: (id: string) => void;
 };
 
-const defaultItems: NavItem[] = [
-    {
-        id: 'personal-info',
-        label: 'المعلومات الشخصية',
-        icon: 'person',
-        href: '#personal-info',
-    },
-    {
-        id: 'password-security',
-        label: 'كلمة المرور والأمان',
-        icon: 'shield',
-        href: '#password-security',
-    },
-    {
-        id: 'protection',
-        label: 'إعدادات الحماية',
-        icon: 'lock_person',
-        href: '#protection',
-    },
-];
+export function SideNav({ activeSection, items, onItemClick }: Props) {
+    const { locale } = usePage().props;
+    const { __ } = useLang();
+    const isRtl = locale === 'ar';
 
-export function SideNav({ activeSection, items = defaultItems }: Props) {
     return (
         <aside className="z-40 hidden bg-surface-container-low pt-10 md:sticky md:top-20 md:flex md:w-56 md:shrink-0 md:flex-col dark:bg-surface-container-lowest">
-            <div className="rtl flex h-full flex-col px-3 text-right">
+            <div className={cn(
+                "flex h-full flex-col px-3",
+                isRtl ? "text-right" : "text-left"
+            )}>
                 <nav className="space-y-1.5">
-                    {items.map((item) => (
-                        <Link
-                            key={item.id}
-                            className={cn(
-                                'mr-2 flex items-center justify-start gap-2.5 rounded-r-lg p-2 text-xs transition-all duration-300 ease-in-out',
-                                activeSection === item.id
-                                    ? 'bg-surface-container-lowest font-bold text-primary dark:bg-deep-navy'
-                                    : 'pr-5 text-deep-navy hover:bg-surface-container-lowest/50 dark:text-on-surface-variant dark:hover:bg-on-surface/10',
-                            )}
-                            href={item.href}
-                        >
-                            <span className="material-symbols-outlined text-lg">
-                                {item.icon}
-                            </span>
-                            <span>{item.label}</span>
-                        </Link>
-                    ))}
+                    {items?.map((item) => {
+                        const Icon = item.icon;
+
+                        return (
+                            <button
+                                key={item.id}
+                                onClick={() => onItemClick?.(item.id)}
+                                className={cn(
+                                    'flex w-full items-center gap-2.5 p-2.5 text-xs transition-all duration-300 ease-in-out',
+                                    isRtl ? 'rounded-r-xl' : 'rounded-l-xl',
+                                    activeSection === item.id
+                                        ? 'bg-surface-container-lowest font-black text-primary shadow-sm dark:bg-card'
+                                        : 'text-on-surface-variant hover:bg-surface-container-lowest/50 dark:hover:bg-on-surface/10',
+                                )}
+                            >
+                                <Icon className="size-4.5" />
+                                <span>{item.label}</span>
+                            </button>
+                        );
+                    })}
                 </nav>
-                <div className="mt-auto mb-6 pr-3">
+                <div className={cn(
+                    "mt-auto mb-6",
+                    isRtl ? "pr-3" : "pl-3"
+                )}>
                     <button
-                        className="flex items-center gap-2.5 text-xs font-semibold text-error transition-opacity hover:opacity-80"
+                        className="flex items-center gap-2.5 text-xs font-bold text-error transition-opacity hover:opacity-80"
                         type="button"
                     >
-                        <span className="material-symbols-outlined text-lg">
-                            logout
-                        </span>
-                        <span>الخروج</span>
+                        <LogOut className="size-4.5" />
+                        <span>{__('messages.auth.logout')}</span>
                     </button>
                 </div>
             </div>

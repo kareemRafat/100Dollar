@@ -31,6 +31,7 @@ return [
         'how_it_works' => 'How it works?',
         'dashboard' => 'Dashboard',
         'language' => 'Language',
+        'back' => 'Back',
         'search' => 'Search...',
         'hall_of_fame' => 'Hall of Fame',
         'hall_of_fame_desc' => 'Creators who turned their ideas into reality with the $100 prize',

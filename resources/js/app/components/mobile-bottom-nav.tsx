@@ -1,70 +1,58 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
+import type { LucideIcon } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
     id: string;
     label: string;
-    icon: string;
+    icon: LucideIcon;
     href: string;
 };
 
 type Props = {
     activeSection: string;
     items?: NavItem[];
+    onItemClick?: (id: string) => void;
 };
-
-const defaultItems: NavItem[] = [
-    {
-        id: 'personal-info',
-        label: 'الشخصية',
-        icon: 'person',
-        href: '#personal-info',
-    },
-    {
-        id: 'password-security',
-        label: 'الأمان',
-        icon: 'shield',
-        href: '#password-security',
-    },
-    {
-        id: 'protection',
-        label: 'الحماية',
-        icon: 'lock_person',
-        href: '#protection',
-    },
-];
 
 export function MobileBottomNav({
     activeSection,
-    items = defaultItems,
+    items,
+    onItemClick,
 }: Props) {
+    const { __ } = useLang();
+
     return (
-        <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-around border-t-0 bg-surface p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden">
-            {items.map((item) => (
-                <a
-                    key={item.id}
-                    className={cn(
-                        'flex flex-col items-center',
-                        activeSection === item.id
-                            ? 'text-primary'
-                            : 'text-secondary opacity-60',
-                    )}
-                    href={item.href}
-                >
-                    <span className="material-symbols-outlined">
-                        {item.icon}
-                    </span>
-                    <span className="mt-1 text-[10px] font-bold">
-                        {item.label}
-                    </span>
-                </a>
-            ))}
-            <a
-                className="flex flex-col items-center text-error opacity-80"
-                href="#"
+        <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-around border-t border-outline-variant/10 bg-surface/80 p-3 backdrop-blur-xl md:hidden dark:border-white/5 dark:bg-surface-container-lowest/80">
+            {items?.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                    <button
+                        key={item.id}
+                        onClick={() => onItemClick?.(item.id)}
+                        className={cn(
+                            'flex flex-col items-center gap-1 transition-all',
+                            activeSection === item.id
+                                ? 'text-primary'
+                                : 'text-on-surface-variant/60',
+                        )}
+                    >
+                        <Icon className="size-5" />
+                        <span className="text-[10px] font-black uppercase tracking-tighter">
+                            {item.label}
+                        </span>
+                    </button>
+                );
+            })}
+            <button
+                className="flex flex-col items-center gap-1 text-error/80"
+                type="button"
             >
-                <span className="material-symbols-outlined">logout</span>
-                <span className="mt-1 text-[10px]">الخروج</span>
-            </a>
+                <LogOut className="size-5" />
+                <span className="text-[10px] font-bold uppercase tracking-tighter">{__('messages.auth.logout')}</span>
+            </button>
         </nav>
     );
 }
