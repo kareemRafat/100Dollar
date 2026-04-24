@@ -24,14 +24,12 @@ type Props = {
         is_active: boolean;
     };
     canManageTwoFactor?: boolean;
-    requiresConfirmation?: boolean;
     twoFactorEnabled?: boolean;
 };
 
 export default function Profile({
     user,
     canManageTwoFactor = false,
-    requiresConfirmation = false,
     twoFactorEnabled = false,
 }: Props) {
     const { url, props: pageProps } = usePage();
@@ -40,9 +38,11 @@ export default function Profile({
     const isRtl = locale === 'ar';
 
     // Determine active section from URL
-    const activeSection = url.includes('/profile/security') 
-        ? 'security' 
-        : (url.includes('/profile/password-security') ? 'password-security' : 'personal-info');
+    const activeSection = url.includes('/profile/security')
+        ? 'security'
+        : url.includes('/profile/password-security')
+          ? 'password-security'
+          : 'personal-info';
 
     const sideNavItems = [
         {
@@ -87,9 +87,12 @@ export default function Profile({
     ];
 
     const handleItemClick = (id: string) => {
-        const item = sideNavItems.find(i => i.id === id);
+        const item = sideNavItems.find((i) => i.id === id);
         if (item) {
-            router.visit(item.href, { preserveScroll: true, preserveState: true });
+            router.visit(item.href, {
+                preserveScroll: true,
+                preserveState: true,
+            });
         }
     };
 
@@ -109,9 +112,13 @@ export default function Profile({
                         <div className="mx-auto max-w-4xl">
                             <Link
                                 href="/"
-                                className="mb-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-on-surface-variant transition-colors hover:text-primary"
+                                className="mb-6 inline-flex items-center gap-2 text-xs font-black tracking-widest text-on-surface-variant uppercase transition-colors hover:text-primary"
                             >
-                                {isRtl ? <ArrowRight className="size-4" /> : <ArrowLeft className="size-4" />}
+                                {isRtl ? (
+                                    <ArrowRight className="size-4" />
+                                ) : (
+                                    <ArrowLeft className="size-4" />
+                                )}
                                 {__('messages.ui.back')}
                             </Link>
 
@@ -124,13 +131,16 @@ export default function Profile({
                                 </p>
                             </header>
 
-                            {activeSection === 'personal-info' && <PersonalInfoForm user={user} />}
-                            {activeSection === 'password-security' && <PasswordUpdateForm />}
+                            {activeSection === 'personal-info' && (
+                                <PersonalInfoForm user={user} />
+                            )}
+                            {activeSection === 'password-security' && (
+                                <PasswordUpdateForm />
+                            )}
                             {activeSection === 'security' && (
                                 <ProtectionSettings
                                     user={user}
                                     canManageTwoFactor={canManageTwoFactor}
-                                    requiresConfirmation={requiresConfirmation}
                                     twoFactorEnabled={twoFactorEnabled}
                                 />
                             )}

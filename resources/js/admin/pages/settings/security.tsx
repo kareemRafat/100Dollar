@@ -32,6 +32,7 @@ export default function Security({
         hasSetupData,
         manualSetupKey,
         clearSetupData,
+        clearErrors,
         clearTwoFactorAuthData,
         fetchSetupData,
         recoveryCodesList,
@@ -104,7 +105,9 @@ export default function Security({
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">كلمة المرور الجديدة</Label>
+                                <Label htmlFor="password">
+                                    كلمة المرور الجديدة
+                                </Label>
 
                                 <PasswordInput
                                     id="password"
@@ -159,7 +162,9 @@ export default function Security({
                     {twoFactorEnabled ? (
                         <div className="flex flex-col items-start justify-start space-y-4">
                             <p className="text-sm text-muted-foreground">
-                                سيُطلب منك إدخال رمز PIN آمن وعشوائي أثناء تسجيل الدخول، والذي يمكنك الحصول عليه من تطبيق يدعم TOTP على هاتفك.
+                                سيُطلب منك إدخال رمز PIN آمن وعشوائي أثناء تسجيل
+                                الدخول، والذي يمكنك الحصول عليه من تطبيق يدعم
+                                TOTP على هاتفك.
                             </p>
 
                             <div className="relative inline">
@@ -185,7 +190,9 @@ export default function Security({
                     ) : (
                         <div className="flex flex-col items-start justify-start space-y-4">
                             <p className="text-sm text-muted-foreground">
-                                عند تمكين المصادقة الثنائية، سيُطلب منك إدخال رمز PIN آمن أثناء تسجيل الدخول. يمكن الحصول على هذا الرمز من تطبيق يدعم TOTP على هاتفك.
+                                عند تمكين المصادقة الثنائية، سيُطلب منك إدخال
+                                رمز PIN آمن أثناء تسجيل الدخول. يمكن الحصول على
+                                هذا الرمز من تطبيق يدعم TOTP على هاتفك.
                             </p>
 
                             <div>
@@ -225,6 +232,7 @@ export default function Security({
                         qrCodeSvg={qrCodeSvg}
                         manualSetupKey={manualSetupKey}
                         clearSetupData={clearSetupData}
+                        clearErrors={clearErrors}
                         fetchSetupData={fetchSetupData}
                         errors={errors}
                     />
