@@ -11,7 +11,7 @@ export default function ConfirmPassword() {
         <>
             <Head title="تأكيد كلمة المرور" />
 
-            <Form {...store.form()} resetOnSuccess={['password']}>
+            <Form {...store.store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
                     <div className="space-y-6">
                         <input type="hidden" name="_auth_context" value="admin" />

@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Http\Responses\RoleAwareLoginResponse;
 use App\Http\Responses\RoleAwareLogoutResponse;
+use App\Http\Responses\RoleAwarePasswordConfirmedResponse;
 use App\Http\Responses\RoleAwarePasswordResetResponse;
 use App\Http\Responses\RoleAwareRegisterResponse;
 use App\Http\Responses\RoleAwareTwoFactorLoginResponse;
@@ -21,6 +22,7 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
+use Laravel\Fortify\Contracts\PasswordConfirmedResponse as PasswordConfirmedResponseContract;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
@@ -40,6 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
         $this->app->singleton(RegisterResponseContract::class, RoleAwareRegisterResponse::class);
         $this->app->singleton(TwoFactorLoginResponseContract::class, RoleAwareTwoFactorLoginResponse::class);
         $this->app->singleton(VerifyEmailResponseContract::class, RoleAwareVerifyEmailResponse::class);
+        $this->app->singleton(PasswordConfirmedResponseContract::class, RoleAwarePasswordConfirmedResponse::class);
         $this->app->bind(PasswordResetResponseContract::class, fn ($app, array $parameters) => new RoleAwarePasswordResetResponse($parameters['status']));
     }
 

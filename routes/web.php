@@ -80,5 +80,6 @@ Route::group([
         ->name('password.confirm');
 
     Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store'])
-        ->middleware(['auth']);
+        ->middleware(['auth'])
+        ->name('password.confirm.store');
 });

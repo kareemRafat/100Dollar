@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         \Inertia\Inertia::handleExceptionsUsing(function (\Inertia\ExceptionResponse $response) {
-            if (in_array($response->statusCode(), [403, 404, 500, 503])) {
+            if (app()->isProduction() && in_array($response->statusCode(), [403, 404, 500, 503])) {
                 return $response->render('app/pages/errors/error', [
                     'status' => $response->statusCode(),
                 ])->withSharedData();
