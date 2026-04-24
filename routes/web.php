@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -40,8 +44,24 @@ Route::group([
                     'status' => $request->session()->get('status'),
                 ]);
             })->name('password.request');
+
+            Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+                ->name('password.reset');
+
+            Route::post('/reset-password', [NewPasswordController::class, 'store'])
+                ->name('password.update');
+        }
+
+        if (Features::enabled(Features::twoFactorAuthentication())) {
+            Route::get('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
+                ->name('two-factor.login');
+
+            Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store']);
         }
     });
+
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
 
     // Email Verification Routes
     if (Features::enabled(Features::emailVerification())) {
@@ -53,4 +73,12 @@ Route::group([
                 ]);
         })->middleware(['auth'])->name('verification.notice');
     }
+
+    // Password Confirmation Routes
+    Route::get('/user/confirm-password', [ConfirmablePasswordController::class, 'show'])
+        ->middleware(['auth'])
+        ->name('password.confirm');
+
+    Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store'])
+        ->middleware(['auth']);
 });

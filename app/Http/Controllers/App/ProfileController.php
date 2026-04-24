@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
+use Laravel\Fortify\Features;
+
 class ProfileController extends Controller
 {
     use PasswordValidationRules;
@@ -18,12 +21,22 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function edit(TwoFactorAuthenticationRequest $request): Response
     {
-        return Inertia::render('app/pages/profile', [
+        $props = [
             'user' => $request->user(),
             'status' => session('status'),
-        ]);
+            'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
+        ];
+
+        if (Features::canManageTwoFactorAuthentication()) {
+            $request->ensureStateIsValid();
+
+            $props['twoFactorEnabled'] = $request->user()->hasEnabledTwoFactorAuthentication();
+            $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
+        }
+
+        return Inertia::render('app/pages/profile', $props);
     }
 
     /**

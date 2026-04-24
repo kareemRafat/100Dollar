@@ -326,9 +326,9 @@ export function TopNavBar({ activeRoute }: Props) {
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-1 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
-                                        <div className="hidden flex-col items-end md:flex">
-                                            <span className="text-[11px] font-bold text-on-surface dark:text-white pl-1">
+                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-1 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card cursor-pointer">
+                                        <div className={cn("hidden flex-col md:flex", isRtl ? "items-end" : "items-start")}>
+                                            <span className={cn("text-[11px] font-bold text-on-surface dark:text-white px-1")}>
                                                 {auth.user.name}
                                             </span>
                                         </div>
@@ -345,11 +345,11 @@ export function TopNavBar({ activeRoute }: Props) {
                                 </DropdownMenuTrigger>
 
                                 <DropdownMenuContent
-                                    className="mt-1 w-56 origin-top-right rounded-xl border-outline-variant/10 p-1 shadow-xl dark:bg-surface-container-low"
-                                    align="end"
+                                    className="mt-1 w-56 rounded-xl border-outline-variant/10 p-1 shadow-xl dark:bg-surface-container-low"
+                                    align={isRtl ? 'start' : 'end'}
                                 >
                                     <div className="px-3 py-2">
-                                        <div className="flex flex-col text-right">
+                                        <div className={cn("flex flex-col", isRtl ? "text-right" : "text-left")}>
                                             <p className="text-xs font-bold text-on-surface dark:text-white">
                                                 {auth.user.name}
                                             </p>
@@ -364,28 +364,34 @@ export function TopNavBar({ activeRoute }: Props) {
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem
                                             asChild
-                                            className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary"
+                                            className={cn(
+                                                "cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5 focus:text-primary",
+                                                isRtl ? "justify-start flex-row-reverse text-right" : "justify-start text-left"
+                                            )}
                                         >
-                                            <Link href="/profile">
+                                            <Link href="/profile" className="w-full">
+                                                <UserIcon className="size-3.5" />
                                                 <span>
                                                     {__(
                                                         'messages.auth.profile',
                                                     )}
                                                 </span>
-                                                <UserIcon className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
                                             asChild
-                                            className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold focus:bg-primary/5 focus:text-primary"
+                                            className={cn(
+                                                "cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5 focus:text-primary",
+                                                isRtl ? "justify-start flex-row-reverse text-right" : "justify-start text-left"
+                                            )}
                                         >
-                                            <Link href={index()}>
+                                            <Link href={index()} className="w-full">
+                                                <Lightbulb className="size-3.5" />
                                                 <span>
                                                     {__(
                                                         'messages.auth.my_ideas',
                                                     )}
                                                 </span>
-                                                <Lightbulb className="size-3.5" />
                                             </Link>
                                         </DropdownMenuItem>
                                     </DropdownMenuGroup>
@@ -394,7 +400,10 @@ export function TopNavBar({ activeRoute }: Props) {
 
                                     <DropdownMenuGroup>
                                         <DropdownMenuItem
-                                            className="flex cursor-pointer items-center justify-between gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5"
+                                            className={cn(
+                                                "flex cursor-pointer items-center justify-between gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5",
+                                                isRtl ? "flex-row-reverse" : "flex-row"
+                                            )}
                                             onSelect={(e) => {
                                                 e.preventDefault();
                                                 updateAppearance(
@@ -404,6 +413,22 @@ export function TopNavBar({ activeRoute }: Props) {
                                                 );
                                             }}
                                         >
+                                            <div className={cn("flex items-center gap-2.5", isRtl ? "flex-row-reverse" : "flex-row")}>
+                                                {appearance === 'dark' ? (
+                                                    <Sun className="size-3.5" />
+                                                ) : (
+                                                    <Moon className="size-3.5" />
+                                                )}
+                                                <span>
+                                                    {appearance === 'dark'
+                                                        ? __(
+                                                              'messages.ui.light_mode',
+                                                          )
+                                                        : __(
+                                                              'messages.ui.dark_mode',
+                                                          )}
+                                                </span>
+                                            </div>
                                             <Switch
                                                 checked={appearance === 'dark'}
                                                 onCheckedChange={(checked) =>
@@ -414,22 +439,6 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     )
                                                 }
                                             />
-                                            <div className="flex items-center gap-2.5">
-                                                <span>
-                                                    {appearance === 'dark'
-                                                        ? __(
-                                                              'messages.ui.light_mode',
-                                                          )
-                                                        : __(
-                                                              'messages.ui.dark_mode',
-                                                          )}
-                                                </span>
-                                                {appearance === 'dark' ? (
-                                                    <Sun className="size-3.5" />
-                                                ) : (
-                                                    <Moon className="size-3.5" />
-                                                )}
-                                            </div>
                                         </DropdownMenuItem>
 
                                         <LanguageSwitcher />
@@ -439,7 +448,10 @@ export function TopNavBar({ activeRoute }: Props) {
 
                                     <DropdownMenuItem
                                         asChild
-                                        className="cursor-pointer justify-end gap-2.5 rounded-lg py-2 text-right text-xs font-bold text-error focus:bg-error/5 focus:text-error"
+                                        className={cn(
+                                            "cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold text-error focus:bg-error/5 focus:text-error",
+                                            isRtl ? "justify-start flex-row-reverse text-right" : "justify-start text-left"
+                                        )}
                                     >
                                         <Link
                                             href={logout()}
@@ -451,10 +463,10 @@ export function TopNavBar({ activeRoute }: Props) {
                                             }}
                                             className="w-full"
                                         >
+                                            <LogOut className="size-3.5" />
                                             <span>
                                                 {__('messages.auth.logout')}
                                             </span>
-                                            <LogOut className="size-3.5" />
                                         </Link>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>

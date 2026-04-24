@@ -1,16 +1,12 @@
-import { Form } from '@inertiajs/react';
-import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Form, usePage } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
+import { Check, Copy, Eye, EyeOff, RefreshCcw } from 'lucide-react';
+import { useState } from 'react';
 import AlertError from '@/components/alert-error';
 import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { regenerateRecoveryCodes } from '@/routes/two-factor';
+import { useClipboard } from '@/hooks/use-clipboard';
+import { recoveryCodes } from '@/routes/two-factor';
+import { cn } from '@/lib/utils';
 
 type Props = {
     recoveryCodesList: string[];
@@ -23,139 +19,103 @@ export default function TwoFactorRecoveryCodes({
     fetchRecoveryCodes,
     errors,
 }: Props) {
-    const [codesAreVisible, setCodesAreVisible] = useState<boolean>(false);
-    const codesSectionRef = useRef<HTMLDivElement | null>(null);
-    const canRegenerateCodes = recoveryCodesList.length > 0 && codesAreVisible;
+    const { __ } = useLang();
+    const { locale } = usePage().props;
+    const isRtl = locale === 'ar';
+    const [showRecoveryCodes, setShowRecoveryCodes] = useState<boolean>(false);
+    const [copiedText, copy] = useClipboard();
 
-    const toggleCodesVisibility = useCallback(async () => {
-        if (!codesAreVisible && !recoveryCodesList.length) {
+    const handleShowRecoveryCodes = async () => {
+        if (!showRecoveryCodes && recoveryCodesList.length === 0) {
             await fetchRecoveryCodes();
         }
 
-        setCodesAreVisible(!codesAreVisible);
-
-        if (!codesAreVisible) {
-            setTimeout(() => {
-                codesSectionRef.current?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                });
-            });
-        }
-    }, [codesAreVisible, recoveryCodesList.length, fetchRecoveryCodes]);
-
-    useEffect(() => {
-        if (!recoveryCodesList.length) {
-            fetchRecoveryCodes();
-        }
-    }, [recoveryCodesList.length, fetchRecoveryCodes]);
-
-    const RecoveryCodeIconComponent = codesAreVisible ? EyeOff : Eye;
+        setShowRecoveryCodes(!showRecoveryCodes);
+    };
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle className="flex gap-3">
-                    <LockKeyhole className="size-4" aria-hidden="true" />
-                    رموز استرداد المصادقة الثنائية
-                </CardTitle>
-                <CardDescription>
-                    تسمح لك رموز الاسترداد باستعادة الوصول إذا فقدت جهاز المصادقة الثنائية الخاص بك. قم بتخزينها في مدير كلمات مرور آمن.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="flex flex-col gap-3 select-none sm:flex-row sm:items-center sm:justify-between">
-                    <Button
-                        onClick={toggleCodesVisibility}
-                        className="w-fit"
-                        aria-expanded={codesAreVisible}
-                        aria-controls="recovery-codes-section"
-                    >
-                        <RecoveryCodeIconComponent
-                            className="size-4"
-                            aria-hidden="true"
-                        />
-                        {codesAreVisible ? 'إخفاء' : 'عرض'} رموز الاسترداد
-                    </Button>
-
-                    {canRegenerateCodes && (
-                        <Form
-                            {...regenerateRecoveryCodes.form()}
-                            options={{ preserveScroll: true }}
-                            onSuccess={fetchRecoveryCodes}
-                        >
-                            {({ processing }) => (
-                                <Button
-                                    variant="secondary"
-                                    type="submit"
-                                    disabled={processing}
-                                    aria-describedby="regenerate-warning"
-                                >
-                                    <RefreshCw /> إعادة توليد الرموز
-                                </Button>
-                            )}
-                        </Form>
-                    )}
-                </div>
-                <div
-                    id="recovery-codes-section"
-                    className={`relative overflow-hidden transition-all duration-300 ${codesAreVisible ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}
-                    aria-hidden={!codesAreVisible}
+        <div className="flex w-full flex-col items-start justify-start space-y-4">
+            <div className={cn("flex w-full items-center gap-3", isRtl ? "justify-start flex-row-reverse" : "justify-start")}>
+                <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-xl font-bold"
+                    onClick={handleShowRecoveryCodes}
                 >
-                    <div className="mt-3 space-y-3">
-                        {errors?.length ? (
-                            <AlertError errors={errors} />
-                        ) : (
-                            <>
-                                <div
-                                    ref={codesSectionRef}
-                                    className="grid gap-1 rounded-lg bg-muted p-4 font-mono text-sm"
-                                    role="list"
-                                    aria-label="رموز الاسترداد"
-                                >
-                                    {recoveryCodesList.length ? (
-                                        recoveryCodesList.map((code, index) => (
-                                            <div
-                                                key={index}
-                                                role="listitem"
-                                                className="select-text"
-                                            >
-                                                {code}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div
-                                            className="space-y-2"
-                                            aria-label="جاري تحميل رموز الاسترداد"
-                                        >
-                                            {Array.from(
-                                                { length: 8 },
-                                                (_, index) => (
-                                                    <div
-                                                        key={index}
-                                                        className="h-4 animate-pulse rounded bg-muted-foreground/20"
-                                                        aria-hidden="true"
-                                                    />
-                                                ),
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
+                    {showRecoveryCodes ? (
+                        <>
+                            <EyeOff className="size-4" />
+                            {__('messages.two_factor.hide_codes')}
+                        </>
+                    ) : (
+                        <>
+                            <Eye className="size-4" />
+                            {__('messages.two_factor.view_codes')}
+                        </>
+                    )}
+                </Button>
 
-                                <div className="text-xs text-muted-foreground select-none">
-                                    <p id="regenerate-warning">
-                                        يمكن استخدام كل رمز استرداد مرة واحدة للوصول إلى حسابك وسيتم إزالته بعد الاستخدام. إذا كنت بحاجة إلى المزيد، فانقر فوق{' '}
-                                        <span className="font-bold">
-                                            إعادة توليد الرموز
-                                        </span>{' '}
-                                        أعلاه.
-                                    </p>
+                <Form
+                    {...recoveryCodes.form()}
+                    onSuccess={() => fetchRecoveryCodes()}
+                >
+                    {({ processing }) => (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            type="submit"
+                            disabled={processing}
+                            className="rounded-xl font-bold"
+                        >
+                            <RefreshCcw
+                                className={cn('size-4', {
+                                    'animate-spin': processing,
+                                })}
+                            />
+                            {__('messages.two_factor.regenerate_codes')}
+                        </Button>
+                    )}
+                </Form>
+            </div>
+
+            {showRecoveryCodes && (
+                <div className="w-full space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <p className={cn("text-xs text-on-surface-variant/70", isRtl ? "text-right" : "text-left")}>
+                        {__('messages.two_factor.recovery_codes_warning')}
+                    </p>
+
+                    {errors?.length > 0 && <AlertError errors={errors} />}
+
+                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        {recoveryCodesList.map((code) => {
+                            const isCopied = copiedText === code;
+                            const IconComponent = isCopied ? Check : Copy;
+
+                            return (
+                                <div
+                                    key={code}
+                                    className="group relative flex items-center justify-between rounded-xl border border-outline-variant/10 bg-surface-container-low p-3 transition-all hover:border-primary/30"
+                                >
+                                    <code className="font-mono text-sm font-bold text-on-surface">
+                                        {code}
+                                    </code>
+                                    <button
+                                        onClick={() => copy(code)}
+                                        className={cn(
+                                            'rounded-lg p-1.5 transition-colors',
+                                            isCopied
+                                                ? 'bg-primary/10 text-primary'
+                                                : 'text-on-surface-variant/40 hover:bg-primary/5 hover:text-primary'
+                                        )}
+                                    >
+                                        <IconComponent className="size-3.5" />
+                                    </button>
                                 </div>
-                            </>
-                        )}
+                            );
+                        })}
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            )}
+        </div>
     );
 }

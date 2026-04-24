@@ -1,14 +1,17 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { useForm } from '@inertiajs/react';
-import { ShieldCheck } from 'lucide-react';
+import { useForm, usePage } from '@inertiajs/react';
+import { ShieldCheck, Loader2 } from 'lucide-react';
 import React, { useRef } from 'react';
 import { updatePassword as updatePasswordAction } from '@/actions/App/Http/Controllers/App/ProfileController';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 export default function UpdatePasswordForm() {
+    const { locale } = usePage().props;
     const { __ } = useLang();
+    const isRtl = locale === 'ar';
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
@@ -43,7 +46,7 @@ export default function UpdatePasswordForm() {
                 <div className="flex size-10 items-center justify-center rounded-xl bg-secondary/10 text-secondary dark:bg-white/10 dark:text-white">
                     <ShieldCheck className="size-5" />
                 </div>
-                <div>
+                <div className={cn(isRtl ? "text-right" : "text-left")}>
                     <h2 className="text-xl font-black text-secondary dark:text-white">
                         {__('messages.profile.password_security')}
                     </h2>
@@ -56,54 +59,54 @@ export default function UpdatePasswordForm() {
             <form onSubmit={submit} className="rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm dark:border-white/5 dark:bg-card md:p-8">
                 <div className="space-y-6">
                     <div className="space-y-2 max-w-md">
-                        <Label htmlFor="current_password" className="px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant">
+                        <Label htmlFor="current_password" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
                             {__('messages.profile.current_password')}
                         </Label>
                         <Input
                             id="current_password"
                             ref={currentPasswordInput}
-                            className="h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary"
+                            className={cn("h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary", isRtl ? "text-right" : "text-left")}
                             type="password"
                             value={data.current_password}
                             onChange={(e) => setData('current_password', e.target.value)}
                             placeholder="••••••••"
                         />
-                        {errors.current_password && <p className="mt-1 text-xs text-error">{errors.current_password}</p>}
+                        {errors.current_password && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.current_password}</p>}
                     </div>
 
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div className="space-y-2">
-                            <Label htmlFor="password" className="px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant">
+                            <Label htmlFor="password" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
                                 {__('messages.profile.new_password')}
                             </Label>
                             <Input
                                 id="password"
                                 ref={passwordInput}
-                                className="h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary"
+                                className={cn("h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary", isRtl ? "text-right" : "text-left")}
                                 type="password"
                                 value={data.password}
                                 onChange={(e) => setData('password', e.target.value)}
                                 placeholder="••••••••"
                             />
-                            {errors.password && <p className="mt-1 text-xs text-error">{errors.password}</p>}
+                            {errors.password && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.password}</p>}
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password_confirmation" className="px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant">
+                            <Label htmlFor="password_confirmation" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
                                 {__('messages.profile.confirm_password')}
                             </Label>
                             <Input
                                 id="password_confirmation"
-                                className="h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary"
+                                className={cn("h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary", isRtl ? "text-right" : "text-left")}
                                 type="password"
                                 value={data.password_confirmation}
                                 onChange={(e) => setData('password_confirmation', e.target.value)}
                                 placeholder="••••••••"
                             />
-                            {errors.password_confirmation && <p className="mt-1 text-xs text-error">{errors.password_confirmation}</p>}
+                            {errors.password_confirmation && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.password_confirmation}</p>}
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-end gap-3 pt-4 border-t border-outline-variant/10 dark:border-white/5">
+                    <div className={cn("flex items-center gap-3 pt-4 border-t border-outline-variant/10 dark:border-white/5", isRtl ? "justify-start flex-row-reverse" : "justify-end")}>
                         {recentlySuccessful && (
                             <p className="text-xs font-bold text-primary animate-in fade-in">
                                 {__('messages.profile.update_password')} ✓

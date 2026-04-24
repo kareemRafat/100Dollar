@@ -1,4 +1,5 @@
-import { Form } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { Check, Copy, ScanLine } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -22,6 +23,7 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
+import { cn } from '@/lib/utils';
 
 function GridScanIcon() {
     return (
@@ -64,6 +66,7 @@ function TwoFactorSetupStep({
 }) {
     const { resolvedAppearance } = useAppearance();
     const [copiedText, copy] = useClipboard();
+    const { __ } = useLang();
     const IconComponent = copiedText === manualSetupKey ? Check : Copy;
 
     return (
@@ -103,8 +106,8 @@ function TwoFactorSetupStep({
 
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
-                        <span className="relative bg-card px-2 py-1">
-                            أو، أدخل الرمز يدوياً
+                        <span className="relative bg-card px-2 py-1 text-xs font-bold text-on-surface-variant">
+                            {__('messages.two_factor.setup_manual')}
                         </span>
                     </div>
 
@@ -120,7 +123,8 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
-                                        className="h-full w-full bg-background p-3 text-foreground outline-none"
+                                        className="h-full w-full bg-background p-3 text-foreground outline-none text-center font-mono"
+                                        dir="ltr"
                                     />
                                     <button
                                         onClick={() => copy(manualSetupKey)}
@@ -145,6 +149,7 @@ function TwoFactorVerificationStep({
     onClose: () => void;
     onBack: () => void;
 }) {
+    const { __ } = useLang();
     const [code, setCode] = useState<string>('');
     const pinInputContainerRef = useRef<HTMLDivElement>(null);
 
@@ -173,7 +178,7 @@ function TwoFactorVerificationStep({
                         ref={pinInputContainerRef}
                         className="relative w-full space-y-3"
                     >
-                        <div className="flex w-full flex-col items-center space-y-3 py-2">
+                        <div className="flex w-full flex-col items-center space-y-3 py-2" dir="ltr">
                             <InputOTP
                                 id="otp"
                                 name="code"
@@ -209,7 +214,7 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                رجوع
+                                {__('messages.two_factor.setup_back')}
                             </Button>
                             <Button
                                 type="submit"
@@ -218,7 +223,7 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                تأكيد
+                                {__('messages.two_factor.setup_confirm')}
                             </Button>
                         </div>
                     </div>
@@ -236,6 +241,7 @@ type Props = {
     qrCodeSvg: string | null;
     manualSetupKey: string | null;
     clearSetupData: () => void;
+    clearErrors: () => void;
     fetchSetupData: () => Promise<void>;
     errors: string[];
 };
@@ -248,9 +254,13 @@ export default function TwoFactorSetupModal({
     qrCodeSvg,
     manualSetupKey,
     clearSetupData,
+    clearErrors,
     fetchSetupData,
     errors,
 }: Props) {
+    const { __ } = useLang();
+    const { locale } = usePage().props;
+    const isRtl = locale === 'ar';
     const [showVerificationStep, setShowVerificationStep] =
         useState<boolean>(false);
 
@@ -261,34 +271,31 @@ export default function TwoFactorSetupModal({
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: 'تم تمكين المصادقة الثنائية',
-                description:
-                    'تم تمكين المصادقة الثنائية الآن. امسح رمز QR أو أدخل مفتاح الإعداد في تطبيق المصادقة الخاص بك.',
-                buttonText: 'إغلاق',
+                title: __('messages.two_factor.setup_enabled_title'),
+                description: __('messages.two_factor.setup_enabled_desc'),
+                buttonText: __('messages.two_factor.setup_close'),
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: 'التحقق من رمز المصادقة',
-                description:
-                    'أدخل الرمز المكون من 6 أرقام من تطبيق المصادقة الخاص بك',
-                buttonText: 'متابعة',
+                title: __('messages.two_factor.setup_verify_title'),
+                description: __('messages.two_factor.setup_verify_desc'),
+                buttonText: __('messages.two_factor.setup_continue'),
             };
         }
 
         return {
-            title: 'تمكين المصادقة الثنائية',
-            description:
-                'لإكمال تمكين المصادقة الثنائية، امسح رمز QR أو أدخل مفتاح الإعداد في تطبيق المصادقة الخاص بك',
-            buttonText: 'متابعة',
+            title: __('messages.two_factor.setup_title'),
+            description: __('messages.two_factor.setup_desc'),
+            buttonText: __('messages.two_factor.setup_continue'),
         };
-    }, [twoFactorEnabled, showVerificationStep]);
+    }, [twoFactorEnabled, showVerificationStep, __]);
 
     const resetModalState = useCallback(() => {
         setShowVerificationStep(false);
-        clearSetupData();
-    }, [clearSetupData]);
+        clearErrors();
+    }, [clearErrors]);
 
     const handleClose = useCallback(() => {
         resetModalState();
@@ -312,17 +319,19 @@ export default function TwoFactorSetupModal({
     }, [fetchSetupData]);
 
     useEffect(() => {
-        if (isOpen && !qrCodeSvg) {
+        if (isOpen) {
             fetchSetupDataRef.current();
         }
-    }, [isOpen, qrCodeSvg]);
+    }, [isOpen]);
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
-                    <DialogTitle>{modalConfig.title}</DialogTitle>
+                    <DialogTitle className={cn(isRtl ? "text-right" : "text-left")}>
+                        {modalConfig.title}
+                    </DialogTitle>
                     <DialogDescription className="text-center">
                         {modalConfig.description}
                     </DialogDescription>

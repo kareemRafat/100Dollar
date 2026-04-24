@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useMemo, useState } from 'react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
@@ -12,12 +12,15 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
-import { store } from '@/routes/two-factor/login';
+import { login as store } from '@/routes/two-factor';
+import { cn } from '@/lib/utils';
 
 export default function TwoFactorChallenge() {
+    const { locale } = usePage().props;
     const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
     const [code, setCode] = useState('');
+    const isRtl = locale === 'ar';
 
     const content = useMemo(() => {
         if (showRecoveryInput) {
@@ -35,14 +38,14 @@ export default function TwoFactorChallenge() {
             toggleText: __('messages.two_factor_challenge.toggle_recovery_code'),
             placeholder: '••••••',
         };
-    }, [showRecoveryInput]);
+    }, [showRecoveryInput, __]);
 
     return (
         <AuthLayout>
             <Head title={__('messages.two_factor_challenge.title')} />
 
             <div className="space-y-6">
-                <div className="space-y-2 text-start">
+                <div className={cn("space-y-2", isRtl ? "text-right" : "text-left")}>
                     <h1 className="text-2xl font-bold text-on-surface dark:text-white">
                         {content.title}
                     </h1>
@@ -64,6 +67,11 @@ export default function TwoFactorChallenge() {
                                 name="_auth_context"
                                 value="app"
                             />
+                            <input
+                                type="hidden"
+                                name="_locale"
+                                value={locale as string}
+                            />
 
                             {showRecoveryInput ? (
                                 <div className="space-y-2">
@@ -73,13 +81,14 @@ export default function TwoFactorChallenge() {
                                         placeholder={content.placeholder}
                                         autoFocus={showRecoveryInput}
                                         required
+                                        className={cn(isRtl ? "text-right" : "text-left")}
                                     />
                                     <InputError
                                         message={errors.recovery_code}
                                     />
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-center justify-center space-y-3 text-center">
+                                <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
                                     <InputOTP
                                         name="code"
                                         maxLength={OTP_MAX_LENGTH}

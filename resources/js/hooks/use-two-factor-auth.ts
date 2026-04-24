@@ -7,6 +7,7 @@ export type UseTwoFactorAuthReturn = {
     manualSetupKey: string | null;
     recoveryCodesList: string[];
     hasSetupData: boolean;
+    loading: boolean;
     errors: string[];
     clearErrors: () => void;
     clearSetupData: () => void;
@@ -26,6 +27,7 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
     const [manualSetupKey, setManualSetupKey] = useState<string | null>(null);
     const [recoveryCodesList, setRecoveryCodesList] = useState<string[]>([]);
     const [errors, setErrors] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const hasSetupData = qrCodeSvg !== null && manualSetupKey !== null;
 
@@ -53,9 +55,14 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
                 url: string;
             };
 
-            setQrCodeSvg(svg);
-        } catch {
-            setErrors((prev) => [...prev, 'Failed to fetch QR code']);
+            if (svg) {
+                setQrCodeSvg(svg);
+            }
+        } catch (error) {
+            setErrors((prev) => {
+                if (prev.includes('Failed to fetch QR code')) return prev;
+                return [...prev, 'Failed to fetch QR code'];
+            });
             setQrCodeSvg(null);
         }
     }, [submit]);
@@ -66,9 +73,14 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
                 secretKey: string;
             };
 
-            setManualSetupKey(key);
-        } catch {
-            setErrors((prev) => [...prev, 'Failed to fetch a setup key']);
+            if (key) {
+                setManualSetupKey(key);
+            }
+        } catch (error) {
+            setErrors((prev) => {
+                if (prev.includes('Failed to fetch a setup key')) return prev;
+                return [...prev, 'Failed to fetch a setup key'];
+            });
             setManualSetupKey(null);
         }
     }, [submit]);
@@ -85,20 +97,26 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
     }, [submit]);
 
     const fetchSetupData = useCallback(async (): Promise<void> => {
+        if (loading) return;
+        
         try {
+            setLoading(true);
             setErrors([]);
             await Promise.all([fetchQrCode(), fetchSetupKey()]);
         } catch {
             setQrCodeSvg(null);
             setManualSetupKey(null);
+        } finally {
+            setLoading(false);
         }
-    }, [fetchQrCode, fetchSetupKey]);
+    }, [fetchQrCode, fetchSetupKey, loading]);
 
     return {
         qrCodeSvg,
         manualSetupKey,
         recoveryCodesList,
         hasSetupData,
+        loading,
         errors,
         clearErrors,
         clearSetupData,
