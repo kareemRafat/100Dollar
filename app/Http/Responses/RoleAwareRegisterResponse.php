@@ -20,6 +20,10 @@ class RoleAwareRegisterResponse implements RegisterResponseContract
             return new JsonResponse('', 201);
         }
 
+        if ($request->user()?->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
         $locale = $request->input('_locale') ?: app()->getLocale();
 
         return redirect()->intended(

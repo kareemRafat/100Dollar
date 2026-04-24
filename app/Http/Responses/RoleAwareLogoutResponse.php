@@ -21,6 +21,11 @@ class RoleAwareLogoutResponse implements LogoutResponseContract
         }
 
         $context = app(AuthContext::class)->remember($request);
+
+        if ($context === AuthContext::ADMIN) {
+            return redirect()->route('admin.login');
+        }
+
         $locale = $request->input('_locale') ?: app()->getLocale();
 
         return redirect()->to(

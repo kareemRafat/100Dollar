@@ -20,6 +20,10 @@ class RoleAwareVerifyEmailResponse implements VerifyEmailResponseContract
             return new JsonResponse('', 204);
         }
 
+        if ($request->user()?->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard').'?verified=1');
+        }
+
         return redirect()->intended(
             LaravelLocalization::getLocalizedURL(
                 app()->getLocale(),

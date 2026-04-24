@@ -24,6 +24,12 @@ class RoleAwarePasswordResetResponse implements PasswordResetResponseContract
 
         $context = app(AuthContext::class)->remember($request);
 
+        if ($context === AuthContext::ADMIN) {
+            return redirect()
+                ->route('admin.login')
+                ->with('status', trans($this->status));
+        }
+
         return redirect()
             ->to(
                 LaravelLocalization::getLocalizedURL(

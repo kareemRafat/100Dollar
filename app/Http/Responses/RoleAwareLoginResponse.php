@@ -20,6 +20,10 @@ class RoleAwareLoginResponse implements LoginResponseContract
             return new JsonResponse('', 204);
         }
 
+        if ($request->user()?->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
         $locale = $request->input('_locale') ?: app()->getLocale();
 
         return redirect()->intended(
