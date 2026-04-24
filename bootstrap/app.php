@@ -44,23 +44,18 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeSessionRedirect' => LocaleSessionRedirect::class,
             'localeCookieRedirect' => LocaleCookieRedirect::class,
             'localeViewPath' => LaravelLocalizationViewPath::class,
+            'password.confirm' => \App\Http\Middleware\RequirePasswordConfirmation::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request): string {
             return $request->is('admin') || $request->is('admin/*')
                 ? route('admin.login')
                 : route('login');
         });
-        $middleware->redirectUsersTo(function (Request $request): string {
-            return route(
-                app(AuthContext::class)->homeRouteForUser($request->user()),
-            );
-        });
-
-        $middleware->web(append: [
-            HandleAppearance::class,
-            HandleInertiaRequests::class,
-            SetAuthContext::class,
-            AddLinkHeadersForPreloadedAssets::class,
+        $middleware->appendToGroup('web', [
+            \App\Http\Middleware\HandleAppearance::class,
+            \App\Http\Middleware\HandleInertiaRequests::class,
+            \App\Http\Middleware\SetAuthContext::class,
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

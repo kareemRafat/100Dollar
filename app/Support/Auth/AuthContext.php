@@ -30,7 +30,7 @@ class AuthContext
 
     public function view(Request $request, string $page): string
     {
-        return $this->remember($request).'/auth/'.$page;
+        return $this->remember($request).'/pages/auth/'.$page;
     }
 
     public function roleForContext(string $context): string
@@ -69,6 +69,11 @@ class AuthContext
     public function passwordRequestRouteForContext(string $context): string
     {
         return $context === self::ADMIN ? 'admin.password.request' : 'password.request';
+    }
+
+    public function passwordConfirmRouteForContext(string $context): string
+    {
+        return $context === self::ADMIN ? 'admin.password.confirm' : 'password.confirm';
     }
 
     public function normalize(?string $context): string

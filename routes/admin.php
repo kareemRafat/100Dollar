@@ -36,7 +36,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::patch('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
     Route::delete('users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
 
-    Route::redirect('settings', 'settings/profile')->name('admin.settings');
+    Route::get('confirm-password', function (Request $request) {
+        app(AuthContext::class)->remember($request, AuthContext::ADMIN);
+
+        return Inertia::render('admin/pages/auth/confirm-password');
+    })->name('admin.password.confirm');
 
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('admin.settings.profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('admin.settings.profile.update');
