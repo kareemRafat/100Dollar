@@ -3,13 +3,13 @@ import { useForm, Form, usePage } from '@inertiajs/react';
 import { Lock, ShieldCheck, User as UserIcon, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
+import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
+import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
-import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
-import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
-import { disable, enable } from '@/routes/two-factor';
 import { cn } from '@/lib/utils';
+import { disable, enable } from '@/routes/two-factor';
 
 type Props = {
     user: {
@@ -49,6 +49,7 @@ export default function ProtectionSettings({
         if (prevTwoFactorEnabled.current && !twoFactorEnabled) {
             clearTwoFactorAuthData();
         }
+
         prevTwoFactorEnabled.current = twoFactorEnabled;
     }, [twoFactorEnabled, clearTwoFactorAuthData]);
 
@@ -145,7 +146,13 @@ export default function ProtectionSettings({
                                             <Form
                                                 {...enable.form()}
                                                 onSuccess={() =>
-                                                    setShowSetupModal(true)
+                                                    setTimeout(
+                                                        () =>
+                                                            setShowSetupModal(
+                                                                true,
+                                                            ),
+                                                        0,
+                                                    )
                                                 }
                                             >
                                                 {({ processing }) => (

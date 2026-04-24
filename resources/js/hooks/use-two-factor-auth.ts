@@ -96,20 +96,29 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
         }
     }, [submit]);
 
-    const fetchSetupData = useCallback(async (): Promise<void> => {
-        if (loading) return;
-        
-        try {
-            setLoading(true);
-            setErrors([]);
-            await Promise.all([fetchQrCode(), fetchSetupKey()]);
-        } catch {
-            setQrCodeSvg(null);
-            setManualSetupKey(null);
-        } finally {
-            setLoading(false);
-        }
-    }, [fetchQrCode, fetchSetupKey, loading]);
+    const fetchSetupData = useCallback(
+        async (retryCount = 0): Promise<void> => {
+            if (loading) return;
+
+            try {
+                setLoading(true);
+                setErrors([]);
+                await Promise.all([fetchQrCode(), fetchSetupKey()]);
+            } catch {
+                if (retryCount < 2) {
+                    setLoading(false);
+
+                    return fetchSetupData(retryCount + 1);
+                }
+
+                setQrCodeSvg(null);
+                setManualSetupKey(null);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [fetchQrCode, fetchSetupKey, loading],
+    );
 
     return {
         qrCodeSvg,

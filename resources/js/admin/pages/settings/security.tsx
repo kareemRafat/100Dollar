@@ -206,9 +206,12 @@ export default function Security({
                                 ) : (
                                     <Form
                                         {...enable.form()}
-                                        onSuccess={() =>
-                                            setShowSetupModal(true)
-                                        }
+                                        onSuccess={() => {
+                                            setTimeout(
+                                                () => setShowSetupModal(true),
+                                                0,
+                                            );
+                                        }}
                                     >
                                         {({ processing }) => (
                                             <Button
