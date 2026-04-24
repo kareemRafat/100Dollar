@@ -23,7 +23,7 @@ class EnsureUserRole
         }
 
         if (! in_array($user->role, $roles, true)) {
-            return redirect()->route(app(AuthContext::class)->homeRouteForUser($user));
+            abort(403);
         }
 
         return $next($request);

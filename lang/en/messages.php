@@ -26,6 +26,7 @@ return [
     'ui' => [
         'light_mode' => 'Light Mode',
         'dark_mode' => 'Dark Mode',
+        'refresh' => 'Refresh Page',
         'submit_your_idea' => 'Submit your idea',
         'submit_your_idea_now' => 'Submit your idea now',
         'how_it_works' => 'How it works?',
@@ -271,6 +272,27 @@ return [
         'create_account' => 'Create a new account',
     ],
 
+    'register' => [
+        'hero_title' => 'New Registration',
+        'welcome_title' => 'Start your journey today',
+        'subtitle' => 'Join our community of creators and start sharing your ideas with the world',
+        'full_name' => 'Full Name',
+        'full_name_placeholder' => 'John Doe',
+        'phone_label' => 'Phone Number',
+        'phone_placeholder' => '+966 5XXXXXXXX',
+        'country_residence' => 'Country of Residence',
+        'country_placeholder' => 'Saudi Arabia',
+        'nationality' => 'Nationality',
+        'nationality_placeholder' => 'Saudi',
+        'confirm_password' => 'Confirm Password',
+        'agree_terms' => 'I agree to the',
+        'terms_of_service' => 'Terms of Service and Privacy Policy',
+        'and' => 'and',
+        'privacy_policy' => 'Privacy Policy',
+        'submit_button' => 'Create account now',
+        'have_account' => 'Already have an account?',
+    ],
+
     'forgot_password' => [
         'hero_title' => 'Recover Password',
         'back_to_login' => 'Back to Login',
@@ -310,7 +332,6 @@ return [
         'continue_button' => 'Continue',
         'toggle_auth_code' => 'Use an authentication code instead',
         'toggle_recovery_code' => 'Use a recovery code instead',
-        'recovery_code_placeholder' => 'Enter recovery code',
     ],
 
     'verify_email' => [
@@ -330,25 +351,14 @@ return [
         'encrypted_data' => 'Fully Encrypted Data',
     ],
 
-    'register' => [
-        'hero_title' => 'New Registration',
-        'welcome_title' => 'Start your journey today',
-        'subtitle' => 'Join our community of creators and start sharing your ideas with the world',
-        'full_name' => 'Full Name',
-        'full_name_placeholder' => 'John Doe',
-        'phone_label' => 'Phone Number',
-        'phone_placeholder' => '+966 5XXXXXXXX',
-        'country_residence' => 'Country of Residence',
-        'country_placeholder' => 'Saudi Arabia',
-        'nationality' => 'Nationality',
-        'nationality_placeholder' => 'Saudi',
-        'confirm_password' => 'Confirm Password',
-        'agree_terms' => 'I agree to the',
-        'terms_of_service' => 'Terms of Service and Privacy Policy',
-        'and' => 'and',
-        'privacy_policy' => 'Privacy Policy',
-        'submit_button' => 'Create account now',
-        'have_account' => 'Already have an account?',
+    'errors' => [
+        '404_title' => 'Sorry, this page does not exist',
+        '404_desc' => 'It seems the page you are looking for is currently unavailable. You can return to the home page or refresh the page to try again.',
+        '403_title' => 'Access Denied',
+        '403_desc' => 'Sorry, you do not have sufficient permissions to access this page.',
+        '500_title' => 'Server Error',
+        '500_desc' => 'An unexpected server error occurred, please try again later.',
+        'back_to_home' => 'Back to Home',
     ],
 
     'footer' => [
