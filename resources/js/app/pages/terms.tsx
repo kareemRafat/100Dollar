@@ -113,7 +113,11 @@ export default function Terms() {
                                     <div className="space-y-4 leading-loose text-on-surface dark:text-white/80">
                                         {section.content.map(
                                             (paragraph, idx) => (
-                                                <p key={idx}>{__(paragraph)}</p>
+                                                <p key={idx}>
+                                                    {__(
+                                                        `messages.terms.${paragraph}`,
+                                                    )}
+                                                </p>
                                             ),
                                         )}
                                         {section.list && (

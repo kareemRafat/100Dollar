@@ -351,7 +351,31 @@ return [
         'encrypted_data' => 'Fully Encrypted Data',
     ],
 
-    'errors' => [
+    'terms' => [
+        'title' => 'Terms and Conditions',
+        'last_updated' => 'Last Updated: April 25, 2026',
+        'definitions_title' => 'Definitions',
+        'definitions_content_1' => 'This document is known as the "User Agreement", and "100 Dollar Ideas" is referred to as the Platform. A Participant is any individual who registers an account or submits a project idea, and a Voter is any individual who verifies their identity via email to support a specific idea.',
+        'definitions_content_2' => 'Project Idea: An innovative business proposal aimed at solving a problem or providing a service, provided that its initial startup cost does not exceed 100 US Dollars (or its local equivalent).',
+        'participation_title' => 'Terms of Participation and Submission',
+        'participation_content_1' => 'To ensure content quality and equal opportunities, all participants must adhere to the following standards when submitting any project idea:',
+        'participation_list_1' => 'The idea must be original and not copied, and its intellectual property rights must belong to the participant themselves.',
+        'participation_list_2' => 'The initial operating budget to start the project must not exceed 100 US Dollars.',
+        'participation_list_3' => 'The description must be detailed and include how the $100 will be realistically utilized.',
+        'participation_list_4' => 'It is prohibited to submit ideas that violate Islamic Sharia or the laws and regulations in force in Arab countries.',
+        'intellectual_property_title' => 'Intellectual Property Rights',
+        'intellectual_property_highlight_title' => 'Protecting Your Innovative Rights',
+        'intellectual_property_content_1' => 'Intellectual property of the idea remains the sole property of the participant. However, upon publication, the participant grants the platform a permanent, non-exclusive right to display, publish, and share the idea via social media for promotional purposes and documentation in the platform\'s Golden Archive.',
+        'voting_title' => 'Voting System and Transparency',
+        'voting_content_1' => 'The platform adopts a strict voting system to ensure fairness, where every vote is verified via a code (OTP) sent to the email. A user is entitled to vote only once per idea, and the use of any technical means to manipulate results is prohibited.',
+        'prizes_title' => 'Prizes and Funding Delivery',
+        'prizes_content_1' => 'One winner is selected daily based on the highest vote (or according to the approved evaluation mechanism). The prize is a $100 funding amount provided by the sponsor of the day. The winner will be contacted via their registered data within 7 working days to verify identity and arrange for the transfer of the amount.',
+        'disclaimer_title' => 'Legal Disclaimer',
+        'disclaimer_content_1' => 'The platform is an intermediary connecting innovators with sponsors and the community. We do not guarantee the success of any project implemented based on the ideas presented, nor are we responsible for any legal or financial disputes that may arise between participants and third parties.',
+        'content_index_title' => 'Agreement Index',
+    ],
+
+    'forgot_password' => [
         '404_title' => 'Sorry, this page does not exist',
         '404_desc' => 'It seems the page you are looking for is currently unavailable. You can return to the home page or refresh the page to try again.',
         '403_title' => 'Access Denied',
