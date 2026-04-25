@@ -20,7 +20,7 @@ export type UseTwoFactorAuthReturn = {
 
 export const OTP_MAX_LENGTH = 6;
 
-export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
+export const useTwoFactorAuth = (context?: { _auth_context?: string; _locale?: string }): UseTwoFactorAuthReturn => {
     const { submit } = useHttp();
 
     const [qrCodeSvg, setQrCodeSvg] = useState<string | null>(null);
@@ -50,7 +50,7 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
 
     const fetchQrCode = useCallback(async (): Promise<void> => {
         try {
-            const { svg } = (await submit(qrCode())) as {
+            const { svg } = (await submit(qrCode({ query: context }))) as {
                 svg: string;
                 url: string;
             };
@@ -65,11 +65,11 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
             });
             setQrCodeSvg(null);
         }
-    }, [submit]);
+    }, [submit, context]);
 
     const fetchSetupKey = useCallback(async (): Promise<void> => {
         try {
-            const { secretKey: key } = (await submit(secretKey())) as {
+            const { secretKey: key } = (await submit(secretKey({ query: context }))) as {
                 secretKey: string;
             };
 
@@ -83,18 +83,18 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
             });
             setManualSetupKey(null);
         }
-    }, [submit]);
+    }, [submit, context]);
 
     const fetchRecoveryCodes = useCallback(async (): Promise<void> => {
         try {
             setErrors([]);
-            const codes = (await submit(recoveryCodes())) as string[];
+            const codes = (await submit(recoveryCodes({ query: context }))) as string[];
             setRecoveryCodesList(codes);
         } catch {
             setErrors((prev) => [...prev, 'Failed to fetch recovery codes']);
             setRecoveryCodesList([]);
         }
-    }, [submit]);
+    }, [submit, context]);
 
     const fetchSetupData = useCallback(
         async (retryCount = 0): Promise<void> => {

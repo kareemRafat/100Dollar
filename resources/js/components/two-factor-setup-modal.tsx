@@ -303,6 +303,11 @@ export default function TwoFactorSetupModal({
     }, [onClose, resetModalState]);
 
     const handleModalNextStep = useCallback(() => {
+        if (twoFactorEnabled) {
+            handleClose();
+            return;
+        }
+
         if (requiresConfirmation) {
             setShowVerificationStep(true);
 
@@ -310,7 +315,7 @@ export default function TwoFactorSetupModal({
         }
 
         handleClose();
-    }, [requiresConfirmation, handleClose]);
+    }, [requiresConfirmation, handleClose, twoFactorEnabled]);
 
     const fetchSetupDataRef = useRef(fetchSetupData);
 

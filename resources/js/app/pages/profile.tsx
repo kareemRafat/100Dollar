@@ -25,12 +25,14 @@ type Props = {
     };
     canManageTwoFactor?: boolean;
     twoFactorEnabled?: boolean;
+    requiresConfirmation?: boolean;
 };
 
 export default function Profile({
     user,
     canManageTwoFactor = false,
     twoFactorEnabled = false,
+    requiresConfirmation = false,
 }: Props) {
     const { url, props: pageProps } = usePage();
     const { locale } = pageProps;
@@ -142,6 +144,7 @@ export default function Profile({
                                     user={user}
                                     canManageTwoFactor={canManageTwoFactor}
                                     twoFactorEnabled={twoFactorEnabled}
+                                    requiresConfirmation={requiresConfirmation}
                                 />
                             )}
                         </div>

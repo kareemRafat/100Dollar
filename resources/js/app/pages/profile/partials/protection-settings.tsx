@@ -18,14 +18,17 @@ type Props = {
     };
     canManageTwoFactor?: boolean;
     twoFactorEnabled?: boolean;
+    requiresConfirmation?: boolean;
 };
 
 export default function ProtectionSettings({
     user,
     canManageTwoFactor = false,
     twoFactorEnabled = false,
+    requiresConfirmation = false,
 }: Props) {
-    const { locale } = usePage().props;
+    const { props } = usePage();
+    const { locale } = props;
     const { __ } = useLang();
     const isRtl = locale === 'ar';
 
@@ -40,7 +43,7 @@ export default function ProtectionSettings({
         recoveryCodesList,
         fetchRecoveryCodes,
         errors,
-    } = useTwoFactorAuth();
+    } = useTwoFactorAuth({ _auth_context: 'app', _locale: locale as string });
 
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
     const prevTwoFactorEnabled = useRef(twoFactorEnabled);
@@ -83,7 +86,7 @@ export default function ProtectionSettings({
             <div className="space-y-4">
                 {canManageTwoFactor && (
                     <div className="rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-5 shadow-sm transition-all hover:border-primary/20 dark:border-white/5 dark:bg-card">
-                        <div className="mb-4 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+                        <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                             <div className="flex items-start gap-4">
                                 <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary">
                                     <ShieldCheck className="size-6" />
@@ -112,7 +115,7 @@ export default function ProtectionSettings({
 
                             <div className="w-full sm:w-auto">
                                 {twoFactorEnabled ? (
-                                    <Form {...disable.form()}>
+                                    <Form {...disable.form({ query: { _auth_context: 'app', _locale: locale as string } })}>
                                         {({ processing }) => (
                                             <Button
                                                 variant="destructive"
@@ -144,7 +147,7 @@ export default function ProtectionSettings({
                                             </Button>
                                         ) : (
                                             <Form
-                                                {...enable.form()}
+                                                {...enable.form({ query: { _auth_context: 'app', _locale: locale as string } })}
                                                 onSuccess={() =>
                                                     setTimeout(
                                                         () =>
@@ -251,7 +254,7 @@ export default function ProtectionSettings({
             <TwoFactorSetupModal
                 isOpen={showSetupModal}
                 onClose={() => setShowSetupModal(false)}
-                requiresConfirmation={false}
+                requiresConfirmation={requiresConfirmation}
                 twoFactorEnabled={twoFactorEnabled}
                 qrCodeSvg={qrCodeSvg}
                 manualSetupKey={manualSetupKey}

@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Head, usePage, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useMemo, useState } from 'react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
@@ -12,15 +12,20 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
-import { login as store } from '@/routes/two-factor';
 import { cn } from '@/lib/utils';
 
 export default function TwoFactorChallenge() {
     const { locale } = usePage().props;
     const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
-    const [code, setCode] = useState('');
     const isRtl = locale === 'ar';
+
+    const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
+        code: '',
+        recovery_code: '',
+        _auth_context: 'app',
+        _locale: locale as string,
+    });
 
     const content = useMemo(() => {
         if (showRecoveryInput) {
@@ -40,6 +45,19 @@ export default function TwoFactorChallenge() {
         };
     }, [showRecoveryInput, __]);
 
+    const submit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post('/two-factor-challenge', {
+            onFinish: () => {
+                if (!showRecoveryInput) {
+                    reset('code');
+                } else {
+                    reset('recovery_code');
+                }
+            },
+        });
+    };
+
     return (
         <AuthLayout>
             <Head title={__('messages.two_factor_challenge.title')} />
@@ -54,84 +72,71 @@ export default function TwoFactorChallenge() {
                     </p>
                 </div>
 
-                <Form
-                    {...store.form()}
-                    className="space-y-4"
-                    resetOnError
-                    resetOnSuccess={!showRecoveryInput}
-                >
-                    {({ errors, processing, clearErrors }) => (
-                        <>
-                            <input
-                                type="hidden"
-                                name="_auth_context"
-                                value="app"
+                <form onSubmit={submit} className="space-y-4">
+                    {showRecoveryInput ? (
+                        <div className="space-y-2">
+                            <Input
+                                name="recovery_code"
+                                type="text"
+                                placeholder={content.placeholder}
+                                value={data.recovery_code}
+                                onChange={(e) => setData('recovery_code', e.target.value)}
+                                autoFocus={showRecoveryInput}
+                                required
+                                className={cn(isRtl ? "text-right" : "text-left")}
                             />
-                            <input
-                                type="hidden"
-                                name="_locale"
-                                value={locale as string}
+                            <InputError
+                                message={errors.recovery_code}
                             />
-
-                            {showRecoveryInput ? (
-                                <div className="space-y-2">
-                                    <Input
-                                        name="recovery_code"
-                                        type="text"
-                                        placeholder={content.placeholder}
-                                        autoFocus={showRecoveryInput}
-                                        required
-                                        className={cn(isRtl ? "text-right" : "text-left")}
-                                    />
-                                    <InputError
-                                        message={errors.recovery_code}
-                                    />
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
-                                    <InputOTP
-                                        name="code"
-                                        maxLength={OTP_MAX_LENGTH}
-                                        value={code}
-                                        onChange={setCode}
-                                        disabled={processing}
-                                        pattern={REGEXP_ONLY_DIGITS}
-                                    >
-                                        <InputOTPGroup>
-                                            {Array.from(
-                                                { length: OTP_MAX_LENGTH },
-                                                (_, index) => (
-                                                    <InputOTPSlot
-                                                        key={index}
-                                                        index={index}
-                                                    />
-                                                ),
-                                            )}
-                                        </InputOTPGroup>
-                                    </InputOTP>
-                                    <InputError message={errors.code} />
-                                </div>
-                            )}
-
-                            <Button type="submit" className="w-full" disabled={processing}>
-                                {__('messages.two_factor_challenge.continue_button')}
-                            </Button>
-
-                            <button
-                                type="button"
-                                className="w-full text-sm text-primary underline underline-offset-4"
-                                onClick={() => {
-                                    setShowRecoveryInput((current) => ! current);
-                                    clearErrors();
-                                    setCode('');
-                                }}
+                        </div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
+                            <InputOTP
+                                name="code"
+                                maxLength={OTP_MAX_LENGTH}
+                                value={data.code}
+                                onChange={(val) => setData('code', val)}
+                                disabled={processing}
+                                pattern={REGEXP_ONLY_DIGITS}
                             >
-                                {content.toggleText}
-                            </button>
-                        </>
+                                <InputOTPGroup>
+                                    {Array.from(
+                                        { length: OTP_MAX_LENGTH },
+                                        (_, index) => (
+                                            <InputOTPSlot
+                                                key={index}
+                                                index={index}
+                                            />
+                                        ),
+                                    )}
+                                </InputOTPGroup>
+                            </InputOTP>
+                            <InputError message={errors.code} />
+                        </div>
                     )}
-                </Form>
+
+                    <Button type="submit" className="w-full" disabled={processing}>
+                        {__('messages.two_factor_challenge.continue_button')}
+                    </Button>
+
+                    <button
+                        type="button"
+                        className="w-full text-sm text-primary underline underline-offset-4"
+                        onClick={() => {
+                            setShowRecoveryInput((current) => ! current);
+                            clearErrors();
+                            setData({
+                                ...data,
+                                code: '',
+                                recovery_code: '',
+                            });
+                        }}
+                    >
+                        {content.toggleText}
+                    </button>
+                </form>
             </div>
         </AuthLayout>
     );
 }
+

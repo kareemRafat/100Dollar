@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
 import { ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import SecurityController from '@/actions/App/Http/Controllers/Admin/Settings/SecurityController';
@@ -24,6 +24,8 @@ export default function Security({
     requiresConfirmation = false,
     twoFactorEnabled = false,
 }: Props) {
+    const { props } = usePage();
+    const { locale } = props;
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
@@ -38,7 +40,7 @@ export default function Security({
         recoveryCodesList,
         fetchRecoveryCodes,
         errors,
-    } = useTwoFactorAuth();
+    } = useTwoFactorAuth({ _auth_context: 'admin', _locale: locale as string });
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
     const prevTwoFactorEnabled = useRef(twoFactorEnabled);
 
@@ -168,7 +170,7 @@ export default function Security({
                             </p>
 
                             <div className="relative inline">
-                                <Form {...disable.form()}>
+                                <Form {...disable.form({ query: { _auth_context: 'admin', _locale: locale as string } })}>
                                     {({ processing }) => (
                                         <Button
                                             variant="destructive"
@@ -205,7 +207,7 @@ export default function Security({
                                     </Button>
                                 ) : (
                                     <Form
-                                        {...enable.form()}
+                                        {...enable.form({ query: { _auth_context: 'admin', _locale: locale as string } })}
                                         onSuccess={() => {
                                             setTimeout(
                                                 () => setShowSetupModal(true),
