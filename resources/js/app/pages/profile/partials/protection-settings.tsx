@@ -29,7 +29,6 @@ export default function ProtectionSettings({
         qrCodeSvg,
         hasSetupData,
         manualSetupKey,
-        clearSetupData,
         clearErrors,
         clearTwoFactorAuthData,
         fetchSetupData,
@@ -158,7 +157,6 @@ export default function ProtectionSettings({
                 twoFactorEnabled={twoFactorEnabled}
                 qrCodeSvg={qrCodeSvg}
                 manualSetupKey={manualSetupKey}
-                clearSetupData={clearSetupData}
                 clearErrors={clearErrors}
                 fetchSetupData={fetchSetupData}
                 errors={errors}

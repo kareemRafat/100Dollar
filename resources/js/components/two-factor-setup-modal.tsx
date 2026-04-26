@@ -254,7 +254,6 @@ type Props = {
     twoFactorEnabled: boolean;
     qrCodeSvg: string | null;
     manualSetupKey: string | null;
-    clearSetupData: () => void;
     clearErrors: () => void;
     fetchSetupData: () => Promise<void>;
     errors: string[];
@@ -283,7 +282,6 @@ export default function TwoFactorSetupModal({
     twoFactorEnabled,
     qrCodeSvg,
     manualSetupKey,
-    clearSetupData,
     clearErrors,
     fetchSetupData,
     errors,
@@ -331,9 +329,8 @@ export default function TwoFactorSetupModal({
 
     const handleClose = useCallback(() => {
         resetModalState();
-        clearSetupData();
         onClose();
-    }, [clearSetupData, onClose, resetModalState]);
+    }, [onClose, resetModalState]);
 
     const handleModalNextStep = useCallback(() => {
         if (twoFactorEnabled) {
@@ -359,9 +356,13 @@ export default function TwoFactorSetupModal({
 
     useEffect(() => {
         if (isOpen) {
+            if (qrCodeSvg !== null && manualSetupKey !== null) {
+                return;
+            }
+
             fetchSetupDataRef.current();
         }
-    }, [isOpen]);
+    }, [isOpen, manualSetupKey, qrCodeSvg]);
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>

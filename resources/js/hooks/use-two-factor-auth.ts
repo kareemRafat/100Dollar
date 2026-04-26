@@ -1,5 +1,5 @@
 import { useHttp } from '@inertiajs/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { qrCode, recoveryCodes, secretKey } from '@/routes/two-factor';
 import type { RouteDefinition, RouteQueryOptions } from '@/wayfinder';
 
@@ -31,10 +31,12 @@ export const useTwoFactorAuth = (
     context?: { _locale?: string },
     routes: TwoFactorRoutes = {},
 ): UseTwoFactorAuthReturn => {
-    const { submit } = useHttp();
+    const { cancel, submit } = useHttp();
     const qrCodeRoute = routes.qrCode ?? qrCode;
     const recoveryCodesRoute = routes.recoveryCodes ?? recoveryCodes;
     const secretKeyRoute = routes.secretKey ?? secretKey;
+    const loadingRef = useRef<boolean>(false);
+    const requestCycleRef = useRef<number>(0);
 
     const [qrCodeSvg, setQrCodeSvg] = useState<string | null>(null);
     const [manualSetupKey, setManualSetupKey] = useState<string | null>(null);
@@ -49,29 +51,45 @@ export const useTwoFactorAuth = (
     }, []);
 
     const clearSetupData = useCallback((): void => {
+        requestCycleRef.current += 1;
+        loadingRef.current = false;
+        cancel();
+        setLoading(false);
         setManualSetupKey(null);
         setQrCodeSvg(null);
         setErrors([]);
-    }, []);
+    }, [cancel]);
 
     const clearTwoFactorAuthData = useCallback((): void => {
+        requestCycleRef.current += 1;
+        loadingRef.current = false;
+        cancel();
+        setLoading(false);
         setManualSetupKey(null);
         setQrCodeSvg(null);
         setErrors([]);
         setRecoveryCodesList([]);
-    }, []);
+    }, [cancel]);
 
-    const fetchQrCode = useCallback(async (): Promise<void> => {
+    const fetchQrCode = useCallback(async (requestCycle = requestCycleRef.current): Promise<void> => {
         try {
             const { svg } = (await submit(qrCodeRoute({ query: context }))) as {
                 svg: string;
                 url: string;
             };
 
+            if (requestCycle !== requestCycleRef.current) {
+                return;
+            }
+
             if (svg) {
                 setQrCodeSvg(svg);
             }
         } catch {
+            if (requestCycle !== requestCycleRef.current) {
+                return;
+            }
+
             setErrors((prev) => {
                 if (prev.includes('Failed to fetch QR code')) {
                     return prev;
@@ -83,16 +101,24 @@ export const useTwoFactorAuth = (
         }
     }, [submit, context, qrCodeRoute]);
 
-    const fetchSetupKey = useCallback(async (): Promise<void> => {
+    const fetchSetupKey = useCallback(async (requestCycle = requestCycleRef.current): Promise<void> => {
         try {
             const { secretKey: key } = (await submit(secretKeyRoute({ query: context }))) as {
                 secretKey: string;
             };
 
+            if (requestCycle !== requestCycleRef.current) {
+                return;
+            }
+
             if (key) {
                 setManualSetupKey(key);
             }
         } catch {
+            if (requestCycle !== requestCycleRef.current) {
+                return;
+            }
+
             setErrors((prev) => {
                 if (prev.includes('Failed to fetch a setup key')) {
                     return prev;
@@ -117,28 +143,39 @@ export const useTwoFactorAuth = (
 
     const fetchSetupData = useCallback(
         async (retryCount = 0): Promise<void> => {
-            if (loading) {
+            if (loadingRef.current) {
                 return;
             }
 
+            const requestCycle = requestCycleRef.current + 1;
+            requestCycleRef.current = requestCycle;
+
             try {
+                loadingRef.current = true;
                 setLoading(true);
                 setErrors([]);
-                await Promise.all([fetchQrCode(), fetchSetupKey()]);
+                await fetchQrCode(requestCycle);
+                await fetchSetupKey(requestCycle);
             } catch {
                 if (retryCount < 2) {
+                    loadingRef.current = false;
                     setLoading(false);
 
                     return fetchSetupData(retryCount + 1);
                 }
 
-                setQrCodeSvg(null);
-                setManualSetupKey(null);
+                if (requestCycle === requestCycleRef.current) {
+                    setQrCodeSvg(null);
+                    setManualSetupKey(null);
+                }
             } finally {
-                setLoading(false);
+                if (requestCycle === requestCycleRef.current) {
+                    loadingRef.current = false;
+                    setLoading(false);
+                }
             }
         },
-        [fetchQrCode, fetchSetupKey, loading],
+        [fetchQrCode, fetchSetupKey],
     );
 
     return {
