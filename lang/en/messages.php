@@ -138,6 +138,7 @@ return [
         'benefit_report_title' => 'Periodic Report',
         'benefit_report_desc' => 'You get detailed reports on your sponsorship performance, number of views, and interaction with the winners sponsored by you.',
         'contact_for_sponsorship' => 'Contact us for sponsorship',
+        'certified_partner' => 'Certified Partner',
         'day_sponsor' => ':day Prize Sponsor',
         'days' => [
             'saturday' => 'Saturday',

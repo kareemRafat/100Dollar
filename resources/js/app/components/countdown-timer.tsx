@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Clock, Timer, Hourglass } from 'lucide-react';
 
 type Props = {
     targetDate: Date;
@@ -27,13 +28,15 @@ function calculateTimeLeft(target: Date): TimeLeft {
 
 function TimeBlock({ value, label }: { value: number; label: string }) {
     return (
-        <div className="flex flex-col items-center">
-            <div className="bg-surface-container-lowest flex h-14 w-14 items-center justify-center rounded-xl text-2xl font-bold text-primary shadow-sm">
+        <div className="flex flex-col items-center group/time">
+            <div className="bg-surface-container-lowest flex h-14 w-14 items-center justify-center rounded-2xl text-2xl font-black text-primary shadow-sm border border-outline-variant/5 transition-all group-hover/time:scale-110 group-hover/time:bg-primary group-hover/time:text-on-primary">
                 {String(value).padStart(2, '0')}
             </div>
-            <span className="text-on-surface-variant mt-2 text-[10px] font-bold">
-                {label}
-            </span>
+            <div className="mt-2 flex items-center gap-1 opacity-60 transition-opacity group-hover/time:opacity-100">
+                <span className="text-on-surface-variant text-[10px] font-black uppercase tracking-tighter">
+                    {label}
+                </span>
+            </div>
         </div>
     );
 }
@@ -48,7 +51,7 @@ export function CountdownTimer({ targetDate }: Props) {
         const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft(targetDate));
         }, 1000);
-        
+
         return () => clearInterval(timer);
     }, [targetDate]);
 
@@ -60,3 +63,4 @@ export function CountdownTimer({ targetDate }: Props) {
         </div>
     );
 }
+

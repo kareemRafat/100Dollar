@@ -138,6 +138,7 @@ return [
         'benefit_report_title' => 'تقرير دوري',
         'benefit_report_desc' => 'تحصل على تقارير تفصيلية عن أداء رعايتك، عدد المشاهدات، والتفاعل مع الفائزين برعايتكم.',
         'contact_for_sponsorship' => 'تواصل معنا للرعاية',
+        'certified_partner' => 'شريك معتمد',
         'day_sponsor' => 'راعي جائزة يوم :day',
         'days' => [
             'saturday' => 'السبت',
