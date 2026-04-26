@@ -56,6 +56,9 @@ return [
         'vote_now' => 'صوّت الآن',
         'vote_progress' => 'التقدم في التصويت',
         'prize_label' => 'الجائزة',
+        'hours' => 'ساعة',
+        'minutes' => 'دقيقة',
+        'seconds' => 'ثانية',
     ],
 
     'about' => [

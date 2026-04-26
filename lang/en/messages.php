@@ -56,6 +56,9 @@ return [
         'vote_now' => 'Vote Now',
         'vote_progress' => 'Voting Progress',
         'prize_label' => 'Prize',
+        'hours' => 'Hours',
+        'minutes' => 'Minutes',
+        'seconds' => 'Seconds',
     ],
 
     'about' => [

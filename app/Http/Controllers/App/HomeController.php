@@ -56,13 +56,13 @@ class HomeController extends Controller
     private function getWeekDays(): array
     {
         return [
-            ['id' => 6, 'name' => __('messages.sponsors.days.saturday')],
-            ['id' => 0, 'name' => __('messages.sponsors.days.sunday')],
-            ['id' => 1, 'name' => __('messages.sponsors.days.monday')],
-            ['id' => 2, 'name' => __('messages.sponsors.days.tuesday')],
-            ['id' => 3, 'name' => __('messages.sponsors.days.wednesday')],
-            ['id' => 4, 'name' => __('messages.sponsors.days.thursday')],
-            ['id' => 5, 'name' => __('messages.sponsors.days.friday')],
+            ['id' => 6, 'name' => 'messages.sponsors.days.saturday'],
+            ['id' => 0, 'name' => 'messages.sponsors.days.sunday'],
+            ['id' => 1, 'name' => 'messages.sponsors.days.monday'],
+            ['id' => 2, 'name' => 'messages.sponsors.days.tuesday'],
+            ['id' => 3, 'name' => 'messages.sponsors.days.wednesday'],
+            ['id' => 4, 'name' => 'messages.sponsors.days.thursday'],
+            ['id' => 5, 'name' => 'messages.sponsors.days.friday'],
         ];
     }
 }

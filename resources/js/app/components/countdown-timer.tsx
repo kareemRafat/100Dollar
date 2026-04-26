@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLang } from '@erag/lang-sync-inertia/react';
 
 type Props = {
     targetDate: Date;
@@ -38,6 +39,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 }
 
 export function CountdownTimer({ targetDate }: Props) {
+    const { __ } = useLang();
     const [timeLeft, setTimeLeft] = useState<TimeLeft>(
         calculateTimeLeft(targetDate),
     );
@@ -52,9 +54,9 @@ export function CountdownTimer({ targetDate }: Props) {
 
     return (
         <div className="flex gap-4">
-            <TimeBlock value={timeLeft.hours} label="ساعة" />
-            <TimeBlock value={timeLeft.minutes} label="دقيقة" />
-            <TimeBlock value={timeLeft.seconds} label="ثانية" />
+            <TimeBlock value={timeLeft.hours} label={__('messages.home.hours')} />
+            <TimeBlock value={timeLeft.minutes} label={__('messages.home.minutes')} />
+            <TimeBlock value={timeLeft.seconds} label={__('messages.home.seconds')} />
         </div>
     );
 }
