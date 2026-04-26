@@ -39,6 +39,8 @@ return [
         'browse_full_archive' => 'تصفح الأرشيف الكامل',
         'full_archive' => 'الأرشيف الكامل',
         'full_archive_desc' => 'استعرض جميع الفائزين السابقين منذ انطلاق المنصة',
+        'read_more' => 'عرض المزيد',
+        'loading' => 'جاري التحميل...',
     ],
 
     'home' => [
@@ -48,6 +50,12 @@ return [
         'sponsor_name_placeholder' => 'اسم الشركة الراعية',
         'voting_ends_in' => 'ينتهي التصويت الحالي خلال:',
         'voting_chance_still' => 'الفرصة ما زالت قائمة لدعم فكرتك المفضلة',
+        'no_ideas_yet' => 'لا يوجد أفكار لهذا اليوم بعد',
+        'be_the_first' => 'كن أول من يشارك فكرته المميزة!',
+        'anonymous' => 'مجهول',
+        'vote_now' => 'صوّت الآن',
+        'vote_progress' => 'التقدم في التصويت',
+        'prize_label' => 'الجائزة',
     ],
 
     'about' => [

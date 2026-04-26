@@ -1,6 +1,6 @@
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import AdminSettingsLayout from '@/admin/layouts/settings-layout';
@@ -28,28 +28,33 @@ createInertiaApp({
         }
     },
     setup({ el, App, props }) {
-        const root = createRoot(el);
-        const locale = props.initialPage.props.locale;
+        const locale = (props.initialPage.props.locale as string) || 'en';
 
         // Initial setup
         const dir = locale === 'ar' ? 'rtl' : 'ltr';
         document.documentElement.setAttribute('dir', dir);
-        document.documentElement.setAttribute('lang', locale as string);
+        document.documentElement.setAttribute('lang', locale);
 
         // Listen for navigation changes (like language switching)
         router.on('success', (event) => {
-            const nextLocale = event.detail.page.props.locale;
+            const nextLocale = (event.detail.page.props.locale as string) || 'en';
             const nextDir = nextLocale === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.setAttribute('dir', nextDir);
-            document.documentElement.setAttribute('lang', nextLocale as string);
+            document.documentElement.setAttribute('lang', nextLocale);
         });
 
-        root.render(
+        const content = (
             <TooltipProvider delayDuration={0}>
                 <App {...props} />
                 <Toaster position="top-center" dir="rtl" toastOptions={{ className: '!border-none shadow-lg' }} />
             </TooltipProvider>
         );
+
+        if (el.innerHTML.trim().length > 0) {
+            hydrateRoot(el, content);
+        } else {
+            createRoot(el).render(content);
+        }
     },
     strictMode: true,
     progress: {

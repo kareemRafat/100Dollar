@@ -1,3 +1,5 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
+
 type Props = {
     category: string;
     budget: string;
@@ -33,6 +35,8 @@ export function IdeaCard({
     date,
     variant = 'home',
 }: Props) {
+    const { __ } = useLang();
+
     if (variant === 'archive') {
         return (
             <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card">
@@ -44,8 +48,8 @@ export function IdeaCard({
                             alt={title}
                         />
                         {isWinner && (
-                            <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:end-4 sm:top-4">
-                                <span>🏆 فكرة فائزة</span>
+                            <div className="absolute inset-inline-end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:inset-inline-end-4 sm:top-4">
+                                <span>🏆 {__('messages.archive.winner_status')}</span>
                             </div>
                         )}
                     </div>
@@ -137,15 +141,15 @@ export function IdeaCard({
                 <div className="mb-4">
                     <div className="mb-2 flex items-end justify-between">
                         <span className="text-xs font-bold text-on-surface-variant">
-                            التقدم في التصويت
+                            {__('messages.home.vote_progress')}
                         </span>
                         <span className="text-base font-bold text-primary">
-                            {votes} صوت
+                            {votes} {__('messages.my_ideas.unit_vote')}
                         </span>
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20 dark:bg-outline-variant/40">
                         <div
-                            className="h-full rounded-full bg-gradient-to-l from-primary to-primary-container"
+                            className="h-full rounded-full bg-gradient-to-inline-end from-primary to-primary-container"
                             style={{ width: `${voteProgress}%` }}
                         />
                     </div>
@@ -155,7 +159,7 @@ export function IdeaCard({
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-3 text-sm font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
                 >
                     <span className="material-symbols-outlined text-xl">thumb_up</span>
-                    صوّت الآن
+                    {__('messages.home.vote_now')}
                 </button>
             </div>
         </div>

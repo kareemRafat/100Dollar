@@ -39,6 +39,8 @@ return [
         'browse_full_archive' => 'Browse full archive',
         'full_archive' => 'Full Archive',
         'full_archive_desc' => 'View all previous winners since the platform launched',
+        'read_more' => 'Read More',
+        'loading' => 'Loading...',
     ],
 
     'home' => [
@@ -48,6 +50,12 @@ return [
         'sponsor_name_placeholder' => 'Sponsor Name',
         'voting_ends_in' => 'Current voting ends in:',
         'voting_chance_still' => 'There is still a chance to support your favorite idea',
+        'no_ideas_yet' => 'No ideas for today yet',
+        'be_the_first' => 'Be the first to share your brilliant idea!',
+        'anonymous' => 'Anonymous',
+        'vote_now' => 'Vote Now',
+        'vote_progress' => 'Voting Progress',
+        'prize_label' => 'Prize',
     ],
 
     'about' => [

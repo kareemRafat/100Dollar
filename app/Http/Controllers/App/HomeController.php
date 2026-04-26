@@ -3,13 +3,66 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Idea;
+use App\Models\Sponsor;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return Inertia::render('app/pages/home');
+        $now = Carbon::now();
+        $currentDay = (int) $request->query('day', $now->dayOfWeek);
+        $currentWeek = $now->isoWeek();
+        $currentYear = $now->isoWeekYear();
+
+        $ideas = Idea::with(['user:id,name,avatar'])
+            ->where('submission_day', $currentDay)
+            ->where('week_number', $currentWeek)
+            ->where('year', $currentYear)
+            ->where('status', 'approved')
+            ->orderByDesc('votes_count')
+            ->simplePaginate(6)
+            ->withQueryString();
+
+        $sponsor = Sponsor::where('day_of_week', $currentDay)
+            ->where('is_active', true)
+            ->first(['id', 'name', 'logo', 'day_of_week']);
+
+        $previousWinners = Idea::with(['user:id,name,avatar', 'sponsor:id,name,logo'])
+            ->where('is_winner', true)
+            ->orderByDesc('winner_announced_at')
+            ->take(7)
+            ->get(['id', 'user_id', 'sponsor_id', 'title', 'winner_announced_at'])
+            ->values();
+
+        // Calculate countdown to the end of the day (no cache needed)
+        $endOfDay = $now->copy()->endOfDay();
+        $secondsUntilEnd = $now->diffInSeconds($endOfDay);
+
+        return Inertia::render('app/pages/home/index', [
+            'ideas' => Inertia::scroll($ideas),
+            'sponsor' => $sponsor,
+            'previousWinners' => $previousWinners,
+            'currentDay' => $currentDay,
+            'secondsUntilEnd' => $secondsUntilEnd,
+            'weekDays' => $this->getWeekDays(),
+        ]);
+    }
+
+    private function getWeekDays(): array
+    {
+        return [
+            ['id' => 6, 'name' => __('messages.sponsors.days.saturday')],
+            ['id' => 0, 'name' => __('messages.sponsors.days.sunday')],
+            ['id' => 1, 'name' => __('messages.sponsors.days.monday')],
+            ['id' => 2, 'name' => __('messages.sponsors.days.tuesday')],
+            ['id' => 3, 'name' => __('messages.sponsors.days.wednesday')],
+            ['id' => 4, 'name' => __('messages.sponsors.days.thursday')],
+            ['id' => 5, 'name' => __('messages.sponsors.days.friday')],
+        ];
     }
 }

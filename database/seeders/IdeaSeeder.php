@@ -17,11 +17,11 @@ class IdeaSeeder extends Seeder
         $users = User::where('role', 'user')->get();
         $sponsors = Sponsor::all();
 
-        // 7 Approved ideas for current week (one for each day)
+        // 5 Approved ideas per day for current week (35 total)
         for ($day = 0; $day <= 6; $day++) {
             $sponsor = $sponsors->where('day_of_week', $day)->first();
-            Idea::factory()->approved()->create([
-                'user_id' => $users->random()->id,
+            Idea::factory()->count(5)->approved()->create([
+                'user_id' => fn () => $users->random()->id,
                 'sponsor_id' => $sponsor?->id,
                 'submission_day' => $day,
                 'week_number' => now()->weekOfYear,

@@ -1,3 +1,5 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
+
 type Props = {
     name: string;
     idea: string;
@@ -13,10 +15,12 @@ export function WinnerCard({
     badge,
     prize = '100$',
 }: Props) {
+    const { __ } = useLang();
+
     return (
-        <div className="group relative w-72 flex-shrink-0 snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card">
-            <div className="absolute top-0 start-0 h-1 w-full bg-gradient-to-l from-primary to-transparent" />
-            <div className="relative mx-auto mb-4 h-24 w-24">
+        <div className="group relative flex h-full w-72 flex-shrink-0 flex-col snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card">
+            <div className="absolute top-0 inset-inline-start-0 h-1 w-full bg-gradient-to-inline-end from-primary to-transparent" />
+            <div className="relative mx-auto mb-6 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
                 {avatarUrl ? (
                     <img
@@ -31,25 +35,25 @@ export function WinnerCard({
                         </span>
                     </div>
                 )}
-                <div className="absolute -end-1 -bottom-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
+                <div className="absolute -inset-inline-end-1 -bottom-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
                     <span className="material-symbols-outlined text-base">
                         emoji_events
                     </span>
                 </div>
             </div>
-            <div className="text-center">
-                <div className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold text-primary uppercase">
+            <div className="flex flex-1 flex-col text-center">
+                <div className="mb-4 inline-block self-center rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold text-primary uppercase">
                     {badge}
                 </div>
-                <h4 className="mb-1 font-headline text-lg font-bold text-on-surface dark:text-white transition-colors group-hover:text-primary">
+                <h4 className="mb-2 font-headline text-lg font-bold text-on-surface dark:text-white transition-colors group-hover:text-primary">
                     {name}
                 </h4>
-                <p className="mb-4 line-clamp-2 text-sm leading-relaxed text-on-surface-variant">
+                <p className="mb-8 line-clamp-3 text-sm leading-relaxed text-on-surface-variant px-2">
                     {idea}
                 </p>
-                <div className="flex items-center justify-between border-t border-outline-variant/10 pt-4">
+                <div className="mt-auto flex items-center justify-between border-t border-outline-variant/10 pt-4">
                     <span className="text-[10px] font-bold tracking-wider text-on-surface-variant uppercase">
-                        الجائزة
+                        {__('messages.home.prize_label')}
                     </span>
                     <span className="font-headline text-xl font-black text-primary">
                         {prize}
