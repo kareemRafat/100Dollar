@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/admin/settings/profile';
-import { send } from '@/routes/verification';
+import { send } from '@/routes/admin/verification';
 
 export default function Profile({
     mustVerifyEmail,

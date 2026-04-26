@@ -1,6 +1,7 @@
 import { useHttp } from '@inertiajs/react';
 import { useCallback, useState } from 'react';
 import { qrCode, recoveryCodes, secretKey } from '@/routes/two-factor';
+import type { RouteDefinition, RouteQueryOptions } from '@/wayfinder';
 
 export type UseTwoFactorAuthReturn = {
     qrCodeSvg: string | null;
@@ -20,8 +21,20 @@ export type UseTwoFactorAuthReturn = {
 
 export const OTP_MAX_LENGTH = 6;
 
-export const useTwoFactorAuth = (context?: { _auth_context?: string; _locale?: string }): UseTwoFactorAuthReturn => {
+type TwoFactorRoutes = {
+    qrCode?: (options?: RouteQueryOptions) => RouteDefinition<'get'>;
+    recoveryCodes?: (options?: RouteQueryOptions) => RouteDefinition<'get'>;
+    secretKey?: (options?: RouteQueryOptions) => RouteDefinition<'get'>;
+};
+
+export const useTwoFactorAuth = (
+    context?: { _locale?: string },
+    routes: TwoFactorRoutes = {},
+): UseTwoFactorAuthReturn => {
     const { submit } = useHttp();
+    const qrCodeRoute = routes.qrCode ?? qrCode;
+    const recoveryCodesRoute = routes.recoveryCodes ?? recoveryCodes;
+    const secretKeyRoute = routes.secretKey ?? secretKey;
 
     const [qrCodeSvg, setQrCodeSvg] = useState<string | null>(null);
     const [manualSetupKey, setManualSetupKey] = useState<string | null>(null);
@@ -50,7 +63,7 @@ export const useTwoFactorAuth = (context?: { _auth_context?: string; _locale?: s
 
     const fetchQrCode = useCallback(async (): Promise<void> => {
         try {
-            const { svg } = (await submit(qrCode({ query: context }))) as {
+            const { svg } = (await submit(qrCodeRoute({ query: context }))) as {
                 svg: string;
                 url: string;
             };
@@ -58,47 +71,55 @@ export const useTwoFactorAuth = (context?: { _auth_context?: string; _locale?: s
             if (svg) {
                 setQrCodeSvg(svg);
             }
-        } catch (error) {
+        } catch {
             setErrors((prev) => {
-                if (prev.includes('Failed to fetch QR code')) return prev;
+                if (prev.includes('Failed to fetch QR code')) {
+                    return prev;
+                }
+
                 return [...prev, 'Failed to fetch QR code'];
             });
             setQrCodeSvg(null);
         }
-    }, [submit, context]);
+    }, [submit, context, qrCodeRoute]);
 
     const fetchSetupKey = useCallback(async (): Promise<void> => {
         try {
-            const { secretKey: key } = (await submit(secretKey({ query: context }))) as {
+            const { secretKey: key } = (await submit(secretKeyRoute({ query: context }))) as {
                 secretKey: string;
             };
 
             if (key) {
                 setManualSetupKey(key);
             }
-        } catch (error) {
+        } catch {
             setErrors((prev) => {
-                if (prev.includes('Failed to fetch a setup key')) return prev;
+                if (prev.includes('Failed to fetch a setup key')) {
+                    return prev;
+                }
+
                 return [...prev, 'Failed to fetch a setup key'];
             });
             setManualSetupKey(null);
         }
-    }, [submit, context]);
+    }, [submit, context, secretKeyRoute]);
 
     const fetchRecoveryCodes = useCallback(async (): Promise<void> => {
         try {
             setErrors([]);
-            const codes = (await submit(recoveryCodes({ query: context }))) as string[];
+            const codes = (await submit(recoveryCodesRoute({ query: context }))) as string[];
             setRecoveryCodesList(codes);
         } catch {
             setErrors((prev) => [...prev, 'Failed to fetch recovery codes']);
             setRecoveryCodesList([]);
         }
-    }, [submit, context]);
+    }, [submit, context, recoveryCodesRoute]);
 
     const fetchSetupData = useCallback(
         async (retryCount = 0): Promise<void> => {
-            if (loading) return;
+            if (loading) {
+                return;
+            }
 
             try {
                 setLoading(true);

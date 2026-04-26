@@ -1,15 +1,14 @@
 <?php
 
-use App\Support\Auth\AuthContext;
+use App\Http\Controllers\App\Auth\AuthenticatedSessionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
-use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\NewPasswordController;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
@@ -17,8 +16,6 @@ Route::group([
 ], function () {
     Route::middleware('guest')->group(function () {
         Route::get('login', function (Request $request) {
-            app(AuthContext::class)->remember($request, AuthContext::APP);
-
             return Inertia::render('app/pages/auth/login', [
                 'canResetPassword' => Features::enabled(Features::resetPasswords()),
                 'canRegister' => Features::enabled(Features::registration()),
@@ -27,9 +24,7 @@ Route::group([
         })->name('login');
 
         if (Features::enabled(Features::registration())) {
-            Route::get('register', function (Request $request) {
-                app(AuthContext::class)->remember($request, AuthContext::APP);
-
+            Route::get('register', function () {
                 return Inertia::render('app/pages/auth/register', [
                     'canLogin' => true,
                 ]);
@@ -38,8 +33,6 @@ Route::group([
 
         if (Features::enabled(Features::resetPasswords())) {
             Route::get('forgot-password', function (Request $request) {
-                app(AuthContext::class)->remember($request, AuthContext::APP);
-
                 return Inertia::render('app/pages/auth/forgot-password', [
                     'status' => $request->session()->get('status'),
                 ]);

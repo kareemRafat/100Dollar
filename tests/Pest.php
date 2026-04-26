@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Tests\TestCase;
 
 /*
@@ -44,7 +45,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function localizedUrl(string $path): string
 {
-    // ..
+    return LaravelLocalization::getLocalizedURL(app()->getLocale(), $path);
 }

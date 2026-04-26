@@ -2,14 +2,12 @@
 
 namespace App\Http\Responses;
 
-use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
-
+use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class RoleAwareTwoFactorLoginResponse implements TwoFactorLoginResponseContract
+class AppVerifyEmailResponse implements VerifyEmailResponseContract
 {
     /**
      * Create an HTTP response that represents the object.
@@ -20,16 +18,10 @@ class RoleAwareTwoFactorLoginResponse implements TwoFactorLoginResponseContract
             return new JsonResponse('', 204);
         }
 
-        if ($request->user()?->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
-        $locale = $request->input('_locale') ?: app()->getLocale();
-
         return redirect()->intended(
             LaravelLocalization::getLocalizedURL(
-                $locale,
-                route(app(AuthContext::class)->authenticatedRouteForUser($request->user()))
+                app()->getLocale(),
+                route('app.home').'?verified=1',
             )
         );
     }

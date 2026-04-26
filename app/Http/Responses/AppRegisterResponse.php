@@ -2,14 +2,12 @@
 
 namespace App\Http\Responses;
 
-use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
-
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class RoleAwareRegisterResponse implements RegisterResponseContract
+class AppRegisterResponse implements RegisterResponseContract
 {
     /**
      * Create an HTTP response that represents the object.
@@ -20,17 +18,13 @@ class RoleAwareRegisterResponse implements RegisterResponseContract
             return new JsonResponse('', 201);
         }
 
-        if ($request->user()?->role === 'admin') {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
         $locale = $request->input('_locale') ?: app()->getLocale();
+        $route = $request->user()?->hasVerifiedEmail()
+            ? route('app.home')
+            : route('verification.notice');
 
         return redirect()->intended(
-            LaravelLocalization::getLocalizedURL(
-                $locale,
-                route(app(AuthContext::class)->authenticatedRouteForUser($request->user()))
-            )
+            LaravelLocalization::getLocalizedURL($locale, $route)
         );
     }
 }

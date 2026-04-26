@@ -3,6 +3,7 @@ import { usePage, router } from '@inertiajs/react';
 import type { LucideIcon } from 'lucide-react';
 import { LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { logout } from '@/routes';
 
 type NavItem = {
     id: string;
@@ -20,10 +21,10 @@ type Props = {
 export function SideNav({ items, activeSection, onItemClick }: Props) {
     const { locale } = usePage().props;
     const { __ } = useLang();
-    const isRtl = locale === 'ar';
-
     const handleLogout = () => {
-        router.post('/logout');
+        router.post(logout().url, {
+            _locale: locale,
+        });
     };
 
     return (

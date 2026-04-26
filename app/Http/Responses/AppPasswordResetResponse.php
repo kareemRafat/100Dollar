@@ -2,14 +2,12 @@
 
 namespace App\Http\Responses;
 
-use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseContract;
-
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-class RoleAwarePasswordResetResponse implements PasswordResetResponseContract
+class AppPasswordResetResponse implements PasswordResetResponseContract
 {
     public function __construct(private readonly string $status) {}
 
@@ -22,21 +20,10 @@ class RoleAwarePasswordResetResponse implements PasswordResetResponseContract
             return new JsonResponse(['message' => trans($this->status)], 200);
         }
 
-        $context = app(AuthContext::class)->remember($request);
-
-        if ($context === AuthContext::ADMIN) {
-            return redirect()
-                ->route('admin.login')
-                ->with('status', trans($this->status));
-        }
+        $locale = $request->input('_locale') ?: app()->getLocale();
 
         return redirect()
-            ->to(
-                LaravelLocalization::getLocalizedURL(
-                    app()->getLocale(),
-                    route(app(AuthContext::class)->loginRouteForContext($context))
-                )
-            )
+            ->to(LaravelLocalization::getLocalizedURL($locale, route('login')))
             ->with('status', trans($this->status));
     }
 }

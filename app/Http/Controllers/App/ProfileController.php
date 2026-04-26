@@ -5,12 +5,11 @@ namespace App\Http\Controllers\App;
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-
-use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use Laravel\Fortify\Features;
 
 class ProfileController extends Controller
@@ -51,7 +50,6 @@ class ProfileController extends Controller
             'email' => $this->emailRules($user->id),
             'phone' => ['nullable', 'string', 'max:20'],
             'bio' => ['nullable', 'string', 'max:500'],
-            'is_active' => ['nullable', 'boolean'],
         ]);
 
         $user->fill($validated);

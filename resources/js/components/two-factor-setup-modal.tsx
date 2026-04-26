@@ -1,5 +1,5 @@
-import { Form, usePage } from '@inertiajs/react';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Form, usePage } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { Check, Copy, ScanLine } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -22,8 +22,9 @@ import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
-import { confirm } from '@/routes/two-factor';
 import { cn } from '@/lib/utils';
+import { confirm } from '@/routes/two-factor';
+import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
 
 function GridScanIcon() {
     return (
@@ -145,9 +146,13 @@ function TwoFactorSetupStep({
 function TwoFactorVerificationStep({
     onClose,
     onBack,
+    confirmRoute,
 }: {
     onClose: () => void;
     onBack: () => void;
+    confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+        form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
+    };
 }) {
     const { __ } = useLang();
     const [code, setCode] = useState<string>('');
@@ -161,7 +166,7 @@ function TwoFactorVerificationStep({
 
     return (
         <Form
-            {...confirm.form()}
+            {...(confirmRoute ?? confirm).form()}
             onSuccess={() => onClose()}
             resetOnError
             resetOnSuccess
@@ -244,6 +249,9 @@ type Props = {
     clearErrors: () => void;
     fetchSetupData: () => Promise<void>;
     errors: string[];
+    confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+        form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
+    };
 };
 
 export default function TwoFactorSetupModal({
@@ -257,6 +265,7 @@ export default function TwoFactorSetupModal({
     clearErrors,
     fetchSetupData,
     errors,
+    confirmRoute,
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props;
@@ -299,12 +308,14 @@ export default function TwoFactorSetupModal({
 
     const handleClose = useCallback(() => {
         resetModalState();
+        clearSetupData();
         onClose();
-    }, [onClose, resetModalState]);
+    }, [clearSetupData, onClose, resetModalState]);
 
     const handleModalNextStep = useCallback(() => {
         if (twoFactorEnabled) {
             handleClose();
+
             return;
         }
 
@@ -347,6 +358,7 @@ export default function TwoFactorSetupModal({
                         <TwoFactorVerificationStep
                             onClose={handleClose}
                             onBack={() => setShowVerificationStep(false)}
+                            confirmRoute={confirmRoute}
                         />
                     ) : (
                         <TwoFactorSetupStep

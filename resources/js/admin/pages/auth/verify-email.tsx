@@ -3,8 +3,8 @@ import { Form, Head } from '@inertiajs/react';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
-import { logout } from '@/routes';
-import { send } from '@/routes/verification';
+import { logout } from '@/routes/admin';
+import { send } from '@/routes/admin/verification';
 
 export default function VerifyEmail({ status }: { status?: string }) {
     return (
@@ -30,7 +30,6 @@ export default function VerifyEmail({ status }: { status?: string }) {
                             href={logout()}
                             method="post"
                             as="button"
-                            data={{ _auth_context: 'admin' }}
                             className="mx-auto block text-sm"
                         >
                             Log out

@@ -18,6 +18,7 @@ type Props = {
 
 export default function ResetPassword({ token, email }: Props) {
     const { __ } = useLang();
+    const { locale } = usePage().props;
     const [newPassword, setNewPassword] = useState('');
 
     const hasMinLength = newPassword.length >= 8;
@@ -171,8 +172,7 @@ export default function ResetPassword({ token, email }: Props) {
                             <InputError message={errors.password_confirmation} />
                         </div>
 
-                        <input type="hidden" name="_auth_context" value="app" />
-                        <input type="hidden" name="_locale" value={usePage().props.locale} />
+                        <input type="hidden" name="_locale" value={locale as string} />
                         <input type="hidden" name="token" value={token} />
                         <input type="hidden" name="email" value={email} />
 

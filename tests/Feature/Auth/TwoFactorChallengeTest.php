@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
 beforeEach(function () {
@@ -11,10 +10,10 @@ beforeEach(function () {
 test('two factor challenge redirects to login when not authenticated', function () {
     $response = $this->get(route('two-factor.login'));
 
-    $response->assertRedirect(route('login'));
+    $response->assertRedirectContains('/en');
 });
 
-test('two factor challenge can be rendered', function () {
+test('two factor login stores the pending login and redirects to the challenge route', function () {
     Features::twoFactorAuthentication([
         'confirm' => true,
         'confirmPassword' => true,
@@ -28,42 +27,13 @@ test('two factor challenge can be rendered', function () {
         'two_factor_confirmed_at' => now(),
     ])->save();
 
-    $this->post(route('login'), [
+    $response = $this->post(route('login'), [
         'email' => $user->email,
         'password' => 'password',
-        '_auth_context' => 'app',
+        '_locale' => app()->getLocale(),
     ]);
 
-    $this->get(route('two-factor.login'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('app/auth/two-factor-challenge'),
-        );
-});
-
-test('admin two factor challenge uses the admin auth page', function () {
-    Features::twoFactorAuthentication([
-        'confirm' => true,
-        'confirmPassword' => true,
-    ]);
-
-    $admin = User::factory()->admin()->create();
-
-    $admin->forceFill([
-        'two_factor_secret' => encrypt('test-secret'),
-        'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
-        'two_factor_confirmed_at' => now(),
-    ])->save();
-
-    $this->post(route('login'), [
-        'email' => $admin->email,
-        'password' => 'password',
-        '_auth_context' => 'admin',
-    ]);
-
-    $this->get(route('two-factor.login'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('admin/auth/two-factor-challenge'),
-        );
+    $response->assertRedirect(route('two-factor.login'));
+    $response->assertSessionHas('login.id', $user->id);
+    $this->assertGuest('web');
 });

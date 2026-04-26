@@ -21,7 +21,6 @@ type Props = {
         phone?: string;
         bio?: string;
         avatar?: string;
-        is_active: boolean;
     };
     canManageTwoFactor?: boolean;
     twoFactorEnabled?: boolean;
@@ -141,7 +140,6 @@ export default function Profile({
                             )}
                             {activeSection === 'security' && (
                                 <ProtectionSettings
-                                    user={user}
                                     canManageTwoFactor={canManageTwoFactor}
                                     twoFactorEnabled={twoFactorEnabled}
                                     requiresConfirmation={requiresConfirmation}

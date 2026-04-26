@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { store } from '@/routes/admin/login';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -9,7 +10,6 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { login } from '@/routes/admin';
 import { request } from '@/routes/admin/password';
-import { store } from '@/routes/login';
 
 type Props = {
     status?: string;
@@ -33,12 +33,6 @@ export default function Login({
             >
                 {({ processing, errors }) => (
                     <>
-                        <input
-                            type="hidden"
-                            name="_auth_context"
-                            value="admin"
-                        />
-
                         <div className="grid gap-6">
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>

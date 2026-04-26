@@ -16,6 +16,7 @@ type Props = {
 
 export default function ForgotPassword({ status }: Props) {
     const { __ } = useLang();
+    const { locale } = usePage().props;
 
     return (
         <AuthLayout>
@@ -50,8 +51,7 @@ export default function ForgotPassword({ status }: Props) {
             <Form {...email.form()} className="space-y-6">
                 {({ processing, errors }) => (
                     <>
-                        <input type="hidden" name="_auth_context" value="app" />
-                        <input type="hidden" name="_locale" value={usePage().props.locale} />
+                        <input type="hidden" name="_locale" value={locale as string} />
 
                         <div className="space-y-2">
                             <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>

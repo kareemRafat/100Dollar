@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Middleware\EnsureActiveUser;
 use App\Http\Middleware\EnsureUserRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\SetAuthContext;
-use App\Support\Auth\AuthContext;
+use App\Http\Middleware\RequirePasswordConfirmation;
+use App\Http\Middleware\SetRequestLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -44,7 +45,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeSessionRedirect' => LocaleSessionRedirect::class,
             'localeCookieRedirect' => LocaleCookieRedirect::class,
             'localeViewPath' => LaravelLocalizationViewPath::class,
-            'password.confirm' => \App\Http\Middleware\RequirePasswordConfirmation::class,
+            'password.confirm' => RequirePasswordConfirmation::class,
         ]);
         $middleware->redirectGuestsTo(function (Request $request): string {
             return $request->is('admin') || $request->is('admin/*')
@@ -52,10 +53,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 : route('login');
         });
         $middleware->appendToGroup('web', [
-            \App\Http\Middleware\HandleAppearance::class,
-            \App\Http\Middleware\HandleInertiaRequests::class,
-            \App\Http\Middleware\SetAuthContext::class,
-            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            HandleAppearance::class,
+            HandleInertiaRequests::class,
+            SetRequestLocale::class,
+            EnsureActiveUser::class,
+            AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

@@ -15,9 +15,9 @@ test('sends verification notification', function () {
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
-        ->from(route('verification.notice'))
+        ->from(localizedUrl(route('verification.notice', absolute: false)))
         ->post(route('verification.send'))
-        ->assertRedirect(route('verification.notice'));
+        ->assertRedirect(localizedUrl(route('verification.notice', absolute: false)));
 
     Notification::assertSentTo($user, VerifyEmail::class);
 });

@@ -8,7 +8,7 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes';
+import { logout } from '@/routes/admin';
 import { edit } from '@/routes/admin/settings/profile';
 import type { User } from '@/types';
 
@@ -52,7 +52,6 @@ export function UserMenuContent({ user }: Props) {
                     href={logout().url}
                     method="post"
                     as="button"
-                    data={{ _auth_context: 'admin' }}
                     onClick={handleLogout}
                     data-test="logout-button"
                 >

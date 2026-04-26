@@ -1,4 +1,4 @@
-import { Form, Head, usePage } from '@inertiajs/react';
+import { Form, Head } from '@inertiajs/react';
 import { ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import SecurityController from '@/actions/App/Http/Controllers/Admin/Settings/SecurityController';
@@ -11,7 +11,15 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { edit } from '@/routes/admin/settings/security';
-import { disable, enable } from '@/routes/two-factor';
+import {
+    confirm,
+    disable,
+    enable,
+    qrCode,
+    recoveryCodes,
+    secretKey,
+} from '@/routes/admin/two-factor';
+import { store as regenerateRecoveryCodes } from '@/routes/admin/two-factor/recovery-codes';
 
 type Props = {
     canManageTwoFactor?: boolean;
@@ -24,8 +32,6 @@ export default function Security({
     requiresConfirmation = false,
     twoFactorEnabled = false,
 }: Props) {
-    const { props } = usePage();
-    const { locale } = props;
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
 
@@ -40,7 +46,11 @@ export default function Security({
         recoveryCodesList,
         fetchRecoveryCodes,
         errors,
-    } = useTwoFactorAuth({ _auth_context: 'admin', _locale: locale as string });
+    } = useTwoFactorAuth(undefined, {
+        qrCode,
+        recoveryCodes,
+        secretKey,
+    });
     const [showSetupModal, setShowSetupModal] = useState<boolean>(false);
     const prevTwoFactorEnabled = useRef(twoFactorEnabled);
 
@@ -170,7 +180,7 @@ export default function Security({
                             </p>
 
                             <div className="relative inline">
-                                <Form {...disable.form({ query: { _auth_context: 'admin', _locale: locale as string } })}>
+                                <Form {...disable.form()}>
                                     {({ processing }) => (
                                         <Button
                                             variant="destructive"
@@ -187,6 +197,7 @@ export default function Security({
                                 recoveryCodesList={recoveryCodesList}
                                 fetchRecoveryCodes={fetchRecoveryCodes}
                                 errors={errors}
+                                regenerateRoute={regenerateRecoveryCodes}
                             />
                         </div>
                     ) : (
@@ -207,7 +218,7 @@ export default function Security({
                                     </Button>
                                 ) : (
                                     <Form
-                                        {...enable.form({ query: { _auth_context: 'admin', _locale: locale as string } })}
+                                        {...enable.form()}
                                         onSuccess={() => {
                                             setTimeout(
                                                 () => setShowSetupModal(true),
@@ -240,6 +251,7 @@ export default function Security({
                         clearErrors={clearErrors}
                         fetchSetupData={fetchSetupData}
                         errors={errors}
+                        confirmRoute={confirm}
                     />
                 </div>
             )}

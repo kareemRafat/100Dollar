@@ -6,7 +6,7 @@ test('profile page is displayed', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->get(route('admin.settings.profile.edit'));
 
     $response->assertOk();
@@ -16,10 +16,13 @@ test('profile information can be updated', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->patch(route('admin.settings.profile.update'), [
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone' => '+201234567890',
+            'country' => 'Egypt',
+            'nationality' => 'Egyptian',
         ]);
 
     $response
@@ -37,10 +40,13 @@ test('email verification status is unchanged when the email address is unchanged
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->patch(route('admin.settings.profile.update'), [
             'name' => 'Test User',
             'email' => $user->email,
+            'phone' => '+201234567890',
+            'country' => 'Egypt',
+            'nationality' => 'Egyptian',
         ]);
 
     $response
@@ -54,16 +60,16 @@ test('user can delete their account', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->delete(route('admin.settings.profile.destroy'), [
             'password' => 'password',
         ]);
 
     $response
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('app.home'));
+        ->assertRedirect(route('admin.login'));
 
-    $this->assertGuest();
+    $this->assertGuest('admin');
     expect($user->fresh())->toBeNull();
 });
 
@@ -71,7 +77,7 @@ test('correct password must be provided to delete account', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->from(route('admin.settings.profile.edit'))
         ->delete(route('admin.settings.profile.destroy'), [
             'password' => 'wrong-password',

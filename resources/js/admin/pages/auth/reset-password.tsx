@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { update } from '@/routes/password';
+import { update } from '@/routes/admin/password';
 
 type Props = {
     token: string;
@@ -23,7 +23,6 @@ export default function ResetPassword({ token, email }: Props) {
             >
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
-                        <input type="hidden" name="_auth_context" value="admin" />
                         <input type="hidden" name="token" value={token} />
 
                         <div className="grid gap-2">

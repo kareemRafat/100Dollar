@@ -29,7 +29,6 @@ export default function Register({ canLogin }: Props) {
         password: '',
         password_confirmation: '',
         terms: false,
-        _auth_context: 'app',
         _locale: locale,
     });
 

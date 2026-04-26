@@ -4,12 +4,8 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 
-beforeEach(function () {
-    $this->withoutMiddleware();
-});
-
 test('app login screen can be rendered', function () {
-    $this->get(route('login'))
+    $this->followingRedirects()->get(route('login'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->component('app/pages/auth/login'));
 });
@@ -26,36 +22,12 @@ test('users can authenticate using the app login screen', function () {
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'password',
-        '_auth_context' => 'app',
+        '_locale' => app()->getLocale(),
     ]);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('app.home', absolute: false));
-});
-
-test('admins can authenticate using the admin login screen', function () {
-    $admin = User::factory()->admin()->create();
-
-    $response = $this->post(route('login.store'), [
-        'email' => $admin->email,
-        'password' => 'password',
-        '_auth_context' => 'admin',
-    ]);
-
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('admin.dashboard', absolute: false));
-});
-
-test('standard users can not authenticate through the admin login screen', function () {
-    $user = User::factory()->create();
-
-    $this->from(route('admin.login'))->post(route('login.store'), [
-        'email' => $user->email,
-        'password' => 'password',
-        '_auth_context' => 'admin',
-    ])->assertRedirect(route('admin.login'));
-
-    $this->assertGuest();
+    $this->assertAuthenticatedAs($user, 'web');
+    $this->assertGuest('admin');
+    $response->assertRedirect(localizedUrl(route('app.home', absolute: false)));
 });
 
 test('users with two factor enabled are redirected to two factor challenge', function () {
@@ -77,12 +49,12 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $response = $this->post(route('login'), [
         'email' => $user->email,
         'password' => 'password',
-        '_auth_context' => 'app',
+        '_locale' => app()->getLocale(),
     ]);
 
     $response->assertRedirect(route('two-factor.login'));
     $response->assertSessionHas('login.id', $user->id);
-    $this->assertGuest();
+    $this->assertGuest('web');
 });
 
 test('users can not authenticate with invalid password', function () {
@@ -91,32 +63,34 @@ test('users can not authenticate with invalid password', function () {
     $this->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'wrong-password',
-        '_auth_context' => 'app',
+        '_locale' => app()->getLocale(),
     ]);
 
-    $this->assertGuest();
+    $this->assertGuest('web');
 });
 
 test('users can logout to the app login page', function () {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)
-        ->from(route('app.home'))
-        ->post(route('logout'), ['_auth_context' => 'app']);
+    $response = $this->actingAs($user, 'web')
+        ->from(localizedUrl(route('app.home', absolute: false)))
+        ->post(route('logout'), ['_locale' => app()->getLocale()]);
 
-    $this->assertGuest();
-    $response->assertRedirect(route('login'));
+    $this->assertGuest('web');
+    $response->assertRedirect(localizedUrl(route('login', absolute: false)));
 });
 
-test('admins can logout to the admin login page', function () {
+test('app logout clears only the web guard session', function () {
+    $user = User::factory()->create();
     $admin = User::factory()->admin()->create();
 
-    $response = $this->actingAs($admin)
-        ->from(route('admin.dashboard'))
-        ->post(route('logout'), ['_auth_context' => 'admin']);
+    $response = $this->actingAs($user, 'web')
+        ->actingAs($admin, 'admin')
+        ->post(route('logout'), ['_locale' => app()->getLocale()]);
 
-    $this->assertGuest();
-    $response->assertRedirect(route('admin.login'));
+    $response->assertRedirect(localizedUrl(route('login', absolute: false)));
+    $this->assertGuest('web');
+    $this->assertAuthenticatedAs($admin, 'admin');
 });
 
 test('users are rate limited', function () {
@@ -126,15 +100,15 @@ test('users are rate limited', function () {
         $this->from(route('login'))->post(route('login.store'), [
             'email' => $user->email,
             'password' => 'wrong-password',
-            '_auth_context' => 'app',
+            '_locale' => app()->getLocale(),
         ]);
     }
 
-    $response = $this->post(route('login.store'), [
+    $response = $this->from(route('login'))->post(route('login.store'), [
         'email' => $user->email,
         'password' => 'wrong-password',
-        '_auth_context' => 'app',
+        '_locale' => app()->getLocale(),
     ]);
 
-    expect($response->getStatusCode())->toBe(429);
+    $response->assertTooManyRequests();
 });

@@ -15,11 +15,11 @@ test('security page is displayed', function () {
 
     $user = User::factory()->admin()->create();
 
-    $this->actingAs($user)
+    $this->actingAs($user, 'admin')
         ->withSession(['auth.password_confirmed_at' => time()])
         ->get(route('admin.settings.security.edit'))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('admin/settings/security')
+            ->component('admin/pages/settings/security')
             ->where('canManageTwoFactor', true)
             ->where('twoFactorEnabled', false),
         );
@@ -35,10 +35,10 @@ test('security page requires password confirmation when enabled', function () {
         'confirmPassword' => true,
     ]);
 
-    $response = $this->actingAs($user)
+    $response = $this->actingAs($user, 'admin')
         ->get(route('admin.settings.security.edit'));
 
-    $response->assertRedirect(route('password.confirm'));
+    $response->assertRedirect(route('admin.password.confirm'));
 });
 
 test('security page does not require password confirmation when disabled', function () {
@@ -51,11 +51,11 @@ test('security page does not require password confirmation when disabled', funct
         'confirmPassword' => false,
     ]);
 
-    $this->actingAs($user)
+    $this->actingAs($user, 'admin')
         ->get(route('admin.settings.security.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('admin/settings/security'),
+            ->component('admin/pages/settings/security'),
         );
 });
 
@@ -66,11 +66,11 @@ test('security page renders without two factor when feature is disabled', functi
 
     $user = User::factory()->admin()->create();
 
-    $this->actingAs($user)
+    $this->actingAs($user, 'admin')
         ->get(route('admin.settings.security.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('admin/settings/security')
+            ->component('admin/pages/settings/security')
             ->where('canManageTwoFactor', false)
             ->missing('twoFactorEnabled')
             ->missing('requiresConfirmation'),
@@ -81,7 +81,7 @@ test('password can be updated', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->from(route('admin.settings.security.edit'))
         ->put(route('admin.settings.password.update'), [
             'current_password' => 'password',
@@ -100,7 +100,7 @@ test('correct password must be provided to update password', function () {
     $user = User::factory()->admin()->create();
 
     $response = $this
-        ->actingAs($user)
+        ->actingAs($user, 'admin')
         ->from(route('admin.settings.security.edit'))
         ->put(route('admin.settings.password.update'), [
             'current_password' => 'wrong-password',

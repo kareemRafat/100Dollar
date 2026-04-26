@@ -15,19 +15,10 @@ test('email verification screen can be rendered', function () {
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
+        ->followingRedirects()
         ->get(route('verification.notice'))
         ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('app/auth/verify-email'));
-});
-
-test('admin email verification screen can be rendered', function () {
-    $admin = User::factory()->admin()->unverified()->create();
-
-    $this->actingAs($admin)
-        ->withSession(['auth_context' => 'admin'])
-        ->get(route('verification.notice'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('admin/auth/verify-email'));
+        ->assertInertia(fn (Assert $page) => $page->component('app/pages/auth/verify-email'));
 });
 
 test('user email can be verified', function () {
@@ -45,25 +36,7 @@ test('user email can be verified', function () {
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(route('app.home', absolute: false).'?verified=1');
-});
-
-test('admin email can be verified', function () {
-    $admin = User::factory()->admin()->unverified()->create();
-
-    Event::fake();
-
-    $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
-        now()->addMinutes(60),
-        ['id' => $admin->id, 'hash' => sha1($admin->email)],
-    );
-
-    $response = $this->actingAs($admin)->get($verificationUrl);
-
-    Event::assertDispatched(Verified::class);
-    expect($admin->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(route('admin.dashboard', absolute: false).'?verified=1');
+    $response->assertRedirect(localizedUrl(route('app.home', absolute: false).'?verified=1'));
 });
 
 test('email is not verified with invalid hash', function () {
@@ -123,7 +96,7 @@ test('already verified user visiting verification link is redirected without fir
     );
 
     $this->actingAs($user)->get($verificationUrl)
-        ->assertRedirect(route('app.home', absolute: false).'?verified=1');
+        ->assertRedirect(localizedUrl(route('app.home', absolute: false).'?verified=1'));
 
     Event::assertNotDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();

@@ -23,7 +23,6 @@ export default function TwoFactorChallenge() {
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
         code: '',
         recovery_code: '',
-        _auth_context: 'app',
         _locale: locale as string,
     });
 
@@ -139,4 +138,3 @@ export default function TwoFactorChallenge() {
         </AuthLayout>
     );
 }
-

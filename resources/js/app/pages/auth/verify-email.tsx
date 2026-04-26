@@ -33,11 +33,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                 <Form {...send.form()} className="space-y-4">
                     {({ processing }) => (
                         <>
-                            <input
-                                type="hidden"
-                                name="_auth_context"
-                                value="app"
-                            />
+                            <input type="hidden" name="_locale" value={locale as string} />
 
                             <Button className="h-12 w-full text-lg font-bold" disabled={processing}>
                                 <span>{__('messages.verify_email.resend_button')}</span>
@@ -56,7 +52,6 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                     method="post"
                                     as="button"
                                     data={{
-                                        _auth_context: 'app',
                                         _locale: locale,
                                     }}
                                     className="text-sm font-bold text-primary hover:underline"

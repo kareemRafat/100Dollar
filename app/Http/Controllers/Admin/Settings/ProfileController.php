@@ -50,13 +50,13 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        Auth::logout();
+        Auth::guard('admin')->logout();
 
         $user->delete();
 
-        $request->session()->invalidate();
+        $request->session()->regenerate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('app.home');
+        return redirect()->route('admin.login');
     }
 }

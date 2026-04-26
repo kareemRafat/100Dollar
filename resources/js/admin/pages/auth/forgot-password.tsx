@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { login } from '@/routes/admin';
-import { email } from '@/routes/password';
+import { email } from '@/routes/admin/password';
 
 export default function ForgotPassword({ status }: { status?: string }) {
     return (
@@ -24,12 +24,6 @@ export default function ForgotPassword({ status }: { status?: string }) {
                 <Form {...email.form()}>
                     {({ processing, errors }) => (
                         <>
-                            <input
-                                type="hidden"
-                                name="_auth_context"
-                                value="admin"
-                            />
-
                             <div className="grid gap-2">
                                 <Label htmlFor="email">Email address</Label>
                                 <Input

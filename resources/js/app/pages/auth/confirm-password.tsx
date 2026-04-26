@@ -25,7 +25,6 @@ export default function ConfirmPassword() {
             <Form {...store.store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
                     <div className="space-y-6">
-                        <input type="hidden" name="_auth_context" value="app" />
                         <input type="hidden" name="_locale" value={locale as string} />
 
                         <div className="grid gap-2">

@@ -35,6 +35,18 @@ At the end of this migration:
 
 Prepare the configuration and architecture decisions before changing behavior.
 
+### Status
+
+- [x] Add an `admin` session guard in `config/auth.php`
+- [x] Decide whether `admin` uses the same `users` provider or a dedicated provider pointing to the same model
+- [x] Keep `web` as the default App guard
+- [x] Document the intended route ownership:
+  - App auth routes belong to `web`
+  - Admin auth routes belong to `admin`
+- [x] Decide final behavior for wrong-role access:
+  - keep `403` as the enforced backend behavior until route cleanup
+- [x] Confirm ownership of `is_active` as an admin-only account status field
+
 ### Tasks
 
 - Add an `admin` session guard in `config/auth.php`
@@ -60,6 +72,14 @@ Prepare the configuration and architecture decisions before changing behavior.
 
 Fix the current auth boundary issues before or during the guard split.
 
+### Status
+
+- [x] Remove `is_active` from App profile update validation
+- [x] Remove App UI controls that allow users to edit `is_active`
+- [x] Enforce `is_active = true` during authentication
+- [x] Add middleware to block or log out inactive users for both guards
+- [x] Review any other user-editable fields that affect authorization or account state
+
 ### Tasks
 
 - Remove `is_active` from App profile update validation
@@ -79,6 +99,18 @@ Fix the current auth boundary issues before or during the guard split.
 ### Objective
 
 Create the new guard without fully switching all admin routes at once.
+
+### Status
+
+- [x] Add `admin` guard definition in `config/auth.php`
+- [x] Decide session cookie behavior:
+  - shared session cookie with separate guard state
+- [x] Update admin route protection from generic `auth` to `auth:admin`
+- [x] Review guest redirects in `bootstrap/app.php` so unauthenticated admin requests go to `admin.login`
+- [x] Review logout behavior so admin logout affects the `admin` guard cleanly
+- [x] Add targeted tests using:
+  - `assertAuthenticatedAs($user, 'admin')`
+  - `assertGuest('admin')`
 
 ### Tasks
 
@@ -105,6 +137,16 @@ Create the new guard without fully switching all admin routes at once.
 
 Move admin login off the shared context-switching model.
 
+### Status
+
+- [x] Replace `_auth_context = admin` login behavior with explicit `admin` guard authentication
+- [x] Create or refactor an admin login controller/action dedicated to the `admin` guard
+- [x] Restrict admin login to `role = admin`
+- [x] Enforce `is_active = true` for admin login
+- [x] Review remember-me behavior under the `admin` guard
+- [x] Remove any admin login dependency on `AuthContext`
+- [x] Update admin login page to post to the new admin-auth endpoint
+
 ### Tasks
 
 - Replace `_auth_context = admin` login behavior with explicit `admin` guard authentication
@@ -127,6 +169,14 @@ Move admin login off the shared context-switching model.
 
 Make admin session handling explicit and independent.
 
+### Status
+
+- [x] Create guard-aware admin logout handling
+- [x] Ensure admin logout only targets the intended guard behavior
+- [x] Verify App logout still behaves correctly for `web`
+- [x] Remove shared logout branching that depends on request context when possible
+- [x] Simplify guest redirect logic to use route area plus guard behavior rather than session context
+
 ### Tasks
 
 - Create guard-aware admin logout handling
@@ -146,6 +196,16 @@ Make admin session handling explicit and independent.
 ### Objective
 
 Stop sending admin password reset behavior through the shared app-centered flow.
+
+### Status
+
+- [x] Create admin-specific forgot-password entry point
+- [x] Create admin-specific reset-password display flow
+- [x] Ensure admin reset redirects return to `admin.login`
+- [x] Ensure admin reset pages remain non-localized
+- [x] Review whether password broker can remain shared or should be separated logically
+  Decision: keep the shared broker for now, but enforce `role = admin` before admin reset requests and submissions
+- [x] Remove reliance on `_auth_context` for reset-password behavior
 
 ### Tasks
 
@@ -167,6 +227,14 @@ Stop sending admin password reset behavior through the shared app-centered flow.
 
 Make password confirmation and security-sensitive admin actions fully guard-aware.
 
+### Status
+
+- [x] Replace context-driven password confirmation logic with admin-guard-aware logic
+- [x] Ensure admin confirmation pages do not fall back to localized URLs
+- [x] Review `password.confirm` middleware behavior for both areas
+- [x] Review security settings routes under `auth:admin`
+- [x] Verify admin two-factor settings continue to work correctly after guard separation
+
 ### Tasks
 
 - Replace context-driven password confirmation logic with admin-guard-aware logic
@@ -185,6 +253,22 @@ Make password confirmation and security-sensitive admin actions fully guard-awar
 ### Objective
 
 Decide how shared Fortify features should behave once guards are split.
+
+### Status
+
+- [x] Decide whether App continues to use Fortify for:
+  - registration
+  - password reset
+  - email verification
+  - two-factor authentication
+  Decision: App continues to use Fortify-backed `web` flows for these features
+- [x] Decide whether Admin should:
+  - keep using Fortify with careful guard-specific integration
+  - or move selected flows to explicit admin controllers
+  Decision: Admin now uses explicit guard-owned controllers for login, logout, password reset, password confirmation, email verification, and two-factor challenge / management
+- [x] Verify email verification redirects are correct for both areas
+- [x] Verify two-factor challenge flow is correct for both guards
+- [x] Ensure admin verification pages remain non-localized
 
 ### Tasks
 
@@ -211,6 +295,17 @@ Decide how shared Fortify features should behave once guards are split.
 
 Reduce or remove the old context-switching layer.
 
+### Status
+
+- [x] Identify all usages of:
+  - `AuthContext`
+  - `_auth_context`
+  - session `auth_context`
+  - role-aware response classes that branch on request context
+- [x] Remove usages no longer needed after guard separation
+- [x] Keep only the minimum logic required for harmless UI decisions, if any
+- [x] Refactor redirect/response classes to be guard-aware or area-specific
+
 ### Tasks
 
 - Identify all usages of:
@@ -233,6 +328,16 @@ Reduce or remove the old context-switching layer.
 
 Make the routing structure reflect the new architecture clearly.
 
+### Status
+
+- [x] Review `routes/web.php` for App-only auth ownership
+- [x] Review `routes/admin.php` for Admin-only auth ownership
+- [x] Ensure admin routes remain non-localized
+- [x] Ensure App auth routes remain compatible with localized URLs
+- [x] Review `redirectGuestsTo` behavior in `bootstrap/app.php`
+- [x] Review role middleware usage after guards are introduced
+- [x] Remove redundant role checks where guard restrictions already make intent explicit
+
 ### Tasks
 
 - Review `routes/web.php` for App-only auth ownership
@@ -254,6 +359,19 @@ Make the routing structure reflect the new architecture clearly.
 ### Objective
 
 Make the auth test suite reflect the real architecture.
+
+### Status
+
+- [x] Remove blanket `withoutMiddleware()` from auth tests
+- [ ] Fix route expectations for localized App auth pages
+- [x] Fix component expectations so they match real Inertia component paths
+- [x] Add tests for `web` guard login/logout
+- [x] Add tests for `admin` guard login/logout
+- [x] Add tests for wrong-role access behavior
+- [x] Add tests for inactive user denial
+- [x] Add tests for admin password reset
+- [x] Add tests for admin password confirmation
+- [x] Add tests for admin email verification behavior if retained
 
 ### Tasks
 
@@ -284,6 +402,15 @@ Make the auth test suite reflect the real architecture.
 ### Objective
 
 Remove leftovers from the old design and stabilize the new one.
+
+### Status
+
+- [x] Remove dead code tied to shared context auth
+- [x] Remove unused response classes
+- [x] Remove unused request fields from frontend forms
+- [x] Review naming for clarity
+- [x] Run focused auth and settings test suites
+- [x] Run formatting for modified PHP files with Pint
 
 ### Tasks
 

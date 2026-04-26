@@ -10,6 +10,7 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
+import { store } from '@/routes/admin/two-factor';
 
 export default function TwoFactorChallenge() {
     const [showRecoveryInput, setShowRecoveryInput] = useState<boolean>(false);
@@ -17,7 +18,6 @@ export default function TwoFactorChallenge() {
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
         code: '',
         recovery_code: '',
-        _auth_context: 'admin',
     });
 
     const authConfigContent = useMemo<{
@@ -54,7 +54,7 @@ export default function TwoFactorChallenge() {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/two-factor-challenge', {
+        post(store.url(), {
             onFinish: () => {
                 if (!showRecoveryInput) {
                     reset('code');
@@ -137,4 +137,3 @@ export default function TwoFactorChallenge() {
         </>
     );
 }
-

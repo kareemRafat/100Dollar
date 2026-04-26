@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
-use App\Support\Auth\AuthContext;
 use Carbon\CarbonImmutable;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
-        \Inertia\Inertia::handleExceptionsUsing(function (\Inertia\ExceptionResponse $response) {
+        Inertia::handleExceptionsUsing(function (ExceptionResponse $response) {
             if (app()->isProduction() && in_array($response->statusCode(), [403, 404, 500, 503])) {
                 return $response->render('app/pages/errors/error', [
                     'status' => $response->statusCode(),
@@ -58,13 +61,29 @@ class AppServiceProvider extends ServiceProvider
         );
 
         ResetPassword::createUrlUsing(function (object $user, string $token): string {
-            $context = app(AuthContext::class)->contextForRole($user->role ?? null);
+            $route = ($user->role ?? null) === 'admin'
+                ? 'admin.password.reset'
+                : 'password.reset';
 
-            return route('password.reset', [
+            return route($route, [
                 'token' => $token,
                 'email' => $user->getEmailForPasswordReset(),
-                'auth_context' => $context,
             ]);
+        });
+
+        VerifyEmail::createUrlUsing(function (object $user): string {
+            $route = ($user->role ?? null) === 'admin'
+                ? 'admin.verification.verify'
+                : 'verification.verify';
+
+            return URL::temporarySignedRoute(
+                $route,
+                now()->addMinutes(config('auth.verification.expire', 60)),
+                [
+                    'id' => $user->getKey(),
+                    'hash' => sha1($user->getEmailForVerification()),
+                ],
+            );
         });
     }
 }

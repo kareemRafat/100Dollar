@@ -1,23 +1,28 @@
-import { Form, usePage } from '@inertiajs/react';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Form, usePage } from '@inertiajs/react';
 import { Check, Copy, Eye, EyeOff, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
 import AlertError from '@/components/alert-error';
 import { Button } from '@/components/ui/button';
 import { useClipboard } from '@/hooks/use-clipboard';
-import { recoveryCodes } from '@/routes/two-factor';
 import { cn } from '@/lib/utils';
+import { regenerateRecoveryCodes } from '@/routes/two-factor';
+import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
 
 type Props = {
     recoveryCodesList: string[];
     fetchRecoveryCodes: () => Promise<void>;
     errors: string[];
+    regenerateRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+        form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
+    };
 };
 
 export default function TwoFactorRecoveryCodes({
     recoveryCodesList,
     fetchRecoveryCodes,
     errors,
+    regenerateRoute,
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props;
@@ -56,7 +61,7 @@ export default function TwoFactorRecoveryCodes({
                 </Button>
 
                 <Form
-                    {...recoveryCodes.form()}
+                    {...(regenerateRoute ?? regenerateRecoveryCodes).form()}
                     onSuccess={() => fetchRecoveryCodes()}
                 >
                     {({ processing }) => (

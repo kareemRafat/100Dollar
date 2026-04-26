@@ -4,15 +4,14 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
-use App\Http\Responses\RoleAwareLoginResponse;
-use App\Http\Responses\RoleAwareLogoutResponse;
-use App\Http\Responses\RoleAwarePasswordConfirmedResponse;
-use App\Http\Responses\RoleAwarePasswordResetResponse;
-use App\Http\Responses\RoleAwareRegisterResponse;
-use App\Http\Responses\RoleAwareTwoFactorLoginResponse;
-use App\Http\Responses\RoleAwareVerifyEmailResponse;
+use App\Http\Responses\AppLoginResponse;
+use App\Http\Responses\AppLogoutResponse;
+use App\Http\Responses\AppPasswordConfirmedResponse;
+use App\Http\Responses\AppPasswordResetResponse;
+use App\Http\Responses\AppRegisterResponse;
+use App\Http\Responses\AppTwoFactorLoginResponse;
+use App\Http\Responses\AppVerifyEmailResponse;
 use App\Models\User;
-use App\Support\Auth\AuthContext;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -37,13 +36,13 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(LoginResponseContract::class, RoleAwareLoginResponse::class);
-        $this->app->singleton(LogoutResponseContract::class, RoleAwareLogoutResponse::class);
-        $this->app->singleton(RegisterResponseContract::class, RoleAwareRegisterResponse::class);
-        $this->app->singleton(TwoFactorLoginResponseContract::class, RoleAwareTwoFactorLoginResponse::class);
-        $this->app->singleton(VerifyEmailResponseContract::class, RoleAwareVerifyEmailResponse::class);
-        $this->app->singleton(PasswordConfirmedResponseContract::class, RoleAwarePasswordConfirmedResponse::class);
-        $this->app->bind(PasswordResetResponseContract::class, fn ($app, array $parameters) => new RoleAwarePasswordResetResponse($parameters['status']));
+        $this->app->singleton(LoginResponseContract::class, AppLoginResponse::class);
+        $this->app->singleton(LogoutResponseContract::class, AppLogoutResponse::class);
+        $this->app->singleton(RegisterResponseContract::class, AppRegisterResponse::class);
+        $this->app->singleton(TwoFactorLoginResponseContract::class, AppTwoFactorLoginResponse::class);
+        $this->app->singleton(VerifyEmailResponseContract::class, AppVerifyEmailResponse::class);
+        $this->app->singleton(PasswordConfirmedResponseContract::class, AppPasswordConfirmedResponse::class);
+        $this->app->bind(PasswordResetResponseContract::class, fn ($app, array $parameters) => new AppPasswordResetResponse($parameters['status']));
     }
 
     /**
@@ -72,17 +71,16 @@ class FortifyServiceProvider extends ServiceProvider
     private function configureViews(): void
     {
         Fortify::loginView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'login'),
+            'app/pages/auth/login',
             [
                 'canResetPassword' => Features::enabled(Features::resetPasswords()),
-                'canRegister' => app(AuthContext::class)->remember($request) === AuthContext::APP
-                    && Features::enabled(Features::registration()),
+                'canRegister' => Features::enabled(Features::registration()),
                 'status' => $request->session()->get('status'),
             ],
         ));
 
         Fortify::resetPasswordView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'reset-password'),
+            'app/pages/auth/reset-password',
             [
                 'email' => $request->email,
                 'token' => $request->route('token'),
@@ -90,32 +88,32 @@ class FortifyServiceProvider extends ServiceProvider
         ));
 
         Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'forgot-password'),
+            'app/pages/auth/forgot-password',
             [
                 'status' => $request->session()->get('status'),
             ],
         ));
 
         Fortify::verifyEmailView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'verify-email'),
+            'app/pages/auth/verify-email',
             [
                 'status' => $request->session()->get('status'),
             ],
         ));
 
         Fortify::registerView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'register'),
+            'app/pages/auth/register',
             [
                 'canLogin' => true,
             ],
         ));
 
         Fortify::twoFactorChallengeView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'two-factor-challenge'),
+            'app/pages/auth/two-factor-challenge',
         ));
 
         Fortify::confirmPasswordView(fn (Request $request) => Inertia::render(
-            app(AuthContext::class)->view($request, 'confirm-password'),
+            'app/pages/auth/confirm-password',
         ));
     }
 
@@ -125,17 +123,13 @@ class FortifyServiceProvider extends ServiceProvider
     private function configureAuthentication(): void
     {
         Fortify::authenticateUsing(function (Request $request) {
-            $context = app(AuthContext::class)->remember($request);
-
             $user = User::query()
                 ->where('email', $request->string('email')->toString())
+                ->where('role', 'user')
+                ->where('is_active', true)
                 ->first();
 
             if ($user === null) {
-                return null;
-            }
-
-            if ($user->role !== app(AuthContext::class)->roleForContext($context)) {
                 return null;
             }
 

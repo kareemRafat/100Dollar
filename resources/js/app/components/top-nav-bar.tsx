@@ -204,7 +204,6 @@ export function TopNavBar({ activeRoute }: Props) {
                                                         method="post"
                                                         as="button"
                                                         data={{
-                                                            _auth_context: 'app',
                                                             _locale: locale,
                                                         }}
                                                     >
@@ -458,7 +457,6 @@ export function TopNavBar({ activeRoute }: Props) {
                                             method="post"
                                             as="button"
                                             data={{
-                                                _auth_context: 'app',
                                                 _locale: locale,
                                             }}
                                             className="w-full"
