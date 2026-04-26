@@ -58,12 +58,16 @@ function TwoFactorSetupStep({
     buttonText,
     onNextStep,
     errors,
+    labels,
 }: {
     qrCodeSvg: string | null;
     manualSetupKey: string | null;
     buttonText: string;
     onNextStep: () => void;
     errors: string[];
+    labels?: {
+        setup_manual?: string;
+    };
 }) {
     const { resolvedAppearance } = useAppearance();
     const [copiedText, copy] = useClipboard();
@@ -108,7 +112,7 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1 text-xs font-bold text-on-surface-variant">
-                            {__('messages.two_factor.setup_manual')}
+                            {labels?.setup_manual ?? __('messages.two_factor.setup_manual')}
                         </span>
                     </div>
 
@@ -147,11 +151,16 @@ function TwoFactorVerificationStep({
     onClose,
     onBack,
     confirmRoute,
+    labels,
 }: {
     onClose: () => void;
     onBack: () => void;
     confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
+    };
+    labels?: {
+        setup_back?: string;
+        setup_confirm?: string;
     };
 }) {
     const { __ } = useLang();
@@ -219,7 +228,7 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                {__('messages.two_factor.setup_back')}
+                                {labels?.setup_back ?? __('messages.two_factor.setup_back')}
                             </Button>
                             <Button
                                 type="submit"
@@ -228,7 +237,7 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                {__('messages.two_factor.setup_confirm')}
+                                {labels?.setup_confirm ?? __('messages.two_factor.setup_confirm')}
                             </Button>
                         </div>
                     </div>
@@ -252,6 +261,19 @@ type Props = {
     confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
     };
+    labels?: {
+        enabled_title?: string;
+        enabled_desc?: string;
+        verify_title?: string;
+        verify_desc?: string;
+        setup_title?: string;
+        setup_desc?: string;
+        button_close?: string;
+        button_continue?: string;
+        setup_manual?: string;
+        setup_back?: string;
+        setup_confirm?: string;
+    };
 };
 
 export default function TwoFactorSetupModal({
@@ -266,6 +288,7 @@ export default function TwoFactorSetupModal({
     fetchSetupData,
     errors,
     confirmRoute,
+    labels,
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props;
@@ -280,26 +303,26 @@ export default function TwoFactorSetupModal({
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: __('messages.two_factor.setup_enabled_title'),
-                description: __('messages.two_factor.setup_enabled_desc'),
-                buttonText: __('messages.two_factor.setup_close'),
+                title: labels?.enabled_title ?? __('messages.two_factor.setup_enabled_title'),
+                description: labels?.enabled_desc ?? __('messages.two_factor.setup_enabled_desc'),
+                buttonText: labels?.button_close ?? __('messages.two_factor.setup_close'),
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: __('messages.two_factor.setup_verify_title'),
-                description: __('messages.two_factor.setup_verify_desc'),
-                buttonText: __('messages.two_factor.setup_continue'),
+                title: labels?.verify_title ?? __('messages.two_factor.setup_verify_title'),
+                description: labels?.verify_desc ?? __('messages.two_factor.setup_verify_desc'),
+                buttonText: labels?.button_continue ?? __('messages.two_factor.setup_continue'),
             };
         }
 
         return {
-            title: __('messages.two_factor.setup_title'),
-            description: __('messages.two_factor.setup_desc'),
-            buttonText: __('messages.two_factor.setup_continue'),
+            title: labels?.setup_title ?? __('messages.two_factor.setup_title'),
+            description: labels?.setup_desc ?? __('messages.two_factor.setup_desc'),
+            buttonText: labels?.button_continue ?? __('messages.two_factor.setup_continue'),
         };
-    }, [twoFactorEnabled, showVerificationStep, __]);
+    }, [twoFactorEnabled, showVerificationStep, __, labels]);
 
     const resetModalState = useCallback(() => {
         setShowVerificationStep(false);
@@ -359,6 +382,7 @@ export default function TwoFactorSetupModal({
                             onClose={handleClose}
                             onBack={() => setShowVerificationStep(false)}
                             confirmRoute={confirmRoute}
+                            labels={labels}
                         />
                     ) : (
                         <TwoFactorSetupStep
@@ -367,6 +391,7 @@ export default function TwoFactorSetupModal({
                             buttonText={modalConfig.buttonText}
                             onNextStep={handleModalNextStep}
                             errors={errors}
+                            labels={labels}
                         />
                     )}
                 </div>

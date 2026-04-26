@@ -364,6 +364,7 @@ return [
         'continue_button' => 'متابعة',
         'toggle_auth_code' => 'استخدام رمز مصادقة بدلاً من ذلك',
         'toggle_recovery_code' => 'استخدام رمز استرداد بدلاً من ذلك',
+        'recovery_code_placeholder' => 'أدخل رمز الاسترداد هنا',
     ],
 
     'verify_email' => [

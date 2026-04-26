@@ -198,6 +198,12 @@ export default function Security({
                                 fetchRecoveryCodes={fetchRecoveryCodes}
                                 errors={errors}
                                 regenerateRoute={regenerateRecoveryCodes}
+                                labels={{
+                                    view_codes: 'عرض رموز الاسترداد',
+                                    hide_codes: 'إخفاء رموز الاسترداد',
+                                    regenerate_codes: 'إعادة توليد الرموز',
+                                    recovery_codes_warning: 'يمكن استخدام كل رمز استرداد مرة واحدة للوصول إلى حسابك وسيتم إزالته بعد الاستخدام. إذا كنت بحاجة إلى المزيد، فانقر فوق إعادة توليد الرموز أعلاه.',
+                                }}
                             />
                         </div>
                     ) : (
@@ -252,6 +258,19 @@ export default function Security({
                         fetchSetupData={fetchSetupData}
                         errors={errors}
                         confirmRoute={confirm}
+                        labels={{
+                            enabled_title: 'تم تمكين المصادقة الثنائية',
+                            enabled_desc: 'تم تمكين المصادقة الثنائية الآن. امسح رمز QR أو أدخل مفتاح الإعداد في تطبيق المصادقة الخاص بك.',
+                            verify_title: 'التحقق من رمز المصادقة',
+                            verify_desc: 'أدخل الرمز المكون من 6 أرقام من تطبيق المصادقة الخاص بك',
+                            setup_title: 'تمكين المصادقة الثنائية',
+                            setup_desc: 'لإكمال تمكين المصادقة الثنائية، امسح رمز QR أو أدخل مفتاح الإعداد في تطبيق المصادقة الخاص بك',
+                            button_close: 'إغلاق',
+                            button_continue: 'متابعة',
+                            setup_manual: 'أو، أدخل الرمز يدوياً',
+                            setup_back: 'رجوع',
+                            setup_confirm: 'تأكيد',
+                        }}
                     />
                 </div>
             )}

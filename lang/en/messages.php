@@ -332,6 +332,7 @@ return [
         'continue_button' => 'Continue',
         'toggle_auth_code' => 'Use an authentication code instead',
         'toggle_recovery_code' => 'Use a recovery code instead',
+        'recovery_code_placeholder' => 'Enter recovery code',
     ],
 
     'verify_email' => [

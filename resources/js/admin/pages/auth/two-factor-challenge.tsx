@@ -10,6 +10,7 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
+import { cn } from '@/lib/utils';
 import { store } from '@/routes/admin/two-factor';
 
 export default function TwoFactorChallenge() {
@@ -24,21 +25,24 @@ export default function TwoFactorChallenge() {
         title: string;
         description: string;
         toggleText: string;
+        placeholder: string;
     }>(() => {
         if (showRecoveryInput) {
             return {
-                title: 'Recovery code',
+                title: 'رمز الاسترداد',
                 description:
-                    'Please confirm access to your account by entering one of your emergency recovery codes.',
-                toggleText: 'login using an authentication code',
+                    'يرجى تأكيد الوصول إلى حسابك عن طريق إدخال أحد رموز استرداد الطوارئ الخاصة بك.',
+                toggleText: 'استخدام رمز مصادقة بدلاً من ذلك',
+                placeholder: 'أدخل رمز الاسترداد هنا',
             };
         }
 
         return {
-            title: 'Authentication code',
+            title: 'المصادقة الثنائية',
             description:
-                'Enter the authentication code provided by your authenticator application.',
-            toggleText: 'login using a recovery code',
+                'يرجى تأكيد الوصول إلى حسابك عن طريق إدخال رمز المصادقة المقدم من تطبيق المصادقة الخاص بك.',
+            toggleText: 'استخدام رمز استرداد بدلاً من ذلك',
+            placeholder: '••••••',
         };
     }, [showRecoveryInput]);
 
@@ -66,28 +70,38 @@ export default function TwoFactorChallenge() {
     };
 
     return (
-        <>
-            <Head title="Two-factor authentication" />
+        <div dir="rtl">
+            <Head title="المصادقة الثنائية" />
 
             <div className="space-y-6">
+                <div className="space-y-2 text-right">
+                    <h1 className="text-2xl font-bold">
+                        {authConfigContent.title}
+                    </h1>
+                    <p className="text-sm text-muted-foreground">
+                        {authConfigContent.description}
+                    </p>
+                </div>
+
                 <form onSubmit={submit} className="space-y-4">
                     {showRecoveryInput ? (
                         <>
                             <Input
                                 name="recovery_code"
                                 type="text"
-                                placeholder="Enter recovery code"
+                                placeholder={authConfigContent.placeholder}
                                 value={data.recovery_code}
                                 onChange={(e) => setData('recovery_code', e.target.value)}
                                 autoFocus={showRecoveryInput}
                                 required
+                                className="text-right"
                             />
                             <InputError
                                 message={errors.recovery_code}
                             />
                         </>
                     ) : (
-                        <div className="flex flex-col items-center justify-center space-y-3 text-center">
+                        <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
                             <div className="flex w-full items-center justify-center">
                                 <InputOTP
                                     name="code"
@@ -110,7 +124,9 @@ export default function TwoFactorChallenge() {
                                     </InputOTPGroup>
                                 </InputOTP>
                             </div>
-                            <InputError message={errors.code} />
+                            <div dir="rtl" className="w-full">
+                                <InputError message={errors.code} />
+                            </div>
                         </div>
                     )}
 
@@ -119,14 +135,13 @@ export default function TwoFactorChallenge() {
                         className="w-full"
                         disabled={processing}
                     >
-                        Continue
+                        متابعة
                     </Button>
 
                     <div className="text-center text-sm text-muted-foreground">
-                        <span>or you can </span>
                         <button
                             type="button"
-                            className="cursor-pointer text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                            className="cursor-pointer text-primary underline underline-offset-4 transition-colors duration-300 ease-out hover:text-primary/80"
                             onClick={toggleRecoveryMode}
                         >
                             {authConfigContent.toggleText}
@@ -134,6 +149,6 @@ export default function TwoFactorChallenge() {
                     </div>
                 </form>
             </div>
-        </>
+        </div>
     );
 }

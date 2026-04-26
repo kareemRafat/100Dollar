@@ -16,6 +16,12 @@ type Props = {
     regenerateRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
     };
+    labels?: {
+        view_codes?: string;
+        hide_codes?: string;
+        regenerate_codes?: string;
+        recovery_codes_warning?: string;
+    };
 };
 
 export default function TwoFactorRecoveryCodes({
@@ -23,6 +29,7 @@ export default function TwoFactorRecoveryCodes({
     fetchRecoveryCodes,
     errors,
     regenerateRoute,
+    labels,
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props;
@@ -50,12 +57,12 @@ export default function TwoFactorRecoveryCodes({
                     {showRecoveryCodes ? (
                         <>
                             <EyeOff className="size-4" />
-                            {__('messages.two_factor.hide_codes')}
+                            {labels?.hide_codes ?? __('messages.two_factor.hide_codes')}
                         </>
                     ) : (
                         <>
                             <Eye className="size-4" />
-                            {__('messages.two_factor.view_codes')}
+                            {labels?.view_codes ?? __('messages.two_factor.view_codes')}
                         </>
                     )}
                 </Button>
@@ -77,7 +84,7 @@ export default function TwoFactorRecoveryCodes({
                                     'animate-spin': processing,
                                 })}
                             />
-                            {__('messages.two_factor.regenerate_codes')}
+                            {labels?.regenerate_codes ?? __('messages.two_factor.regenerate_codes')}
                         </Button>
                     )}
                 </Form>
@@ -86,7 +93,7 @@ export default function TwoFactorRecoveryCodes({
             {showRecoveryCodes && (
                 <div className="w-full space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
                     <p className={cn("text-xs text-on-surface-variant/70", isRtl ? "text-right" : "text-left")}>
-                        {__('messages.two_factor.recovery_codes_warning')}
+                        {labels?.recovery_codes_warning ?? __('messages.two_factor.recovery_codes_warning')}
                     </p>
 
                     {errors?.length > 0 && <AlertError errors={errors} />}
