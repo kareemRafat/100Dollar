@@ -411,6 +411,31 @@ return [
         'rights_reserved' => 'All rights reserved.',
     ],
 
+    'idea_detail' => [
+        'about_idea' => 'About Idea',
+        'profit_model' => 'Profit Model',
+        'innovative_features' => 'Innovative Project Features',
+        'low_operational_costs' => 'Low Operational Costs',
+        'ease_of_implementation' => 'Ease of Implementation',
+        'high_profit_margin' => 'High Profit Margin',
+        'rapid_scalability' => 'Rapid Scalability',
+        'added_value_services' => 'Added Value Services',
+        'prize_covers' => 'Covers:',
+        'idea_owner' => 'Idea Owner',
+        'share_with_friends' => 'Share with friends',
+    ],
+
+    'comments' => [
+        'title' => 'Comments and Suggestions',
+        'no_comments' => 'No comments yet. Be the first to share!',
+        'add_comment' => 'Add Comment',
+        'placeholder' => 'Share your opinion or constructive suggestion...',
+        'login_first' => 'You must login first to comment',
+        'login_to_comment' => 'Please login to comment...',
+        'rules_hint' => 'Please adhere to participation rules to maintain a positive community.',
+        'show_more' => 'Show more comments',
+    ],
+
     'two_factor' => [
         'setup_title' => 'Enable Two-Factor Authentication',
         'setup_desc' => 'To complete enabling two-factor authentication, scan the QR code or enter the setup key in your authenticator application.',

@@ -1,8 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link, usePage, useForm } from '@inertiajs/react';
+import { Head, Link, usePage, useForm, router, InfiniteScroll } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 import { Idea, User, Paginated } from '@/types';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useRef } from 'react';
 import { PinModal } from '@/app/components/pin-modal';
 import {
     Bell,
@@ -22,7 +22,7 @@ interface Comment {
 }
 
 interface Props {
-    idea: Idea & { votes_count: number };
+    idea: Idea & { votes_count: number, comments_count: number };
     comments: Paginated<Comment>;
     isFollowingIdea: boolean;
     isFollowingOwner: boolean;
@@ -32,8 +32,10 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const { __ } = useLang();
     const { auth } = usePage().props as any;
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
+    const [loginMessage, setLoginMessage] = useState<string | null>(null);
+    const commentsTopRef = useRef<HTMLDivElement>(null);
 
-    const { data, setData, post, processing, reset, errors } = useForm({
+    const { data, setData, processing, reset, errors } = useForm({
         body: '',
     });
 
@@ -49,7 +51,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
     const handleShare = (platform: string) => {
         const url = window.location.href;
-        const text = `Check out this idea: ${idea.title}`;
+        const text = `${__('messages.idea_detail.about_idea')}: ${idea.title}`;
 
         switch (platform) {
             case 'whatsapp':
@@ -69,9 +71,48 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
     const submitComment = (e: FormEvent) => {
         e.preventDefault();
-        post(`/ideas/${idea.id}/comments`, {
+
+        if (!auth.user) {
+            setLoginMessage(__('messages.comments.login_first'));
+            return;
+        }
+
+        if (!data.body.trim() || processing) return;
+
+        const optimisticComment: Comment = {
+            id: Date.now(),
+            user_id: auth.user.id,
+            idea_id: idea.id,
+            body: data.body,
+            likes_count: 0,
+            created_at: new Date().toISOString(),
+            user: auth.user
+        };
+
+        // Scroll to focus on the new comment
+        commentsTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        router.optimistic((props: any) => ({
+            idea: {
+                ...props.idea,
+                comments_count: (props.idea.comments_count || 0) + 1
+            },
+            comments: {
+                ...props.comments,
+                data: [optimisticComment, ...props.comments.data],
+                meta: {
+                    ...props.comments.meta,
+                    total: (props.comments.meta?.total || 0) + 1
+                }
+            }
+        })).post(`/ideas/${idea.id}/comments`, {
+            body: data.body
+        }, {
             preserveScroll: true,
-            onSuccess: () => reset('body'),
+            onSuccess: () => {
+                reset('body');
+                setLoginMessage(null);
+            },
         });
     };
 
@@ -100,7 +141,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                             {idea.title}
                         </h1>
                         <div className="flex items-center gap-3 text-white/90 font-medium">
-                            <span>صاحب الفكرة: {idea.user?.name}</span>
+                            <span>{__('messages.idea_detail.idea_owner')}: {idea.user?.name}</span>
                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
                             <span>{idea.city}، {idea.country}</span>
                         </div>
@@ -108,7 +149,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                 </section>
 
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    {/* Sidebar (Right in RTL) */}
+                    {/* Sidebar */}
                     <aside className="lg:col-span-4 order-1 lg:order-2 space-y-6">
                         {/* Voting Card */}
                         <div className="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10 shadow-[0_32px_48px_-4px_rgba(26,28,27,0.05)]">
@@ -161,7 +202,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                         {/* Social Share */}
                         <div className="bg-surface-container-low rounded-xl p-6">
-                            <p className="text-sm font-bold text-secondary mb-4 text-center font-headline">شارك الفكرة مع أصدقائك</p>
+                            <p className="text-sm font-bold text-secondary mb-4 text-center font-headline">{__('messages.idea_detail.share_with_friends')}</p>
                             <div className="flex justify-between items-center gap-3">
                                 <button
                                     onClick={() => handleShare('whatsapp')}
@@ -193,13 +234,13 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                         </div>
                     </aside>
 
-                    {/* Main Content (Left in RTL) */}
+                    {/* Main Content */}
                     <div className="lg:col-span-8 order-2 lg:order-1 space-y-12">
                         {/* About Section */}
                         <section className="bg-surface-container-lowest p-8 lg:p-12 rounded-xl border border-outline-variant/10 arabic-dynamic-padding">
                             <h2 className="text-2xl font-bold text-secondary mb-6 flex items-center gap-3 font-headline">
                                 <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>lightbulb</span>
-                                حول الفكرة
+                                {__('messages.idea_detail.about_idea')}
                             </h2>
                             <p className="text-secondary/80 leading-relaxed mb-8 text-lg whitespace-pre-wrap">
                                 {idea.description}
@@ -213,42 +254,42 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                     <ul className="space-y-3 text-sm text-secondary/80">
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            ميزات المشروع المبتكرة
+                                            {__('messages.idea_detail.innovative_features')}
                                         </li>
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            تكاليف تشغيلية منخفضة
+                                            {__('messages.idea_detail.low_operational_costs')}
                                         </li>
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            سهولة التنفيذ
+                                            {__('messages.idea_detail.ease_of_implementation')}
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="bg-surface-container-low p-6 rounded-xl">
                                     <h4 className="font-bold text-secondary mb-4 flex items-center gap-2 font-headline">
                                         <span className="material-symbols-outlined text-primary">payments</span>
-                                        نموذج الربح
+                                        {__('messages.idea_detail.profit_model')}
                                     </h4>
                                     <ul className="space-y-3 text-sm text-secondary/80">
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            هامش ربح مرتفع
+                                            {__('messages.idea_detail.high_profit_margin')}
                                         </li>
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            إمكانية التوسع السريع
+                                            {__('messages.idea_detail.rapid_scalability')}
                                         </li>
                                         <li className="flex items-center gap-2">
                                             <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            تقديم خدمات مضافة
+                                            {__('messages.idea_detail.added_value_services')}
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <h3 className="text-xl font-bold text-secondary mb-6 flex items-center gap-3 font-headline">
                                 <span className="material-symbols-outlined text-primary">receipt_long</span>
-                                {__('messages.home.prize_label')} (100 دولار) تغطي:
+                                {__('messages.home.prize_label')} (100 دولار) {__('messages.idea_detail.prize_covers')}
                             </h3>
                             <div className="space-y-4">
                                 <div className="flex items-center justify-between p-4 bg-surface rounded-lg border-r-4 border-primary">
@@ -260,18 +301,44 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                         {/* Engagement Section */}
                         <section className="space-y-8" id="comments">
-                            <div className="flex items-center justify-between mb-8">
-                                <h2 className="text-2xl font-bold text-secondary flex items-center gap-2 font-headline">
-                                    <span className="material-symbols-outlined text-primary">forum</span>
-                                    التعليقات والمقترحات ({comments.meta?.total || 0})
+                            <div className="flex items-center justify-between mb-8 scroll-mt-24" ref={commentsTopRef}>
+                                <h2 className="text-2xl font-bold text-secondary flex items-center gap-3 font-headline">
+                                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>forum</span>
+                                    {__('messages.comments.title')}
+                                    <span className="bg-primary/10 text-primary text-sm py-1 px-3 rounded-full font-bold">
+                                        {idea.comments_count}
+                                    </span>
                                 </h2>
                             </div>
 
                             <div className="bg-surface-container-lowest rounded-2xl border-t-4 border-primary border-x border-b border-outline-variant/20 shadow-sm overflow-hidden">
                                 <div className="p-6 md:p-8 space-y-6">
-                                    {comments.data.length > 0 ? (
-                                        <>
-                                            {comments.data.map((comment, index) => (
+                                    <InfiniteScroll
+                                        data="comments"
+                                        manual
+                                        next={({ loading, fetch, hasMore }) => (
+                                            <div className="mt-8 flex justify-center">
+                                                {hasMore && (
+                                                    <button
+                                                        onClick={() => fetch({ per_page: 5 })}
+                                                        disabled={loading}
+                                                        className="px-4 py-1.5 bg-surface-container-low rounded-lg text-primary text-xs font-bold hover:bg-primary hover:text-white transition-all flex items-center gap-2 disabled:opacity-50 border border-primary/10 shadow-sm cursor-pointer"
+                                                    >
+                                                        {loading ? (
+                                                            <Loader2 className="w-3 h-3 animate-spin" />
+                                                        ) : (
+                                                            <>
+                                                                {__('messages.comments.show_more')} (5)
+                                                                <span className="material-symbols-outlined text-sm">expand_more</span>
+                                                            </>
+                                                        )}
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
+                                    >
+                                        {comments.data.length > 0 ? (
+                                            comments.data.map((comment, index) => (
                                                 <div key={comment.id}>
                                                     <div className="group relative bg-white rounded-xl p-6 border border-outline-variant/40 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                                                         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
@@ -281,7 +348,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                                         <img src={comment.user.avatar} alt={comment.user.name} className="w-full h-full object-cover" />
                                                                     ) : (
                                                                         <div className="w-full h-full bg-surface-container-high flex items-center justify-center font-bold text-secondary">
-                                                                            {comment.user?.name.charAt(0)}
+                                                                            {comment.user?.name?.charAt(0)}
                                                                         </div>
                                                                     )}
                                                                 </div>
@@ -289,7 +356,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                                     <div className="flex items-center gap-2 mb-1">
                                                                         <h4 className="font-bold text-secondary">{comment.user?.name}</h4>
                                                                         {comment.user_id === idea.user_id && (
-                                                                            <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">صاحب الفكرة</span>
+                                                                            <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">{__('messages.idea_detail.idea_owner')}</span>
                                                                         )}
                                                                     </div>
                                                                     <div className="flex items-center gap-2 text-xs text-outline">
@@ -307,46 +374,23 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                         </p>
                                                     </div>
                                                     {index < comments.data.length - 1 && (
-                                                        <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent my-6"></div>
+                                                        <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/30 to-transparent my-4"></div>
                                                     )}
                                                 </div>
-                                            ))}
-
-                                            {comments.meta && comments.meta.last_page > 1 && (
-                                                <div className="mt-8 flex justify-center gap-2">
-                                                    {comments.links.prev && (
-                                                        <Link
-                                                            href={comments.links.prev}
-                                                            preserveScroll
-                                                            className="px-4 py-2 bg-surface-container-low rounded-lg text-primary font-bold hover:bg-primary hover:text-white transition-colors"
-                                                        >
-                                                            السابق
-                                                        </Link>
-                                                    )}
-                                                    {comments.links.next && (
-                                                        <Link
-                                                            href={comments.links.next}
-                                                            preserveScroll
-                                                            className="px-4 py-2 bg-surface-container-low rounded-lg text-primary font-bold hover:bg-primary hover:text-white transition-colors"
-                                                        >
-                                                            التالي
-                                                        </Link>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <div className="text-center py-12 text-outline italic">لا توجد تعليقات بعد. كن أول من يشارك برأيه!</div>
-                                    )}
+                                            ))
+                                        ) : (
+                                            <div className="text-center py-12 text-outline italic">{__('messages.comments.no_comments')}</div>
+                                        )}
+                                    </InfiniteScroll>
                                 </div>
 
-                                {/* Comment Input area at the bottom of the container */}
+                                {/* Comment Input area */}
                                 <div className="bg-surface-container p-6 md:p-8 border-t border-outline-variant/20">
                                     <form onSubmit={submitComment} className="flex gap-4">
                                         <div className="hidden sm:flex w-10 h-10 rounded-full bg-white items-center justify-center border border-outline-variant/20 shrink-0">
                                             {auth.user ? (
                                                 auth.user.avatar ? (
-                                                    <img src={auth.user.avatar} className="w-full h-full rounded-full object-cover" />
+                                                    <img src={auth.user.avatar} className="w-full h-full rounded-full object-cover" alt={auth.user.name} />
                                                 ) : (
                                                     <span className="font-bold text-primary">{auth.user.name.charAt(0)}</span>
                                                 )
@@ -359,23 +403,26 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                 <textarea
                                                     value={data.body}
                                                     onChange={e => setData('body', e.target.value)}
-                                                    className={`w-full bg-white border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 ${errors.body ? 'border-error' : 'border-outline-variant/30'}`}
-                                                    placeholder="شارك برأيك أو مقترحك البنّاء..."
+                                                    onClick={() => !auth.user && setLoginMessage(__('messages.comments.login_first'))}
+                                                    readOnly={!auth.user}
+                                                    className={`w-full bg-white border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 ${errors.body ? 'border-error' : 'border-outline-variant/30'} ${!auth.user ? 'cursor-not-allowed opacity-60' : ''}`}
+                                                    placeholder={auth.user ? __('messages.comments.placeholder') : __('messages.comments.login_to_comment')}
                                                     disabled={processing}
                                                 ></textarea>
                                                 {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
+                                                {loginMessage && <div className="text-primary font-bold text-sm mt-1 animate-pulse">{loginMessage}</div>}
                                                 <div className="absolute bottom-3 left-3 flex gap-2">
                                                     <button
                                                         type="submit"
-                                                        disabled={processing || !data.body.trim()}
+                                                        disabled={processing || (!auth.user ? false : !data.body.trim())}
                                                         className="bg-primary text-white px-6 py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50"
                                                     >
                                                         {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                                                        إرسال التعليق
+                                                        {__('messages.comments.add_comment')}
                                                     </button>
                                                 </div>
                                             </div>
-                                            <p className="text-[10px] text-outline mt-3 mr-2 italic">يرجى الالتزام بقواعد المشاركة للحفاظ على مجتمع إيجابي.</p>
+                                            <p className="text-[10px] text-outline mt-3 mr-2 italic">{__('messages.comments.rules_hint')}</p>
                                         </div>
                                     </form>
                                 </div>
