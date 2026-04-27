@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             // AdminSeeder::class,
             // SponsorSeeder::class,
             // UserSeeder::class,
-            // IdeaSeeder::class,
+            IdeaSeeder::class,
             VoteSeeder::class,
             CommentSeeder::class,
             // FollowSeeder::class,
