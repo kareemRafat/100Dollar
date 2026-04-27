@@ -26,12 +26,15 @@ export default function Login({
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props;
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectPath = urlParams.get('redirect');
 
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
         _locale: locale,
+        redirect: redirectPath,
     });
 
     const handleSubmit = (e: React.FormEvent) => {

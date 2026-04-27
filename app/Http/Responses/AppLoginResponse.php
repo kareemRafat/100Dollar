@@ -19,6 +19,11 @@ class AppLoginResponse implements LoginResponseContract
         }
 
         $locale = $request->input('_locale') ?: app()->getLocale();
+        
+        if ($request->has('redirect')) {
+            return redirect($request->input('redirect'));
+        }
+
         $route = $request->user()?->hasVerifiedEmail()
             ? route('app.home')
             : route('verification.notice');

@@ -28,7 +28,7 @@ class IdeaController extends Controller
             ->with(['user:id,name,avatar'])
             ->withCount('likes')
             ->latest()
-            ->paginate(8);
+            ->simplePaginate(5);
 
         return Inertia::render('app/pages/idea/show', [
             'idea' => $idea,

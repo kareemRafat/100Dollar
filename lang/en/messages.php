@@ -430,7 +430,7 @@ return [
         'no_comments' => 'No comments yet. Be the first to share!',
         'add_comment' => 'Add Comment',
         'placeholder' => 'Share your opinion or constructive suggestion...',
-        'login_first' => 'You must login first to comment',
+        'login_first' => ' first to comment',
         'login_to_comment' => 'Please login to comment...',
         'rules_hint' => 'Please adhere to participation rules to maintain a positive community.',
         'show_more' => 'Show more comments',
