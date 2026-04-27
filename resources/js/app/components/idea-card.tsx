@@ -1,6 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Link } from '@inertiajs/react';
 
 type Props = {
+    id: number;
     category: string;
     budget: string;
     title: string;
@@ -19,6 +21,7 @@ type Props = {
 };
 
 export function IdeaCard({
+    id,
     category,
     budget,
     title,
@@ -39,7 +42,10 @@ export function IdeaCard({
 
     if (variant === 'archive') {
         return (
-            <article className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card">
+            <Link 
+                href={`/ideas/${id}`}
+                className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card"
+            >
                 {imageUrl && (
                     <div className="relative h-40 overflow-hidden sm:h-48">
                         <img
@@ -91,12 +97,15 @@ export function IdeaCard({
                         </span>
                     </div>
                 </div>
-            </article>
+            </Link>
         );
     }
 
     return (
-        <div className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card">
+        <Link 
+            href={`/ideas/${id}`}
+            className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card"
+        >
             <div className="mb-4 flex items-start justify-between">
                 <span className="rounded-md bg-primary-fixed px-3 py-1 text-xs font-bold text-on-primary-fixed">
                     {category}
@@ -155,13 +164,17 @@ export function IdeaCard({
                     </div>
                 </div>
                 <button
-                    onClick={onVote}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onVote?.();
+                    }}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-3 text-sm font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
                 >
                     <span className="material-symbols-outlined text-xl">thumb_up</span>
                     {__('messages.home.vote_now')}
                 </button>
             </div>
-        </div>
+        </Link>
     );
 }

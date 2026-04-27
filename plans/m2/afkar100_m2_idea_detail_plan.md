@@ -14,33 +14,32 @@ Deliver a complete Idea Detail page for a single idea with sharing, engagement, 
 
 ## Tasks
 
-- [ ] Display complete idea details: title, description, category, and country
-- [ ] Display the idea image or a default placeholder
-- [ ] Show vote count with a progress bar
-- [ ] Add a `Vote Now` button that opens the OTP modal
-- [ ] Add share buttons: WhatsApp, Facebook, Twitter/X, and Copy Link
-- [ ] Add `Follow Idea` and `Follow Idea Owner` buttons
-- [ ] Add a comments section with likes on each comment
-- [ ] Add a form to create a new comment
-- [ ] Add dynamic Open Graph meta tags for each idea
+- [x] Display complete idea details: title, description, category, and country
+- [x] Display the idea image or a default placeholder
+- [x] Show vote count with a progress bar
+- [x] Add a `Vote Now` button that opens the OTP modal
+- [x] Add share buttons: WhatsApp, Facebook, Twitter/X, and Copy Link
+- [x] Add `Follow Idea` and `Follow Idea Owner` buttons
+- [x] Add a comments section with likes on each comment
+- [x] Add a form to create a new comment
+- [x] Add dynamic Open Graph meta tags for each idea
 
 ---
 
 ## Deliverables
 
-- [ ] Idea detail page route and rendering
-- [ ] Full idea content block
-- [ ] Social sharing block
-- [ ] Comment list and comment form
-- [ ] Dynamic OG metadata
+- [x] Idea detail page route and rendering
+- [x] Full idea content block
+- [x] Social sharing block
+- [x] Comment list and comment form
+- [x] Dynamic OG metadata
 
 ---
 
 ## Done Criteria
 
-- [ ] Opening an idea page shows all required idea fields
-- [ ] The page supports voting entry through the OTP modal
-- [ ] Share actions are visible
-- [ ] The comments section is present and usable
-- [ ] OG metadata is generated per idea
-
+- [x] Opening an idea page shows all required idea fields
+- [x] The page supports voting entry through the OTP modal
+- [x] Share actions are visible
+- [x] The comments section is present and usable
+- [x] OG metadata is generated per idea

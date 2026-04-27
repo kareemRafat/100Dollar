@@ -66,6 +66,7 @@ export default function IdeaList({ ideas }: Props) {
                         idea && (
                             <IdeaCard
                                 key={`${idea.id}-${index}`}
+                                id={idea.id}
                                 category={idea.category}
                                 budget="100$"
                                 title={idea.title}

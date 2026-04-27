@@ -1,5 +1,4 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Sparkles } from 'lucide-react';
 import type { Sponsor } from '@/types';
 
 interface Props {

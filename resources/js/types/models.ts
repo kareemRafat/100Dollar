@@ -1,11 +1,4 @@
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    role: 'admin' | 'user';
-    avatar?: string;
-    created_at: string;
-}
+import { User } from './auth';
 
 export interface Idea {
     id: number;

@@ -14,32 +14,31 @@ Deliver a complete Home page that presents the current day's ideas and core week
 
 ## Tasks
 
-- [ ] Display today's current ideas with vote counts
-- [ ] Add day tabs from Sunday to Saturday
-- [ ] Display the sponsor banner for the selected day
-- [ ] Add a countdown timer for voting end time
-- [ ] Build an idea card with a `Vote Now` button
-- [ ] Add a `Previous Winners` section showing the latest 7 winners
-- [ ] Enable SSR for the Home page through Inertia SSR
+- [x] Display today's current ideas with vote counts
+- [x] Add day tabs from Sunday to Saturday
+- [x] Display the sponsor banner for the selected day
+- [x] Add a countdown timer for voting end time
+- [x] Build an idea card with a `Vote Now` button
+- [x] Add a `Previous Winners` section showing the latest 7 winners
+- [x] Enable SSR for the Home page through Inertia SSR
 
 ---
 
 ## Deliverables
 
-- [ ] `GET /` renders the Home page successfully
-- [ ] Day-based idea browsing is visible and usable
-- [ ] Sponsor and countdown blocks are part of the page
-- [ ] Previous winners section is visible
-- [ ] Home page is SSR-ready
+- [x] `GET /` renders the Home page successfully
+- [x] Day-based idea browsing is visible and usable
+- [x] Sponsor and countdown blocks are part of the page
+- [x] Previous winners section is visible
+- [x] Home page is SSR-ready
 
 ---
 
 ## Done Criteria
 
-- [ ] The Home page loads without errors
-- [ ] Vote counts are visible on current idea cards
-- [ ] The selected day state is reflected in the UI
-- [ ] The sponsor banner updates correctly for the active day
-- [ ] The countdown is clearly shown
-- [ ] The latest 7 winners are rendered
-
+- [x] The Home page loads without errors
+- [x] Vote counts are visible on current idea cards
+- [x] The selected day state is reflected in the UI
+- [x] The sponsor banner updates correctly for the active day
+- [x] The countdown is clearly shown
+- [x] The latest 7 winners are rendered

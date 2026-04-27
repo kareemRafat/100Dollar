@@ -167,6 +167,8 @@ return [
         'yesterday' => 'أمس',
         'this_week' => 'هذا الأسبوع',
         'load_more' => 'تحميل المزيد من الأفكار الفائزة',
+        'follow_idea' => 'متابعة الفكرة',
+        'follow_owner' => 'متابعة العضو',
     ],
 
     'how_it_works' => [

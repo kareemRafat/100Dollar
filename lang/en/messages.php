@@ -167,6 +167,8 @@ return [
         'yesterday' => 'Yesterday',
         'this_week' => 'This Week',
         'load_more' => 'Load more winning ideas',
+        'follow_idea' => 'Follow Idea',
+        'follow_owner' => 'Follow Owner',
     ],
 
     'how_it_works' => [
