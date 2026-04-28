@@ -14,7 +14,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
     const { locale } = usePage().props;
     const isRtl = locale === 'ar';
 
-    const winnersArray = Array.isArray(winners) ? winners : Object.values(winners || {});
+    const winnersArray = (Array.isArray(winners) ? winners : Object.values(winners || {})) as Idea[];
 
     if (winnersArray.length === 0) return null;
 

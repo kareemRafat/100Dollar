@@ -32,9 +32,9 @@ return null;
                         onHover: {
                             enable: true,
                             mode: 'grab',
-                            parallax: { enable: true, force: 60, smooth: 10 },
+                            parallax: { enable: true, force: 60, smooth: 10 } as any,
                         },
-                        resize: true,
+                        resize: { enable: true } as any,
                     },
                     modes: {
                         grab: {
@@ -60,10 +60,10 @@ return null;
                         speed: 0.5,
                         direction: 'none',
                         outModes: { default: 'out' },
-                        parallax: { enable: true, force: 60, smooth: 10 },
+                        parallax: { enable: true, force: 60, smooth: 10 } as any,
                     },
                     number: {
-                        density: { enable: true, area: 800 },
+                        density: { enable: true, area: 800 } as any,
                         value: 100,
                     },
                     opacity: {
@@ -85,7 +85,7 @@ return null;
                     },
                 },
                 detectRetina: true,
-            }}
+            } as any}
         />
     );
 }

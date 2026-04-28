@@ -1,10 +1,11 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link, usePage, useForm, router, InfiniteScroll } from '@inertiajs/react';
+import { Head, Link, usePage, useForm, InfiniteScroll } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 import { Idea, User, Paginated } from '@/types';
-import { useState, FormEvent, useRef } from 'react';
+import { useState, useRef } from 'react';
+import type { FormEvent } from 'react';
 import { PinModal } from '@/app/components/pin-modal';
-import { 
+import {
     Bell,
     UserPlus,
     Send,
@@ -41,7 +42,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     if (!idea || !comments) {
         return null;
     }
-    
+
     // Calculate voting progress
     const voteGoal = 500;
     const votePercentage = Math.min(Math.round((idea.votes_count / voteGoal) * 100), 100);
@@ -51,7 +52,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const handleShare = (platform: string) => {
         const url = window.location.href;
         const text = `${__('messages.idea_detail.about_idea')}: ${idea.title}`;
-        
+
         switch (platform) {
             case 'whatsapp':
                 window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`);
@@ -68,9 +69,9 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
         }
     };
 
-    const submitComment = (e: FormEvent) => {
+    const submitComment = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         if (!auth.user || !data.body.trim() || processing) return;
 
         post(`/ideas/${idea.id}/comments`, {
@@ -95,7 +96,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             <main className="pb-24">
                 {/* Hero Section */}
                 <section className="relative h-[400px] w-full overflow-hidden mb-12">
-                    <div className="absolute inset-0 bg-cover bg-center" 
+                    <div className="absolute inset-0 bg-cover bg-center"
                         style={{ backgroundImage: `url('${idea.image || 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop'}')` }}>
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-transparent"></div>
@@ -148,7 +149,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                         {/* Follow Actions */}
                         <div className="grid grid-cols-2 gap-3">
-                            <button 
+                            <button
                                 className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10 shadow-sm transition-all group ${isFollowingIdea ? 'border-primary' : 'hover:border-primary'}`}
                             >
                                 <div className={`p-2 rounded-lg transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}>
@@ -156,7 +157,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                 </div>
                                 <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">{__('messages.archive.follow_idea')}</span>
                             </button>
-                            <button 
+                            <button
                                 className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10 shadow-sm transition-all group ${isFollowingOwner ? 'border-primary' : 'hover:border-primary'}`}
                             >
                                 <div className={`p-2 rounded-lg transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}>
@@ -279,7 +280,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                             <div className="bg-surface-container-lowest rounded-2xl border-t-4 border-primary border-x border-b border-outline-variant/20 shadow-sm overflow-hidden">
                                 <div className="p-6 md:p-8 space-y-6">
-                                    <InfiniteScroll 
+                                    <InfiniteScroll
                                         key={`comments-list-${idea.comments_count}`}
                                         data="comments"
                                         manual
@@ -287,7 +288,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                         next={({ loading, fetch, hasMore }) => (
                                             <div className="mt-8 flex justify-center">
                                                 {hasMore && (
-                                                    <button 
+                                                    <button
                                                         onClick={() => fetch()}
                                                         disabled={loading}
                                                         className="px-4 py-1.5 bg-surface-container-low rounded-lg text-primary text-xs font-bold hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2 disabled:opacity-50 border border-primary/10 shadow-sm cursor-pointer"
@@ -364,27 +365,26 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                 )}
                                             </div>
                                             <div className="flex-1">
-                                                <div className="relative">
-                                                    <textarea 
-                                                        value={data.body}
-                                                        onChange={e => setData('body', e.target.value)}
-                                                        className={`w-full bg-surface-container-lowest border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 text-on-surface ${errors.body ? 'border-error' : 'border-outline-variant/30'}`}
-                                                        placeholder={__('messages.comments.placeholder')}
-                                                        disabled={processing}
-                                                    ></textarea>
-                                                    {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
-                                                    <div className="absolute bottom-3 ltr:right-3 rtl:left-3 flex gap-2">
-                                                        <button 
-                                                            type="submit"
-                                                            disabled={processing || !data.body.trim()}
-                                                            className="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50"
-                                                        >
-                                                            {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                                                            {__('messages.comments.add_comment')}
-                                                        </button>
-                                                    </div>
+                                                <textarea
+                                                    value={data.body}
+                                                    onChange={e => setData('body', e.target.value)}
+                                                    className={`w-full bg-surface-container-lowest border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 text-on-surface ${errors.body ? 'border-error' : 'border-outline-variant/30'}`}
+                                                    placeholder={__('messages.comments.placeholder')}
+                                                    disabled={processing}
+                                                ></textarea>
+                                                {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
+
+                                                <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                                    <p className="text-[10px] text-outline italic mr-2">{__('messages.comments.rules_hint')}</p>
+                                                    <button
+                                                        type="submit"
+                                                        disabled={processing || !data.body.trim()}
+                                                        className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50 w-full sm:w-auto justify-center"
+                                                    >
+                                                        {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                                        {__('messages.comments.add_comment')}
+                                                    </button>
                                                 </div>
-                                                <p className="text-[10px] text-outline mt-3 mr-2 italic">{__('messages.comments.rules_hint')}</p>
                                             </div>
                                         </form>
                                     ) : (
@@ -393,8 +393,8 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                 <span className="material-symbols-outlined text-3xl text-primary">lock</span>
                                             </div>
                                             <p className="text-on-surface text-lg font-bold">
-                                                <Link 
-                                                    href={`/login?redirect=${window.location.pathname}`} 
+                                                <Link
+                                                    href={`/login?redirect=${window.location.pathname}`}
                                                     className="text-primary hover:underline transition-all"
                                                 >
                                                     {__('messages.login.login_button')}
@@ -411,9 +411,9 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                 </div>
             </main>
 
-            <PinModal 
-                isOpen={isPinModalOpen} 
-                onClose={() => setIsPinModalOpen(false)} 
+            <PinModal
+                isOpen={isPinModalOpen}
+                onClose={() => setIsPinModalOpen(false)}
                 onSubmit={(pin) => {
                     console.log('Voting with pin:', pin);
                     setIsPinModalOpen(false);

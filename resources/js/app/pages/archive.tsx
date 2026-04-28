@@ -5,6 +5,7 @@ import AppLayout from '@/app/layouts/app-layout';
 
 const archiveIdeas = [
     {
+        id: 1,
         category: 'صناعة يدوية',
         budget: '95$',
         title: 'متجر الحقائب الجلدية المخصصة',
@@ -21,6 +22,7 @@ const archiveIdeas = [
         date: '١٢ مارس ٢٠٢٤',
     },
     {
+        id: 2,
         category: 'خدمات رقمية',
         budget: '40$',
         title: 'وكالة تدقيق محتوى الذكاء الاصطناعي',
@@ -36,6 +38,7 @@ const archiveIdeas = [
         date: '١٠ مارس ٢٠٢٤',
     },
     {
+        id: 3,
         category: 'تجارة إلكترونية',
         budget: '100$',
         title: 'نظام الاشتراك في الخضروات العضوية',
@@ -52,6 +55,7 @@ const archiveIdeas = [
         date: '٠٥ مارس ٢٠٢٤',
     },
     {
+        id: 4,
         category: 'محتوى إبداعي',
         budget: '65$',
         title: 'منصة لبيع المؤثرات الصوتية العربية',
@@ -67,6 +71,7 @@ const archiveIdeas = [
         date: '٠٢ مارس ٢٠٢٤',
     },
     {
+        id: 5,
         category: 'تنسيق حدائق',
         budget: '80$',
         title: 'صناديق الزراعة المنزلية الذكية',
@@ -83,6 +88,7 @@ const archiveIdeas = [
         date: '٢٨ فبراير ٢٠٢٤',
     },
     {
+        id: 6,
         category: 'إعادة تدوير',
         budget: '35$',
         title: 'تحويل البلاستيك إلى ديكورات مكتبية',

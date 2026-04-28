@@ -4,14 +4,14 @@ import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { confirm } from '@/routes/admin/password';
+import { store } from '@/routes/admin/password/confirm';
 
 export default function ConfirmPassword() {
     return (
         <>
             <Head title="تأكيد كلمة المرور" />
 
-            <Form {...confirm.store.form()} resetOnSuccess={['password']}>
+            <Form {...store.form()} resetOnSuccess={['password']}>
                 {({ processing, errors }) => (
                     <div className="space-y-6">
                         <div className="grid gap-2">

@@ -12,7 +12,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
-    resolve: (name) => resolvePageComponent(`/resources/js/${name}.tsx`, import.meta.glob('/resources/js/**/*.tsx')),
+    resolve: (name) => resolvePageComponent(`/resources/js/${name}.tsx`, import.meta.glob('/resources/js/**/*.tsx')) as any,
     layout: (name) => {
         switch (true) {
             case name === 'welcome':
@@ -50,9 +50,9 @@ createInertiaApp({
             </TooltipProvider>
         );
 
-        if (el.innerHTML.trim().length > 0) {
+        if (el && el.innerHTML.trim().length > 0) {
             hydrateRoot(el, content);
-        } else {
+        } else if (el) {
             createRoot(el).render(content);
         }
     },
