@@ -75,12 +75,9 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
         post(`/ideas/${idea.id}/comments`, {
             preserveScroll: true,
-            preserveState: false, 
             onSuccess: () => {
                 reset('body');
-                setTimeout(() => {
-                    commentsTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 150);
+                commentsTopRef.current?.scrollIntoView({ behavior: 'smooth' });
             },
         });
     };
@@ -283,6 +280,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                             <div className="bg-surface-container-lowest rounded-2xl border-t-4 border-primary border-x border-b border-outline-variant/20 shadow-sm overflow-hidden">
                                 <div className="p-6 md:p-8 space-y-6">
                                     <InfiniteScroll 
+                                        key={`comments-list-${idea.comments_count}`}
                                         data="comments"
                                         manual
                                         preserveUrl
@@ -309,7 +307,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                     >
                                         {(comments?.data?.length ?? 0) > 0 ? (
                                             comments.data.map((comment, index) => (
-                                                <div key={`${comment.id}-${index}`}>
+                                                <div key={comment.id}>
                                                     <div className="group relative bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                                                         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
                                                             <div className="flex gap-4">

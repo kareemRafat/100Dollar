@@ -24,15 +24,14 @@ class IdeaController extends Controller
         $idea->load(['user', 'sponsor']);
         $idea->loadCount(['votes', 'comments']);
 
-        $comments = $idea->comments()
-            ->with(['user:id,name,avatar'])
-            ->withCount('likes')
-            ->latest()
-            ->simplePaginate(5);
-
         return Inertia::render('app/pages/idea/show', [
             'idea' => $idea,
-            'comments' => Inertia::scroll($comments),
+            'comments' => Inertia::scroll(fn () => $idea->comments()
+                ->with(['user:id,name,avatar'])
+                ->withCount('likes')
+                ->latest('id')
+                ->cursorPaginate(5)
+            ),
             'isFollowingIdea' => auth()->check() ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() : false,
             'isFollowingOwner' => auth()->check() ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() : false,
         ]);
