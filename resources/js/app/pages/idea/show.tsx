@@ -1,16 +1,15 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, usePage, useForm, InfiniteScroll } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
-import { Idea, User, Paginated } from '@/types';
-import { useState, useRef } from 'react';
-import type { FormEvent } from 'react';
-import { PinModal } from '@/app/components/pin-modal';
 import {
     Bell,
     UserPlus,
     Send,
     Loader2
 } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { PinModal } from '@/app/components/pin-modal';
+import AppLayout from '@/app/layouts/app-layout';
+import type { Idea, User, Paginated } from '@/types';
 
 interface Comment {
     id: number;
@@ -323,7 +322,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                                 </div>
                                                                 <div>
                                                                     <div className="flex items-center gap-2 mb-1">
-                                                                        <h4 className="font-bold text-on-surface">{comment.user?.name}</h4>
+                                                                        <h4 className="font-semibold text-on-surface">{comment.user?.name}</h4>
                                                                         {comment.user_id === idea.user_id && (
                                                                             <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">{__('messages.idea_detail.idea_owner')}</span>
                                                                         )}
@@ -338,12 +337,12 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                                 <span className="text-sm font-bold">{comment.likes_count}</span>
                                                             </button>
                                                         </div>
-                                                        <p className="text-on-surface text-lg leading-relaxed pr-0 md:pr-16 font-bold whitespace-pre-wrap">
+                                                        <p className="text-on-surface text-base leading-relaxed pr-0 md:pr-16 font-bold whitespace-pre-wrap">
                                                             {comment.body}
                                                         </p>
                                                     </div>
                                                     {index < (comments.data?.length ?? 0) - 1 && (
-                                                        <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/20 to-transparent my-6"></div>
+                                                        <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/60 to-transparent my-2"></div>
                                                     )}
                                                 </div>
                                             ))
@@ -375,7 +374,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                 {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
 
                                                 <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-                                                    <p className="text-[10px] text-outline italic mr-2">{__('messages.comments.rules_hint')}</p>
+                                                    <p className="text-sm text-outline font-bold mr-2">{__('messages.comments.rules_hint')}</p>
                                                     <button
                                                         type="submit"
                                                         disabled={processing || !data.body.trim()}
