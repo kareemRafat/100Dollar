@@ -48,6 +48,7 @@ return [
         'hero_desc' => 'A platform aimed at supporting startup ideas and projects that can be started with a small budget. Vote for the best idea or submit your own to compete.',
         'today_sponsor' => "Today's Prize Sponsor",
         'sponsor_name_placeholder' => 'Sponsor Name',
+        'voting_time' => 'Current Voting Duration',
         'voting_ends_in' => 'Current voting ends in:',
         'voting_chance_still' => 'There is still a chance to support your favorite idea',
         'no_ideas_yet' => 'No ideas for today yet',
@@ -216,9 +217,18 @@ return [
         'file_label' => 'Additional file (PDF or financial plan)',
         'file_placeholder' => 'Choose a file...',
         'browse_device' => 'Browse device',
+        'change_image' => 'Change Image',
         'agree_terms' => 'I agree to the terms of use and privacy policy of the platform.',
         'pledge_originality' => 'I pledge that this idea is original and can be implemented with a budget of $100 or less.',
         'submit_button' => 'Submit idea for review',
+    ],
+
+    'common' => [
+        'processing' => 'Processing...',
+    ],
+
+    'messages' => [
+        'idea_submitted_successfully' => 'Your idea has been submitted successfully and is now under review.',
     ],
 
     'profile' => [
@@ -428,7 +438,7 @@ return [
     'comments' => [
         'title' => 'Comments and Suggestions',
         'no_comments' => 'No comments yet. Be the first to share!',
-        'add_comment' => 'Add Comment',
+        'add_comment' => 'Comment',
         'placeholder' => 'Share your opinion or constructive suggestion...',
         'login_first' => ' first to comment',
         'login_to_comment' => 'Please login to comment...',

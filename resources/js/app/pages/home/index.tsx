@@ -1,13 +1,13 @@
+import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
-import Hero from './components/hero';
+import type { Idea, Sponsor, Paginated } from '@/types';
 import DayTabs from './components/day-tabs';
-import SponsorBanner from './components/sponsor-banner';
-import VotingCountdown from './components/voting-countdown';
+import Hero from './components/hero';
 import IdeaList from './components/idea-list';
 import PreviousWinners from './components/previous-winners';
-import { Idea, Sponsor, Paginated } from '@/types';
-import { useLang } from '@erag/lang-sync-inertia/react';
+import SponsorBanner from './components/sponsor-banner';
+import VotingCountdown from './components/voting-countdown';
 
 interface Props {
     ideas: Paginated<Idea>;

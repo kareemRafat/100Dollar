@@ -71,7 +71,9 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const submitComment = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!auth.user || !data.body.trim() || processing) return;
+        if (!auth.user || !data.body.trim() || processing) {
+return;
+}
 
         post(`/ideas/${idea.id}/comments`, {
             preserveScroll: true,

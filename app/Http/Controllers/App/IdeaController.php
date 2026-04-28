@@ -4,6 +4,10 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,6 +21,76 @@ class IdeaController extends Controller
     public function create(): Response
     {
         return Inertia::render('app/pages/submit-idea');
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string'],
+            'category' => ['required', 'string'],
+            'country' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'image' => ['nullable', 'image', 'max:2048'], // 2MB
+            'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // 5MB
+            'agreed_terms' => ['required', 'accepted'],
+            'agreed_privacy' => ['required', 'accepted'],
+            'agreed_legal' => ['required', 'accepted'],
+        ]);
+
+        $idea = DB::transaction(function () use ($validated, $request) {
+            /** @var Idea $idea */
+            $idea = auth()->user()->ideas()->create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'category' => $validated['category'],
+                'country' => $validated['country'],
+                'city' => $validated['city'],
+                'status' => 'pending',
+                'submission_day' => now()->dayOfWeek,
+                'week_number' => now()->weekOfYear,
+                'year' => now()->year,
+            ]);
+
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('ideas/images', 'public');
+                $idea->media()->create([
+                    'file_path' => $path,
+                    'file_name' => $request->file('image')->getClientOriginalName(),
+                    'mime_type' => $request->file('image')->getMimeType(),
+                    'file_size' => $request->file('image')->getSize(),
+                    'collection_name' => 'image',
+                    'disk' => 'public',
+                ]);
+                
+                // Keep backward compatibility for now if needed, though we should prefer polymorphic
+                $idea->update(['image' => $path]);
+            }
+
+            if ($request->hasFile('pdf_file')) {
+                $path = $request->file('pdf_file')->store('ideas/pdfs', 'public');
+                $idea->media()->create([
+                    'file_path' => $path,
+                    'file_name' => $request->file('pdf_file')->getClientOriginalName(),
+                    'mime_type' => $request->file('pdf_file')->getMimeType(),
+                    'file_size' => $request->file('pdf_file')->getSize(),
+                    'collection_name' => 'pdf',
+                    'disk' => 'public',
+                ]);
+
+                // Keep backward compatibility
+                $idea->update(['pdf_file' => $path]);
+            }
+
+            return $idea;
+        });
+
+        // TODO: Send internal admin notification
+        // $adminUsers = User::where('role', 'admin')->get();
+        // Notification::send($adminUsers, new NewIdeaSubmitted($idea));
+
+        return redirect()->route('app.ideas.index')
+            ->with('success', __('messages.idea_submitted_successfully'));
     }
 
     public function show(Idea $idea): Response

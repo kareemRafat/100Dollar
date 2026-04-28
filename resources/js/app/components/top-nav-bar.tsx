@@ -9,6 +9,7 @@ import {
     Lightbulb,
     Menu,
 } from 'lucide-react';
+import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -30,7 +31,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
-import { logout } from '@/routes';
+import { logout, login, register } from '@/routes';
 import { index } from '@/routes/app/ideas';
 import type { NavItem } from '@/types';
 
@@ -186,12 +187,11 @@ export function TopNavBar({ activeRoute }: Props) {
                                                         asChild
                                                         className="h-9 rounded-xl font-bold text-xs"
                                                     >
-                                                        <Link href="/ideas/create">
+                                                        <Link href={create.url()}>
                                                             {__(
                                                                 'messages.ui.submit_your_idea',
                                                             )}
-                                                        </Link>
-                                                    </Button>
+                                                        </Link>                                                    </Button>
                                                 )}
 
                                                 <Button
@@ -221,19 +221,18 @@ export function TopNavBar({ activeRoute }: Props) {
                                                 asChild
                                                 className="h-9 rounded-xl font-bold text-xs transition-all active:scale-[0.98]"
                                             >
-                                                <Link href="/ideas/create">
+                                                <Link href={login()}>
                                                     {__(
                                                         'messages.ui.submit_your_idea',
                                                     )}
-                                                </Link>
-                                            </Button>
+                                                </Link>                                            </Button>
                                             <div className="grid grid-cols-2 gap-2">
                                                 <Button
                                                     asChild
                                                     variant="ghost"
                                                     className="h-9 rounded-xl font-bold text-xs"
                                                 >
-                                                    <Link href="/login">
+                                                    <Link href={login()}>
                                                         {__('messages.auth.login')}
                                                     </Link>
                                                 </Button>
@@ -242,7 +241,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     variant="outline"
                                                     className="h-9 rounded-xl font-bold text-xs"
                                                 >
-                                                    <Link href="/register">
+                                                    <Link href={register()}>
                                                         {__(
                                                             'messages.auth.register',
                                                         )}
@@ -309,7 +308,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                     asChild
                                     className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden md:inline-flex"
                                 >
-                                    <Link href="/ideas/create">
+                                    <Link href={create.url()}>
                                         {__('messages.ui.submit_your_idea')}
                                     </Link>
                                 </Button>
@@ -476,13 +475,13 @@ export function TopNavBar({ activeRoute }: Props) {
                                 asChild
                                 className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden md:inline-flex"
                             >
-                                <Link href="/ideas/create">
+                                <Link href={login()}>
                                     {__('messages.ui.submit_your_idea')}
                                 </Link>
                             </Button>
                             <Link
                                 className="px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400 hidden md:inline-block"
-                                href="/login"
+                                href={login()}
                             >
                                 {__('messages.auth.login')}
                             </Link>
@@ -491,8 +490,10 @@ export function TopNavBar({ activeRoute }: Props) {
                                 variant="outline"
                                 className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] hidden md:inline-flex"
                             >
-                                <Link href="/register">
-                                    {__('messages.auth.register')}
+                                <Link href={register()}>
+                                    {__(
+                                        'messages.auth.register',
+                                    )}
                                 </Link>
                             </Button>
                         </div>

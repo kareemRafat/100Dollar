@@ -17,6 +17,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Pagination } from '@/components/ui/pagination';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import {
     Table,
     TableBody,
@@ -25,10 +27,8 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { BreadcrumbItem, User } from '@/types';
 import admin from '@/routes/admin';
+import type { BreadcrumbItem, User } from '@/types';
 
 interface UsersProps {
     users: {
@@ -72,11 +72,22 @@ export default function UsersPage({ users, filters }: UsersProps) {
     useEffect(() => {
         const timeout = setTimeout(() => {
             const params: any = {};
-            if (search) params.search = search;
-            if (role) params.role = role;
-            if (status) params.status = status;
+
+            if (search) {
+params.search = search;
+}
+
+            if (role) {
+params.role = role;
+}
+
+            if (status) {
+params.status = status;
+}
+
             router.get(admin.users.index().url, params, { preserveState: true, replace: true });
         }, 300);
+
         return () => clearTimeout(timeout);
     }, [search, role, status]);
 
@@ -133,7 +144,11 @@ export default function UsersPage({ users, filters }: UsersProps) {
 
     const handleEditSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!selectedUser) return;
+
+        if (!selectedUser) {
+return;
+}
+
         editForm.patch(admin.users.update(selectedUser.id).url, {
             onSuccess: () => {
                 setIsEditModalOpen(false);
@@ -150,7 +165,11 @@ export default function UsersPage({ users, filters }: UsersProps) {
 
     const handleDeleteSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!selectedUser) return;
+
+        if (!selectedUser) {
+return;
+}
+
         deleteForm.delete(admin.users.destroy(selectedUser.id).url, {
             onSuccess: () => {
                 setIsDeleteModalOpen(false);

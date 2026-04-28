@@ -6,8 +6,8 @@ import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { store } from '@/routes/password/confirm';
 import { cn } from '@/lib/utils';
+import { store } from '@/routes/password/confirm';
 
 export default function ConfirmPassword() {
     const { locale } = usePage().props;

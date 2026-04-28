@@ -1,5 +1,5 @@
-import { router } from '@inertiajs/react';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { router } from '@inertiajs/react';
 
 interface Day {
     id: number;
@@ -14,7 +14,10 @@ interface Props {
 export default function DayTabs({ weekDays = [], currentDay }: Props) {
     const { __ } = useLang();
 
-    if (!weekDays || weekDays.length === 0) return null;
+    if (!weekDays || weekDays.length === 0) {
+return null;
+}
+
     const handleDayChange = (dayId: number) => {
         router.get('/', { day: dayId }, {
             preserveScroll: true,

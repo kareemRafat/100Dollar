@@ -89,6 +89,7 @@ export default function Profile({
 
     const handleItemClick = (id: string) => {
         const item = sideNavItems.find((i) => i.id === id);
+
         if (item) {
             router.visit(item.href, {
                 preserveScroll: true,

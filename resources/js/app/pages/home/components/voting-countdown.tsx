@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { CountdownTimer } from '@/app/components/countdown-timer';
 import { Watch, Clock } from 'lucide-react';
+import { CountdownTimer } from '@/app/components/countdown-timer';
 
 interface Props {
     secondsUntilEnd: number;
@@ -20,7 +20,7 @@ export default function VotingCountdown({ secondsUntilEnd }: Props) {
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                     </span>
-                    {__('messages.home.voting_ends_in')}
+                    {__('messages.home.voting_time')}
                 </div>
 
                 <div className="flex items-center gap-3 mb-2">

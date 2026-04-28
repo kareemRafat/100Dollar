@@ -1,16 +1,18 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
+import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { ParticlesBackground } from '@/app/components/particles-background';
+import { login } from '@/routes';
 
 export default function Hero() {
     const { __ } = useLang();
     const { auth } = usePage().props;
 
     const submitUrl = !auth.user
-        ? '/login'
+        ? login()
         : auth.user.role === 'admin'
             ? '/admin'
-            : '/ideas/create';
+            : create.url();
 
     const submitText = auth.user?.role === 'admin'
         ? __('messages.ui.dashboard')

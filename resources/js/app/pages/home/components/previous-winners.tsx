@@ -3,7 +3,7 @@ import { Link, usePage } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 import { WinnerCard } from '@/app/components/winner-card';
-import { Idea } from '@/types';
+import type { Idea } from '@/types';
 
 interface Props {
     winners: Idea[];
@@ -16,7 +16,9 @@ export default function PreviousWinners({ winners = [] }: Props) {
 
     const winnersArray = (Array.isArray(winners) ? winners : Object.values(winners || {})) as Idea[];
 
-    if (winnersArray.length === 0) return null;
+    if (winnersArray.length === 0) {
+return null;
+}
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         direction: isRtl ? 'rtl' : 'ltr',
@@ -36,7 +38,10 @@ export default function PreviousWinners({ winners = [] }: Props) {
     }, []);
 
     useEffect(() => {
-        if (!emblaApi) return;
+        if (!emblaApi) {
+return;
+}
+
         onSelect(emblaApi);
         emblaApi.on('reInit', onSelect);
         emblaApi.on('select', onSelect);

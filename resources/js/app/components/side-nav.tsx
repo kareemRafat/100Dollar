@@ -34,6 +34,7 @@ export function SideNav({ items, activeSection, onItemClick }: Props) {
                     <div className="space-y-1">
                         {items.map((item) => {
                             const Icon = item.icon;
+
                             return (
                                 <button
                                     key={item.id}
