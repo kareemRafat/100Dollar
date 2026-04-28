@@ -285,11 +285,12 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                     <InfiniteScroll 
                                         data="comments"
                                         manual
+                                        preserveUrl
                                         next={({ loading, fetch, hasMore }) => (
                                             <div className="mt-8 flex justify-center">
                                                 {hasMore && (
                                                     <button 
-                                                        onClick={() => fetch({ per_page: 5 })}
+                                                        onClick={() => fetch()}
                                                         disabled={loading}
                                                         className="px-4 py-1.5 bg-surface-container-low rounded-lg text-primary text-xs font-bold hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2 disabled:opacity-50 border border-primary/10 shadow-sm cursor-pointer"
                                                     >
@@ -306,9 +307,9 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                             </div>
                                         )}
                                     >
-                                        {comments.data.length > 0 ? (
+                                        {(comments?.data?.length ?? 0) > 0 ? (
                                             comments.data.map((comment, index) => (
-                                                <div key={comment.id}>
+                                                <div key={`${comment.id}-${index}`}>
                                                     <div className="group relative bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 hover:border-primary/30 hover:shadow-md transition-all duration-300">
                                                         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
                                                             <div className="flex gap-4">
@@ -329,7 +330,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                                         )}
                                                                     </div>
                                                                     <div className="flex items-center gap-2 text-xs text-outline">
-                                                                        <span>{new Date(comment.created_at).toLocaleDateString()}</span>
+                                                                        <span>{comment.created_at ? new Date(comment.created_at).toLocaleDateString() : ''}</span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -342,7 +343,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                                             {comment.body}
                                                         </p>
                                                     </div>
-                                                    {index < comments.data.length - 1 && (
+                                                    {index < (comments.data?.length ?? 0) - 1 && (
                                                         <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/20 to-transparent my-6"></div>
                                                     )}
                                                 </div>
@@ -355,43 +356,56 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                                 {/* Comment Input area */}
                                 <div className="bg-surface-container p-6 md:p-8 border-t border-outline-variant/20">
-                                    <form onSubmit={submitComment} className="flex gap-4">
-                                        <div className="hidden sm:flex w-10 h-10 rounded-full bg-surface-container-high items-center justify-center border border-outline-variant/20 shrink-0 overflow-hidden">
-                                            {auth.user ? (
-                                                auth.user.avatar ? (
+                                    {auth.user ? (
+                                        <form onSubmit={submitComment} className="flex gap-4">
+                                            <div className="hidden sm:flex w-10 h-10 rounded-full bg-surface-container-high items-center justify-center border border-outline-variant/20 shrink-0 overflow-hidden">
+                                                {auth.user.avatar ? (
                                                     <img src={auth.user.avatar} className="w-full h-full object-cover" alt={auth.user.name} />
                                                 ) : (
-                                                    <span className="font-bold text-primary">{auth.user.name.charAt(0)}</span>
-                                                )
-                                            ) : (
-                                                <span className="material-symbols-outlined text-primary">account_circle</span>
-                                            )}
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="relative">
-                                                <textarea 
-                                                    value={data.body}
-                                                    onChange={e => setData('body', e.target.value)}
-                                                    readOnly={!auth.user}
-                                                    className={`w-full bg-surface-container-lowest border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 text-on-surface ${errors.body ? 'border-error' : 'border-outline-variant/30'} ${!auth.user ? 'cursor-not-allowed opacity-60' : ''}`}
-                                                    placeholder={auth.user ? __('messages.comments.placeholder') : __('messages.comments.login_to_comment')}
-                                                    disabled={processing}
-                                                ></textarea>
-                                                {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
-                                                <div className="absolute bottom-3 ltr:right-3 rtl:left-3 flex gap-2">
-                                                    <button 
-                                                        type="submit"
-                                                        disabled={processing || !auth.user || !data.body.trim()}
-                                                        className="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50"
-                                                    >
-                                                        {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                                                        {__('messages.comments.add_comment')}
-                                                    </button>
-                                                </div>
+                                                    <span className="font-bold text-primary">{auth.user.name?.charAt(0) || '?'}</span>
+                                                )}
                                             </div>
-                                            <p className="text-[10px] text-outline mt-3 mr-2 italic">{__('messages.comments.rules_hint')}</p>
+                                            <div className="flex-1">
+                                                <div className="relative">
+                                                    <textarea 
+                                                        value={data.body}
+                                                        onChange={e => setData('body', e.target.value)}
+                                                        className={`w-full bg-surface-container-lowest border rounded-xl p-4 text-lg font-bold focus:ring-2 focus:ring-primary/20 focus:border-primary h-32 resize-none shadow-inner transition-all placeholder:text-outline/40 text-on-surface ${errors.body ? 'border-error' : 'border-outline-variant/30'}`}
+                                                        placeholder={__('messages.comments.placeholder')}
+                                                        disabled={processing}
+                                                    ></textarea>
+                                                    {errors.body && <div className="text-error text-xs mt-1">{errors.body}</div>}
+                                                    <div className="absolute bottom-3 ltr:right-3 rtl:left-3 flex gap-2">
+                                                        <button 
+                                                            type="submit"
+                                                            disabled={processing || !data.body.trim()}
+                                                            className="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50"
+                                                        >
+                                                            {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                                            {__('messages.comments.add_comment')}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <p className="text-[10px] text-outline mt-3 mr-2 italic">{__('messages.comments.rules_hint')}</p>
+                                            </div>
+                                        </form>
+                                    ) : (
+                                        <div className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center gap-4">
+                                            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                                                <span className="material-symbols-outlined text-3xl text-primary">lock</span>
+                                            </div>
+                                            <p className="text-on-surface text-lg font-bold">
+                                                <Link 
+                                                    href={`/login?redirect=${window.location.pathname}`} 
+                                                    className="text-primary hover:underline transition-all"
+                                                >
+                                                    {__('messages.login.login_button')}
+                                                </Link>
+                                                {__('messages.comments.login_first')}
+                                            </p>
+                                            <p className="text-outline text-sm italic">{__('messages.comments.rules_hint')}</p>
                                         </div>
-                                    </form>
+                                    )}
                                 </div>
                             </div>
                         </section>
