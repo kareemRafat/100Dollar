@@ -1,9 +1,23 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import type { ChangeEvent, FormEvent} from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
 import AppLayout from '@/app/layouts/app-layout';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+
 
 export default function SubmitIdea() {
     const { __ } = useLang();
@@ -96,89 +110,100 @@ export default function SubmitIdea() {
                         <form onSubmit={submit} className="relative z-10 space-y-8">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="space-y-2">
-                                    <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                    <Label htmlFor="country" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.country_label')}
-                                    </label>
-                                    <select 
+                                    </Label>
+                                    <Select 
                                         value={data.country}
-                                        onChange={e => setData('country', e.target.value)}
-                                        className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                        onValueChange={value => setData('country', value)}
                                     >
-                                        <option value="">{__('messages.submit_idea.country_placeholder')}</option>
-                                        <option value="Saudi Arabia">{__('messages.submit_idea.saudi_arabia')}</option>
-                                        <option value="UAE">{__('messages.submit_idea.uae')}</option>
-                                        <option value="Egypt">{__('messages.submit_idea.egypt')}</option>
-                                        <option value="Jordan">{__('messages.submit_idea.jordan')}</option>
-                                    </select>
-                                    {errors.country && <div className="text-red-500 text-xs">{errors.country}</div>}
+                                        <SelectTrigger id="country" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
+                                            <SelectValue placeholder={__('messages.submit_idea.country_placeholder')} />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Saudi Arabia">{__('messages.submit_idea.saudi_arabia')}</SelectItem>
+                                            <SelectItem value="UAE">{__('messages.submit_idea.uae')}</SelectItem>
+                                            <SelectItem value="Egypt">{__('messages.submit_idea.egypt')}</SelectItem>
+                                            <SelectItem value="Jordan">{__('messages.submit_idea.jordan')}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <InputError message={errors.country ? __(errors.country) : undefined} />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                    <Label htmlFor="city" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.city_label')}
-                                    </label>
-                                    <input
-                                        className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                    </Label>
+                                    <Input
+                                        id="city"
+                                        size="lg"
+                                        className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                         placeholder={__('messages.submit_idea.city_placeholder')}
                                         type="text"
                                         value={data.city}
                                         onChange={e => setData('city', e.target.value)}
                                     />
-                                    {errors.city && <div className="text-red-500 text-xs">{errors.city}</div>}
+                                    <InputError message={errors.city ? __(errors.city) : undefined} />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                <Label htmlFor="category" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.category_label')}
-                                </label>
-                                <select 
+                                </Label>
+                                <Select 
                                     value={data.category}
-                                    onChange={e => setData('category', e.target.value)}
-                                    className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                    onValueChange={value => setData('category', value)}
                                 >
-                                    <option value="">{__('messages.submit_idea.category_placeholder')}</option>
-                                    <option value="e-commerce">تجارة إلكترونية</option>
-                                    <option value="home-services">خدمات منزلية</option>
-                                    <option value="handicrafts">صناعة يدوية</option>
-                                    <option value="tech">تقنية وبرمجيات</option>
-                                    <option value="other">أخرى</option>
-                                </select>
-                                {errors.category && <div className="text-red-500 text-xs">{errors.category}</div>}
+                                    <SelectTrigger id="category" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
+                                        <SelectValue placeholder={__('messages.submit_idea.category_placeholder')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="e-commerce">تجارة إلكترونية</SelectItem>
+                                        <SelectItem value="home-services">خدمات منزلية</SelectItem>
+                                        <SelectItem value="handicrafts">صناعة يدوية</SelectItem>
+                                        <SelectItem value="tech">تقنية وبرمجيات</SelectItem>
+                                        <SelectItem value="other">أخرى</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.category ? __(errors.category) : undefined} />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                <Label htmlFor="title" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.title_label')}
-                                </label>
-                                <input
-                                    className="bg-surface-container-low dark:bg-surface-container-high w-full rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                </Label>
+                                <Input
+                                    id="title"
+                                    size="lg"
+                                    className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                     placeholder={__('messages.submit_idea.title_placeholder')}
                                     type="text"
                                     value={data.title}
                                     onChange={e => setData('title', e.target.value)}
                                 />
-                                {errors.title && <div className="text-red-500 text-xs">{errors.title}</div>}
+                                <InputError message={errors.title ? __(errors.title) : undefined} />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                <Label htmlFor="description" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.details_label')}
-                                </label>
-                                <textarea
-                                    className="bg-surface-container-low dark:bg-surface-container-high w-full resize-none rounded-lg border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                </Label>
+                                <Textarea
+                                    id="description"
+                                    className="bg-surface-container-low dark:bg-surface-container-high w-full resize-none border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                     placeholder={__('messages.submit_idea.details_placeholder')}
                                     rows={6}
                                     value={data.description}
                                     onChange={e => setData('description', e.target.value)}
                                 />
-                                {errors.description && <div className="text-red-500 text-xs">{errors.description}</div>}
+                                <InputError message={errors.description ? __(errors.description) : undefined} />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.image_label')}
-                                </label>
-                                <div 
+                                </Label>
+                                <div
                                     onClick={() => document.getElementById('image-upload')?.click()}
                                     className="group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all hover:border-primary dark:hover:border-primary overflow-hidden relative"
                                 >
@@ -197,21 +222,21 @@ export default function SubmitIdea() {
                                             {__('messages.submit_idea.image_hint')}
                                         </p>
                                     </div>
-                                    <input 
+                                    <input
                                         id="image-upload"
-                                        type="file" 
-                                        className="hidden" 
+                                        type="file"
+                                        className="hidden"
                                         accept="image/*"
                                         onChange={handleImageChange}
                                     />
                                 </div>
-                                {errors.image && <div className="text-red-500 text-xs">{errors.image}</div>}
+                                <InputError message={errors.image ? __(errors.image) : undefined} />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.file_label')}
-                                </label>
+                                </Label>
                                 <div className="border-outline-variant/10 bg-surface-container-low dark:bg-surface-container-high flex items-center gap-4 rounded-lg border p-4">
                                     <span className="material-symbols-outlined text-primary">
                                         upload_file
@@ -226,61 +251,61 @@ export default function SubmitIdea() {
                                     >
                                         {__('messages.submit_idea.browse_device')}
                                     </button>
-                                    <input 
+                                    <input
                                         id="file-upload"
-                                        type="file" 
-                                        className="hidden" 
+                                        type="file"
+                                        className="hidden"
                                         accept=".pdf"
                                         onChange={handleFileChange}
                                     />
                                 </div>
-                                {errors.pdf_file && <div className="text-red-500 text-xs">{errors.pdf_file}</div>}
+                                <InputError message={errors.pdf_file ? __(errors.pdf_file) : undefined} />
                             </div>
 
                             <div className="border-outline-variant/20 dark:border-outline-variant/10 space-y-4 border-t pt-6">
-                                <label className="group flex cursor-pointer items-start gap-3">
-                                    <input
-                                        className="border-outline-variant dark:border-outline-variant/30 mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary dark:bg-surface-container-high"
-                                        type="checkbox"
+                                <div className="group flex items-start gap-3">
+                                    <Checkbox
+                                        id="agreed_terms"
+                                        className="mt-1"
                                         checked={data.agreed_terms}
-                                        onChange={e => setData('agreed_terms', e.target.checked)}
+                                        onCheckedChange={checked => setData('agreed_terms', !!checked)}
                                     />
-                                    <span className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white">
+                                    <Label htmlFor="agreed_terms" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
                                         {__('messages.submit_idea.agree_terms')}
-                                    </span>
-                                </label>
-                                {errors.agreed_terms && <div className="text-red-500 text-xs">{errors.agreed_terms}</div>}
+                                    </Label>
+                                </div>
+                                <InputError message={errors.agreed_terms ? __(errors.agreed_terms) : undefined} />
 
-                                <label className="group flex cursor-pointer items-start gap-3">
-                                    <input
-                                        className="border-outline-variant dark:border-outline-variant/30 mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary dark:bg-surface-container-high"
-                                        type="checkbox"
+                                <div className="group flex items-start gap-3">
+                                    <Checkbox
+                                        id="agreed_privacy"
+                                        className="mt-1"
                                         checked={data.agreed_privacy}
-                                        onChange={e => setData('agreed_privacy', e.target.checked)}
+                                        onCheckedChange={checked => setData('agreed_privacy', !!checked)}
                                     />
-                                    <span className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white">
+                                    <Label htmlFor="agreed_privacy" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
                                         {__('messages.submit_idea.pledge_originality')}
-                                    </span>
-                                </label>
-                                {errors.agreed_privacy && <div className="text-red-500 text-xs">{errors.agreed_privacy}</div>}
+                                    </Label>
+                                </div>
+                                <InputError message={errors.agreed_privacy ? __(errors.agreed_privacy) : undefined} />
 
-                                <label className="group flex cursor-pointer items-start gap-3">
-                                    <input
-                                        className="border-outline-variant dark:border-outline-variant/30 mt-1 h-5 w-5 rounded text-primary transition-all focus:ring-primary dark:bg-surface-container-high"
-                                        type="checkbox"
+                                <div className="group flex items-start gap-3">
+                                    <Checkbox
+                                        id="agreed_legal"
+                                        className="mt-1"
                                         checked={data.agreed_legal}
-                                        onChange={e => setData('agreed_legal', e.target.checked)}
+                                        onCheckedChange={checked => setData('agreed_legal', !!checked)}
                                     />
-                                    <span className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white">
+                                    <Label htmlFor="agreed_legal" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
                                         أتعهد بأن جميع المعلومات المقدمة صحيحة وأتحمل المسؤولية القانونية عنها.
-                                    </span>
-                                </label>
-                                {errors.agreed_legal && <div className="text-red-500 text-xs">{errors.agreed_legal}</div>}
+                                    </Label>
+                                </div>
+                                <InputError message={errors.agreed_legal ? __(errors.agreed_legal) : undefined} />
                             </div>
 
                             <div className="pt-6">
-                                <button
-                                    className="font-headline text-on-primary flex w-full items-center justify-center gap-3 rounded-xl bg-primary py-5 text-lg font-bold shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
+                                <Button
+                                    className="font-headline text-on-primary flex h-16 w-full items-center justify-center gap-3 rounded-xl bg-primary text-lg font-bold shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
                                     type="submit"
                                     disabled={processing}
                                 >
@@ -293,7 +318,7 @@ export default function SubmitIdea() {
                                     >
                                         rocket_launch
                                     </span>
-                                </button>
+                                </Button>
                             </div>
                         </form>
                     </div>
@@ -302,4 +327,5 @@ export default function SubmitIdea() {
         </AppLayout>
     );
 }
+
 

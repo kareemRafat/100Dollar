@@ -195,6 +195,17 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'title' => 'idea title',
+        'description' => 'idea details',
+        'category' => 'category',
+        'country' => 'country',
+        'city' => 'city',
+        'image' => 'idea image',
+        'pdf_file' => 'additional file',
+        'agreed_terms' => 'terms agreement',
+        'agreed_privacy' => 'originality pledge',
+        'agreed_legal' => 'legal pledge',
+    ],
 
 ];

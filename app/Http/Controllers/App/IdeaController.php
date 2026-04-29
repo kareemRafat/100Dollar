@@ -7,7 +7,6 @@ use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,7 +19,7 @@ class IdeaController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('app/pages/submit-idea');
+        return Inertia::render('app/pages/idea/create');
     }
 
     public function store(Request $request): RedirectResponse
@@ -62,9 +61,6 @@ class IdeaController extends Controller
                     'collection_name' => 'image',
                     'disk' => 'public',
                 ]);
-                
-                // Keep backward compatibility for now if needed, though we should prefer polymorphic
-                $idea->update(['image' => $path]);
             }
 
             if ($request->hasFile('pdf_file')) {
@@ -104,7 +100,7 @@ class IdeaController extends Controller
                 ->with(['user:id,name,avatar'])
                 ->withCount('likes')
                 ->latest('id')
-                ->cursorPaginate(5)
+                ->cursorPaginate(7)
             ),
             'isFollowingIdea' => auth()->check() ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() : false,
             'isFollowingOwner' => auth()->check() ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() : false,
