@@ -15,8 +15,6 @@ Route::get('/sponsors', [PageController::class, 'sponsors'])->name('app.sponsors
 Route::get('/contact', [PageController::class, 'contact'])->name('app.contact');
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('app.info');
 Route::get('/terms', [PageController::class, 'terms'])->name('app.terms');
-Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('app.ideas.show');
-
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile');
@@ -38,3 +36,5 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     // Comment Actions
     Route::post('/comments/{comment}/like', [CommentController::class, 'toggleLike'])->name('app.comments.like');
 });
+
+Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('app.ideas.show');
