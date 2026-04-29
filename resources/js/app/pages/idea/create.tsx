@@ -17,11 +17,13 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 
 
 export default function SubmitIdea() {
     const { __ } = useLang();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     const { data, setData, post, processing, errors } = useForm({
         title: '',
@@ -36,16 +38,44 @@ export default function SubmitIdea() {
         agreed_legal: false,
     });
 
+    const processImage = (file: File) => {
+        setData('image', file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setImagePreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    };
+
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
         if (file) {
-            setData('image', file);
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result as string);
-            };
-            reader.readAsDataURL(file);
+            processImage(file);
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files?.[0];
+
+        if (file && file.type.startsWith('image/')) {
+            processImage(file);
         }
     };
 
@@ -57,7 +87,7 @@ export default function SubmitIdea() {
         }
     };
 
-    const submit = (e: FormEvent) => {
+    const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store.url());
     };
@@ -81,7 +111,7 @@ export default function SubmitIdea() {
                     </div>
                     <h1 className="mb-4 font-headline text-2xl leading-tight font-extrabold text-white md:text-4xl">
                         {__('messages.submit_idea.hero_title')}{' '}
-                        <span className="text-primary">{__('messages.submit_idea.hero_title_highlight')}</span>
+                        <span className="text-primary-fixed-dim">{__('messages.submit_idea.hero_title_highlight')}</span>
                     </h1>
                     <p className="mx-auto max-w-2xl text-sm leading-relaxed text-white/90">
                         {__('messages.submit_idea.hero_desc')}
@@ -113,7 +143,7 @@ export default function SubmitIdea() {
                                     <Label htmlFor="country" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.country_label')}
                                     </Label>
-                                    <Select 
+                                    <Select
                                         value={data.country}
                                         onValueChange={value => setData('country', value)}
                                     >
@@ -150,7 +180,7 @@ export default function SubmitIdea() {
                                 <Label htmlFor="category" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.category_label')}
                                 </Label>
-                                <Select 
+                                <Select
                                     value={data.category}
                                     onValueChange={value => setData('category', value)}
                                 >
@@ -205,18 +235,30 @@ export default function SubmitIdea() {
                                 </Label>
                                 <div
                                     onClick={() => document.getElementById('image-upload')?.click()}
-                                    className="group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all hover:border-primary dark:hover:border-primary overflow-hidden relative"
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                    className={cn(
+                                        "group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-10 transition-all overflow-hidden relative",
+                                        isDragging ? "border-primary bg-primary/5 dark:bg-primary/10 scale-[1.02]" : "hover:border-primary dark:hover:border-primary"
+                                    )}
                                 >
                                     {imagePreview ? (
                                         <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity" />
                                     ) : (
-                                        <span className="material-symbols-outlined mb-3 text-5xl text-primary transition-transform group-hover:scale-110">
+                                        <span className={cn(
+                                            "material-symbols-outlined mb-3 text-5xl transition-transform",
+                                            isDragging ? "text-primary scale-110" : "text-primary group-hover:scale-110"
+                                        )}>
                                             add_photo_alternate
                                         </span>
                                     )}
                                     <div className="relative z-10 flex flex-col items-center">
-                                        <p className="font-headline text-sm font-bold text-on-surface dark:text-white">
-                                            {imagePreview ? __('messages.submit_idea.change_image') : __('messages.submit_idea.image_placeholder')}
+                                        <p className="font-headline text-sm font-bold text-on-surface dark:text-white text-center">
+                                            {isDragging
+                                                ? (__('messages.submit_idea.drop_to_upload') !== 'messages.submit_idea.drop_to_upload' ? __('messages.submit_idea.drop_to_upload') : 'أفلت الصورة هنا')
+                                                : (imagePreview ? __('messages.submit_idea.change_image') : __('messages.submit_idea.image_placeholder'))
+                                            }
                                         </p>
                                         <p className="text-outline mt-1 text-xs dark:text-slate-400">
                                             {__('messages.submit_idea.image_hint')}
