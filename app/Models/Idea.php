@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'category',
     'country',
     'city',
-    'image',
-    'pdf_file',
     'submission_day',
     'week_number',
     'year',

@@ -13,8 +13,7 @@ return new class extends Migration
             $table->string('phone')->nullable()->after('role');
             $table->string('country')->nullable()->after('phone');
             $table->string('nationality')->nullable()->after('country');
-            $table->string('avatar')->nullable()->after('nationality');
-            $table->boolean('is_active')->default(true)->after('avatar');
+            $table->boolean('is_active')->default(true)->after('nationality');
         });
 
         Schema::table('users', function (Blueprint $table) {
@@ -28,7 +27,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropIndex(['country']);
             $table->dropIndex(['role']);
-            $table->dropColumn(['role', 'phone', 'country', 'nationality', 'avatar', 'is_active']);
+            $table->dropColumn(['role', 'phone', 'country', 'nationality', 'is_active']);
         });
     }
 };

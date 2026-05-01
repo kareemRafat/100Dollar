@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('logo')->nullable();
             $table->unsignedTinyInteger('day_of_week')->unique(); // 0-6 (Sunday-Saturday)
             $table->date('contract_start');
             $table->date('contract_end');

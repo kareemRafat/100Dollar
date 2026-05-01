@@ -19,7 +19,7 @@ class HomeController extends Controller
         $currentWeek = $now->isoWeek();
         $currentYear = $now->isoWeekYear();
 
-        $ideas = Idea::with(['user:id,name,avatar'])
+        $ideas = Idea::with(['user:id,name', 'user.media'])
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
             ->where('year', $currentYear)
@@ -28,11 +28,12 @@ class HomeController extends Controller
             ->simplePaginate(6)
             ->withQueryString();
 
-        $sponsor = Sponsor::where('day_of_week', $currentDay)
+        $sponsor = Sponsor::with('media')
+            ->where('day_of_week', $currentDay)
             ->where('is_active', true)
-            ->first(['id', 'name', 'logo', 'day_of_week']);
+            ->first(['id', 'name', 'day_of_week']);
 
-        $previousWinners = Idea::with(['user:id,name,avatar', 'sponsor:id,name,logo'])
+        $previousWinners = Idea::with(['user:id,name', 'user.media', 'sponsor:id,name', 'sponsor.media'])
             ->where('is_winner', true)
             ->orderByDesc('winner_announced_at')
             ->take(7)

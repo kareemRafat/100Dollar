@@ -73,9 +73,6 @@ class IdeaController extends Controller
                     'collection_name' => 'pdf',
                     'disk' => 'public',
                 ]);
-
-                // Keep backward compatibility
-                $idea->update(['pdf_file' => $path]);
             }
 
             return $idea;
@@ -91,13 +88,13 @@ class IdeaController extends Controller
 
     public function show(Idea $idea): Response
     {
-        $idea->load(['user', 'sponsor']);
+        $idea->load(['user.media', 'sponsor.media']);
         $idea->loadCount(['votes', 'comments']);
 
         return Inertia::render('app/pages/idea/show', [
             'idea' => $idea,
             'comments' => Inertia::scroll(fn () => $idea->comments()
-                ->with(['user:id,name,avatar'])
+                ->with(['user:id,name', 'user.media'])
                 ->withCount('likes')
                 ->latest('id')
                 ->cursorPaginate(7)

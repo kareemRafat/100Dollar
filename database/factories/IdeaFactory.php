@@ -40,8 +40,6 @@ class IdeaFactory extends Factory
             'category' => fake()->randomElement($categories),
             'country' => fake()->randomElement($countries),
             'city' => fake()->city(),
-            'image' => null,
-            'pdf_file' => null,
             'submission_day' => fake()->numberBetween(0, 6),
             'week_number' => now()->weekOfYear,
             'year' => now()->year,

@@ -29,7 +29,6 @@ class SponsorFactory extends Factory
 
         return [
             'name' => fake()->randomElement($sponsorNames),
-            'logo' => null,
             'day_of_week' => fake()->unique()->numberBetween(0, 6),
             'contract_start' => now()->startOfYear(),
             'contract_end' => now()->endOfYear(),

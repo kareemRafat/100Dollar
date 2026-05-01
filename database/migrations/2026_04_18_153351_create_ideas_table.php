@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('category');
             $table->string('country');
             $table->string('city')->nullable();
-            $table->string('pdf_file')->nullable();
             $table->unsignedSmallInteger('submission_day')->default(0);
             $table->unsignedInteger('week_number');
             $table->unsignedSmallInteger('year');

@@ -35,7 +35,6 @@ class UserFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'country' => fake()->randomElement($countries),
             'nationality' => fake()->randomElement($countries),
-            'avatar' => null,
             'is_active' => true,
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,
