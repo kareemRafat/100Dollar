@@ -15,7 +15,6 @@ class Media extends Model
         'mediable_id',
         'mediable_type',
         'file_path',
-        'file_name',
         'mime_type',
         'file_size',
         'collection_name',

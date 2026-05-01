@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 export default function MyIdeas() {

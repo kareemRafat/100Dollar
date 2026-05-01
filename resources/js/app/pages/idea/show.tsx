@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { PinModal } from '@/app/components/pin-modal';
+import { Button } from '@/app/components/ui/button';
 import AppLayout from '@/app/layouts/app-layout';
 import type { Idea, User, Paginated } from '@/types';
 
@@ -138,11 +139,11 @@ return;
                                 <h3 className="text-xl font-bold text-on-surface mb-2 font-headline">{__('messages.home.vote_now')}</h3>
                                 <p className="text-sm text-outline leading-relaxed">{__('messages.home.voting_chance_still')}</p>
                             </div>
-                            <button
+                            <Button
                                 onClick={() => setIsPinModalOpen(true)}
-                                className="w-full bg-primary text-on-primary py-4 rounded-xl font-bold text-lg hover:bg-primary-container transition-all active:scale-[0.98] shadow-lg mb-4">
+                                className="w-full py-7 rounded-xl text-lg shadow-lg mb-4">
                                 {__('messages.home.vote_now')}
-                            </button>
+                            </Button>
                             <p className="text-[11px] text-center text-outline-variant font-medium">
                                 {__('messages.my_ideas.unit_vote')}: {idea.votes_count.toLocaleString()}
                             </p>
@@ -377,14 +378,14 @@ return;
 
                                                 <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                                                     <p className="text-sm text-outline font-bold mr-2">{__('messages.comments.rules_hint')}</p>
-                                                    <button
-                                                        type="submit"
-                                                        disabled={processing || !data.body.trim()}
-                                                        className="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold hover:bg-primary-container transition-all active:scale-95 shadow-lg flex items-center gap-2 disabled:opacity-50 w-full sm:w-auto justify-center"
-                                                    >
-                                                        {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                                                        {__('messages.comments.add_comment')}
-                                                    </button>
+                                <Button
+                                    type="submit"
+                                    disabled={processing || !data.body.trim()}
+                                    className="px-8 py-7 rounded-xl shadow-lg w-full sm:w-auto"
+                                >
+                                    {processing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+                                    {__('messages.comments.add_comment')}
+                                </Button>
                                                 </div>
                                             </div>
                                         </form>

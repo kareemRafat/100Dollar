@@ -4,7 +4,7 @@ import { Camera, Loader2, User as UserIcon } from 'lucide-react';
 import React from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';

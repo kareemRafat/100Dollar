@@ -309,6 +309,44 @@
 }
 
 @layer utilities {
+    .animate-sparkle {
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .animate-sparkle::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(255, 255, 255, 0.5) 50%,
+            transparent 100%
+        );
+        transform: skewX(-25deg);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .animate-sparkle:hover::after {
+        animation: sparkle-shine 0.75s ease-out;
+    }
+
+    @keyframes sparkle-shine {
+        0% {
+            left: -100%;
+            opacity: 0.8;
+        }
+        100% {
+            left: 200%;
+            opacity: 1;
+        }
+    }
+
     .editorial-shadow {
         box-shadow: 0 32px 48px -4px rgba(26, 28, 27, 0.05);
     }

@@ -2,7 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';

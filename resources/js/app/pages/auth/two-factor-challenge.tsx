@@ -4,7 +4,7 @@ import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useMemo, useState } from 'react';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
     InputOTP,

@@ -12,7 +12,7 @@ import {
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,

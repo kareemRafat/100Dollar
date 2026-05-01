@@ -55,7 +55,6 @@ class IdeaController extends Controller
                 $path = $request->file('image')->store('ideas/images', 'public');
                 $idea->media()->create([
                     'file_path' => $path,
-                    'file_name' => $request->file('image')->getClientOriginalName(),
                     'mime_type' => $request->file('image')->getMimeType(),
                     'file_size' => $request->file('image')->getSize(),
                     'collection_name' => 'image',
@@ -67,7 +66,6 @@ class IdeaController extends Controller
                 $path = $request->file('pdf_file')->store('ideas/pdfs', 'public');
                 $idea->media()->create([
                     'file_path' => $path,
-                    'file_name' => $request->file('pdf_file')->getClientOriginalName(),
                     'mime_type' => $request->file('pdf_file')->getMimeType(),
                     'file_size' => $request->file('pdf_file')->getSize(),
                     'collection_name' => 'pdf',

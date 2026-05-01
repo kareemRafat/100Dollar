@@ -2,7 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { InfiniteScroll } from '@inertiajs/react';
 import { Loader2 } from 'lucide-react';
 import { IdeaCard } from '@/app/components/idea-card';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import type { Idea, Paginated } from '@/types';
 
 interface Props {

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->morphs('mediable'); // Creates mediable_id and mediable_type
             $table->string('file_path');
-            $table->string('file_name');
             $table->string('mime_type')->nullable();
             $table->unsignedBigInteger('file_size')->nullable();
             $table->string('collection_name')->default('default');

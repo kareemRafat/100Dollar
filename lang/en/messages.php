@@ -231,6 +231,13 @@ return [
         'idea_submitted_successfully' => 'Your idea has been submitted successfully and is now under review.',
     ],
 
+    'vote_pin' => [
+        'title' => 'Verify your identity',
+        'desc' => 'Enter the 6-digit code sent to',
+        'confirm' => 'Confirm Vote',
+        'resend' => 'Resend Code',
+    ],
+
     'profile' => [
         'hero_title' => 'Account Management',
         'hero_desc' => 'Customize your personal data and keep your investments secure in the Golden Ledger.',

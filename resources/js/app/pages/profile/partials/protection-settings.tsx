@@ -4,7 +4,7 @@ import { Lock, ShieldCheck, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { cn } from '@/lib/utils';
 import { disable, enable } from '@/routes/two-factor';

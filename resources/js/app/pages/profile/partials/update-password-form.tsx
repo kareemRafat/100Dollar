@@ -3,7 +3,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { ShieldCheck, Loader2 } from 'lucide-react';
 import React, { useRef } from 'react';
 import { updatePassword as updatePasswordAction } from '@/actions/App/Http/Controllers/App/ProfileController';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';

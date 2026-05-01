@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
+import { Button } from '@/app/components/ui/button';
 
 type Props = {
     id: number;
@@ -163,17 +164,18 @@ export function IdeaCard({
                         />
                     </div>
                 </div>
-                <button
+                <Button
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         onVote?.();
                     }}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-surface-container-low py-3 text-sm font-bold text-on-surface dark:bg-surface-container-high dark:text-white transition-all group-hover:bg-primary group-hover:text-on-primary active:scale-95"
+                    variant="secondary"
+                    className="w-full rounded-xl py-6 group-hover:bg-primary/90 group-hover:text-on-primary"
                 >
                     <span className="material-symbols-outlined text-xl">thumb_up</span>
-                    {__('messages.home.vote_now')}
-                </button>
+                    <span>{__('messages.home.vote_now')}</span>
+                </Button>
             </div>
         </Link>
     );
