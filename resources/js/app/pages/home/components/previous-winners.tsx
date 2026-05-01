@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
 import { WinnerCard } from '@/app/components/winner-card';
+import { Button } from '@/app/components/ui/button';
 import type { Idea } from '@/types';
 
 interface Props {
@@ -17,8 +18,8 @@ export default function PreviousWinners({ winners = [] }: Props) {
     const winnersArray = (Array.isArray(winners) ? winners : Object.values(winners || {})) as Idea[];
 
     if (winnersArray.length === 0) {
-return null;
-}
+        return null;
+    }
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         direction: isRtl ? 'rtl' : 'ltr',
@@ -39,8 +40,8 @@ return null;
 
     useEffect(() => {
         if (!emblaApi) {
-return;
-}
+            return;
+        }
 
         onSelect(emblaApi);
         emblaApi.on('reInit', onSelect);
@@ -60,24 +61,28 @@ return;
                 </div>
                 <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
-                        <button
+                        <Button
+                            variant="secondary"
+                            size="icon"
                             onClick={scrollPrev}
                             disabled={prevBtnDisabled}
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-high text-on-surface transition-all hover:bg-primary hover:text-on-primary disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                            className="h-10 w-10 rounded-full bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary"
                         >
                             <span className="material-symbols-outlined">
                                 {isRtl ? 'chevron_right' : 'chevron_left'}
                             </span>
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            size="icon"
                             onClick={scrollNext}
                             disabled={nextBtnDisabled}
-                            className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-high text-on-surface transition-all hover:bg-primary hover:text-on-primary disabled:opacity-30 cursor-pointer disabled:cursor-default"
+                            className="h-10 w-10 rounded-full bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary"
                         >
                             <span className="material-symbols-outlined">
                                 {isRtl ? 'chevron_left' : 'chevron_right'}
                             </span>
-                        </button>
+                        </Button>
                     </div>
                     <Link
                         className="group flex items-center gap-2 text-sm font-bold text-primary transition-colors hover:text-primary-container"

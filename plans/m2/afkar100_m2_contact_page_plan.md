@@ -14,20 +14,20 @@ Deliver a Contact page with a working form.
 
 ## Tasks
 
-- [ ] Build the Contact page
-- [ ] Add a contact form
+- [x] Build the Contact page
+- [x] Add a contact form
 
 ---
 
 ## Deliverables
 
-- [ ] Contact page route and UI
-- [ ] Contact form component and submission flow
+- [x] Contact page route and UI
+- [x] Contact form component and submission flow
 
 ---
 
 ## Done Criteria
 
-- [ ] The Contact page loads successfully
-- [ ] The contact form is visible and usable
+- [x] The Contact page loads successfully
+- [x] The contact form is visible and usable
 

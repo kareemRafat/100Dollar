@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\CommentController;
+use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\IdeaController;
 use App\Http\Controllers\App\PageController;
@@ -12,7 +13,8 @@ Route::get('/', [HomeController::class, 'index'])->name('app.home');
 Route::get('/about', [PageController::class, 'about'])->name('app.about');
 Route::get('/archive', [PageController::class, 'archive'])->name('app.archive');
 Route::get('/sponsors', [PageController::class, 'sponsors'])->name('app.sponsors');
-Route::get('/contact', [PageController::class, 'contact'])->name('app.contact');
+Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('app.contact.submit');
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('app.info');
 Route::get('/terms', [PageController::class, 'terms'])->name('app.terms');
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {

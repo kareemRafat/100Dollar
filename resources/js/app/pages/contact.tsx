@@ -1,20 +1,51 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
+import { toast } from 'sonner';
+import { store } from '@/actions/App/Http/Controllers/App/ContactController';
+import { Button } from '@/app/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+import InputError from '@/components/input-error';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 export default function Contact() {
     const { __ } = useLang();
+
+    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm({
+        name: '',
+        email: '',
+        subject: '',
+        message: '',
+    });
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        post(store().url, {
+            onSuccess: () => {
+                reset();
+                toast.success(__('messages.contact.success_message'));
+            },
+        });
+    };
 
     const contactCards = [
         {
             icon: 'mail',
             label: __('messages.contact.email_card_label'),
-            value: 'contact@goldenledger.sa',
+            value: __('messages.contact.email_value'),
         },
         {
             icon: 'chat',
             label: __('messages.contact.whatsapp_card_label'),
-            value: '+966 50 000 0000',
+            value: __('messages.contact.whatsapp_value'),
             dir: 'ltr' as const,
         },
         {
@@ -22,6 +53,13 @@ export default function Contact() {
             label: __('messages.contact.working_hours_card_label'),
             value: __('messages.contact.working_hours_value'),
         },
+    ];
+
+    const subjects = [
+        { value: 'general', label: __('messages.contact.subject_general') },
+        { value: 'sponsorship', label: __('messages.contact.subject_sponsorship') },
+        { value: 'complaint', label: __('messages.contact.subject_complaint') },
+        { value: 'other', label: __('messages.contact.subject_other') },
     ];
 
     return (
@@ -58,60 +96,88 @@ export default function Contact() {
 
             <section className="mx-auto max-w-7xl px-8 py-24">
                 <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-                    <div className="rounded-xl border-outline-variant/30 bg-surface-container-lowest p-8 shadow-sm md:p-12 lg:col-span-7">
+                    <div className="rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-8 shadow-sm md:p-12 lg:col-span-7 dark:border-white/5 dark:bg-card">
                         <h2 className="mb-8 text-2xl font-bold text-on-surface dark:text-white">
                             {__('messages.contact.send_message_title')}
                         </h2>
-                        <form className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <div className="flex flex-col gap-2">
-                                    <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                    <Label className="pe-2 text-sm font-bold text-on-surface-variant">
                                         {__('messages.contact.name_label')}
-                                    </label>
-                                    <input
-                                        className="rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
+                                    </Label>
+                                    <Input
+                                        className="bg-surface-container-low dark:bg-white/5"
                                         placeholder={__('messages.contact.name_placeholder')}
                                         type="text"
+                                        value={data.name}
+                                        onChange={(e) => setData('name', e.target.value)}
+                                        required
                                     />
+                                    <InputError message={errors.name} />
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                    <Label className="pe-2 text-sm font-bold text-on-surface-variant">
                                         {__('messages.contact.email_label')}
-                                    </label>
-                                    <input
-                                        className="rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
+                                    </Label>
+                                    <Input
+                                        className="bg-surface-container-low dark:bg-white/5"
                                         placeholder={__('messages.contact.email_placeholder')}
                                         type="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        required
                                     />
+                                    <InputError message={errors.email} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                <Label className="pe-2 text-sm font-bold text-on-surface-variant">
                                     {__('messages.contact.subject_label')}
-                                </label>
-                                <select className="appearance-none rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all focus:ring-1 focus:ring-primary">
-                                    <option>{__('messages.contact.subject_general')}</option>
-                                    <option>{__('messages.contact.subject_sponsorship')}</option>
-                                    <option>{__('messages.contact.subject_complaint')}</option>
-                                    <option>{__('messages.contact.subject_other')}</option>
-                                </select>
+                                </Label>
+                                <Select
+                                    value={data.subject}
+                                    onValueChange={(val) => setData('subject', val)}
+                                    required
+                                >
+                                    <SelectTrigger className="w-full bg-surface-container-low py-6 dark:bg-white/5">
+                                        <SelectValue placeholder={__('messages.contact.subject_label')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {subjects.map((subject) => (
+                                            <SelectItem key={subject.value} value={subject.label}>
+                                                {subject.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.subject} />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <label className="pe-2 text-sm font-bold text-on-surface-variant">
+                                <Label className="pe-2 text-sm font-bold text-on-surface-variant">
                                     {__('messages.contact.message_label')}
-                                </label>
-                                <textarea
-                                    className="h-28 resize-none rounded-lg border-none bg-surface-container-low p-3 text-on-surface transition-all placeholder:text-outline/50 focus:ring-1 focus:ring-primary"
+                                </Label>
+                                <Textarea
+                                    className="h-32 bg-surface-container-low dark:bg-white/5"
                                     placeholder={__('messages.contact.message_placeholder')}
-                                    rows={5}
+                                    value={data.message}
+                                    onChange={(e) => setData('message', e.target.value)}
+                                    required
                                 />
+                                <InputError message={errors.message} />
                             </div>
-                            <button
-                                className="w-full rounded-lg bg-primary px-12 py-4 text-lg font-bold text-white shadow-md transition-all hover:opacity-90 active:scale-95 md:w-auto"
+                            <Button
+                                className="w-full h-12 text-lg font-bold md:w-auto md:px-12"
                                 type="submit"
+                                disabled={processing}
                             >
-                                {__('messages.contact.send_button')}
-                            </button>
+                                {processing ? __('messages.processing') : __('messages.contact.send_button')}
+                            </Button>
+                            {recentlySuccessful && (
+                                <p className="text-sm font-medium text-success">
+                                    {__('messages.contact.success_message')}
+                                </p>
+                            )}
                         </form>
                     </div>
 
@@ -119,7 +185,7 @@ export default function Contact() {
                         {contactCards.map((card) => (
                             <div
                                 key={card.icon}
-                                className="flex items-start gap-6 rounded-xl border-outline-variant/20 bg-surface-container-low p-8 transition-transform hover:-translate-x-2"
+                                className="flex items-start gap-6 rounded-xl border border-outline-variant/20 bg-surface-container-low p-8 transition-transform hover:-translate-x-2 dark:border-white/5 dark:bg-white/5"
                             >
                                 <div className="flex items-center justify-center rounded-lg bg-primary/10 p-4">
                                     <span className="material-symbols-outlined text-primary">
@@ -139,7 +205,7 @@ export default function Contact() {
                                 </div>
                             </div>
                         ))}
-                        <div className="mt-4 overflow-hidden rounded-xl border border-outline-variant/20 shadow-sm">
+                        <div className="mt-4 overflow-hidden rounded-xl border border-outline-variant/20 shadow-sm dark:border-white/5">
                             <div className="group relative h-48">
                                 <img
                                     alt="Modern collaborative space"
@@ -152,21 +218,20 @@ export default function Contact() {
                     </div>
                 </div>
 
-                <div className="mt-16 flex flex-col items-center justify-between gap-8 rounded-2xl border-primary/10 bg-primary/5 p-8 text-center md:flex-row md:p-12 md:text-right">
+                <div className="mt-16 flex flex-col items-center justify-between gap-8 rounded-2xl border border-primary/10 bg-primary/5 p-8 text-center md:flex-row md:p-12 md:text-right dark:border-white/10 dark:bg-white/5">
                     <div>
                         <h3 className="mb-2 text-2xl font-extrabold text-on-surface dark:text-white">
                             {__('messages.contact.sponsor_cta_title')}
                         </h3>
-                        <p className="text-on-surface-variant">
+                        <p className="text-on-surface-variant dark:text-gray-400">
                             {__('messages.contact.sponsor_cta_desc')}
                         </p>
                     </div>
-                    <Link
-                        href="/sponsors"
-                        className="rounded-lg bg-deep-navy px-8 py-3 font-bold whitespace-nowrap text-primary-fixed-dim transition-all hover:bg-deep-navy/90"
-                    >
-                        {__('messages.contact.learn_more')}
-                    </Link>
+                    <Button asChild variant="secondary" size="lg" className="rounded-xl font-bold whitespace-nowrap">
+                        <Link href="/sponsors">
+                            {__('messages.contact.learn_more')}
+                        </Link>
+                    </Button>
                 </div>
             </section>
         </AppLayout>

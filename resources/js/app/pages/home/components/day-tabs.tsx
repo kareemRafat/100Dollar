@@ -1,5 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { router } from '@inertiajs/react';
+import { Button } from '@/app/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Day {
     id: number;
@@ -15,8 +17,8 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
     const { __ } = useLang();
 
     if (!weekDays || weekDays.length === 0) {
-return null;
-}
+        return null;
+    }
 
     const handleDayChange = (dayId: number) => {
         router.get('/', { day: dayId }, {
@@ -30,17 +32,19 @@ return null;
         <section className="mx-auto mb-10 max-w-7xl px-6">
             <div className="no-scrollbar flex snap-x gap-2 overflow-x-auto pb-4">
                 {weekDays.map((day) => (
-                    <button
+                    <Button
                         key={day.id}
                         onClick={() => handleDayChange(day.id)}
-                        className={`rounded-xl px-6 py-3 font-headline text-sm font-bold whitespace-nowrap transition-all duration-200 ${
+                        variant={currentDay === day.id ? 'default' : 'secondary'}
+                        className={cn(
+                            'h-auto cursor-pointer rounded-xl px-6 py-3 font-headline text-sm font-bold whitespace-nowrap shadow-none',
                             currentDay === day.id
-                                ? 'bg-primary text-on-primary shadow-md'
+                                ? 'shadow-md'
                                 : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant'
-                        }`}
+                        )}
                     >
                         {__(day.name)}
-                    </button>
+                    </Button>
                 ))}
             </div>
         </section>

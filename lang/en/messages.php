@@ -116,9 +116,12 @@ return [
         'sponsor_cta_desc' => 'Contribute to supporting innovation and be a partner in the success of future Saudi ideas.',
         'learn_more' => 'Learn More',
         'email_card_label' => 'Email Address',
+        'email_value' => 'contact@goldenledger.sa',
         'whatsapp_card_label' => 'WhatsApp',
+        'whatsapp_value' => '+966 50 000 0000',
         'working_hours_card_label' => 'Working Hours',
         'working_hours_value' => 'Sunday - Thursday: 9am - 6pm',
+        'success_message' => 'Thank you for your message. We will get back to you soon!',
     ],
 
     'sponsors' => [

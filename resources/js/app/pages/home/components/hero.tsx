@@ -2,6 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { ParticlesBackground } from '@/app/components/particles-background';
+import { Button } from '@/app/components/ui/button';
 import { login } from '@/routes';
 
 export default function Hero() {
@@ -40,18 +41,16 @@ export default function Hero() {
                     {__('messages.home.hero_desc')}
                 </p>
                 <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
-                    <Link
-                        href={submitUrl}
-                        className="rounded-xl bg-primary px-10 py-5 text-center text-xl font-bold text-on-primary shadow-lg transition-all hover:translate-y-[-2px]"
-                    >
-                        {submitText}
-                    </Link>
-                    <Link
-                        href="/how-it-works"
-                        className="rounded-xl border border-outline-variant/20 bg-surface-container-low px-10 py-5 text-center text-xl font-bold text-on-surface transition-all hover:bg-surface-container-high dark:text-white"
-                    >
-                        {__('messages.ui.how_it_works')}
-                    </Link>
+                    <Button asChild size="lg" className="h-auto px-10 py-5 text-xl font-bold rounded-xl shadow-lg transition-all hover:translate-y-[-2px]">
+                        <Link href={submitUrl}>
+                            {submitText}
+                        </Link>
+                    </Button>
+                    <Button asChild variant="outline" size="lg" className="h-auto px-10 py-5 text-xl font-bold rounded-xl bg-surface-container-low transition-all hover:bg-surface-container-high border-outline-variant/20 dark:text-white">
+                        <Link href="/how-it-works">
+                            {__('messages.ui.how_it_works')}
+                        </Link>
+                    </Button>
                 </div>
             </div>
         </section>

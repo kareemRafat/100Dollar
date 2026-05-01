@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,11 +23,6 @@ class PageController extends Controller
     public function sponsors(): Response
     {
         return Inertia::render('app/pages/sponsors');
-    }
-
-    public function contact(): Response
-    {
-        return Inertia::render('app/pages/contact');
     }
 
     public function howItWorks(): Response

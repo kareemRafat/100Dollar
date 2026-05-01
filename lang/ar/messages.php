@@ -116,9 +116,12 @@ return [
         'sponsor_cta_desc' => 'ساهم في دعم الابتكار وكن شريكاً في نجاح الأفكار السعودية القادمة.',
         'learn_more' => 'اعرف المزيد',
         'email_card_label' => 'البريد الإلكتروني',
+        'email_value' => 'contact@goldenledger.sa',
         'whatsapp_card_label' => 'واتساب',
+        'whatsapp_value' => '+966 50 000 0000',
         'working_hours_card_label' => 'ساعات العمل',
         'working_hours_value' => 'الأحد - الخميس: 9ص - 6م',
+        'success_message' => 'شكراً لرسالتك. سنتواصل معك قريباً!',
     ],
 
     'sponsors' => [
