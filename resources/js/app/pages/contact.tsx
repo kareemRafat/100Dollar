@@ -1,13 +1,12 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
 import { toast } from 'sonner';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
@@ -15,6 +14,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+
 
 export default function Contact() {
     const { __ } = useLang();
@@ -171,7 +172,7 @@ export default function Contact() {
                                 type="submit"
                                 disabled={processing}
                             >
-                                {processing ? __('messages.processing') : __('messages.contact.send_button')}
+                                {processing ? __('messages.common.processing') : __('messages.contact.send_button')}
                             </Button>
                             {recentlySuccessful && (
                                 <p className="text-sm font-medium text-success">
@@ -220,7 +221,7 @@ export default function Contact() {
 
                 <div className="mt-16 flex flex-col items-center justify-between gap-8 rounded-2xl border border-primary/10 bg-primary/5 p-8 text-center md:flex-row md:p-12 md:text-right dark:border-white/10 dark:bg-white/5">
                     <div>
-                        <h3 className="mb-2 text-2xl font-extrabold text-on-surface dark:text-white">
+                        <h3 className="ltr:text-left mb-2 text-2xl font-extrabold text-on-surface dark:text-white">
                             {__('messages.contact.sponsor_cta_title')}
                         </h3>
                         <p className="text-on-surface-variant dark:text-gray-400">
