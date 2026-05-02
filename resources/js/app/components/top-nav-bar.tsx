@@ -10,9 +10,9 @@ import {
     Menu,
 } from 'lucide-react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { Button } from '@/app/components/ui/button';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/app/components/ui/button';
 import {
     DropdownMenu,
     DropdownMenuContent,

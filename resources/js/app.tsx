@@ -4,7 +4,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import AdminSettingsLayout from '@/admin/layouts/settings-layout';
-import { Toaster as AppToaster } from '@/app/components/ui/sonner';
+import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import { Toaster as AdminToaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
@@ -45,20 +45,19 @@ createInertiaApp({
         });
 
         const isAdmin = props.initialPage.component.startsWith('admin/');
-        const ActiveToaster = isAdmin ? AdminToaster : AppToaster;
-
+        
         const content = (
             <TooltipProvider delayDuration={0}>
                 <App {...props} />
-                <ActiveToaster
-                    position="top-center"
-                    dir={dir}
-                    toastOptions={
-                        isAdmin
-                            ? { className: '!border-none shadow-lg' }
-                            : undefined
-                    }
-                />
+                {isAdmin ? (
+                    <AdminToaster
+                        position="top-center"
+                        dir={dir}
+                        toastOptions={{ className: '!border-none shadow-lg' }}
+                    />
+                ) : (
+                    <AppToaster />
+                )}
             </TooltipProvider>
         );
 

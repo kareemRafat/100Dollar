@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { toast } from 'sonner';
+import { toast } from '@/app/components/ui/toast';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
 import AppLayout from '@/app/layouts/app-layout';
