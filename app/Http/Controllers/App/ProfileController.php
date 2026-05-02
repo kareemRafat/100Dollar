@@ -56,30 +56,30 @@ class ProfileController extends Controller
             default => 'personal-info',
         };
 
-        // Fetch activity data based on active section
+        // Fetch activity data based on active section with pagination and deferring
         if ($activeSection === 'voted-ideas') {
-            $props['votedIdeas'] = Vote::where('voter_email', $user->email)
+            $props['votedIdeas'] = Inertia::defer(fn () => Vote::where('voter_email', $user->email)
                 ->whereNotNull('otp_verified_at')
                 ->with('idea.user')
                 ->latest()
-                ->get()
-                ->pluck('idea');
+                ->paginate(10)
+                ->through(fn ($vote) => $vote->idea));
         } elseif ($activeSection === 'followed-ideas') {
-            $props['followedIdeas'] = $user->followedIdeas()
+            $props['followedIdeas'] = Inertia::defer(fn () => $user->followedIdeas()
                 ->with('idea.user')
                 ->latest()
-                ->get()
-                ->pluck('idea');
+                ->paginate(10)
+                ->through(fn ($follow) => $follow->idea));
         } elseif ($activeSection === 'followed-people') {
-            $props['followedPeople'] = $user->following()
+            $props['followedPeople'] = Inertia::defer(fn () => $user->following()
                 ->with('following')
                 ->latest()
-                ->get()
-                ->pluck('following');
+                ->paginate(10)
+                ->through(fn ($follow) => $follow->following));
         } elseif ($activeSection === 'notifications') {
-            $props['notifications'] = $user->customNotifications()
+            $props['notifications'] = Inertia::defer(fn () => $user->customNotifications()
                 ->latest()
-                ->get();
+                ->paginate(10));
         }
 
         return Inertia::render('app/pages/profile', $props);

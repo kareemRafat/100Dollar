@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { router } from '@inertiajs/react';
-import { usePage } from '@inertiajs/react';
+import { router, usePage, Link } from '@inertiajs/react';
 import { Bell, Clock } from 'lucide-react';
+import { memo } from 'react';
 import { read } from '@/routes/app/profile/notifications';
 import { toast } from '@/app/components/ui/toast';
 
@@ -14,13 +14,19 @@ type Notification = {
 };
 
 type Props = {
-    notifications: Notification[];
+    notifications: {
+        data: Notification[];
+        links: any[];
+        meta: any;
+    };
 };
 
-export default function Notifications({ notifications = [] }: Props) {
+function Notifications({ notifications }: Props) {
     const { __ } = useLang();
     const { props: pageProps } = usePage();
     const locale = pageProps.locale as string;
+    
+    const items = Array.isArray(notifications) ? notifications : (notifications?.data || []);
 
     const handleMarkAsRead = (id: number) => {
         router.patch(read(id).url, {}, {
@@ -40,7 +46,7 @@ export default function Notifications({ notifications = [] }: Props) {
         }).format(date);
     };
 
-    if (notifications.length === 0) {
+    if (items.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant/20 bg-surface-container-lowest p-12 text-center dark:bg-surface-container-low">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -59,11 +65,11 @@ export default function Notifications({ notifications = [] }: Props) {
     return (
         <div className="space-y-6">
             <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.notifications')} ({notifications.length})
+                {__('messages.profile.notifications')} ({notifications.meta?.total || items.length})
             </h2>
 
             <div className="space-y-3">
-                {notifications.map((notification) => (
+                {items.map((notification) => (
                     <div
                         key={notification.id}
                         onClick={() => !notification.is_read && handleMarkAsRead(notification.id)}
@@ -106,6 +112,29 @@ export default function Notifications({ notifications = [] }: Props) {
                     </div>
                 ))}
             </div>
+
+            {/* Basic Pagination Links */}
+            {notifications.meta?.last_page > 1 && (
+                <div className="mt-8 flex justify-center gap-2">
+                    {notifications.meta.links.map((link: any, i: number) => (
+                        <Link
+                            key={i}
+                            href={link.url || '#'}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                                link.active
+                                    ? 'bg-primary text-on-primary font-bold'
+                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
+                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            preserveScroll
+                            preserveState
+                            only={['notifications']}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
+
+export default memo(Notifications);

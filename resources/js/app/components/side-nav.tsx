@@ -53,16 +53,6 @@ export function SideNav({ items, activeSection, onItemClick }: Props) {
                         })}
                     </div>
                 </div>
-
-                <div className="mt-auto p-4 border-t border-outline-variant/10 dark:border-white/5">
-                    <button
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-3 p-3 text-sm font-bold text-error transition-all hover:bg-error/5 rounded-xl cursor-pointer"
-                    >
-                        <LogOut className="size-4.5" />
-                        <span>{__('messages.auth.logout')}</span>
-                    </button>
-                </div>
             </div>
         </aside>
     );

@@ -8,6 +8,7 @@ import { useClipboard } from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
 import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
+import { toast } from '@/app/components/ui/toast';
 
 type Props = {
     recoveryCodesList: string[];

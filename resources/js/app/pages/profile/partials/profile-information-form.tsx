@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Loader2, User as UserIcon } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/app/components/ui/button';
@@ -20,7 +20,7 @@ type Props = {
     };
 };
 
-export default function ProfileInformationForm({ user }: Props) {
+function ProfileInformationForm({ user }: Props) {
     const { locale } = usePage().props;
     const { __ } = useLang();
     const isRtl = locale === 'ar';
@@ -213,3 +213,5 @@ export default function ProfileInformationForm({ user }: Props) {
         </div>
     );
 }
+
+export default memo(ProfileInformationForm);

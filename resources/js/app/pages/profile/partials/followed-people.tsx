@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, useForm } from '@inertiajs/react';
 import { Users, UserMinus, User } from 'lucide-react';
+import { memo } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { follow } from '@/routes/app/users';
 import { toast } from '@/app/components/ui/toast';
@@ -12,12 +13,17 @@ type Person = {
 };
 
 type Props = {
-    people: Person[];
+    people: {
+        data: Person[];
+        links: any[];
+        meta: any;
+    };
 };
 
-export default function FollowedPeople({ people = [] }: Props) {
+function FollowedPeople({ people }: Props) {
     const { __ } = useLang();
     const { post, processing } = useForm();
+    const items = Array.isArray(people) ? people : (people?.data || []);
 
     const handleUnfollow = (id: number, name: string) => {
         post(follow(id).url, {
@@ -28,7 +34,7 @@ export default function FollowedPeople({ people = [] }: Props) {
         });
     };
 
-    if (people.length === 0) {
+    if (items.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant/20 bg-surface-container-lowest p-12 text-center dark:bg-surface-container-low">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -53,11 +59,11 @@ export default function FollowedPeople({ people = [] }: Props) {
     return (
         <div className="space-y-6">
             <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.followed_people')} ({people.length})
+                {__('messages.profile.followed_people')} ({people.meta?.total || items.length})
             </h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {people.map((person) => (
+                {items.map((person) => (
                     <div
                         key={person.id}
                         className="flex items-center gap-4 rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-4 transition-all hover:border-primary/20 hover:shadow-md dark:bg-surface-container-low"
@@ -89,6 +95,29 @@ export default function FollowedPeople({ people = [] }: Props) {
                     </div>
                 ))}
             </div>
+
+            {/* Basic Pagination Links */}
+            {people.meta?.last_page > 1 && (
+                <div className="mt-8 flex justify-center gap-2">
+                    {people.meta.links.map((link: any, i: number) => (
+                        <Link
+                            key={i}
+                            href={link.url || '#'}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                                link.active
+                                    ? 'bg-primary text-on-primary font-bold'
+                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
+                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            preserveScroll
+                            preserveState
+                            only={['followedPeople']}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
+
+export default memo(FollowedPeople);

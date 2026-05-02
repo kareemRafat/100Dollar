@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, usePage } from '@inertiajs/react';
 import { Lock, ShieldCheck, Loader2 } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, memo } from 'react';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
 import { Button } from '@/app/components/ui/button';
@@ -16,7 +16,7 @@ type Props = {
     requiresConfirmation?: boolean;
 };
 
-export default function SecurityAndProtection({
+function SecurityAndProtection({
     canManageTwoFactor = false,
     twoFactorEnabled = false,
     requiresConfirmation = false,
@@ -174,3 +174,5 @@ export default function SecurityAndProtection({
         </div>
     );
 }
+
+export default memo(SecurityAndProtection);

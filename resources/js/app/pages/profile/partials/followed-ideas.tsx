@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import { Heart, ArrowRight, User } from 'lucide-react';
+import { memo } from 'react';
 
 type Idea = {
     id: number;
@@ -12,13 +13,18 @@ type Idea = {
 };
 
 type Props = {
-    ideas: Idea[];
+    ideas: {
+        data: Idea[];
+        links: any[];
+        meta: any;
+    };
 };
 
-export default function FollowedIdeas({ ideas = [] }: Props) {
+function FollowedIdeas({ ideas }: Props) {
     const { __ } = useLang();
+    const items = Array.isArray(ideas) ? ideas : (ideas?.data || []);
 
-    if (ideas.length === 0) {
+    if (items.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant/20 bg-surface-container-lowest p-12 text-center dark:bg-surface-container-low">
                 <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
@@ -44,11 +50,11 @@ export default function FollowedIdeas({ ideas = [] }: Props) {
     return (
         <div className="space-y-6">
             <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.followed_ideas')} ({ideas.length})
+                {__('messages.profile.followed_ideas')} ({ideas.meta?.total || items.length})
             </h2>
 
             <div className="space-y-4">
-                {ideas.map((idea) => (
+                {items.map((idea) => (
                     <div
                         key={idea.id}
                         className="flex items-center justify-between gap-4 rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-4 transition-all hover:border-primary/20 hover:shadow-md dark:bg-surface-container-low"
@@ -77,6 +83,29 @@ export default function FollowedIdeas({ ideas = [] }: Props) {
                     </div>
                 ))}
             </div>
+
+            {/* Basic Pagination Links */}
+            {ideas.meta?.last_page > 1 && (
+                <div className="mt-8 flex justify-center gap-2">
+                    {ideas.meta.links.map((link: any, i: number) => (
+                        <Link
+                            key={i}
+                            href={link.url || '#'}
+                            dangerouslySetInnerHTML={{ __html: link.label }}
+                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
+                                link.active
+                                    ? 'bg-primary text-on-primary font-bold'
+                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
+                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            preserveScroll
+                            preserveState
+                            only={['followedIdeas']}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
+
+export default memo(FollowedIdeas);
