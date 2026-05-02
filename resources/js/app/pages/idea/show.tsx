@@ -120,6 +120,7 @@ return;
             preserveScroll: true,
             onSuccess: () => {
                 reset('body');
+                toast.success(__('messages.comments.comment_success'));
                 commentsTopRef.current?.scrollIntoView({ behavior: 'smooth' });
             },
         });

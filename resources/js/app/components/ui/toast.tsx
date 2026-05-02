@@ -1,6 +1,6 @@
-import { cn } from '@/lib/utils';
-import { useFlashToast } from '@/app/hooks/use-flash-toast';
 import { useEffect, useState } from 'react';
+import { useFlashToast } from '@/app/hooks/use-flash-toast';
+import { cn } from '@/lib/utils';
 
 // --- Types ---
 export type ToastType = 'success' | 'error' | 'info' | 'warning';
@@ -46,6 +46,7 @@ export const toast = {
     },
     subscribe: (listener: (toasts: Toast[]) => void) => {
         listeners.push(listener);
+        
         return () => {
             listeners = listeners.filter((l) => l !== listener);
         };
