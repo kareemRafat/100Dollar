@@ -86,18 +86,36 @@ class ProfileController extends Controller
     }
 
     /**
-     * Mark a notification as read.
+     * Mark a notification as read or unread.
      */
-    public function markNotificationAsRead(Notification $notification): RedirectResponse
+    public function markNotificationAsRead(Request $request): RedirectResponse
     {
-        if ($notification->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $notificationId = $request->input('id');
+        $status = $request->boolean('is_read', true);
+
+        $notification = Notification::where('user_id', auth()->id())
+            ->where('id', $notificationId)
+            ->firstOrFail();
 
         $notification->update([
-            'is_read' => true,
-            'read_at' => now(),
+            'is_read' => $status,
+            'read_at' => $status ? now() : null,
         ]);
+
+        return back();
+    }
+
+    /**
+     * Mark all notifications as read for the current user.
+     */
+    public function markAllNotificationsAsRead(): RedirectResponse
+    {
+        Notification::where('user_id', auth()->id())
+            ->where('is_read', false)
+            ->update([
+                'is_read' => true,
+                'read_at' => now(),
+            ]);
 
         return back();
     }
@@ -162,7 +180,7 @@ class ProfileController extends Controller
             $user->media()->where('collection_name', 'avatar')->delete();
 
             $path = $request->file('avatar')->store('avatars', 'public');
-            
+
             $user->media()->create([
                 'file_path' => $path,
                 'mime_type' => $request->file('avatar')->getMimeType(),

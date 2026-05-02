@@ -5,6 +5,7 @@ import { memo } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { follow } from '@/routes/app/users';
 import { toast } from '@/app/components/ui/toast';
+import { Pagination } from '@/components/ui/pagination';
 
 type Person = {
     id: number;
@@ -24,6 +25,12 @@ function FollowedPeople({ people }: Props) {
     const { __ } = useLang();
     const { post, processing } = useForm();
     const items = Array.isArray(people) ? people : (people?.data || []);
+
+    // Standardized pagination data retrieval
+    const meta = (people as any)?.meta;
+    const links = meta?.links || (people as any)?.links || [];
+    const lastPage = meta?.last_page || (people as any)?.last_page || 1;
+    const total = meta?.total || (people as any)?.total || items.length;
 
     const handleUnfollow = (id: number, name: string) => {
         post(follow(id).url, {
@@ -59,7 +66,7 @@ function FollowedPeople({ people }: Props) {
     return (
         <div className="space-y-6">
             <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.followed_people')} ({people.meta?.total || items.length})
+                {__('messages.profile.followed_people')} ({total})
             </h2>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -96,24 +103,13 @@ function FollowedPeople({ people }: Props) {
                 ))}
             </div>
 
-            {/* Basic Pagination Links */}
-            {people.meta?.last_page > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
-                    {people.meta.links.map((link: any, i: number) => (
-                        <Link
-                            key={i}
-                            href={link.url || '#'}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                                link.active
-                                    ? 'bg-primary text-on-primary font-bold'
-                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
-                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            preserveScroll
-                            preserveState
-                            only={['followedPeople']}
-                        />
-                    ))}
+            {/* Pagination */}
+            {lastPage > 1 && (
+                <div className="mt-8">
+                    <Pagination
+                        links={links}
+                        only={['followedPeople']}
+                    />
                 </div>
             )}
         </div>

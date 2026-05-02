@@ -29,12 +29,19 @@ class NotificationFactory extends Factory
             'idea_won' => 'تهانينا! فكرتك فازت بجائزة اليوم',
         ];
 
+        $data = [];
+        if ($type !== 'new_follower') {
+            $data['idea_id'] = \App\Models\Idea::inRandomOrder()->first()?->id ?? 1;
+        } else {
+            $data['follower_id'] = User::inRandomOrder()->first()?->id ?? 1;
+        }
+
         return [
             'user_id' => User::factory(),
             'type' => $type,
             'title' => $titles[$type],
             'body' => fake()->sentence(),
-            'data' => [],
+            'data' => $data,
             'is_read' => false,
             'read_at' => null,
             'is_email_sent' => fake()->boolean(),

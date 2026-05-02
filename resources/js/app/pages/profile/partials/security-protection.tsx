@@ -44,15 +44,15 @@ function SecurityAndProtection({
     useEffect(() => {
         if (prevTwoFactorEnabled.current && !twoFactorEnabled) {
             clearTwoFactorAuthData();
-            toast.success(__('messages.profile.protection_settings'), 'Two-factor authentication disabled.');
+            toast.success(__('messages.profile.protection_settings'), __('messages.two_factor.2fa_disabled_success'));
         }
 
         if (!prevTwoFactorEnabled.current && twoFactorEnabled) {
-            toast.success(__('messages.profile.protection_settings'), 'Two-factor authentication enabled successfully.');
+            toast.success(__('messages.profile.protection_settings'), __('messages.two_factor.2fa_enabled_success'));
         }
 
         prevTwoFactorEnabled.current = twoFactorEnabled;
-    }, [twoFactorEnabled, clearTwoFactorAuthData]);
+    }, [twoFactorEnabled, clearTwoFactorAuthData, __]);
 
     return (
         <div className="animate-in duration-500 fade-in slide-in-from-bottom-4">
@@ -94,7 +94,7 @@ function SecurityAndProtection({
                                 {twoFactorEnabled ? (
                                     <Form 
                                         {...disable.form({ query: { _locale: locale as string } })}
-                                        onError={() => toast.error(__('messages.profile.security_protection'), 'Failed to disable two-factor authentication.')}
+                                        onError={() => toast.error(__('messages.profile.security_protection'), __('messages.two_factor.2fa_disable_failed'))}
                                     >
                                         {({ processing }) => (
                                             <Button
@@ -125,7 +125,7 @@ function SecurityAndProtection({
                                             <Form
                                                 {...enable.form({ query: { _locale: locale as string } })}
                                                 onSuccess={() => setTimeout(() => setShowSetupModal(true), 0)}
-                                                onError={() => toast.error(__('messages.profile.security_protection'), 'Failed to enable two-factor authentication.')}
+                                                onError={() => toast.error(__('messages.profile.security_protection'), __('messages.two_factor.2fa_enable_failed'))}
                                             >
                                                 {({ processing }) => (
                                                     <Button

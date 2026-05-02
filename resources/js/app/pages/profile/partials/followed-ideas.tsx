@@ -2,6 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import { Heart, ArrowRight, User } from 'lucide-react';
 import { memo } from 'react';
+import { Pagination } from '@/components/ui/pagination';
 
 type Idea = {
     id: number;
@@ -23,6 +24,12 @@ type Props = {
 function FollowedIdeas({ ideas }: Props) {
     const { __ } = useLang();
     const items = Array.isArray(ideas) ? ideas : (ideas?.data || []);
+
+    // Standardized pagination data retrieval
+    const meta = (ideas as any)?.meta;
+    const links = meta?.links || (ideas as any)?.links || [];
+    const lastPage = meta?.last_page || (ideas as any)?.last_page || 1;
+    const total = meta?.total || (ideas as any)?.total || items.length;
 
     if (items.length === 0) {
         return (
@@ -50,7 +57,7 @@ function FollowedIdeas({ ideas }: Props) {
     return (
         <div className="space-y-6">
             <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.followed_ideas')} ({ideas.meta?.total || items.length})
+                {__('messages.profile.followed_ideas')} ({total})
             </h2>
 
             <div className="space-y-4">
@@ -84,24 +91,13 @@ function FollowedIdeas({ ideas }: Props) {
                 ))}
             </div>
 
-            {/* Basic Pagination Links */}
-            {ideas.meta?.last_page > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
-                    {ideas.meta.links.map((link: any, i: number) => (
-                        <Link
-                            key={i}
-                            href={link.url || '#'}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                                link.active
-                                    ? 'bg-primary text-on-primary font-bold'
-                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
-                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            preserveScroll
-                            preserveState
-                            only={['followedIdeas']}
-                        />
-                    ))}
+            {/* Pagination */}
+            {lastPage > 1 && (
+                <div className="mt-8">
+                    <Pagination
+                        links={links}
+                        only={['followedIdeas']}
+                    />
                 </div>
             )}
         </div>

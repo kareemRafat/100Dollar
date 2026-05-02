@@ -28,7 +28,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile/followed-ideas', [ProfileController::class, 'edit'])->name('app.profile.followed-ideas');
     Route::get('/profile/followed-people', [ProfileController::class, 'edit'])->name('app.profile.followed-people');
     Route::get('/profile/notifications', [ProfileController::class, 'edit'])->name('app.profile.notifications');
-    Route::patch('/profile/notifications/{notification}/read', [ProfileController::class, 'markNotificationAsRead'])->name('app.profile.notifications.read');
+    Route::patch('/profile/notifications/read', [ProfileController::class, 'markNotificationAsRead'])->name('app.profile.notifications.read');
+    Route::patch('/profile/notifications/read-all', [ProfileController::class, 'markAllNotificationsAsRead'])->name('app.profile.notifications.read-all');
 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('app.profile.password.update');

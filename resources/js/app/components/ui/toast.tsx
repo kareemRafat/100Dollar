@@ -46,7 +46,7 @@ export const toast = {
     },
     subscribe: (listener: (toasts: Toast[]) => void) => {
         listeners.push(listener);
-        
+
         return () => {
             listeners = listeners.filter((l) => l !== listener);
         };
@@ -122,7 +122,7 @@ function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: 
                 {description && (
                     <p className={cn(
                         "text-on-surface-variant leading-relaxed font-body",
-                        isRtl ? "text-[11px]" : "text-sm"
+                        isRtl ? "text-[13px]" : "text-sm"
                     )}>
                         {description}
                     </p>
@@ -178,13 +178,13 @@ export function Toaster() {
                         const existing = current.find(t => t.id === nt.id);
                         return existing ? { ...nt, isExiting: existing.isExiting } : nt;
                     });
-                    
+
                     // Keep the exiting ones too
                     const exiting = current.filter(t => t.isExiting);
-                    
+
                     // Filter out exiting that are now back in newToasts (shouldn't happen with unique IDs but just in case)
                     const filteredExiting = exiting.filter(et => !newToasts.find(nt => nt.id === et.id));
-                    
+
                     return [...merged, ...filteredExiting];
                 }
 

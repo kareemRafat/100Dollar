@@ -285,6 +285,8 @@ return [
         'notifications_empty_desc' => 'We\'ll notify you here when there are updates to your ideas or activities you follow.',
         'cancel' => 'Cancel',
         'save_changes' => 'Save all changes',
+        'mark_all_read' => 'Mark all as read',
+        'mark_all_read_success' => 'All notifications marked as read',
     ],
 
     'my_ideas' => [
@@ -492,5 +494,10 @@ return [
         'view_codes' => 'View Recovery Codes',
         'hide_codes' => 'Hide Recovery Codes',
         'regenerate_codes' => 'Regenerate Codes',
+        '2fa_disabled_success' => 'Two-factor authentication disabled.',
+        '2fa_enabled_success' => 'Two-factor authentication enabled successfully.',
+        '2fa_disable_failed' => 'Failed to disable two-factor authentication.',
+        '2fa_enable_failed' => 'Failed to enable two-factor authentication.',
+        'recovery_codes_regenerated' => 'Recovery codes regenerated successfully.',
     ],
 ];

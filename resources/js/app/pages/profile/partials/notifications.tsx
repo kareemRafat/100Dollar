@@ -1,15 +1,18 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { router, usePage, Link } from '@inertiajs/react';
-import { Bell, Clock } from 'lucide-react';
+import { router, usePage } from '@inertiajs/react';
+import { Bell, Clock, CheckCheck } from 'lucide-react';
 import { memo } from 'react';
-import { read } from '@/routes/app/profile/notifications';
 import { toast } from '@/app/components/ui/toast';
+import { Pagination } from '@/components/ui/pagination';
+import { read, readAll } from '@/routes/app/profile/notifications';
 
 type Notification = {
     id: number;
+    type: string;
     title: string;
     body: string;
     is_read: boolean;
+    data: any;
     created_at: string;
 };
 
@@ -25,21 +28,51 @@ function Notifications({ notifications }: Props) {
     const { __ } = useLang();
     const { props: pageProps } = usePage();
     const locale = pageProps.locale as string;
-    
-    const items = Array.isArray(notifications) ? notifications : (notifications?.data || []);
 
-    const handleMarkAsRead = (id: number) => {
-        router.patch(read(id).url, {}, {
+    const items = Array.isArray(notifications) ? notifications : (notifications?.data || []);
+    const hasUnread = items.some(n => !n.is_read);
+
+    // Standardized pagination data retrieval
+    const meta = (notifications as any)?.meta;
+    const links = meta?.links || (notifications as any)?.links || [];
+    const lastPage = meta?.last_page || (notifications as any)?.last_page || 1;
+    const total = meta?.total || (notifications as any)?.total || items.length;
+
+    const handleMarkAsRead = (id: number, isRead: boolean = true) => {
+        router.patch(read().url, { id, is_read: isRead }, {
+            preserveScroll: true,
+        });
+    };
+
+    const handleMarkAllAsRead = () => {
+        router.patch(readAll().url, {}, {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success(__('messages.profile.notifications'), 'Notification marked as read');
+                toast.success(__('messages.profile.notifications'), __('messages.profile.mark_all_read_success'));
             },
         });
     };
 
+    const handleNotificationClick = (notification: Notification) => {
+        const ideaId = notification.data?.idea_id;
+        const isIdeaNotification = ideaId && notification.type !== 'new_follower';
+
+        if (isIdeaNotification) {
+            // Mark as read and then redirect to avoid race conditions
+            router.patch(read().url, { id: notification.id, is_read: true }, {
+                preserveScroll: true,
+                onFinish: () => {
+                    router.visit(`/ideas/${ideaId}`);
+                }
+            });
+        } else if (!notification.is_read) {
+            handleMarkAsRead(notification.id, true);
+        }
+    };
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        
+
         return new Intl.DateTimeFormat(locale, {
             dateStyle: 'medium',
             timeStyle: 'short',
@@ -64,15 +97,27 @@ function Notifications({ notifications }: Props) {
 
     return (
         <div className="space-y-6">
-            <h2 className="text-xl font-bold text-secondary dark:text-white">
-                {__('messages.profile.notifications')} ({notifications.meta?.total || items.length})
-            </h2>
+            <div className="flex items-center justify-between gap-4">
+                <h2 className="text-xl font-bold text-secondary dark:text-white">
+                    {__('messages.profile.notifications')} ({total})
+                </h2>
+
+                {hasUnread && (
+                    <button
+                        onClick={handleMarkAllAsRead}
+                        className="inline-flex items-center gap-2 text-xs font-bold text-primary transition-colors hover:text-primary/80"
+                    >
+                        <CheckCheck className="size-4" />
+                        {__('messages.profile.mark_all_read')}
+                    </button>
+                )}
+            </div>
 
             <div className="space-y-3">
                 {items.map((notification) => (
                     <div
                         key={notification.id}
-                        onClick={() => !notification.is_read && handleMarkAsRead(notification.id)}
+                        onClick={() => handleNotificationClick(notification)}
                         className={`group relative flex gap-4 rounded-xl border p-4 transition-all ${
                             notification.is_read
                                 ? 'border-outline-variant/10 bg-surface-container-lowest dark:bg-surface-container-low opacity-75'
@@ -113,24 +158,13 @@ function Notifications({ notifications }: Props) {
                 ))}
             </div>
 
-            {/* Basic Pagination Links */}
-            {notifications.meta?.last_page > 1 && (
-                <div className="mt-8 flex justify-center gap-2">
-                    {notifications.meta.links.map((link: any, i: number) => (
-                        <Link
-                            key={i}
-                            href={link.url || '#'}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                            className={`rounded-lg px-4 py-2 text-sm transition-colors ${
-                                link.active
-                                    ? 'bg-primary text-on-primary font-bold'
-                                    : 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest'
-                            } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            preserveScroll
-                            preserveState
-                            only={['notifications']}
-                        />
-                    ))}
+            {/* Pagination */}
+            {lastPage > 1 && (
+                <div className="mt-8">
+                    <Pagination
+                        links={links}
+                        only={['notifications']}
+                    />
                 </div>
             )}
         </div>

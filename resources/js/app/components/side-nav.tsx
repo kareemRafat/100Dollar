@@ -1,9 +1,5 @@
-import { useLang } from '@erag/lang-sync-inertia/react';
-import { usePage, router } from '@inertiajs/react';
 import type { LucideIcon } from 'lucide-react';
-import { LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { logout } from '@/routes';
 
 type NavItem = {
     id: string;
@@ -19,13 +15,6 @@ type Props = {
 };
 
 export function SideNav({ items, activeSection, onItemClick }: Props) {
-    const { locale } = usePage().props;
-    const { __ } = useLang();
-    const handleLogout = () => {
-        router.post(logout().url, {
-            _locale: locale,
-        });
-    };
 
     return (
         <aside className="hidden w-64 border-e border-outline-variant/10 dark:border-white/5 md:block">
