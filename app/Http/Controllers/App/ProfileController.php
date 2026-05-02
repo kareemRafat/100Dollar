@@ -6,11 +6,13 @@ use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
+use App\Http\Resources\App\UserResource;
 use App\Models\Notification;
 use App\Models\Vote;
 use App\Models\UserFollow;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -26,11 +28,13 @@ class ProfileController extends Controller
      */
     public function edit(TwoFactorAuthenticationRequest $request): Response
     {
-        $user = $request->user();
+        JsonResource::withoutWrapping();
+
+        $user = $request->user()->load('media');
         $routeName = Route::currentRouteName();
 
         $props = [
-            'user' => $user,
+            'user' => new UserResource($user),
             'status' => session('status'),
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
         ];
@@ -137,15 +141,36 @@ class ProfileController extends Controller
             'email' => $this->emailRules($user->id),
             'phone' => ['nullable', 'string', 'max:20'],
             'bio' => ['nullable', 'string', 'max:500'],
+            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB
         ]);
 
-        $user->fill($validated);
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'bio' => $validated['bio'],
+        ]);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
         $user->save();
+
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            $user->media()->where('collection_name', 'avatar')->delete();
+
+            $path = $request->file('avatar')->store('avatars', 'public');
+            
+            $user->media()->create([
+                'file_path' => $path,
+                'mime_type' => $request->file('avatar')->getMimeType(),
+                'file_size' => $request->file('avatar')->getSize(),
+                'collection_name' => 'avatar',
+                'disk' => 'public',
+            ]);
+        }
 
         return back()->with('status', 'profile-updated');
     }

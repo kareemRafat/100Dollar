@@ -28,7 +28,7 @@ trait HasMedia
     /**
      * Get the full URL for the image media.
      */
-    public function getImageUrlAttribute(): ?string
+    public function getImageAttribute(): ?string
     {
         return $this->media->where('collection_name', 'image')->first()?->url;
     }
@@ -36,7 +36,7 @@ trait HasMedia
     /**
      * Get the full URL for the avatar media.
      */
-    public function getAvatarUrlAttribute(): ?string
+    public function getAvatarAttribute(): ?string
     {
         return $this->media->where('collection_name', 'avatar')->first()?->url;
     }

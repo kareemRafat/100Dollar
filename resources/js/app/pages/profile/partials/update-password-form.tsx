@@ -7,6 +7,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { toast } from '@/app/components/ui/toast';
 
 export default function UpdatePasswordForm() {
     const { locale } = usePage().props;
@@ -25,7 +26,10 @@ export default function UpdatePasswordForm() {
         e.preventDefault();
         patch(updatePasswordAction.url(), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+                toast.success(__('messages.profile.password_security'), __('messages.profile.update_password'));
+            },
             onError: (errors) => {
                 if (errors.password) {
                     reset('password', 'password_confirmation');

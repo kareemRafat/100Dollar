@@ -8,6 +8,7 @@ import { Button } from '@/app/components/ui/button';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { cn } from '@/lib/utils';
 import { disable, enable } from '@/routes/two-factor';
+import { toast } from '@/app/components/ui/toast';
 
 type Props = {
     canManageTwoFactor?: boolean;
@@ -15,7 +16,7 @@ type Props = {
     requiresConfirmation?: boolean;
 };
 
-export default function ProtectionSettings({
+export default function SecurityAndProtection({
     canManageTwoFactor = false,
     twoFactorEnabled = false,
     requiresConfirmation = false,
@@ -43,6 +44,11 @@ export default function ProtectionSettings({
     useEffect(() => {
         if (prevTwoFactorEnabled.current && !twoFactorEnabled) {
             clearTwoFactorAuthData();
+            toast.success(__('messages.profile.protection_settings'), 'Two-factor authentication disabled.');
+        }
+
+        if (!prevTwoFactorEnabled.current && twoFactorEnabled) {
+            toast.success(__('messages.profile.protection_settings'), 'Two-factor authentication enabled successfully.');
         }
 
         prevTwoFactorEnabled.current = twoFactorEnabled;
@@ -56,10 +62,10 @@ export default function ProtectionSettings({
                 </div>
                 <div className={cn(isRtl ? 'text-right' : 'text-left')}>
                     <h2 className="text-xl font-black text-secondary dark:text-white">
-                        {__('messages.profile.protection_privacy')}
+                        {__('messages.profile.security_protection')}
                     </h2>
                     <p className="text-xs text-on-surface-variant/70">
-                        {__('messages.profile.hero_desc')}
+                        {__('messages.profile.security_privacy')}
                     </p>
                 </div>
             </div>
@@ -86,7 +92,10 @@ export default function ProtectionSettings({
 
                             <div className="w-full sm:w-auto">
                                 {twoFactorEnabled ? (
-                                    <Form {...disable.form({ query: { _locale: locale as string } })}>
+                                    <Form 
+                                        {...disable.form({ query: { _locale: locale as string } })}
+                                        onError={() => toast.error(__('messages.profile.security_protection'), 'Failed to disable two-factor authentication.')}
+                                    >
                                         {({ processing }) => (
                                             <Button
                                                 variant="destructive"
@@ -98,7 +107,7 @@ export default function ProtectionSettings({
                                                 {processing && (
                                                     <Loader2 className="me-2 size-4 animate-spin" />
                                                 )}
-                                                Disable
+                                                {__('messages.profile.2fa_disable')}
                                             </Button>
                                         )}
                                     </Form>
@@ -110,12 +119,13 @@ export default function ProtectionSettings({
                                                 className="w-full rounded-xl font-bold sm:w-auto"
                                                 onClick={() => setShowSetupModal(true)}
                                             >
-                                                Continue Setup
+                                                {__('messages.two_factor.setup_continue')}
                                             </Button>
                                         ) : (
                                             <Form
                                                 {...enable.form({ query: { _locale: locale as string } })}
                                                 onSuccess={() => setTimeout(() => setShowSetupModal(true), 0)}
+                                                onError={() => toast.error(__('messages.profile.security_protection'), 'Failed to enable two-factor authentication.')}
                                             >
                                                 {({ processing }) => (
                                                     <Button
@@ -127,7 +137,7 @@ export default function ProtectionSettings({
                                                         {processing && (
                                                             <Loader2 className="me-2 size-4 animate-spin" />
                                                         )}
-                                                        Enable
+                                                        {__('messages.profile.2fa_enable')}
                                                     </Button>
                                                 )}
                                             </Form>

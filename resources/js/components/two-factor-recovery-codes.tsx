@@ -69,7 +69,10 @@ export default function TwoFactorRecoveryCodes({
 
                 <Form
                     {...(regenerateRoute ?? regenerateRecoveryCodes).form()}
-                    onSuccess={() => fetchRecoveryCodes()}
+                    onSuccess={() => {
+                        fetchRecoveryCodes();
+                        toast.success(__('messages.two_factor.recovery_codes_title'), 'Recovery codes regenerated successfully.');
+                    }}
                 >
                     {({ processing }) => (
                         <Button

@@ -28,7 +28,7 @@ class IdeaResource extends JsonResource
             'category' => $this->category,
             'country' => $this->country,
             'city' => $this->city,
-            'image' => $this->image_url,
+            'image' => $this->image,
             'votes_count' => (int) ($this->votes_count ?? $this->votes()->count()),
             'comments_count' => (int) ($this->comments_count ?? $this->comments()->count()),
             'user' => new UserResource($this->whenLoaded('user')),

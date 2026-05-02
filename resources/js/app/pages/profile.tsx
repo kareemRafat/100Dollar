@@ -16,7 +16,7 @@ import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
 import { SideNav } from '@/app/components/side-nav';
 import AppLayout from '@/app/layouts/app-layout';
 import PersonalInfoForm from './profile/partials/profile-information-form';
-import ProtectionSettings from './profile/partials/protection-settings';
+import SecurityAndProtection from './profile/partials/security-protection';
 import PasswordUpdateForm from './profile/partials/update-password-form';
 import VotedIdeas from './profile/partials/voted-ideas';
 import FollowedIdeas from './profile/partials/followed-ideas';
@@ -103,7 +103,7 @@ export default function Profile({
         },
         {
             id: 'security',
-            label: __('messages.profile.protection_settings'),
+            label: __('messages.profile.security_protection'),
             icon: Lock,
             href: profile.security.url(),
         },
@@ -142,7 +142,7 @@ export default function Profile({
         },
         {
             id: 'security',
-            label: __('messages.profile.protection_tab'),
+            label: __('messages.profile.security_protection_tab'),
             icon: Lock,
             href: profile.security.url(),
         },
@@ -213,7 +213,7 @@ export default function Profile({
                                 <div className="space-y-12">
                                     <PasswordUpdateForm />
                                     <hr className="border-outline-variant/10 dark:border-white/5" />
-                                    <ProtectionSettings
+                                    <SecurityAndProtection
                                         canManageTwoFactor={canManageTwoFactor}
                                         twoFactorEnabled={twoFactorEnabled}
                                         requiresConfirmation={requiresConfirmation}

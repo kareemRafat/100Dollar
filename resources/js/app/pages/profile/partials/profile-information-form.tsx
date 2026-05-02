@@ -8,6 +8,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { toast } from '@/app/components/ui/toast';
 
 type Props = {
     user: {
@@ -23,18 +24,37 @@ export default function ProfileInformationForm({ user }: Props) {
     const { locale } = usePage().props;
     const { __ } = useLang();
     const isRtl = locale === 'ar';
+    const [avatarPreview, setAvatarPreview] = React.useState<string | null>(null);
 
-    const { data, setData, patch, processing, errors, recentlySuccessful } = useForm({
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm({
+        _method: 'patch',
         name: user.name,
         email: user.email,
         phone: user.phone || '',
         bio: user.bio || '',
+        avatar: null as File | null,
     });
+
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('avatar', file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const submit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        patch(updateProfile.url(), {
+        post(updateProfile.url(), {
             preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                toast.success(__('messages.profile.personal_info'), __('messages.profile.save_changes'));
+            },
         });
     };
 
@@ -68,14 +88,14 @@ export default function ProfileInformationForm({ user }: Props) {
                     <div className="flex flex-col items-center gap-4 lg:w-48">
                         <div className="group relative">
                             <Avatar className="size-32 border-4 border-surface-container-low shadow-xl">
-                                <AvatarImage src={user.avatar} alt={user.name} />
+                                <AvatarImage src={avatarPreview || user.avatar} alt={user.name} />
                                 <AvatarFallback className="bg-primary text-2xl font-black text-white">
                                     {getInitials(user.name)}
                                 </AvatarFallback>
                             </Avatar>
                             <label className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-secondary/40 opacity-0 backdrop-blur-sm transition-all duration-300 group-hover:opacity-100">
                                 <Camera className="size-8 text-white" />
-                                <input className="hidden" type="file" />
+                                <input className="hidden" type="file" onChange={handleAvatarChange} accept="image/*" />
                             </label>
                         </div>
                         <div className="text-center">
@@ -85,6 +105,7 @@ export default function ProfileInformationForm({ user }: Props) {
                             <p className="mt-1 text-[10px] text-on-surface-variant/60">
                                 {__('messages.profile.image_hint')}
                             </p>
+                            {errors.avatar && <p className="mt-1 text-[10px] text-error">{errors.avatar}</p>}
                         </div>
                     </div>
 
@@ -164,12 +185,17 @@ export default function ProfileInformationForm({ user }: Props) {
                                 variant="ghost"
                                 className="rounded-xl font-bold"
                                 type="button"
-                                onClick={() => setData({
-                                    name: user.name,
-                                    email: user.email,
-                                    phone: user.phone || '',
-                                    bio: user.bio || '',
-                                })}
+                                onClick={() => {
+                                    setData({
+                                        _method: 'patch',
+                                        name: user.name,
+                                        email: user.email,
+                                        phone: user.phone || '',
+                                        bio: user.bio || '',
+                                        avatar: null,
+                                    });
+                                    setAvatarPreview(null);
+                                }}
                             >
                                 {__('messages.profile.cancel')}
                             </Button>

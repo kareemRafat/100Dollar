@@ -21,7 +21,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile');
     Route::get('/profile/personal-info', [ProfileController::class, 'edit'])->name('app.profile.personal-info');
-    Route::get('/profile/security', [ProfileController::class, 'edit'])->name('app.profile.security');
+    Route::get('/profile/security', [ProfileController::class, 'edit'])->name('app.profile.security')->middleware('password.confirm');
 
     // Activity Routes
     Route::get('/profile/voted-ideas', [ProfileController::class, 'edit'])->name('app.profile.voted-ideas');

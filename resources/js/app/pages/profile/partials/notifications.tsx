@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import { Bell, Clock } from 'lucide-react';
 import { read } from '@/routes/app/profile/notifications';
+import { toast } from '@/app/components/ui/toast';
 
 type Notification = {
     id: number;
@@ -24,11 +25,15 @@ export default function Notifications({ notifications = [] }: Props) {
     const handleMarkAsRead = (id: number) => {
         router.patch(read(id).url, {}, {
             preserveScroll: true,
+            onSuccess: () => {
+                toast.success(__('messages.profile.notifications'), 'Notification marked as read');
+            },
         });
     };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
+        
         return new Intl.DateTimeFormat(locale, {
             dateStyle: 'medium',
             timeStyle: 'short',

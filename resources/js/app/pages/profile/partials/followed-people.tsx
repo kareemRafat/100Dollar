@@ -3,6 +3,7 @@ import { Link, useForm } from '@inertiajs/react';
 import { Users, UserMinus, User } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { follow } from '@/routes/app/users';
+import { toast } from '@/app/components/ui/toast';
 
 type Person = {
     id: number;
@@ -18,9 +19,12 @@ export default function FollowedPeople({ people = [] }: Props) {
     const { __ } = useLang();
     const { post, processing } = useForm();
 
-    const handleUnfollow = (id: number) => {
+    const handleUnfollow = (id: number, name: string) => {
         post(follow(id).url, {
             preserveScroll: true,
+            onSuccess: () => {
+                toast.success(__('messages.profile.followed_people'), `${__('messages.archive.unfollow_user_success')}: ${name}`);
+            },
         });
     };
 
@@ -77,7 +81,7 @@ export default function FollowedPeople({ people = [] }: Props) {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8 text-on-surface-variant hover:text-red-500"
-                            onClick={() => handleUnfollow(person.id)}
+                            onClick={() => handleUnfollow(person.id, person.name)}
                             disabled={processing}
                         >
                             <UserMinus className="size-4" />
