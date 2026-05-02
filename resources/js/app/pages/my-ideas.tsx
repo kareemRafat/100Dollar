@@ -82,45 +82,45 @@ export default function MyIdeas() {
 
             <main className="flex-grow">
                 {/* Hero Section */}
-                <section className="relative flex h-[250px] items-center justify-center overflow-hidden bg-[#0F172A] md:h-[320px]">
+                <section className="relative flex h-[280px] items-center justify-center overflow-hidden bg-[#0F172A] md:h-[350px]">
                     <div className="absolute inset-0 z-0">
                         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80"></div>
                     </div>
                     <div className="relative z-10 text-center">
-                        <h1 className="mb-4 font-headline text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+                        <h1 className="mb-5 font-headline text-2xl font-extrabold tracking-tight text-white md:text-4xl">
                             {__('messages.my_ideas.hero_title')}
                         </h1>
-                        <p className="font-body mx-auto max-w-xl px-6 text-xs text-white/80">
+                        <p className="font-body mx-auto max-w-2xl px-6 text-[15px] md:text-base text-white/80">
                             {__('messages.my_ideas.hero_desc')}
                         </p>
                     </div>
                 </section>
 
                 {/* Main Content Area */}
-                <div className="relative z-20 mx-auto -mt-10 max-w-7xl px-8 pb-12">
+                <div className="relative z-20 mx-auto -mt-12 max-w-7xl px-8 pb-16">
                     {/* Stats Row */}
-                    <div className="mb-5 grid grid-cols-1 gap-5 md:grid-cols-3">
+                    <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
                         {stats.map((stat) => (
                             <div
                                 key={stat.label}
-                                className="group relative flex flex-col gap-1.5 overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-5 shadow-lg shadow-black/5 dark:bg-surface-container-low"
+                                className="group relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-xl shadow-black/5 dark:bg-surface-container-low"
                             >
-                                <div className="absolute -top-2 -right-2 h-16 w-16 bg-primary/5 blur-xl transition-colors group-hover:bg-primary/10 rounded-full"></div>
+                                <div className="absolute -top-2 -right-2 h-20 w-20 bg-primary/5 blur-xl transition-colors group-hover:bg-primary/10 rounded-full"></div>
                                 <div className="relative z-10 flex items-center justify-between">
-                                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                        <span className="material-symbols-outlined text-xl">
+                                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                                        <span className="material-symbols-outlined text-2xl">
                                             {stat.icon}
                                         </span>
                                     </div>
-                                    <span className="text-[9px] font-bold text-on-surface-variant dark:text-slate-400">
+                                    <span className="text-xs font-black uppercase tracking-wider text-on-surface-variant dark:text-slate-400">
                                         {stat.label}
                                     </span>
                                 </div>
-                                <div className="relative z-10 flex items-baseline gap-2">
-                                    <span className="text-xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                                <div className="relative z-10 flex items-baseline gap-2 mt-2">
+                                    <span className="text-3xl font-black tracking-tight text-on-surface dark:text-white">
                                         {stat.value}
                                     </span>
-                                    <span className="text-[9px] font-semibold text-on-surface-variant dark:text-slate-400">
+                                    <span className="text-xs font-bold text-on-surface-variant dark:text-slate-400">
                                         {stat.unit}
                                     </span>
                                 </div>
@@ -129,34 +129,34 @@ export default function MyIdeas() {
                     </div>
 
                     {/* Filter & Search Section */}
-                    <div className="mb-6 flex flex-col items-center justify-between gap-5 rounded-xl bg-surface-container-low p-3.5 md:flex-row dark:bg-surface-container-high">
-                        <div className="relative w-full md:w-80">
-                            <span className="material-symbols-outlined absolute top-1/2 end-4 -translate-y-1/2 text-on-surface-variant text-lg">
+                    <div className="mb-8 flex flex-col items-center justify-between gap-6 rounded-2xl bg-surface-container-low p-5 md:flex-row dark:bg-surface-container-high">
+                        <div className="relative w-full md:w-96">
+                            <span className="material-symbols-outlined absolute top-1/2 end-4 -translate-y-1/2 text-on-surface-variant text-xl">
                                 search
                             </span>
                             <Input
-                                className="h-9 border-none bg-surface-container-lowest ps-10 pe-4 text-xs focus:ring-1 focus:ring-primary dark:bg-surface-container-low dark:text-white"
+                                className="h-11 border-none bg-surface-container-lowest ps-12 pe-4 text-sm focus:ring-1 focus:ring-primary dark:bg-surface-container-low dark:text-white"
                                 placeholder={__('messages.my_ideas.search_placeholder')}
                             />
                         </div>
-                        <div className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 md:w-auto md:pb-0">
-                            <Button className="h-8 rounded-full px-4 text-[10px] font-bold" variant="default">
+                        <div className="no-scrollbar flex w-full gap-3 overflow-x-auto pb-2 md:w-auto md:pb-0">
+                            <Button className="h-10 rounded-full px-6 text-xs font-black" variant="default">
                                 {__('messages.my_ideas.filter_all')}
                             </Button>
                             <Button
-                                className="h-8 rounded-full px-4 text-[10px] font-bold"
+                                className="h-10 rounded-full px-6 text-xs font-black"
                                 variant="secondary"
                             >
                                 {__('messages.my_ideas.filter_pending')}
                             </Button>
                             <Button
-                                className="h-8 rounded-full px-4 text-[10px] font-bold"
+                                className="h-10 rounded-full px-6 text-xs font-black"
                                 variant="secondary"
                             >
                                 {__('messages.my_ideas.filter_approved')}
                             </Button>
                             <Button
-                                className="h-8 rounded-full px-4 text-[10px] font-bold"
+                                className="h-10 rounded-full px-6 text-xs font-black"
                                 variant="secondary"
                             >
                                 {__('messages.my_ideas.filter_winner')}
@@ -165,22 +165,22 @@ export default function MyIdeas() {
                     </div>
 
                     {/* Ideas Grid */}
-                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {ideas.map((idea) => (
                             <div
                                 key={idea.id}
-                                className={`group flex h-full flex-col rounded-xl border p-5 transition-all duration-300 hover:shadow-xl ${
+                                className={`group flex h-full flex-col rounded-2xl border p-6 transition-all duration-300 hover:shadow-2xl ${
                                     idea.status === 'winner'
-                                        ? 'relative overflow-hidden border-2 border-primary/20 bg-surface-container-lowest shadow-lg dark:bg-card'
-                                        : 'border-outline-variant/5 bg-surface-container-lowest dark:bg-card'
+                                        ? 'relative overflow-hidden border-2 border-primary/30 bg-surface-container-lowest shadow-lg dark:bg-card'
+                                        : 'border-outline-variant/10 bg-surface-container-lowest dark:bg-card'
                                 }`}
                             >
                                 {idea.status === 'winner' && (
-                                    <div className="absolute top-0 start-0 h-24 w-24 rotate-45 -translate-x-12 -translate-y-12 bg-primary/10"></div>
+                                    <div className="absolute top-0 start-0 h-32 w-32 rotate-45 -translate-x-16 -translate-y-16 bg-primary/10"></div>
                                 )}
-                                <div className="mb-3.5 flex items-start justify-between relative z-10">
+                                <div className="mb-4 flex items-start justify-between relative z-10">
                                     <span
-                                        className={`rounded px-2 py-0.5 text-[9px] font-bold tracking-wider uppercase ${
+                                        className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
                                             idea.status === 'winner'
                                                 ? 'bg-primary/10 text-primary'
                                                 : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
@@ -188,21 +188,21 @@ export default function MyIdeas() {
                                     >
                                         {idea.category}
                                     </span>
-                                    <div className="flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                                        <span className="material-symbols-outlined cursor-pointer text-on-surface-variant text-lg transition-colors hover:text-primary">
+                                    <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
+                                        <span className="material-symbols-outlined cursor-pointer text-on-surface-variant text-xl transition-colors hover:text-primary">
                                             edit
                                         </span>
-                                        <span className="material-symbols-outlined cursor-pointer text-on-surface-variant text-lg transition-colors hover:text-red-500">
+                                        <span className="material-symbols-outlined cursor-pointer text-on-surface-variant text-xl transition-colors hover:text-red-500">
                                             delete
                                         </span>
                                     </div>
                                 </div>
-                                <h3 className="mb-2.5 text-base font-bold leading-tight text-on-surface dark:text-white">
+                                <h3 className="mb-3 text-lg font-black leading-tight text-on-surface dark:text-white group-hover:text-primary transition-colors">
                                     {idea.title}
                                 </h3>
-                                <div className="mb-4 flex items-center gap-2 relative z-10">
+                                <div className="mb-5 flex items-center gap-2 relative z-10">
                                     <span
-                                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-bold ${
+                                        className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-tight ${
                                             idea.status === 'pending'
                                                 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
                                                 : idea.status === 'approved'
@@ -213,7 +213,7 @@ export default function MyIdeas() {
                                         {(idea.status === 'pending' ||
                                             idea.status === 'approved') && (
                                             <span
-                                                className={`me-1.5 h-1 w-1 rounded-full ${
+                                                className={`me-2 h-1.5 w-1.5 rounded-full ${
                                                     idea.status === 'pending'
                                                         ? 'bg-amber-500'
                                                         : 'bg-green-500'
@@ -222,31 +222,31 @@ export default function MyIdeas() {
                                         )}
                                         {idea.statusLabel}
                                     </span>
-                                    <span className="ms-auto text-[9px] text-on-surface-variant dark:text-slate-400">
+                                    <span className="ms-auto text-xs font-bold text-on-surface-variant dark:text-slate-400">
                                         {idea.date}
                                     </span>
                                 </div>
                                 <div className="mt-auto relative z-10">
-                                    <div className="mb-1.5 flex items-end justify-between">
-                                        <span className="text-[9px] font-bold text-on-surface-variant dark:text-slate-400">
+                                    <div className="mb-2 flex items-end justify-between">
+                                        <span className="text-xs font-black uppercase tracking-wider text-on-surface-variant dark:text-slate-400">
                                             {idea.status === 'winner'
                                                 ? __('messages.my_ideas.final_votes')
                                                 : __('messages.my_ideas.current_votes')}
                                         </span>
-                                        <span className="text-[11px] font-bold text-primary">
+                                        <span className="text-sm font-black text-primary">
                                             {idea.currentVotes.toLocaleString()}
-                                            {idea.targetVotes && `/${idea.targetVotes}`}
+                                            {idea.targetVotes && ` / ${idea.targetVotes}`}
                                         </span>
                                     </div>
-                                    <div className="h-1 w-full overflow-hidden rounded-full bg-surface-container-high dark:bg-white/10">
+                                    <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-high dark:bg-white/10">
                                         <div
-                                            className="h-full bg-gradient-to-l from-primary to-primary-container"
+                                            className="h-full bg-gradient-to-l from-primary to-primary-container transition-all duration-1000"
                                             style={{ width: `${idea.progress}%` }}
                                         ></div>
                                     </div>
                                     {idea.funded && (
-                                        <div className="mt-3.5 flex items-center justify-center gap-1 border-t border-outline-variant/10 pt-2.5 text-[9px] font-bold text-primary">
-                                            <span className="material-symbols-outlined text-xs">
+                                        <div className="mt-4 flex items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-xs font-black text-primary uppercase tracking-widest">
+                                            <span className="material-symbols-outlined text-sm">
                                                 workspace_premium
                                             </span>
                                             {__('messages.my_ideas.funded_success')}
@@ -259,17 +259,17 @@ export default function MyIdeas() {
                         {/* Add New Idea Placeholder */}
                         <Link
                             href="/ideas/create"
-                            className="group flex h-full flex-col items-center justify-center rounded-xl border-2 border-dashed border-outline-variant/30 bg-surface/30 p-5 transition-colors hover:border-primary/50"
+                            className="group flex h-full min-h-[250px] flex-col items-center justify-center rounded-2xl border-2 border-dashed border-outline-variant/30 bg-surface/30 p-6 transition-all hover:border-primary/50 hover:bg-primary/5"
                         >
-                            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-surface-container-highest text-on-surface-variant transition-all duration-300 group-hover:bg-primary-fixed group-hover:text-primary dark:bg-white/10">
-                                <span className="material-symbols-outlined text-2xl">
+                            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-surface-container-highest text-on-surface-variant transition-all duration-300 group-hover:scale-110 group-hover:bg-primary-fixed group-hover:text-primary dark:bg-white/10">
+                                <span className="material-symbols-outlined text-3xl">
                                     add_circle
                                 </span>
                             </div>
-                            <h3 className="text-sm font-bold text-on-surface-variant transition-colors group-hover:text-primary dark:text-slate-400">
+                            <h3 className="text-lg font-black text-on-surface-variant transition-colors group-hover:text-primary dark:text-slate-400">
                                 {__('messages.my_ideas.share_new_idea')}
                             </h3>
-                            <p className="mt-1.5 px-4 text-center text-[10px] text-on-surface-variant dark:text-slate-400">
+                            <p className="mt-2 px-6 text-center text-xs font-bold leading-relaxed text-on-surface-variant/60 dark:text-slate-400/60">
                                 {__('messages.my_ideas.share_new_idea_desc')}
                             </p>
                         </Link>
