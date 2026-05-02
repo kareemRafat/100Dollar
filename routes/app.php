@@ -21,8 +21,15 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile');
     Route::get('/profile/personal-info', [ProfileController::class, 'edit'])->name('app.profile.personal-info');
-    Route::get('/profile/password-security', [ProfileController::class, 'edit'])->name('app.profile.password-security');
-    Route::get('/profile/security', [ProfileController::class, 'edit'])->middleware('password.confirm')->name('app.profile.security');
+    Route::get('/profile/security', [ProfileController::class, 'edit'])->name('app.profile.security');
+
+    // Activity Routes
+    Route::get('/profile/voted-ideas', [ProfileController::class, 'edit'])->name('app.profile.voted-ideas');
+    Route::get('/profile/followed-ideas', [ProfileController::class, 'edit'])->name('app.profile.followed-ideas');
+    Route::get('/profile/followed-people', [ProfileController::class, 'edit'])->name('app.profile.followed-people');
+    Route::get('/profile/notifications', [ProfileController::class, 'edit'])->name('app.profile.notifications');
+    Route::patch('/profile/notifications/{notification}/read', [ProfileController::class, 'markNotificationAsRead'])->name('app.profile.notifications.read');
+
     Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('app.profile.password.update');
     Route::get('/ideas/create', [IdeaController::class, 'create'])->name('app.ideas.create');

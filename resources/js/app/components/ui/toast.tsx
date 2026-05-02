@@ -142,8 +142,10 @@ function ToastCard({ id, title, description, type, onClose, isRtl }: {
 export function Toaster() {
     const [activeToasts, setActiveToasts] = useState<Toast[]>([]);
     const [isRtl, setIsRtl] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
+        setMounted(true);
         // Detect direction
         const dir = document.documentElement.getAttribute('dir') || 'ltr';
         setIsRtl(dir === 'rtl');
@@ -166,6 +168,10 @@ export function Toaster() {
     }, []);
 
     useFlashToast();
+
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <div 

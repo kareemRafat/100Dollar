@@ -33,26 +33,16 @@ export function MobileBottomNav({
                         key={item.id}
                         onClick={() => onItemClick?.(item.id)}
                         className={cn(
-                            'flex flex-col items-center gap-1 transition-all',
+                            'flex flex-col items-center transition-all',
                             activeSection === item.id
                                 ? 'text-primary'
                                 : 'text-on-surface-variant/60',
                         )}
                     >
-                        <Icon className="size-5" />
-                        <span className="text-[10px] font-black uppercase tracking-tighter">
-                            {item.label}
-                        </span>
+                        <Icon className="size-6" />
                     </button>
                 );
             })}
-            <button
-                className="flex flex-col items-center gap-1 text-error/80"
-                type="button"
-            >
-                <LogOut className="size-5" />
-                <span className="text-[10px] font-bold uppercase tracking-tighter">{__('messages.auth.logout')}</span>
-            </button>
         </nav>
     );
 }

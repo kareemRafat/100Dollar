@@ -6,6 +6,11 @@ import {
     Lock,
     ShieldCheck,
     User as UserIcon,
+    Lightbulb,
+    Vote as VoteIcon,
+    Heart,
+    Users,
+    Bell,
 } from 'lucide-react';
 import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
 import { SideNav } from '@/app/components/side-nav';
@@ -13,9 +18,15 @@ import AppLayout from '@/app/layouts/app-layout';
 import PersonalInfoForm from './profile/partials/profile-information-form';
 import ProtectionSettings from './profile/partials/protection-settings';
 import PasswordUpdateForm from './profile/partials/update-password-form';
+import VotedIdeas from './profile/partials/voted-ideas';
+import FollowedIdeas from './profile/partials/followed-ideas';
+import FollowedPeople from './profile/partials/followed-people';
+import Notifications from './profile/partials/notifications';
+import profile from '@/routes/app/profile';
 
 type Props = {
     user: {
+        id: number;
         name: string;
         email: string;
         phone?: string;
@@ -25,6 +36,10 @@ type Props = {
     canManageTwoFactor?: boolean;
     twoFactorEnabled?: boolean;
     requiresConfirmation?: boolean;
+    votedIdeas?: any[];
+    followedIdeas?: any[];
+    followedPeople?: any[];
+    notifications?: any[];
 };
 
 export default function Profile({
@@ -32,6 +47,10 @@ export default function Profile({
     canManageTwoFactor = false,
     twoFactorEnabled = false,
     requiresConfirmation = false,
+    votedIdeas = [],
+    followedIdeas = [],
+    followedPeople = [],
+    notifications = [],
 }: Props) {
     const { url, props: pageProps } = usePage();
     const { locale } = pageProps;
@@ -39,30 +58,54 @@ export default function Profile({
     const isRtl = locale === 'ar';
 
     // Determine active section from URL
-    const activeSection = url.includes('/profile/security')
+    const activeSection = url.includes(profile.security.url())
         ? 'security'
-        : url.includes('/profile/password-security')
-          ? 'password-security'
-          : 'personal-info';
+        : url.includes(profile.votedIdeas.url())
+          ? 'voted-ideas'
+          : url.includes(profile.followedIdeas.url())
+            ? 'followed-ideas'
+            : url.includes(profile.followedPeople.url())
+              ? 'followed-people'
+              : url.includes(profile.notifications.url())
+                ? 'notifications'
+                : 'personal-info';
 
     const sideNavItems = [
         {
             id: 'personal-info',
             label: __('messages.profile.personal_info'),
             icon: UserIcon,
-            href: '/profile/personal-info',
+            href: profile.personalInfo.url(),
         },
         {
-            id: 'password-security',
-            label: __('messages.profile.password_security'),
-            icon: ShieldCheck,
-            href: '/profile/password-security',
+            id: 'voted-ideas',
+            label: __('messages.profile.voted_ideas'),
+            icon: VoteIcon,
+            href: profile.votedIdeas.url(),
+        },
+        {
+            id: 'followed-ideas',
+            label: __('messages.profile.followed_ideas'),
+            icon: Heart,
+            href: profile.followedIdeas.url(),
+        },
+        {
+            id: 'followed-people',
+            label: __('messages.profile.followed_people'),
+            icon: Users,
+            href: profile.followedPeople.url(),
+        },
+        {
+            id: 'notifications',
+            label: __('messages.profile.notifications'),
+            icon: Bell,
+            href: profile.notifications.url(),
         },
         {
             id: 'security',
             label: __('messages.profile.protection_settings'),
             icon: Lock,
-            href: '/profile/security',
+            href: profile.security.url(),
         },
     ];
 
@@ -71,19 +114,37 @@ export default function Profile({
             id: 'personal-info',
             label: __('messages.profile.personal_tab'),
             icon: UserIcon,
-            href: '/profile/personal-info',
+            href: profile.personalInfo.url(),
         },
         {
-            id: 'password-security',
-            label: __('messages.profile.security_tab'),
-            icon: ShieldCheck,
-            href: '/profile/password-security',
+            id: 'voted-ideas',
+            label: __('messages.profile.voted_ideas'),
+            icon: VoteIcon,
+            href: profile.votedIdeas.url(),
+        },
+        {
+            id: 'followed-ideas',
+            label: __('messages.profile.followed_ideas'),
+            icon: Heart,
+            href: profile.followedIdeas.url(),
+        },
+        {
+            id: 'followed-people',
+            label: __('messages.profile.followed_people'),
+            icon: Users,
+            href: profile.followedPeople.url(),
+        },
+        {
+            id: 'notifications',
+            label: __('messages.profile.notifications'),
+            icon: Bell,
+            href: profile.notifications.url(),
         },
         {
             id: 'security',
             label: __('messages.profile.protection_tab'),
             icon: Lock,
-            href: '/profile/security',
+            href: profile.security.url(),
         },
     ];
 
@@ -136,15 +197,28 @@ export default function Profile({
                             {activeSection === 'personal-info' && (
                                 <PersonalInfoForm user={user} />
                             )}
-                            {activeSection === 'password-security' && (
-                                <PasswordUpdateForm />
+                            {activeSection === 'voted-ideas' && (
+                                <VotedIdeas ideas={votedIdeas} />
+                            )}
+                            {activeSection === 'followed-ideas' && (
+                                <FollowedIdeas ideas={followedIdeas} />
+                            )}
+                            {activeSection === 'followed-people' && (
+                                <FollowedPeople people={followedPeople} />
+                            )}
+                            {activeSection === 'notifications' && (
+                                <Notifications notifications={notifications} />
                             )}
                             {activeSection === 'security' && (
-                                <ProtectionSettings
-                                    canManageTwoFactor={canManageTwoFactor}
-                                    twoFactorEnabled={twoFactorEnabled}
-                                    requiresConfirmation={requiresConfirmation}
-                                />
+                                <div className="space-y-12">
+                                    <PasswordUpdateForm />
+                                    <hr className="border-outline-variant/10 dark:border-white/5" />
+                                    <ProtectionSettings
+                                        canManageTwoFactor={canManageTwoFactor}
+                                        twoFactorEnabled={twoFactorEnabled}
+                                        requiresConfirmation={requiresConfirmation}
+                                    />
+                                </div>
                             )}
                         </div>
                     </main>
@@ -159,3 +233,4 @@ export default function Profile({
         </AppLayout>
     );
 }
+

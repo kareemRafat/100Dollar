@@ -2,6 +2,12 @@ import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
+import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
+import AdminLayout from '@/admin/layouts/admin-layout';
+import AdminSettingsLayout from '@/admin/layouts/settings-layout';
+import { Toaster as AppToaster } from '@/app/components/ui/toast';
+import { Toaster as AdminToaster } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 createServer((page) =>
     createInertiaApp({
@@ -9,9 +15,41 @@ createServer((page) =>
         render: ReactDOMServer.renderToString,
         resolve: (name) => {
             const pages = import.meta.glob('./**/*.tsx', { eager: true });
-
             return (pages[`./${name}.tsx`] || pages[`./pages/${name}.tsx`]) as any;
         },
-        setup: ({ App, props }) => <App {...props} />,
+        layout: (name) => {
+            switch (true) {
+                case name === 'welcome':
+                    return null;
+                case name.startsWith('admin/pages/auth/'):
+                    return AdminAuthLayout;
+                case name.startsWith('admin/pages/settings/'):
+                    return [AdminLayout, AdminSettingsLayout];
+                case name.startsWith('admin/'):
+                    return AdminLayout;
+                default:
+                    return null;
+            }
+        },
+        setup: ({ App, props }) => {
+            const locale = (props.initialPage.props.locale as string) || 'en';
+            const dir = locale === 'ar' ? 'rtl' : 'ltr';
+            const isAdmin = props.initialPage.component.startsWith('admin/');
+
+            return (
+                <TooltipProvider delayDuration={0}>
+                    <App {...props} />
+                    {isAdmin ? (
+                        <AdminToaster
+                            position="top-center"
+                            dir={dir}
+                            toastOptions={{ className: '!border-none shadow-lg' }}
+                        />
+                    ) : (
+                        <AppToaster />
+                    )}
+                </TooltipProvider>
+            );
+        },
     }),
 );

@@ -40,7 +40,7 @@ export function SideNav({ items, activeSection, onItemClick }: Props) {
                                     key={item.id}
                                     onClick={() => onItemClick?.(item.id)}
                                     className={cn(
-                                        'flex w-full items-center gap-2.5 p-2.5 text-xs transition-all duration-300 ease-in-out cursor-pointer rounded-xl',
+                                        'flex w-full items-center gap-2.5 p-2.5 text-sm transition-all duration-300 ease-in-out cursor-pointer rounded-xl',
                                         activeSection === item.id
                                             ? 'bg-surface-container-lowest font-black text-primary shadow-sm dark:bg-card'
                                             : 'text-on-surface-variant hover:bg-surface-container-lowest/50 dark:hover:bg-on-surface/10',
@@ -57,7 +57,7 @@ export function SideNav({ items, activeSection, onItemClick }: Props) {
                 <div className="mt-auto p-4 border-t border-outline-variant/10 dark:border-white/5">
                     <button
                         onClick={handleLogout}
-                        className="flex w-full items-center gap-3 p-3 text-xs font-bold text-error transition-all hover:bg-error/5 rounded-xl cursor-pointer"
+                        className="flex w-full items-center gap-3 p-3 text-sm font-bold text-error transition-all hover:bg-error/5 rounded-xl cursor-pointer"
                     >
                         <LogOut className="size-4.5" />
                         <span>{__('messages.auth.logout')}</span>
