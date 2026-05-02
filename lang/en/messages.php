@@ -173,6 +173,12 @@ return [
         'load_more' => 'Load more winning ideas',
         'follow_idea' => 'Follow Idea',
         'follow_owner' => 'Follow Owner',
+        'following' => 'Following',
+        'unfollow' => 'Unfollow',
+        'follow_idea_success' => 'Idea followed successfully',
+        'follow_user_success' => 'User followed successfully',
+        'unfollow_idea_success' => 'Idea removed from your follows',
+        'unfollow_user_success' => 'User removed from your follows',
     ],
 
     'how_it_works' => [

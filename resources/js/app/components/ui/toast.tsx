@@ -83,11 +83,11 @@ const styles = {
     },
 };
 
-function ToastCard({ id, title, description, type, onClose, isRtl }: { 
-    id: string; 
-    title: string; 
-    description?: string; 
-    type: ToastType; 
+function ToastCard({ id, title, description, type, onClose, isRtl }: {
+    id: string;
+    title: string;
+    description?: string;
+    type: ToastType;
     onClose: (id: string) => void;
     isRtl: boolean;
 }) {
@@ -96,14 +96,14 @@ function ToastCard({ id, title, description, type, onClose, isRtl }: {
     return (
         <div
             className={cn(
-                "w-full max-w-md bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-s-4 transition-all duration-200 active:scale-95 cursor-pointer",
+                "w-full md:min-w-[450px] max-w-md bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-s-4 transition-all duration-200 active:scale-95 cursor-pointer",
                 style.border
             )}
             onClick={() => onClose(id)}
         >
             <div className={cn("flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center", style.iconBg)}>
-                <span 
-                    className={cn("material-symbols-outlined", style.iconColor)} 
+                <span
+                    className={cn("material-symbols-outlined", style.iconColor)}
                     style={{ fontVariationSettings: "'FILL' 1" }}
                 >
                     {icons[type]}
@@ -112,14 +112,14 @@ function ToastCard({ id, title, description, type, onClose, isRtl }: {
             <div className="flex-1 space-y-0.5">
                 <h3 className={cn(
                     "font-bold text-secondary font-headline leading-tight",
-                    isRtl ? "text-[15px]" : "text-base"
+                    isRtl ? "text-[13px]" : "text-base"
                 )}>
                     {title}
                 </h3>
                 {description && (
                     <p className={cn(
                         "text-on-surface-variant leading-relaxed font-body",
-                        isRtl ? "text-[13px]" : "text-sm"
+                        isRtl ? "text-[11px]" : "text-sm"
                     )}>
                         {description}
                     </p>
@@ -174,7 +174,7 @@ export function Toaster() {
     }
 
     return (
-        <div 
+        <div
             className={cn(
                 "fixed top-0 z-[100] p-4 md:p-6 pointer-events-none flex flex-col gap-4 w-full md:w-auto",
                 isRtl ? "left-0" : "right-0"

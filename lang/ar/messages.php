@@ -173,6 +173,12 @@ return [
         'load_more' => 'تحميل المزيد من الأفكار الفائزة',
         'follow_idea' => 'متابعة الفكرة',
         'follow_owner' => 'متابعة العضو',
+        'following' => 'متابَع',
+        'unfollow' => 'إلغاء المتابعة',
+        'follow_idea_success' => 'تمت متابعة الفكرة ',
+        'follow_user_success' => 'تمت متابعة العضو ',
+        'unfollow_idea_success' => 'تم إلغاء متابعة الفكرة',
+        'unfollow_user_success' => 'تم إلغاء متابعة العضو',
     ],
 
     'how_it_works' => [

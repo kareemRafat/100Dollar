@@ -83,7 +83,7 @@ export default function Notifications({ notifications = [] }: Props) {
                                 }`}>
                                     {notification.title}
                                 </h3>
-                                <div className="flex items-center gap-1 text-[10px] text-on-surface-variant/40">
+                                <div className="flex items-center me-5 gap-1 text-[10px] text-on-surface-variant/40">
                                     <Clock className="size-3" />
                                     {formatDate(notification.created_at)}
                                 </div>
@@ -94,7 +94,7 @@ export default function Notifications({ notifications = [] }: Props) {
                         </div>
 
                         {!notification.is_read && (
-                            <div className="absolute top-4 end-4">
+                            <div className="absolute top-4 end-4 mt-1">
                                 <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
                             </div>
                         )}

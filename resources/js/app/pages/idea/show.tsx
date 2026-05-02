@@ -1,16 +1,20 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link, usePage, useForm, InfiniteScroll } from '@inertiajs/react';
+import { Head, Link, usePage, useForm, InfiniteScroll, router } from '@inertiajs/react';
 import {
     Bell,
     UserPlus,
     Send,
-    Loader2
+    Loader2,
+    Check
 } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { PinModal } from '@/app/components/pin-modal';
 import { Button } from '@/app/components/ui/button';
 import AppLayout from '@/app/layouts/app-layout';
 import type { Idea, User, Paginated } from '@/types';
+import ideasRoute from '@/routes/app/ideas';
+import usersRoute from '@/routes/app/users';
+import { toast } from '@/app/components/ui/toast';
 
 interface Comment {
     id: number;
@@ -34,6 +38,42 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const { auth } = usePage().props as any;
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
+
+    const toggleFollowIdea = () => {
+        if (!auth.user) {
+            router.visit(`/login?redirect=${window.location.pathname}`);
+            return;
+        }
+
+        router.post(ideasRoute.follow(idea.id).url, {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success(
+                    isFollowingIdea 
+                        ? __('messages.archive.unfollow_idea_success') 
+                        : __('messages.archive.follow_idea_success')
+                );
+            }
+        });
+    };
+
+    const toggleFollowOwner = () => {
+        if (!auth.user || !idea.user_id) {
+            router.visit(`/login?redirect=${window.location.pathname}`);
+            return;
+        }
+
+        router.post(usersRoute.follow(idea.user_id).url, {}, {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success(
+                    isFollowingOwner 
+                        ? __('messages.archive.unfollow_user_success') 
+                        : __('messages.archive.follow_user_success')
+                );
+            }
+        });
+    };
 
     const { data, setData, post, processing, reset, errors } = useForm({
         body: '',
@@ -152,20 +192,26 @@ return;
                         {/* Follow Actions */}
                         <div className="grid grid-cols-2 gap-3">
                             <button
-                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10 shadow-sm transition-all group ${isFollowingIdea ? 'border-primary' : 'hover:border-primary'}`}
+                                onClick={toggleFollowIdea}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                             >
-                                <div className={`p-2 rounded-lg transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}>
-                                    <Bell className="w-5 h-5" />
+                                <div className={`p-2 rounded-lg transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {isFollowingIdea ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">{__('messages.archive.follow_idea')}</span>
+                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
+                                    {isFollowingIdea ? __('messages.archive.following') : __('messages.archive.follow_idea')}
+                                </span>
                             </button>
                             <button
-                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10 shadow-sm transition-all group ${isFollowingOwner ? 'border-primary' : 'hover:border-primary'}`}
+                                onClick={toggleFollowOwner}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                             >
-                                <div className={`p-2 rounded-lg transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}>
-                                    <UserPlus className="w-5 h-5" />
+                                <div className={`p-2 rounded-lg transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {isFollowingOwner ? <Check className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
                                 </div>
-                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">{__('messages.archive.follow_owner')}</span>
+                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
+                                    {isFollowingOwner ? __('messages.archive.following') : __('messages.archive.follow_owner')}
+                                </span>
                             </button>
                         </div>
 
