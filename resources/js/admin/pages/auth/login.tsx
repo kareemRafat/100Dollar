@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
 import TextLink from '@/components/text-link';
@@ -115,7 +116,11 @@ export default function Login({
     );
 }
 
-Login.layout = {
-    title: 'Log in to your account',
-    description: 'Enter your email and password below to log in',
-};
+Login.layout = (page: React.ReactNode) => (
+    <AdminAuthLayout
+        title="Log in to your account"
+        description="Enter your email and password below to log in"
+    >
+        {page}
+    </AdminAuthLayout>
+);

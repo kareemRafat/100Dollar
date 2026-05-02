@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetHeader,
     SheetTitle,
@@ -97,18 +98,19 @@ export function TopNavBar({ activeRoute }: Props) {
                             <div className="flex flex-1 flex-col p-4 overflow-y-auto no-scrollbar">
                                 <div className="flex flex-col gap-0.5">
                                     {navItems.map((item) => (
-                                        <Link
-                                            key={item.title}
-                                            href={item.href}
-                                            className={cn(
-                                                'flex items-center rounded-xl px-4 py-2.5 font-headline text-sm font-bold transition-all',
-                                                activeRoute === item.href
-                                                    ? 'bg-primary/10 text-primary'
-                                                    : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
-                                            )}
-                                        >
-                                            {item.title}
-                                        </Link>
+                                        <SheetClose asChild key={item.title}>
+                                            <Link
+                                                href={item.href}
+                                                className={cn(
+                                                    'flex items-center rounded-xl px-4 py-2.5 font-headline text-sm font-bold transition-all',
+                                                    activeRoute === item.href
+                                                        ? 'bg-primary/10 text-primary'
+                                                        : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
+                                                )}
+                                            >
+                                                {item.title}
+                                            </Link>
+                                        </SheetClose>
                                     ))}
                                 </div>
 
@@ -142,111 +144,127 @@ export function TopNavBar({ activeRoute }: Props) {
                                 <div className="mt-8 flex flex-col gap-3">
                                     {auth.user ? (
                                         <div className="flex flex-col gap-4">
-                                            <Link
-                                                href="/profile"
-                                                className="flex items-center gap-3 rounded-xl p-2 transition-all hover:bg-surface-container-high dark:hover:bg-white/5"
-                                            >
-                                                <Avatar className="size-10">
-                                                    <AvatarImage
-                                                        src={auth.user.avatar}
-                                                        alt={auth.user.name}
-                                                    />
-                                                    <AvatarFallback className="bg-primary font-bold text-white">
-                                                        {getInitials(
-                                                            auth.user.name,
-                                                        )}
-                                                    </AvatarFallback>
-                                                </Avatar>
-                                                <div className={cn(
-                                                    "flex flex-col",
-                                                    isRtl ? "text-right" : "text-left"
-                                                )}>
-                                                    <span className="text-sm font-bold text-on-surface dark:text-white">
-                                                        {auth.user.name}
-                                                    </span>
-                                                    <span className="text-xs text-on-surface-variant">
-                                                        {auth.user.email}
-                                                    </span>
-                                                </div>
-                                            </Link>
+                                            <SheetClose asChild>
+                                                <Link
+                                                    href="/profile"
+                                                    className="flex items-center gap-3 rounded-xl p-2 transition-all hover:bg-surface-container-high dark:hover:bg-white/5"
+                                                >
+                                                    <Avatar className="size-10">
+                                                        <AvatarImage
+                                                            src={auth.user.avatar}
+                                                            alt={auth.user.name}
+                                                        />
+                                                        <AvatarFallback className="bg-primary font-bold text-white">
+                                                            {getInitials(
+                                                                auth.user.name,
+                                                            )}
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                    <div className={cn(
+                                                        "flex flex-col",
+                                                        isRtl ? "text-right" : "text-left"
+                                                    )}>
+                                                        <span className="text-sm font-bold text-on-surface dark:text-white">
+                                                            {auth.user.name}
+                                                        </span>
+                                                        <span className="text-xs text-on-surface-variant">
+                                                            {auth.user.email}
+                                                        </span>
+                                                    </div>
+                                                </Link>
+                                            </SheetClose>
 
                                             <div className="grid grid-cols-2 gap-2">
                                                 {auth.user.role === 'admin' ? (
-                                                    <Button
-                                                        asChild
-                                                        className="h-9 rounded-xl bg-secondary font-bold text-xs"
-                                                    >
-                                                        <a href="/admin">
-                                                            {__(
-                                                                'messages.ui.dashboard',
-                                                            )}
-                                                        </a>
-                                                    </Button>
+                                                    <SheetClose asChild>
+                                                        <Button
+                                                            asChild
+                                                            className="h-9 rounded-xl bg-secondary font-bold text-xs"
+                                                        >
+                                                            <a href="/admin">
+                                                                {__(
+                                                                    'messages.ui.dashboard',
+                                                                )}
+                                                            </a>
+                                                        </Button>
+                                                    </SheetClose>
                                                 ) : (
-                                                    <Button
-                                                        asChild
-                                                        className="h-9 rounded-xl font-bold text-xs"
-                                                    >
-                                                        <Link href={create.url()}>
-                                                            {__(
-                                                                'messages.ui.submit_your_idea',
-                                                            )}
-                                                        </Link>                                                    </Button>
+                                                    <SheetClose asChild>
+                                                        <Button
+                                                            asChild
+                                                            className="h-9 rounded-xl font-bold text-xs"
+                                                        >
+                                                            <Link href={create.url()}>
+                                                                {__(
+                                                                    'messages.ui.submit_your_idea',
+                                                                )}
+                                                            </Link>
+                                                        </Button>
+                                                    </SheetClose>
                                                 )}
 
-                                                <Button
-                                                    asChild
-                                                    variant="outline"
-                                                    className="h-9 rounded-xl font-bold text-xs border-error/20 text-error hover:bg-error/5"
-                                                >
-                                                    <Link
-                                                        href={logout()}
-                                                        method="post"
-                                                        as="button"
-                                                        data={{
-                                                            _locale: locale,
-                                                        }}
+                                                <SheetClose asChild>
+                                                    <Button
+                                                        asChild
+                                                        variant="outline"
+                                                        className="h-9 rounded-xl font-bold text-xs border-error/20 text-error hover:bg-error/5"
                                                     >
-                                                        <LogOut className="size-3.5 me-1.5" />
-                                                        {__(
-                                                            'messages.auth.logout',
-                                                        )}
-                                                    </Link>
-                                                </Button>
+                                                        <Link
+                                                            href={logout()}
+                                                            method="post"
+                                                            as="button"
+                                                            data={{
+                                                                _locale: locale,
+                                                            }}
+                                                        >
+                                                            <LogOut className="size-3.5 me-1.5" />
+                                                            {__(
+                                                                'messages.auth.logout',
+                                                            )}
+                                                        </Link>
+                                                    </Button>
+                                                </SheetClose>
                                             </div>
                                         </div>
                                     ) : (
                                         <div className="flex flex-col gap-2">
-                                            <Button
-                                                asChild
-                                                className="h-9 rounded-xl font-bold text-xs transition-all active:scale-[0.98]"
-                                            >
-                                                <Link href={login()}>
-                                                    {__(
-                                                        'messages.ui.submit_your_idea',
-                                                    )}
-                                                </Link>                                            </Button>
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <SheetClose asChild>
                                                 <Button
                                                     asChild
-                                                    variant="ghost"
-                                                    className="h-9 rounded-xl font-bold text-xs"
+                                                    className="h-9 rounded-xl font-bold text-xs transition-all active:scale-[0.98]"
                                                 >
                                                     <Link href={login()}>
-                                                        {__('messages.auth.login')}
-                                                    </Link>
-                                                </Button>
-                                                <Button
-                                                    asChild
-                                                    variant="outline"
-                                                    className="h-9 rounded-xl font-bold text-xs"
-                                                >
-                                                    <Link href={register()}>
                                                         {__(
-                                                            'messages.auth.register',
+                                                            'messages.ui.submit_your_idea',
                                                         )}
                                                     </Link>
                                                 </Button>
+                                            </SheetClose>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <SheetClose asChild>
+                                                    <Button
+                                                        asChild
+                                                        variant="ghost"
+                                                        className="h-9 rounded-xl font-bold text-xs"
+                                                    >
+                                                        <Link href={login()}>
+                                                            {__('messages.auth.login')}
+                                                        </Link>
+                                                    </Button>
+                                                </SheetClose>
+                                                <SheetClose asChild>
+                                                    <Button
+                                                        asChild
+                                                        variant="outline"
+                                                        className="h-9 rounded-xl font-bold text-xs"
+                                                    >
+                                                        <Link href={register()}>
+                                                            {__(
+                                                                'messages.auth.register',
+                                                            )}
+                                                        </Link>
+                                                    </Button>
+                                                </SheetClose>
                                             </div>
                                         </div>
                                     )}
