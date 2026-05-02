@@ -6,12 +6,13 @@ import {
     Loader2,
     Check
 } from 'lucide-react';
-import { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, lazy, Suspense, useEffect } from 'react';
 import AppLayout from '@/app/layouts/app-layout';
 import type { Idea, User, Paginated } from '@/types';
 import ideasRoute from '@/routes/app/ideas';
 import usersRoute from '@/routes/app/users';
 import { toast } from '@/app/components/ui/toast';
+import { Skeleton } from '@/app/components/ui/skeleton';
 
 // Partials
 import { HeroSection } from './partials/hero-section';
@@ -45,20 +46,39 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
+    // Optimistic State
+    const [optimisticFollowingIdea, setOptimisticFollowingIdea] = useState(isFollowingIdea);
+    const [optimisticFollowingOwner, setOptimisticFollowingOwner] = useState(isFollowingOwner);
+
+    // Sync optimistic state when deferred props load
+    useEffect(() => {
+        setOptimisticFollowingIdea(isFollowingIdea);
+    }, [isFollowingIdea]);
+
+    useEffect(() => {
+        setOptimisticFollowingOwner(isFollowingOwner);
+    }, [isFollowingOwner]);
+
     const toggleFollowIdea = () => {
         if (!auth.user) {
             router.visit(`/login?redirect=${window.location.pathname}`);
             return;
         }
 
+        const nextState = !optimisticFollowingIdea;
+        setOptimisticFollowingIdea(nextState);
+
         router.post(ideasRoute.follow(idea.id).url, {}, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success(
-                    isFollowingIdea 
-                        ? __('messages.archive.unfollow_idea_success') 
-                        : __('messages.archive.follow_idea_success')
+                    nextState 
+                        ? __('messages.archive.follow_idea_success') 
+                        : __('messages.archive.unfollow_idea_success')
                 );
+            },
+            onError: () => {
+                setOptimisticFollowingIdea(!nextState);
             }
         });
     };
@@ -69,19 +89,25 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             return;
         }
 
+        const nextState = !optimisticFollowingOwner;
+        setOptimisticFollowingOwner(nextState);
+
         router.post(usersRoute.follow(idea.user_id).url, {}, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success(
-                    isFollowingOwner 
-                        ? __('messages.archive.unfollow_user_success') 
-                        : __('messages.archive.follow_user_success')
+                    nextState 
+                        ? __('messages.archive.follow_user_success') 
+                        : __('messages.archive.unfollow_user_success')
                 );
+            },
+            onError: () => {
+                setOptimisticFollowingOwner(!nextState);
             }
         });
     };
 
-    if (!idea || !comments) {
+    if (!idea) {
         return null;
     }
 
@@ -104,41 +130,30 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                         <VotingCard idea={idea} onVoteClick={() => setIsPinModalOpen(true)} />
 
                         {/* Follow Actions */}
-                        <Deferred data={['isFollowingIdea', 'isFollowingOwner']} fallback={
-                            <div className="grid grid-cols-2 gap-3 opacity-50 pointer-events-none">
-                                <div className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10">
-                                    <Loader2 className="w-5 h-5 animate-spin" />
+                        <div className="grid grid-cols-2 gap-3">
+                            <button
+                                onClick={toggleFollowIdea}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${optimisticFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
+                            >
+                                <div className={`p-2 rounded-lg transition-colors ${optimisticFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {optimisticFollowingIdea ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
                                 </div>
-                                <div className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/10">
-                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
+                                    {optimisticFollowingIdea ? __('messages.archive.following') : __('messages.archive.follow_idea')}
+                                </span>
+                            </button>
+                            <button
+                                onClick={toggleFollowOwner}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${optimisticFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
+                            >
+                                <div className={`p-2 rounded-lg transition-colors ${optimisticFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {optimisticFollowingOwner ? <Check className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
                                 </div>
-                            </div>
-                        }>
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={toggleFollowIdea}
-                                    className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                                >
-                                    <div className={`p-2 rounded-lg transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
-                                        {isFollowingIdea ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
-                                    </div>
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
-                                        {isFollowingIdea ? __('messages.archive.following') : __('messages.archive.follow_idea')}
-                                    </span>
-                                </button>
-                                <button
-                                    onClick={toggleFollowOwner}
-                                    className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                                >
-                                    <div className={`p-2 rounded-lg transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
-                                        {isFollowingOwner ? <Check className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-                                    </div>
-                                    <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
-                                        {isFollowingOwner ? __('messages.archive.following') : __('messages.archive.follow_owner')}
-                                    </span>
-                                </button>
-                            </div>
-                        </Deferred>
+                                <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
+                                    {optimisticFollowingOwner ? __('messages.archive.following') : __('messages.archive.follow_owner')}
+                                </span>
+                            </button>
+                        </div>
 
                         <SocialShare idea={idea} />
                     </aside>
@@ -208,12 +223,14 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                             </div>
                         </section>
 
-                        <CommentSection 
-                            idea={idea} 
-                            comments={comments} 
-                            auth={auth} 
-                            commentsTopRef={commentsTopRef} 
-                        />
+                        <Deferred data="comments" fallback={<CommentSkeleton />}>
+                            <CommentSection 
+                                idea={idea} 
+                                comments={comments} 
+                                auth={auth} 
+                                commentsTopRef={commentsTopRef} 
+                            />
+                        </Deferred>
                     </div>
                 </div>
             </main>
@@ -232,5 +249,33 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                 </Suspense>
             )}
         </AppLayout>
+    );
+}
+
+function CommentSkeleton() {
+    return (
+        <div className="space-y-8">
+            <div className="flex items-center gap-3">
+                <Skeleton className="h-8 w-48" />
+                <Skeleton className="h-8 w-12 rounded-full" />
+            </div>
+            <div className="bg-surface-container-lowest rounded-2xl border-t-4 border-primary border-x border-b border-outline-variant/20 shadow-sm overflow-hidden">
+                <div className="p-6 md:p-8 space-y-8">
+                    {[1, 2, 3].map((i) => (
+                        <div key={i} className="flex gap-4">
+                            <Skeleton className="w-12 h-12 rounded-full shrink-0" />
+                            <div className="flex-1 space-y-3 mt-1">
+                                <div className="flex justify-between items-center">
+                                    <Skeleton className="h-5 w-32" />
+                                    <Skeleton className="h-8 w-16 rounded-full" />
+                                </div>
+                                <Skeleton className="h-4 w-24" />
+                                <Skeleton className="h-20 w-full rounded-xl" />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }

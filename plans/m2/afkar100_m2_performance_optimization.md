@@ -49,18 +49,18 @@ Modularize the React code to prevent unnecessary re-renders and improve maintain
 ## 3. UX & Perceived Performance
 Improve the feel of interactions and visual stability.
 
-- [ ] **Optimistic UI Updates:**
+- [x] **Optimistic UI Updates:**
     - Refactor Follow/Unfollow logic to update local state immediately before the Inertia visit.
 - [ ] **Image Optimization:**
     - Integrate responsive image generation (WebP) for the Hero background.
     - Add `fetchpriority="high"` to the main Hero image.
-- [ ] **Skeleton States:**
+- [x] **Skeleton States:**
     - Design and implement skeleton loaders for deferred props (Comments, Follow status).
 
 ---
 
 ## Done Criteria
-- [ ] Idea Show page payload size reduced by >30%.
-- [ ] Following/Unfollowing feels instant (no wait for server roundtrip).
-- [ ] Page score (Lighthouse) shows improvement in TTI and FCP.
-- [ ] No layout shifts (CLS) when icons or deferred content load.
+- [x] Idea Show page payload size reduced by >30%.
+- [x] Following/Unfollowing feels instant (no wait for server roundtrip).
+- [x] Page score (Lighthouse) shows improvement in TTI and FCP.
+- [x] No layout shifts (CLS) when icons or deferred content load.

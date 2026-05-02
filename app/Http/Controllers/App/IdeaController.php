@@ -96,21 +96,19 @@ class IdeaController extends Controller
 
         return Inertia::render('app/pages/idea/show', [
             'idea' => new IdeaResource($idea),
-            'comments' => Inertia::scroll(fn () => CommentResource::collection(
+            'comments' => Inertia::defer(fn () => Inertia::scroll(fn () => CommentResource::collection(
                 $idea->comments()
                     ->with(['user.media'])
                     ->withCount('likes')
                     ->latest('id')
                     ->cursorPaginate(7)
-            )),
-            'isFollowingIdea' => Inertia::defer(fn () => auth()->check() 
+            ))),
+            'isFollowingIdea' => auth()->check() 
                 ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() 
-                : false
-            ),
-            'isFollowingOwner' => Inertia::defer(fn () => auth()->check() 
+                : false,
+            'isFollowingOwner' => auth()->check() 
                 ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() 
-                : false
-            ),
+                : false,
         ]);
     }
 
