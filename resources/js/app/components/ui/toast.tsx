@@ -84,21 +84,23 @@ const styles = {
     },
 };
 
-function ToastCard({ id, title, description, type, onClose, isRtl }: {
+function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: {
     id: string;
     title: string;
     description?: string;
     type: ToastType;
     onClose: (id: string) => void;
     isRtl: boolean;
+    isExiting?: boolean;
 }) {
     const style = styles[type];
 
     return (
         <div
             className={cn(
-                "w-full md:min-w-[450px] max-w-md bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-s-4 transition-all duration-200 active:scale-95 cursor-pointer",
-                style.border
+                "w-full md:min-w-[450px] max-w-md bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-s-4 transition-all duration-300 active:scale-95 cursor-pointer",
+                style.border,
+                isExiting ? "opacity-0 scale-95 translate-y-[-10px]" : "opacity-100 scale-100 translate-y-0"
             )}
             onClick={() => onClose(id)}
         >
@@ -112,7 +114,7 @@ function ToastCard({ id, title, description, type, onClose, isRtl }: {
             </div>
             <div className="flex-1 space-y-0.5">
                 <h3 className={cn(
-                    "font-bold text-secondary font-headline leading-tight",
+                    "font-bold text-on-surface font-headline leading-tight",
                     isRtl ? "text-[13px]" : "text-base"
                 )}>
                     {title}
@@ -141,7 +143,7 @@ function ToastCard({ id, title, description, type, onClose, isRtl }: {
 
 // --- Exported Component ---
 export function Toaster() {
-    const [activeToasts, setActiveToasts] = useState<Toast[]>([]);
+    const [activeToasts, setActiveToasts] = useState<(Toast & { isExiting?: boolean })[]>([]);
     const [isRtl, setIsRtl] = useState(false);
     const [mounted, setMounted] = useState(false);
 
@@ -164,7 +166,52 @@ export function Toaster() {
 
     useEffect(() => {
         return toast.subscribe((newToasts) => {
-            setActiveToasts(newToasts);
+            setActiveToasts((current) => {
+                // Find toasts that were removed
+                const removedIds = current
+                    .filter(t => !t.isExiting && !newToasts.find(nt => nt.id === t.id))
+                    .map(t => t.id);
+
+                if (removedIds.length === 0) {
+                    // Update current ones with new data, preserve isExiting
+                    const merged = newToasts.map(nt => {
+                        const existing = current.find(t => t.id === nt.id);
+                        return existing ? { ...nt, isExiting: existing.isExiting } : nt;
+                    });
+                    
+                    // Keep the exiting ones too
+                    const exiting = current.filter(t => t.isExiting);
+                    
+                    // Filter out exiting that are now back in newToasts (shouldn't happen with unique IDs but just in case)
+                    const filteredExiting = exiting.filter(et => !newToasts.find(nt => nt.id === et.id));
+                    
+                    return [...merged, ...filteredExiting];
+                }
+
+                // Mark removed as exiting
+                const updated = current.map(t => {
+                    if (removedIds.includes(t.id)) {
+                        return { ...t, isExiting: true };
+                    }
+                    return t;
+                });
+
+                // Add any new toasts that weren't in current
+                newToasts.forEach(nt => {
+                    if (!current.find(t => t.id === nt.id)) {
+                        updated.push(nt);
+                    }
+                });
+
+                // Set timeout to remove them from state
+                removedIds.forEach(id => {
+                    setTimeout(() => {
+                        setActiveToasts(prev => prev.filter(t => t.id !== id));
+                    }, 300);
+                });
+
+                return updated;
+            });
         });
     }, []);
 
@@ -185,7 +232,7 @@ export function Toaster() {
                 <div
                     key={t.id}
                     className={cn(
-                        "pointer-events-auto w-full max-w-md transition-all duration-300 animate-in fade-in slide-in-from-top-4",
+                        "pointer-events-auto w-full max-w-md animate-in fade-in slide-in-from-top-4 duration-300",
                         isRtl ? "md:mr-0" : "md:ml-0"
                     )}
                 >
@@ -196,6 +243,7 @@ export function Toaster() {
                         type={t.type}
                         onClose={(id) => toast.dismiss(id)}
                         isRtl={isRtl}
+                        isExiting={t.isExiting}
                     />
                 </div>
             ))}

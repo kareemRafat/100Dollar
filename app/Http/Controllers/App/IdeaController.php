@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Resources\App\CommentResource;
+use App\Http\Resources\App\IdeaResource;
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -86,19 +89,28 @@ class IdeaController extends Controller
 
     public function show(Idea $idea): Response
     {
+        JsonResource::withoutWrapping();
+
         $idea->load(['user.media', 'sponsor.media']);
         $idea->loadCount(['votes', 'comments']);
 
         return Inertia::render('app/pages/idea/show', [
-            'idea' => $idea,
-            'comments' => Inertia::scroll(fn () => $idea->comments()
-                ->with(['user:id,name', 'user.media'])
-                ->withCount('likes')
-                ->latest('id')
-                ->cursorPaginate(7)
+            'idea' => new IdeaResource($idea),
+            'comments' => Inertia::scroll(fn () => CommentResource::collection(
+                $idea->comments()
+                    ->with(['user.media'])
+                    ->withCount('likes')
+                    ->latest('id')
+                    ->cursorPaginate(7)
+            )),
+            'isFollowingIdea' => Inertia::defer(fn () => auth()->check() 
+                ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() 
+                : false
             ),
-            'isFollowingIdea' => auth()->check() ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() : false,
-            'isFollowingOwner' => auth()->check() ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() : false,
+            'isFollowingOwner' => Inertia::defer(fn () => auth()->check() 
+                ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() 
+                : false
+            ),
         ]);
     }
 
