@@ -1,6 +1,22 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { ArrowLeft, ArrowRight, Building2, Mail, Phone, Globe, MessageSquare, ShieldCheck, Rocket } from 'lucide-react';
+import { 
+    ArrowLeft, 
+    ArrowRight, 
+    Building2, 
+    Mail, 
+    Phone, 
+    Globe, 
+    MessageSquare, 
+    ShieldCheck, 
+    Rocket, 
+    ImagePlus,
+    MapPin,
+    Flag,
+    UploadCloud
+} from 'lucide-react';
+import { useState  } from 'react';
+import type {ChangeEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
@@ -8,6 +24,14 @@ import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 import { sponsors as sponsorsIndex } from '@/routes/app';
 import { store } from '@/routes/app/sponsors';
 
@@ -15,20 +39,66 @@ export default function SponsorshipApply() {
     const { __ } = useLang();
     const { locale } = usePage().props;
     const isRtl = locale === 'ar';
+    const [logoPreview, setLogoPreview] = useState<string | null>(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         company_name: '',
         email: '',
         phone: '',
         website: '',
+        country: '',
+        logo: null as File | null,
         message: '',
     });
+
+    const processLogo = (file: File) => {
+        setData('logo', file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setLogoPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleLogoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (file) {
+            processLogo(file);
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragging(false);
+
+        const file = e.dataTransfer.files?.[0];
+
+        if (file && file.type.startsWith('image/')) {
+            processLogo(file);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(store().url, {
             onSuccess: () => {
                 reset();
+                setLogoPreview(null);
                 toast.success(__('messages.sponsors.application_success'));
             },
         });
@@ -136,21 +206,107 @@ export default function SponsorshipApply() {
                                         </div>
                                     </div>
 
+                                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
+                                                <Globe className="size-3.5 text-primary" />
+                                                {__('messages.sponsors.company_website')}
+                                            </Label>
+                                            <Input
+                                                size="lg"
+                                                className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                                placeholder="https://company.com"
+                                                type="url"
+                                                dir="ltr"
+                                                value={data.website}
+                                                onChange={(e) => setData('website', e.target.value)}
+                                            />
+                                            <InputError message={errors.website} />
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
+                                                <MapPin className="size-3.5 text-primary" />
+                                                {__('messages.submit_idea.country_label')}
+                                            </Label>
+                                            <Select
+                                                value={data.country}
+                                                onValueChange={(val) => setData('country', val)}
+                                                required
+                                            >
+                                                <SelectTrigger size="lg" className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary">
+                                                    <SelectValue placeholder={__('messages.submit_idea.country_placeholder')} />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="Saudi Arabia">
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag className="size-4 text-primary" />
+                                                            {__('messages.countries.saudi_arabia')}
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="UAE">
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag className="size-4 text-primary" />
+                                                            {__('messages.countries.uae')}
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="Egypt">
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag className="size-4 text-primary" />
+                                                            {__('messages.countries.egypt')}
+                                                        </div>
+                                                    </SelectItem>
+                                                    <SelectItem value="Jordan">
+                                                        <div className="flex items-center gap-2">
+                                                            <Flag className="size-4 text-primary" />
+                                                            {__('messages.countries.jordan')}
+                                                        </div>
+                                                    </SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <InputError message={errors.country} />
+                                        </div>
+                                    </div>
+
                                     <div className="flex flex-col gap-2">
                                         <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
-                                            <Globe className="size-3.5 text-primary" />
-                                            {__('messages.sponsors.company_website')}
+                                            <ImagePlus className="size-3.5 text-primary" />
+                                            {__('messages.sponsors.company_logo')}
                                         </Label>
-                                        <Input
-                                            size="lg"
-                                            className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                            placeholder="https://company.com"
-                                            type="url"
-                                            dir="ltr"
-                                            value={data.website}
-                                            onChange={(e) => setData('website', e.target.value)}
-                                        />
-                                        <InputError message={errors.website} />
+                                        <div
+                                            onClick={() => document.getElementById('logo-upload')?.click()}
+                                            onDragOver={handleDragOver}
+                                            onDragLeave={handleDragLeave}
+                                            onDrop={handleDrop}
+                                            className={cn(
+                                                "group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-all overflow-hidden relative min-h-[140px]",
+                                                isDragging ? "border-primary bg-primary/5 dark:bg-primary/10 scale-[1.02]" : "hover:border-primary dark:hover:border-primary"
+                                            )}
+                                        >
+                                            {logoPreview ? (
+                                                <img src={logoPreview} alt="Preview" className="absolute inset-0 w-full h-full object-contain opacity-80 group-hover:opacity-60 transition-opacity p-2" />
+                                            ) : (
+                                                <UploadCloud className={cn(
+                                                    "mb-2 size-10 transition-transform",
+                                                    isDragging ? "text-primary scale-110" : "text-primary group-hover:scale-110"
+                                                )} />
+                                            )}
+                                            <div className="relative z-10 flex flex-col items-center">
+                                                <p className="font-headline text-sm font-bold text-on-surface dark:text-white text-center">
+                                                    {logoPreview ? __('messages.submit_idea.change_image') : __('messages.submit_idea.image_placeholder')}
+                                                </p>
+                                                <p className="text-outline mt-1 text-xs dark:text-slate-400">
+                                                    {__('messages.submit_idea.image_hint')}
+                                                </p>
+                                            </div>
+                                            <input
+                                                id="logo-upload"
+                                                type="file"
+                                                className="hidden"
+                                                accept="image/*"
+                                                onChange={handleLogoChange}
+                                            />
+                                        </div>
+                                        <InputError message={errors.logo} />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
@@ -179,6 +335,8 @@ export default function SponsorshipApply() {
                             </form>
                         </div>
                     </div>
+{/* ... rest of columns unchanged */}
+
 
                     {/* Right Column: Benefits/Info */}
                     <div className="lg:col-span-5 space-y-8">

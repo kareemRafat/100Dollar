@@ -7,6 +7,22 @@ return [
     'ideas' => 'Ideas',
     'for_100' => '100 $',
 
+    'categories' => [
+        'ecommerce' => 'E-commerce',
+        'digital_services' => 'Digital Services',
+        'home_services' => 'Home Services',
+        'handicrafts' => 'Handicrafts',
+        'tech' => 'Tech & Software',
+        'other' => 'Other',
+    ],
+
+    'countries' => [
+        'saudi_arabia' => 'Saudi Arabia',
+        'uae' => 'United Arab Emirates',
+        'egypt' => 'Egypt',
+        'jordan' => 'Jordan',
+    ],
+
     'nav' => [
         'home' => 'Home',
         'archive' => 'Archive',
@@ -150,6 +166,7 @@ return [
         'company_email' => 'Company Email',
         'company_phone' => 'Phone Number',
         'company_website' => 'Company Website',
+        'company_logo' => 'Company Logo',
         'message_label' => 'Additional Message (Optional)',
         'days' => [
             'saturday' => 'Saturday',
@@ -223,6 +240,11 @@ return [
         'city_placeholder' => 'Enter city name',
         'category_label' => 'Idea Category',
         'category_placeholder' => 'Choose category',
+        'cat_ecommerce' => 'E-commerce',
+        'cat_home_services' => 'Home Services',
+        'cat_handicrafts' => 'Handicrafts',
+        'cat_tech' => 'Tech & Software',
+        'cat_other' => 'Other',
         'title_label' => 'Idea Title',
         'title_placeholder' => 'Example: Rare houseplant store',
         'details_label' => 'Idea details (How will you start with $100?)',

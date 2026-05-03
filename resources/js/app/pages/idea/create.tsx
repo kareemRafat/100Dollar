@@ -1,11 +1,22 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import {
+    ShoppingBag,
+    Home,
+    Palette,
+    Cpu,
+    MoreHorizontal,
+    MapPin,
+    Rocket,
+    UploadCloud,
+    FileText
+} from 'lucide-react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { Button } from '@/app/components/ui/button';
 import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
-import { Button } from '@/app/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -101,7 +112,7 @@ export default function SubmitIdea() {
                     <img
                         alt="Background"
                         className="h-full w-full object-cover opacity-20 mix-blend-luminosity"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYJIXHhzvWUAYG3UbBV4YWSs9_TjTwPATiiFM6b4eZgtWu4Qz79GIoS3lRB0GNcdffoKtJqmkT-2YWyvDM-MpjyqujFb-LBsqRqbjA1YlRDnXCDfjIjmGlS8ElgbR-6qZTkkGAf2S-97DlJeUF91nupHwhfPDiypG0ft833vmyPhWQvEWZo6Dn-KW_RyP_qb-qFLT5l3_lBTsD05wms2KR3nm3rUaHqcxEx3WHiFO2mzrPn1ywDEl3Ig-o9EZeFUB6WK2PDeYMGng')"
+                        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/70 to-deep-navy/90" />
                 </div>
@@ -151,10 +162,30 @@ export default function SubmitIdea() {
                                             <SelectValue placeholder={__('messages.submit_idea.country_placeholder')} />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="Saudi Arabia">{__('messages.submit_idea.saudi_arabia')}</SelectItem>
-                                            <SelectItem value="UAE">{__('messages.submit_idea.uae')}</SelectItem>
-                                            <SelectItem value="Egypt">{__('messages.submit_idea.egypt')}</SelectItem>
-                                            <SelectItem value="Jordan">{__('messages.submit_idea.jordan')}</SelectItem>
+                                            <SelectItem value="Saudi Arabia">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="size-4 text-primary" />
+                                                    {__('messages.countries.saudi_arabia')}
+                                                </div>
+                                            </SelectItem>
+                                            <SelectItem value="UAE">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="size-4 text-primary" />
+                                                    {__('messages.countries.uae')}
+                                                </div>
+                                            </SelectItem>
+                                            <SelectItem value="Egypt">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="size-4 text-primary" />
+                                                    {__('messages.countries.egypt')}
+                                                </div>
+                                            </SelectItem>
+                                            <SelectItem value="Jordan">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPin className="size-4 text-primary" />
+                                                    {__('messages.countries.jordan')}
+                                                </div>
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                     <InputError message={errors.country ? __(errors.country) : undefined} />
@@ -188,11 +219,42 @@ export default function SubmitIdea() {
                                         <SelectValue placeholder={__('messages.submit_idea.category_placeholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="e-commerce">تجارة إلكترونية</SelectItem>
-                                        <SelectItem value="home-services">خدمات منزلية</SelectItem>
-                                        <SelectItem value="handicrafts">صناعة يدوية</SelectItem>
-                                        <SelectItem value="tech">تقنية وبرمجيات</SelectItem>
-                                        <SelectItem value="other">أخرى</SelectItem>
+                                        <SelectItem value="e-commerce">
+                                            <div className="flex items-center gap-2">
+                                                <ShoppingBag className="size-4 text-primary" />
+                                                {__('messages.categories.ecommerce')}
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="digital-services">
+                                            <div className="flex items-center gap-2">
+                                                <Cpu className="size-4 text-primary" />
+                                                {__('messages.categories.digital_services')}
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="home-services">
+                                            <div className="flex items-center gap-2">
+                                                <Home className="size-4 text-primary" />
+                                                {__('messages.categories.home_services')}
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="handicrafts">
+                                            <div className="flex items-center gap-2">
+                                                <Palette className="size-4 text-primary" />
+                                                {__('messages.categories.handicrafts')}
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="tech">
+                                            <div className="flex items-center gap-2">
+                                                <Cpu className="size-4 text-primary" />
+                                                {__('messages.categories.tech')}
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="other">
+                                            <div className="flex items-center gap-2">
+                                                <MoreHorizontal className="size-4 text-primary" />
+                                                {__('messages.categories.other')}
+                                            </div>
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <InputError message={errors.category ? __(errors.category) : undefined} />
@@ -246,12 +308,10 @@ export default function SubmitIdea() {
                                     {imagePreview ? (
                                         <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-30 transition-opacity" />
                                     ) : (
-                                        <span className={cn(
-                                            "material-symbols-outlined mb-3 text-5xl transition-transform",
+                                        <UploadCloud className={cn(
+                                            "mb-3 size-12 transition-transform",
                                             isDragging ? "text-primary scale-110" : "text-primary group-hover:scale-110"
-                                        )}>
-                                            add_photo_alternate
-                                        </span>
+                                        )} />
                                     )}
                                     <div className="relative z-10 flex flex-col items-center">
                                         <p className="font-headline text-sm font-bold text-on-surface dark:text-white text-center">
@@ -280,9 +340,7 @@ export default function SubmitIdea() {
                                     {__('messages.submit_idea.file_label')}
                                 </Label>
                                 <div className="border-outline-variant/10 bg-surface-container-low dark:bg-surface-container-high flex items-center gap-4 rounded-lg border p-4">
-                                    <span className="material-symbols-outlined text-primary">
-                                        upload_file
-                                    </span>
+                                    <FileText className="text-primary size-6" />
                                     <span className="flex-grow text-sm text-on-surface dark:text-white truncate">
                                         {data.pdf_file ? data.pdf_file.name : __('messages.submit_idea.file_placeholder')}
                                     </span>
@@ -352,14 +410,7 @@ export default function SubmitIdea() {
                                     disabled={processing}
                                 >
                                     <span>{processing ? __('messages.common.processing') : __('messages.submit_idea.submit_button')}</span>
-                                    <span
-                                        className="material-symbols-outlined"
-                                        style={{
-                                            fontVariationSettings: "'FILL' 1",
-                                        }}
-                                    >
-                                        rocket_launch
-                                    </span>
+                                    <Rocket className="size-6" />
                                 </Button>
                             </div>
                         </form>
@@ -369,5 +420,3 @@ export default function SubmitIdea() {
         </AppLayout>
     );
 }
-
-

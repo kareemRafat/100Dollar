@@ -39,10 +39,23 @@ class SponsorController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'website' => ['nullable', 'url', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:2048'],
             'message' => ['required', 'string', 'max:2000'],
         ]);
 
-        SponsorshipRequest::create($validated);
+        $sponsorshipRequest = SponsorshipRequest::create($validated);
+
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('sponsorships/logos', 'public');
+            $sponsorshipRequest->media()->create([
+                'file_path' => $path,
+                'mime_type' => $request->file('logo')->getMimeType(),
+                'file_size' => $request->file('logo')->getSize(),
+                'collection_name' => 'logo',
+                'disk' => 'public',
+            ]);
+        }
 
         return redirect()->route('app.sponsors')
             ->with('success', __('messages.sponsors.application_success'));

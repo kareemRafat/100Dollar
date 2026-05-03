@@ -1,7 +1,24 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head } from '@inertiajs/react';
+import { 
+    Shapes, 
+    Calendar, 
+    CalendarDays, 
+    Trophy,
+    FilterX,
+    Search,
+    ChevronRight,
+    ChevronLeft
+} from 'lucide-react';
 import { IdeaCard } from '@/app/components/idea-card';
 import AppLayout from '@/app/layouts/app-layout';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 const archiveIdeas = [
     {
@@ -142,9 +159,7 @@ export default function Archive() {
             <div className="mx-auto flex max-w-7xl flex-col px-4 pb-12 sm:px-6">
                 <div className="relative z-10 mx-auto -mt-16 mb-10 w-full max-w-2xl">
                     <div className="pointer-events-none absolute inset-y-0 end-4 flex items-center">
-                        <span className="material-symbols-outlined text-outline">
-                            search
-                        </span>
+                        <Search className="size-5 text-outline" />
                     </div>
                     <input
                         className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest dark:border-white dark:border-2"
@@ -155,80 +170,80 @@ export default function Archive() {
 
                 <div className="mb-8 w-full">
                     <div className="-mx-4 flex items-start gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-row sm:flex-wrap sm:items-center sm:overflow-visible sm:px-0 sm:pb-0">
-                        <div className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 transition-colors hover:bg-surface-container-high">
-                            <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
-                                category
-                            </span>
-                            <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.all_fields')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    تجارة إلكترونية
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    خدمات رقمية
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    صناعة يدوية
-                                </option>
-                            </select>
+                        {/* Category Filter */}
+                        <div className="shrink-0">
+                            <Select defaultValue="all">
+                                <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                                    <div className="flex items-center gap-2">
+                                        <Shapes className="size-4 text-primary" />
+                                        <SelectValue placeholder={__('messages.archive.all_fields')} />
+                                    </div>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">{__('messages.archive.all_fields')}</SelectItem>
+                                    <SelectItem value="ecommerce">{__('messages.categories.ecommerce')}</SelectItem>
+                                    <SelectItem value="digital_services">{__('messages.categories.digital_services')}</SelectItem>
+                                    <SelectItem value="home_services">{__('messages.categories.home_services')}</SelectItem>
+                                    <SelectItem value="handicrafts">{__('messages.categories.handicrafts')}</SelectItem>
+                                    <SelectItem value="tech">{__('messages.categories.tech')}</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                        <div className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 transition-colors hover:bg-surface-container-high">
-                            <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
-                                calendar_today
-                            </span>
-                            <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.today')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.yesterday')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.this_week')}
-                                </option>
-                            </select>
+
+                        {/* Date Filter */}
+                        <div className="shrink-0">
+                            <Select defaultValue="all">
+                                <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                                    <div className="flex items-center gap-2">
+                                        <Calendar className="size-4 text-primary" />
+                                        <SelectValue placeholder={__('messages.archive.today')} />
+                                    </div>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">{__('messages.archive.today')}</SelectItem>
+                                    <SelectItem value="yesterday">{__('messages.archive.yesterday')}</SelectItem>
+                                    <SelectItem value="this_week">{__('messages.archive.this_week')}</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                        <div className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 transition-colors hover:bg-surface-container-high">
-                            <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
-                                event_note
-                            </span>
-                            <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.all_months')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    يناير
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    فبراير
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    مارس
-                                </option>
-                            </select>
+
+                        {/* Month Filter */}
+                        <div className="shrink-0">
+                            <Select defaultValue="all">
+                                <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                                    <div className="flex items-center gap-2">
+                                        <CalendarDays className="size-4 text-primary" />
+                                        <SelectValue placeholder={__('messages.archive.all_months')} />
+                                    </div>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">{__('messages.archive.all_months')}</SelectItem>
+                                    <SelectItem value="1">يناير</SelectItem>
+                                    <SelectItem value="2">فبراير</SelectItem>
+                                    <SelectItem value="3">مارس</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
-                        <div className="group flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-container-low px-4 py-2 transition-colors hover:bg-surface-container-high">
-                            <span className="material-symbols-outlined text-primary transition-transform group-hover:scale-110">
-                                military_tech
-                            </span>
-                            <select className="border-0 bg-transparent pe-8 text-sm font-medium focus:ring-0 dark:text-on-surface">
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.all_statuses')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.winner_status')}
-                                </option>
-                                <option className="dark:bg-surface-container-low">
-                                    {__('messages.archive.non_winner_status')}
-                                </option>
-                            </select>
+
+                        {/* Status Filter */}
+                        <div className="shrink-0">
+                            <Select defaultValue="all">
+                                <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                                    <div className="flex items-center gap-2">
+                                        <Trophy className="size-4 text-primary" />
+                                        <SelectValue placeholder={__('messages.archive.all_statuses')} />
+                                    </div>
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">{__('messages.archive.all_statuses')}</SelectItem>
+                                    <SelectItem value="winner">{__('messages.archive.winner_status')}</SelectItem>
+                                    <SelectItem value="non_winner">{__('messages.archive.non_winner_status')}</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
+
                         <button className="ms-auto hidden shrink-0 items-center gap-1 text-sm font-bold text-primary hover:underline sm:flex">
-                            <span className="material-symbols-outlined text-sm">
-                                filter_list_off
-                            </span>
+                            <FilterX className="size-4" />
                             {__('messages.archive.clear_filter')}
                         </button>
                     </div>
@@ -246,9 +261,7 @@ export default function Archive() {
 
                 <div className="mt-16 flex items-center justify-center gap-4">
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-outline-variant/30 text-outline transition-all hover:bg-primary hover:text-white">
-                        <span className="material-symbols-outlined text-sm">
-                            chevron_right
-                        </span>
+                        <ChevronRight className="size-4 rtl:rotate-180" />
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary font-bold text-on-primary">
                         1
@@ -264,9 +277,7 @@ export default function Archive() {
                         12
                     </button>
                     <button className="flex h-10 w-10 items-center justify-center rounded-lg border border-outline-variant/30 text-outline transition-all hover:bg-primary hover:text-white">
-                        <span className="material-symbols-outlined text-sm">
-                            chevron_left
-                        </span>
+                        <ChevronLeft className="size-4 rtl:rotate-180" />
                     </button>
                 </div>
             </div>

@@ -7,6 +7,22 @@ return [
     'ideas' => 'أفكار',
     'for_100' => ' 100 دولار',
 
+    'categories' => [
+        'ecommerce' => 'تجارة إلكترونية',
+        'digital_services' => 'خدمات رقمية',
+        'home_services' => 'خدمات منزلية',
+        'handicrafts' => 'صناعة يدوية',
+        'tech' => 'تقنية وبرمجيات',
+        'other' => 'أخرى',
+    ],
+
+    'countries' => [
+        'saudi_arabia' => 'المملكة العربية السعودية',
+        'uae' => 'الإمارات العربية المتحدة',
+        'egypt' => 'مصر',
+        'jordan' => 'الأردن',
+    ],
+
     'nav' => [
         'home' => 'الرئيسية',
         'archive' => 'الأرشيف',
@@ -150,6 +166,7 @@ return [
         'company_email' => 'البريد الإلكتروني للشركة',
         'company_phone' => 'رقم الهاتف',
         'company_website' => 'موقع الشركة الإلكتروني',
+        'company_logo' => 'شعار الشركة',
         'message_label' => 'رسالة إضافية (اختياري)',
         'days' => [
             'saturday' => 'السبت',
@@ -223,6 +240,11 @@ return [
         'city_placeholder' => 'أدخل اسم المدينة',
         'category_label' => 'تصنيف الفكرة',
         'category_placeholder' => 'اختر التصنيف',
+        'cat_ecommerce' => 'تجارة إلكترونية',
+        'cat_home_services' => 'خدمات منزلية',
+        'cat_handicrafts' => 'صناعة يدوية',
+        'cat_tech' => 'تقنية وبرمجيات',
+        'cat_other' => 'أخرى',
         'title_label' => 'عنوان الفكرة',
         'title_placeholder' => 'مثال: متجر بيع النباتات المنزلية النادرة',
         'details_label' => 'تفاصيل الفكرة (كيف ستبدأ بـ 100 دولار؟)',

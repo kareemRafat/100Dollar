@@ -1,5 +1,14 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { 
+    Mail, 
+    MessageSquare, 
+    AlertCircle, 
+    MoreHorizontal,
+    Rocket,
+    Phone,
+    Clock
+} from 'lucide-react';
 import { toast } from '@/app/components/ui/toast';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
@@ -39,28 +48,28 @@ export default function Contact() {
 
     const contactCards = [
         {
-            icon: 'mail',
+            icon: Mail,
             label: __('messages.contact.email_card_label'),
             value: __('messages.contact.email_value'),
         },
         {
-            icon: 'chat',
+            icon: Phone,
             label: __('messages.contact.whatsapp_card_label'),
             value: __('messages.contact.whatsapp_value'),
             dir: 'ltr' as const,
         },
         {
-            icon: 'schedule',
+            icon: Clock,
             label: __('messages.contact.working_hours_card_label'),
             value: __('messages.contact.working_hours_value'),
         },
     ];
 
     const subjects = [
-        { value: 'general', label: __('messages.contact.subject_general') },
-        { value: 'sponsorship', label: __('messages.contact.subject_sponsorship') },
-        { value: 'complaint', label: __('messages.contact.subject_complaint') },
-        { value: 'other', label: __('messages.contact.subject_other') },
+        { value: 'general', label: __('messages.contact.subject_general'), icon: Mail },
+        { value: 'sponsorship', label: __('messages.contact.subject_sponsorship'), icon: Rocket },
+        { value: 'complaint', label: __('messages.contact.subject_complaint'), icon: AlertCircle },
+        { value: 'other', label: __('messages.contact.subject_other'), icon: MoreHorizontal },
     ];
 
     return (
@@ -148,8 +157,11 @@ export default function Contact() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         {subjects.map((subject) => (
-                                            <SelectItem key={subject.value} value={subject.label}>
-                                                {subject.label}
+                                            <SelectItem key={subject.value} value={subject.value}>
+                                                <div className="flex items-center gap-2">
+                                                    <subject.icon className="size-4 text-primary" />
+                                                    {subject.label}
+                                                </div>
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
@@ -187,13 +199,11 @@ export default function Contact() {
                     <div className="flex flex-col gap-6 lg:col-span-5">
                         {contactCards.map((card) => (
                             <div
-                                key={card.icon}
+                                key={card.label}
                                 className="flex items-start gap-6 rounded-xl border border-outline-variant/20 bg-surface-container-low p-8 transition-transform hover:-translate-x-2 dark:border-white/5 dark:bg-white/5"
                             >
                                 <div className="flex items-center justify-center rounded-lg bg-primary/10 p-4">
-                                    <span className="material-symbols-outlined text-primary">
-                                        {card.icon}
-                                    </span>
+                                    <card.icon className="size-6 text-primary" />
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="mb-1 text-sm font-bold tracking-wider text-outline uppercase">
