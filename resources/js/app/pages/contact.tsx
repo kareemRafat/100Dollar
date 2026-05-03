@@ -108,7 +108,8 @@ export default function Contact() {
                                         {__('messages.contact.name_label')}
                                     </Label>
                                     <Input
-                                        className="bg-surface-container-low dark:bg-white/5"
+                                        size="lg"
+                                        className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                         placeholder={__('messages.contact.name_placeholder')}
                                         type="text"
                                         value={data.name}
@@ -122,7 +123,8 @@ export default function Contact() {
                                         {__('messages.contact.email_label')}
                                     </Label>
                                     <Input
-                                        className="bg-surface-container-low dark:bg-white/5"
+                                        size="lg"
+                                        className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                         placeholder={__('messages.contact.email_placeholder')}
                                         type="email"
                                         value={data.email}
@@ -141,7 +143,7 @@ export default function Contact() {
                                     onValueChange={(val) => setData('subject', val)}
                                     required
                                 >
-                                    <SelectTrigger className="w-full bg-surface-container-low py-6 dark:bg-white/5">
+                                    <SelectTrigger size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
                                         <SelectValue placeholder={__('messages.contact.subject_label')} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -159,7 +161,7 @@ export default function Contact() {
                                     {__('messages.contact.message_label')}
                                 </Label>
                                 <Textarea
-                                    className="h-32 bg-surface-container-low dark:bg-white/5"
+                                    className="h-32 bg-surface-container-low dark:bg-surface-container-high w-full resize-none border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
                                     placeholder={__('messages.contact.message_placeholder')}
                                     value={data.message}
                                     onChange={(e) => setData('message', e.target.value)}

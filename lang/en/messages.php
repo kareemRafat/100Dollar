@@ -144,6 +144,13 @@ return [
         'contact_for_sponsorship' => 'Contact us for sponsorship',
         'certified_partner' => 'Certified Partner',
         'day_sponsor' => ':day Prize Sponsor',
+        'application_success' => 'Thank you for your interest! Your sponsorship application has been received and we will contact you soon.',
+        'company_name' => 'Company Name',
+        'company_name_placeholder' => 'Enter Full Company Name',
+        'company_email' => 'Company Email',
+        'company_phone' => 'Phone Number',
+        'company_website' => 'Company Website',
+        'message_label' => 'Additional Message (Optional)',
         'days' => [
             'saturday' => 'Saturday',
             'sunday' => 'Sunday',

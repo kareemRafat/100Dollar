@@ -144,6 +144,13 @@ return [
         'contact_for_sponsorship' => 'تواصل معنا للرعاية',
         'certified_partner' => 'شريك معتمد',
         'day_sponsor' => 'راعي جائزة يوم :day',
+        'application_success' => 'شكراً لاهتمامك! تم استلام طلب الرعاية الخاص بك وسنتواصل معك قريباً.',
+        'company_name' => 'اسم الشركة',
+        'company_name_placeholder' => 'ادخل اسم الشركة كامل',
+        'company_email' => 'البريد الإلكتروني للشركة',
+        'company_phone' => 'رقم الهاتف',
+        'company_website' => 'موقع الشركة الإلكتروني',
+        'message_label' => 'رسالة إضافية (اختياري)',
         'days' => [
             'saturday' => 'السبت',
             'sunday' => 'الأحد',

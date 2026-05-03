@@ -3,6 +3,8 @@ import { Link } from '@inertiajs/react';
 import AppearanceSwitcher from '@/components/appearance-switcher';
 import LanguageSwitcher from '@/components/language-switcher';
 
+import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
+
 export function Footer() {
     const { __ } = useLang();
 
@@ -13,7 +15,7 @@ export function Footer() {
                     <div className="space-y-6">
                         <Link
                             className="block font-headline text-2xl font-black text-white"
-                            href="/"
+                            href={homeIndex().url}
                         >
                             {__('messages.ideas')} <span className="text-primary-fixed-dim">{__('messages.for_100')}</span>
                         </Link>
@@ -30,7 +32,7 @@ export function Footer() {
                             <li>
                                 <Link
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
-                                    href="/"
+                                    href={homeIndex().url}
                                 >
                                     {__('messages.nav.home')}
                                 </Link>
@@ -46,7 +48,7 @@ export function Footer() {
                             <li>
                                 <Link
                                     className="text-sm font-medium text-gray-300 transition-colors hover:text-primary-fixed-dim"
-                                    href="/sponsors"
+                                    href={sponsorsIndex().url}
                                 >
                                     {__('messages.nav.sponsors')}
                                 </Link>

@@ -36,6 +36,8 @@ import { logout, login, register } from '@/routes';
 import { index } from '@/routes/app/ideas';
 import type { NavItem } from '@/types';
 
+import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
+
 type Props = {
     activeRoute?: string;
 };
@@ -46,9 +48,9 @@ export function TopNavBar({ activeRoute }: Props) {
     const { __ } = useLang();
 
     const navItems: NavItem[] = [
-        { title: __('messages.nav.home'), href: '/' },
+        { title: __('messages.nav.home'), href: homeIndex().url },
         { title: __('messages.nav.archive'), href: '/archive' },
-        { title: __('messages.nav.sponsors'), href: '/sponsors' },
+        { title: __('messages.nav.sponsors'), href: sponsorsIndex().url },
         { title: __('messages.nav.about'), href: '/about' },
         { title: __('messages.nav.contact'), href: '/contact' },
     ];

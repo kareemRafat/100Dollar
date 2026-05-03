@@ -6,13 +6,16 @@ use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\IdeaController;
 use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProfileController;
+use App\Http\Controllers\App\SponsorController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
 
 Route::get('/about', [PageController::class, 'about'])->name('app.about');
 Route::get('/archive', [PageController::class, 'archive'])->name('app.archive');
-Route::get('/sponsors', [PageController::class, 'sponsors'])->name('app.sponsors');
+Route::get('/sponsors', [SponsorController::class, 'index'])->name('app.sponsors');
+Route::get('/sponsors/apply', [SponsorController::class, 'create'])->name('app.sponsors.apply');
+Route::post('/sponsors/apply', [SponsorController::class, 'store'])->name('app.sponsors.store');
 Route::get('/contact', [ContactController::class, 'index'])->name('app.contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('app.contact.submit');
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('app.info');
