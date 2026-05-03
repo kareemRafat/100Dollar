@@ -55,7 +55,7 @@ export default function UpdatePasswordForm() {
                         {__('messages.profile.password_security')}
                     </h2>
                     <p className="text-xs text-on-surface-variant/70">
-                        {__('messages.profile.password_security')}
+                        {__('messages.profile.password_security_desc')}
                     </p>
                 </div>
             </div>

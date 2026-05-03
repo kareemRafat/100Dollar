@@ -84,7 +84,7 @@ function SecurityAndProtection({
                                     </h4>
                                     <p className="max-w-md text-xs text-on-surface-variant/70">
                                         {twoFactorEnabled
-                                            ? 'You will be asked to enter a secure, random PIN during login, which you can get from a TOTP-supported app on your phone.'
+                                            ? __('messages.profile.two_factor_enabled_desc')
                                             : __('messages.profile.two_factor_desc')}
                                     </p>
                                 </div>

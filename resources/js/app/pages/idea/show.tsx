@@ -223,6 +223,8 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                             </div>
                         </section>
 
+                        <div ref={commentsTopRef} className="scroll-mt-32" />
+
                         <Deferred data="comments" fallback={<CommentSkeleton />}>
                             <CommentSection 
                                 idea={idea} 

@@ -42,14 +42,16 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
             onSuccess: () => {
                 reset('body');
                 toast.success(__('messages.comments.comment_success'));
-                commentsTopRef.current?.scrollIntoView({ behavior: 'smooth' });
+                setTimeout(() => {
+                    commentsTopRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
             },
         });
     };
 
     return (
         <section className="space-y-8" id="comments">
-            <div className="flex items-center justify-between mb-8 scroll-mt-32" ref={commentsTopRef}>
+            <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-on-surface flex items-center gap-3 font-headline">
                     <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>forum</span>
                     {__('messages.comments.title')}
