@@ -38,6 +38,16 @@ trait HasMedia
      */
     public function getAvatarAttribute(): ?string
     {
-        return $this->media->where('collection_name', 'avatar')->first()?->url;
+        return $this->media->where('collection_name', 'avatar')->first()?->url
+            ?? 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? 'User') . '&color=7F9CF5&background=EBF4FF';
+    }
+
+    /**
+     * Get the full URL for the logo media (specifically for sponsors/requests).
+     */
+    public function getLogoAttribute(): ?string
+    {
+        return $this->media->where('collection_name', 'logo')->first()?->url
+            ?? 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? $this->company_name ?? 'Sponsor') . '&size=256&background=random';
     }
 }

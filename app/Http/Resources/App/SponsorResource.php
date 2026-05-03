@@ -21,7 +21,7 @@ class SponsorResource extends JsonResource
             'name' => $this->name,
             'day_of_week' => (int) $this->day_of_week,
             'is_active' => (bool) $this->is_active,
-            'logo' => $this->image,
+            'logo' => $this->logo,
         ];
     }
 }

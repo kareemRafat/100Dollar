@@ -245,7 +245,7 @@ function SponsorCard({ item }: { item: { day: string; isToday: boolean; data: an
                     <img
                         alt={`${data.name} Logo`}
                         className="h-full w-full object-contain"
-                        src={data.logo || 'https://via.placeholder.com/200x200?text=Sponsor+Logo'}
+                        src={data.logo}
                     />
                 </div>
                 <div className="text-center">
