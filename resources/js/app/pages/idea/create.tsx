@@ -35,6 +35,7 @@ export default function SubmitIdea() {
     const { __ } = useLang();
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
+    const [dragCounter, setDragCounter] = useState(0);
 
     const { data, setData, post, processing, errors } = useForm({
         title: '',
@@ -66,22 +67,33 @@ export default function SubmitIdea() {
         }
     };
 
+    const handleDragEnter = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragCounter(prev => prev + 1);
+        setIsDragging(true);
+    };
+
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(true);
     };
 
     const handleDragLeave = (e: React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(false);
+        setDragCounter(prev => {
+            const next = prev - 1;
+            if (next === 0) setIsDragging(false);
+            return next;
+        });
     };
 
     const handleDrop = (e: React.DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
+        setDragCounter(0);
 
         const file = e.dataTransfer.files?.[0];
 
@@ -297,6 +309,7 @@ export default function SubmitIdea() {
                                 </Label>
                                 <div
                                     onClick={() => document.getElementById('image-upload')?.click()}
+                                    onDragEnter={handleDragEnter}
                                     onDragOver={handleDragOver}
                                     onDragLeave={handleDragLeave}
                                     onDrop={handleDrop}
@@ -316,7 +329,7 @@ export default function SubmitIdea() {
                                     <div className="relative z-10 flex flex-col items-center">
                                         <p className="font-headline text-sm font-bold text-on-surface dark:text-white text-center">
                                             {isDragging
-                                                ? (__('messages.submit_idea.drop_to_upload') !== 'messages.submit_idea.drop_to_upload' ? __('messages.submit_idea.drop_to_upload') : 'أفلت الصورة هنا')
+                                                ? __('messages.submit_idea.drop_to_upload')
                                                 : (imagePreview ? __('messages.submit_idea.change_image') : __('messages.submit_idea.image_placeholder'))
                                             }
                                         </p>
@@ -405,7 +418,7 @@ export default function SubmitIdea() {
 
                             <div className="pt-6">
                                 <Button
-                                    className="font-headline text-on-primary flex h-16 w-full items-center justify-center gap-3 rounded-xl bg-primary text-lg font-bold shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
+                                    className="font-headline text-on-primary flex h-12 w-full items-center justify-center gap-3 rounded-xl bg-primary text-lg font-bold shadow-lg shadow-primary/20 transition-all hover:opacity-90 active:scale-95 disabled:opacity-50"
                                     type="submit"
                                     disabled={processing}
                                 >
