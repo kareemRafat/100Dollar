@@ -113,17 +113,11 @@ function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: 
                 </span>
             </div>
             <div className="flex-1 space-y-0.5">
-                <h3 className={cn(
-                    "font-bold text-on-surface font-headline leading-tight",
-                    isRtl ? "text-[13px]" : "text-base"
-                )}>
+                <h3 className="font-bold text-on-surface font-headline leading-tight text-[14px]">
                     {title}
                 </h3>
                 {description && (
-                    <p className={cn(
-                        "text-on-surface-variant leading-relaxed font-body",
-                        isRtl ? "text-[13px]" : "text-sm"
-                    )}>
+                    <p className="text-on-surface-variant leading-relaxed font-body text-[13px]">
                         {description}
                     </p>
                 )}
