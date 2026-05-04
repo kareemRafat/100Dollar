@@ -15,6 +15,11 @@ class PageController extends Controller
         return Inertia::render('app/pages/about');
     }
 
+    public function privacy(): Response
+    {
+        return Inertia::render('app/pages/privacy');
+    }
+
     public function archive(): Response
     {
         return Inertia::render('app/pages/archive');

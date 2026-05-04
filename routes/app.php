@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
 
 Route::get('/about', [PageController::class, 'about'])->name('app.about');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('app.privacy');
 Route::get('/archive', [PageController::class, 'archive'])->name('app.archive');
 Route::get('/sponsors', [SponsorController::class, 'index'])->name('app.sponsors');
 Route::get('/sponsors/apply', [SponsorController::class, 'create'])->name('app.sponsors.apply');

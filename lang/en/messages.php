@@ -437,6 +437,18 @@ return [
         'encrypted_data' => 'Fully Encrypted Data',
     ],
 
+    'privacy' => [
+        'title' => 'Privacy Policy',
+        'collection_title' => 'Data Collection',
+        'collection_content' => 'We collect information you provide directly, such as name, email, and project details, to operate the platform effectively.',
+        'usage_title' => 'How We Use Data',
+        'usage_content' => 'Your data is used to manage your project submissions, facilitate communication, and ensure the integrity of the voting process.',
+        'protection_title' => 'Data Protection',
+        'protection_content' => 'We employ industry-standard security measures to protect your personal and project data from unauthorized access or disclosure.',
+        'sharing_title' => 'Data Sharing',
+        'sharing_content' => 'We do not sell your personal data. We only share necessary information with our sponsors to facilitate prize delivery, upon your explicit consent.',
+    ],
+
     'terms' => [
         'title' => 'Terms and Conditions',
         'last_updated' => 'Last Updated: April 25, 2026',

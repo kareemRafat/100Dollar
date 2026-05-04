@@ -62,6 +62,7 @@ const sections = [
 
 export default function Terms() {
     const { __ } = useLang();
+    const formatNumber = (num: number) => num.toString().padStart(2, '0');
 
     return (
         <AppLayout>
@@ -80,14 +81,14 @@ export default function Terms() {
 
                 <div className="flex flex-col-reverse gap-16 md:flex-row">
                     <article className="space-y-20 md:w-3/4">
-                        {sections.map((section) => (
+                        {sections.map((section, index) => (
                             <section
                                 key={section.id}
                                 id={section.id}
                                 className="scroll-mt-32"
                             >
                                 <h2 className="mb-6 text-2xl font-bold text-on-surface dark:text-white">
-                                    {__(`messages.terms.${section.title}`)}
+                                    {formatNumber(index + 1)} {__(`messages.terms.${section.title}`)}
                                 </h2>
                                 {section.highlight ? (
                                     <div className="bg-surface-container-lowest golden-ledger-shadow rounded-lg border-r-4 border-primary p-8">
@@ -143,14 +144,14 @@ export default function Terms() {
                                 {__('messages.terms.content_index_title')}
                             </h3>
                             <nav className="space-y-4">
-                                {sections.map((section) => (
+                                {sections.map((section, index) => (
                                     <a
                                         key={section.id}
                                         href={`#${section.id}`}
                                         className="group flex items-center gap-3 font-bold text-primary transition-transform hover:-translate-x-1"
                                     >
                                         <span className="text-xs opacity-50">
-                                            {section.number}
+                                            {formatNumber(index + 1)}
                                         </span>
                                         <span className="group-hover:underline">
                                             {__(`messages.terms.${section.title}`)}
