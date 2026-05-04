@@ -39,6 +39,7 @@ export default function Contact() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(store().url, {
+            preserveScroll: 'errors',
             onSuccess: () => {
                 reset();
                 toast.success(__('messages.contact.success_message'));
@@ -125,7 +126,7 @@ export default function Contact() {
                                         onChange={(e) => setData('name', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.name} />
+                                    <InputError message={errors.name ? __(errors.name) : undefined} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="pe-2 text-sm font-bold text-on-surface-variant">
@@ -140,7 +141,7 @@ export default function Contact() {
                                         onChange={(e) => setData('email', e.target.value)}
                                         required
                                     />
-                                    <InputError message={errors.email} />
+                                    <InputError message={errors.email ? __(errors.email) : undefined} />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -166,7 +167,7 @@ export default function Contact() {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <InputError message={errors.subject} />
+                                <InputError message={errors.subject ? __(errors.subject) : undefined} />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <Label className="pe-2 text-sm font-bold text-on-surface-variant">
@@ -179,7 +180,7 @@ export default function Contact() {
                                     onChange={(e) => setData('message', e.target.value)}
                                     required
                                 />
-                                <InputError message={errors.message} />
+                                <InputError message={errors.message ? __(errors.message) : undefined} />
                             </div>
                             <Button
                                 className="w-full h-12 text-lg font-bold md:w-auto md:px-12"

@@ -75,4 +75,13 @@ Route::group([
     Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store'])
         ->middleware(['auth'])
         ->name('password.confirm.store');
+
+    // Error Test Routes
+    Route::get('/test-404', function () {
+        abort(404);
+    });
+
+    Route::get('/test-500', function () {
+        abort(500);
+    });
 });

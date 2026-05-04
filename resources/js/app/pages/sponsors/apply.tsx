@@ -96,6 +96,7 @@ export default function SponsorshipApply() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(store().url, {
+            preserveScroll: 'errors',
             onSuccess: () => {
                 reset();
                 setLogoPreview(null);
@@ -167,7 +168,7 @@ export default function SponsorshipApply() {
                                             onChange={(e) => setData('company_name', e.target.value)}
                                             required
                                         />
-                                        <InputError message={errors.company_name} />
+                                        <InputError message={errors.company_name ? __(errors.company_name) : undefined} />
                                     </div>
 
                                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -185,7 +186,7 @@ export default function SponsorshipApply() {
                                                 onChange={(e) => setData('email', e.target.value)}
                                                 required
                                             />
-                                            <InputError message={errors.email} />
+                                            <InputError message={errors.email ? __(errors.email) : undefined} />
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
@@ -202,7 +203,7 @@ export default function SponsorshipApply() {
                                                 onChange={(e) => setData('phone', e.target.value)}
                                                 required
                                             />
-                                            <InputError message={errors.phone} />
+                                            <InputError message={errors.phone ? __(errors.phone) : undefined} />
                                         </div>
                                     </div>
 
@@ -221,7 +222,7 @@ export default function SponsorshipApply() {
                                                 value={data.website}
                                                 onChange={(e) => setData('website', e.target.value)}
                                             />
-                                            <InputError message={errors.website} />
+                                            <InputError message={errors.website ? __(errors.website) : undefined} />
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
@@ -263,7 +264,7 @@ export default function SponsorshipApply() {
                                                     </SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <InputError message={errors.country} />
+                                            <InputError message={errors.country ? __(errors.country) : undefined} />
                                         </div>
                                     </div>
 
@@ -306,7 +307,7 @@ export default function SponsorshipApply() {
                                                 onChange={handleLogoChange}
                                             />
                                         </div>
-                                        <InputError message={errors.logo} />
+                                        <InputError message={errors.logo ? __(errors.logo) : undefined} />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
@@ -321,7 +322,7 @@ export default function SponsorshipApply() {
                                             onChange={(e) => setData('message', e.target.value)}
                                             required
                                         />
-                                        <InputError message={errors.message} />
+                                        <InputError message={errors.message ? __(errors.message) : undefined} />
                                     </div>
                                 </div>
 

@@ -7,6 +7,7 @@ import {
     Cpu,
     MoreHorizontal,
     MapPin,
+    Flag,
     Rocket,
     UploadCloud,
     FileText
@@ -112,7 +113,9 @@ export default function SubmitIdea() {
 
     const submit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(store.url());
+        post(store.url(), {
+            preserveScroll: 'errors',
+        });
     };
 
     return (
@@ -176,25 +179,25 @@ export default function SubmitIdea() {
                                         <SelectContent>
                                             <SelectItem value="Saudi Arabia">
                                                 <div className="flex items-center gap-2">
-                                                    <MapPin className="size-4 text-primary" />
+                                                    <Flag className="size-4 text-primary" />
                                                     {__('messages.countries.saudi_arabia')}
                                                 </div>
                                             </SelectItem>
                                             <SelectItem value="UAE">
                                                 <div className="flex items-center gap-2">
-                                                    <MapPin className="size-4 text-primary" />
+                                                    <Flag className="size-4 text-primary" />
                                                     {__('messages.countries.uae')}
                                                 </div>
                                             </SelectItem>
                                             <SelectItem value="Egypt">
                                                 <div className="flex items-center gap-2">
-                                                    <MapPin className="size-4 text-primary" />
+                                                    <Flag className="size-4 text-primary" />
                                                     {__('messages.countries.egypt')}
                                                 </div>
                                             </SelectItem>
                                             <SelectItem value="Jordan">
                                                 <div className="flex items-center gap-2">
-                                                    <MapPin className="size-4 text-primary" />
+                                                    <Flag className="size-4 text-primary" />
                                                     {__('messages.countries.jordan')}
                                                 </div>
                                             </SelectItem>
@@ -410,7 +413,7 @@ export default function SubmitIdea() {
                                         onCheckedChange={checked => setData('agreed_legal', !!checked)}
                                     />
                                     <Label htmlFor="agreed_legal" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
-                                        أتعهد بأن جميع المعلومات المقدمة صحيحة وأتحمل المسؤولية القانونية عنها.
+                                        {__('messages.submit_idea.agreed_legal')}
                                     </Label>
                                 </div>
                                 <InputError message={errors.agreed_legal ? __(errors.agreed_legal) : undefined} />

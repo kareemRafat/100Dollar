@@ -258,6 +258,7 @@ return [
         'change_image' => 'Change Image',
         'agree_terms' => 'I agree to the terms of use and privacy policy of the platform.',
         'pledge_originality' => 'I pledge that this idea is original and can be implemented with a budget of $100 or less.',
+        'agreed_legal' => 'I pledge that all provided information is correct and I bear full legal responsibility for it.',
         'submit_button' => 'Submit idea for review',
     ],
 

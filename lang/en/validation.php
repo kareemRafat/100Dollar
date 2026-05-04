@@ -196,6 +196,11 @@ return [
     */
 
     'attributes' => [
+        'name' => 'name',
+        'email' => 'email address',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'phone' => 'phone number',
         'title' => 'idea title',
         'description' => 'idea details',
         'category' => 'category',
@@ -206,6 +211,11 @@ return [
         'agreed_terms' => 'terms agreement',
         'agreed_privacy' => 'originality pledge',
         'agreed_legal' => 'legal pledge',
+        'subject' => 'subject',
+        'message' => 'message',
+        'company_name' => 'company name',
+        'website' => 'company website',
+        'logo' => 'company logo',
     ],
 
 ];
