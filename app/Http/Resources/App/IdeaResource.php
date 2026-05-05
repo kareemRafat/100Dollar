@@ -33,6 +33,13 @@ class IdeaResource extends JsonResource
             'comments_count' => (int) ($this->comments_count ?? $this->comments()->count()),
             'user' => new UserResource($this->whenLoaded('user')),
             'user_id' => $this->user_id,
+            'status' => $this->is_winner ? 'winner' : $this->status,
+            'is_winner' => $this->is_winner,
+            'created_at' => $this->created_at->format('d M Y'),
+            'date' => $this->created_at->translatedFormat('d F Y'),
+            'progress' => $this->is_winner ? 100 : min(100, round(($this->votes_count / 100) * 100)), // Dummy target of 100 for now
+            'target_votes' => 100, // Dummy target
+            'funded' => $this->is_winner,
         ];
     }
 }

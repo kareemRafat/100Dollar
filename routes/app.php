@@ -22,7 +22,6 @@ Route::post('/contact', [ContactController::class, 'store'])->name('app.contact.
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('app.info');
 Route::get('/terms', [PageController::class, 'terms'])->name('app.terms');
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile');
     Route::get('/profile/personal-info', [ProfileController::class, 'edit'])->name('app.profile.personal-info');
     Route::get('/profile/security', [ProfileController::class, 'edit'])->name('app.profile.security')->middleware('password.confirm');
@@ -38,15 +37,16 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('app.profile.password.update');
     Route::get('/ideas/create', [IdeaController::class, 'create'])->name('app.ideas.create');
+    Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::post('/ideas', [IdeaController::class, 'store'])->name('app.ideas.store');
-    
+
     // Idea Actions
     Route::post('/ideas/{idea}/follow', [IdeaController::class, 'toggleFollow'])->name('app.ideas.follow');
     Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('app.comments.store');
-    
+
     // User/Owner Actions
     Route::post('/users/{user}/follow', [ProfileController::class, 'toggleFollow'])->name('app.users.follow');
-    
+
     // Comment Actions
     Route::post('/comments/{comment}/like', [CommentController::class, 'toggleLike'])->name('app.comments.like');
 });

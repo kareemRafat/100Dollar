@@ -15,9 +15,53 @@ use Inertia\Response;
 
 class IdeaController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return Inertia::render('app/pages/my-ideas');
+        $user = auth()->user();
+        $query = $user->ideas()
+            ->latest()
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                        ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->status, function ($query, $status) {
+                if ($status === 'winner') {
+                    $query->where('is_winner', true);
+                } else {
+                    $query->where('status', $status);
+                }
+            });
+
+        $ideas = $query->get();
+
+        $stats = [
+            [
+                'label' => __('messages.my_ideas.stats_total_ideas'),
+                'value' => (string) $user->ideas()->count(),
+                'unit' => __('messages.my_ideas.unit_idea'),
+                'icon' => 'lightbulb',
+            ],
+            [
+                'label' => __('messages.my_ideas.stats_total_votes'),
+                'value' => number_format($user->ideas()->sum('votes_count')),
+                'unit' => __('messages.my_ideas.unit_vote'),
+                'icon' => 'vote',
+            ],
+            [
+                'label' => __('messages.my_ideas.stats_winning_ideas'),
+                'value' => str_pad($user->ideas()->where('is_winner', true)->count(), 2, '0', STR_PAD_LEFT),
+                'unit' => __('messages.my_ideas.unit_prizes'),
+                'icon' => 'emoji_events',
+            ],
+        ];
+
+        return Inertia::render('app/pages/idea/index', [
+            'ideas' => IdeaResource::collection($ideas),
+            'filters' => $request->only(['search', 'status']),
+            'stats' => $stats,
+        ]);
     }
 
     public function create(): Response
