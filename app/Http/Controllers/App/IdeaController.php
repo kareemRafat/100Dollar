@@ -6,6 +6,7 @@ use App\Http\Resources\App\CommentResource;
 use App\Http\Resources\App\IdeaResource;
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
+use App\Models\Category;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -66,7 +67,10 @@ class IdeaController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('app/pages/idea/create');
+        return Inertia::render('app/pages/idea/create', [
+            'categories' => Category::all(),
+            'countries' => __('messages.countries'),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -74,7 +78,7 @@ class IdeaController extends Controller
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'category' => ['required', 'string'],
+            'category_id' => ['required', 'exists:categories,id'],
             'country' => ['required', 'string'],
             'city' => ['required', 'string'],
             'image' => ['nullable', 'image', 'max:2048'], // 2MB
@@ -89,7 +93,7 @@ class IdeaController extends Controller
             $idea = auth()->user()->ideas()->create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
-                'category' => $validated['category'],
+                'category_id' => $validated['category_id'],
                 'country' => $validated['country'],
                 'city' => $validated['city'],
                 'status' => 'pending',

@@ -105,6 +105,7 @@ class FortifyServiceProvider extends ServiceProvider
             'app/pages/auth/register',
             [
                 'canLogin' => true,
+                'countries' => __('messages.countries'),
             ],
         ));
 

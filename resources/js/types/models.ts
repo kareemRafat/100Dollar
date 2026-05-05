@@ -4,9 +4,11 @@ export interface Idea {
     id: number;
     user_id: number;
     sponsor_id?: number;
+    category_id: number;
+    category: string;
+    category_icon?: string;
     title: string;
     description: string;
-    category: string;
     country: string;
     city: string;
     image?: string;
@@ -14,13 +16,17 @@ export interface Idea {
     submission_day: number;
     week_number: number;
     year: number;
-    status: 'pending' | 'approved' | 'rejected';
+    status: 'pending' | 'approved' | 'rejected' | 'winner';
     votes_count: number;
     is_winner: boolean;
     rejection_reason?: string;
     approved_at?: string;
     winner_announced_at?: string;
     created_at: string;
+    date: string;
+    progress: number;
+    target_votes: number;
+    funded: boolean;
     user?: User;
     sponsor?: Sponsor;
 }

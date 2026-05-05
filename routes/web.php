@@ -27,6 +27,7 @@ Route::group([
             Route::get('register', function () {
                 return Inertia::render('app/pages/auth/register', [
                     'canLogin' => true,
+                    'countries' => __('messages.countries'),
                 ]);
             })->name('register');
         }

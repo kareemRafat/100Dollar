@@ -8,17 +8,19 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
+import { CountrySelect } from '@/app/components/country-select';
 import { login } from '@/routes';
 import { contact, terms } from '@/routes/app';
 import { store } from '@/routes/register';
 
 type Props = {
     canLogin: boolean;
+    countries: Record<string, string>;
 };
 
-export default function Register({ canLogin }: Props) {
+export default function Register({ canLogin, countries }: Props) {
     const { __ } = useLang();
-    const { locale } = usePage().props;
+    const { locale } = usePage().props as any;
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -86,51 +88,47 @@ export default function Register({ canLogin }: Props) {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <div className="space-y-1.5">
-                        <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
-                        <Input
-                            id="phone"
-                            name="phone"
-                            type="tel"
-                            value={data.phone}
-                            onChange={(e) => setData('phone', e.target.value)}
-                            required
-                            placeholder={__('messages.register.phone_placeholder')}
-                            className="h-10 text-start text-sm"
-                            dir="ltr"
-                        />
-                        <InputError message={errors.phone} />
-                    </div>
-                    <div className="space-y-1.5">
-                        <Label htmlFor="country" className="block w-full text-xs">{__('messages.register.country_residence')}</Label>
-                        <Input
-                            id="country"
-                            name="country"
-                            type="text"
-                            value={data.country}
-                            onChange={(e) => setData('country', e.target.value)}
-                            required
-                            placeholder={__('messages.register.country_placeholder')}
-                            className="h-10 text-start text-sm"
-                        />
-                        <InputError message={errors.country} />
-                    </div>
+                <div className="space-y-1.5">
+                    <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
+                    <Input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={data.phone}
+                        onChange={(e) => setData('phone', e.target.value)}
+                        required
+                        placeholder={__('messages.register.phone_placeholder')}
+                        className="h-10 text-start text-sm"
+                        dir="ltr"
+                    />
+                    <InputError message={errors.phone} />
                 </div>
 
-                <div className="space-y-1.5">
-                    <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
-                    <Input
-                        id="nationality"
-                        name="nationality"
-                        type="text"
-                        value={data.nationality}
-                        onChange={(e) => setData('nationality', e.target.value)}
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <CountrySelect
+                        value={data.country}
+                        onValueChange={(value) => setData('country', value)}
+                        label={__('messages.register.country_residence')}
+                        error={errors.country}
+                        size="default"
+                        triggerClassName="h-10 text-start text-sm"
                         required
-                        placeholder={__('messages.register.nationality_placeholder')}
-                        className="h-10 text-start text-sm"
                     />
-                    <InputError message={errors.nationality} />
+
+                    <div className="space-y-1.5">
+                        <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
+                        <Input
+                            id="nationality"
+                            name="nationality"
+                            type="text"
+                            value={data.nationality}
+                            onChange={(e) => setData('nationality', e.target.value)}
+                            required
+                            placeholder={__('messages.register.nationality_placeholder')}
+                            className="h-10 text-start text-sm"
+                        />
+                        <InputError message={errors.nationality} />
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

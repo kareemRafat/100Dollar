@@ -55,9 +55,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 : route('login');
         });
         $middleware->appendToGroup('web', [
+            SetRequestLocale::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
-            SetRequestLocale::class,
             EnsureActiveUser::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);

@@ -1,16 +1,17 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import {
     ShoppingBag,
     Home,
     Palette,
     Cpu,
     MoreHorizontal,
-    MapPin,
-    Flag,
     Rocket,
     UploadCloud,
-    FileText
+    FileText,
+    Leaf,
+    GraduationCap,
+    Heart
 } from 'lucide-react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
@@ -21,6 +22,7 @@ import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { CountrySelect } from '@/app/components/country-select';
 import {
     Select,
     SelectContent,
@@ -31,17 +33,36 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 
+interface Category {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    slug: string;
+    icon: string;
+}
 
-export default function SubmitIdea() {
+export default function SubmitIdea({ categories, countries }: { categories: Category[], countries: Record<string, string> }) {
     const { __ } = useLang();
+    const { locale } = usePage().props as any;
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const [dragCounter, setDragCounter] = useState(0);
 
+    const categoryIcons: Record<string, any> = {
+        'shopping-bag': ShoppingBag,
+        'home': Home,
+        'palette': Palette,
+        'cpu': Cpu,
+        'leaf': Leaf,
+        'graduation-cap': GraduationCap,
+        'heart': Heart,
+        'more-horizontal': MoreHorizontal,
+    };
+
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         description: '',
-        category: '',
+        category_id: '',
         country: '',
         city: '',
         image: null as File | null,
@@ -165,46 +186,14 @@ export default function SubmitIdea() {
                     <div className="border-outline-variant/10 bg-surface-container-lowest dark:bg-card relative overflow-hidden rounded-xl border p-8 shadow-xl md:p-12">
                         <form onSubmit={submit} className="relative z-10 space-y-8">
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="country" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
-                                        {__('messages.submit_idea.country_label')}
-                                    </Label>
-                                    <Select
-                                        value={data.country}
-                                        onValueChange={value => setData('country', value)}
-                                    >
-                                        <SelectTrigger id="country" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
-                                            <SelectValue placeholder={__('messages.submit_idea.country_placeholder')} />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Saudi Arabia">
-                                                <div className="flex items-center gap-2">
-                                                    <Flag className="size-4 text-primary" />
-                                                    {__('messages.countries.saudi_arabia')}
-                                                </div>
-                                            </SelectItem>
-                                            <SelectItem value="UAE">
-                                                <div className="flex items-center gap-2">
-                                                    <Flag className="size-4 text-primary" />
-                                                    {__('messages.countries.uae')}
-                                                </div>
-                                            </SelectItem>
-                                            <SelectItem value="Egypt">
-                                                <div className="flex items-center gap-2">
-                                                    <Flag className="size-4 text-primary" />
-                                                    {__('messages.countries.egypt')}
-                                                </div>
-                                            </SelectItem>
-                                            <SelectItem value="Jordan">
-                                                <div className="flex items-center gap-2">
-                                                    <Flag className="size-4 text-primary" />
-                                                    {__('messages.countries.jordan')}
-                                                </div>
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <InputError message={errors.country ? __(errors.country) : undefined} />
-                                </div>
+                                <CountrySelect
+                                    value={data.country}
+                                    onValueChange={value => setData('country', value)}
+                                    label={__('messages.submit_idea.country_label')}
+                                    error={errors.country ? __(errors.country) : undefined}
+                                    required
+                                    variant="flat"
+                                />
                                 <div className="space-y-2">
                                     <Label htmlFor="city" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                         {__('messages.submit_idea.city_label')}
@@ -227,52 +216,27 @@ export default function SubmitIdea() {
                                     {__('messages.submit_idea.category_label')}
                                 </Label>
                                 <Select
-                                    value={data.category}
-                                    onValueChange={value => setData('category', value)}
+                                    value={data.category_id}
+                                    onValueChange={value => setData('category_id', value)}
                                 >
                                     <SelectTrigger id="category" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
                                         <SelectValue placeholder={__('messages.submit_idea.category_placeholder')} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="e-commerce">
-                                            <div className="flex items-center gap-2">
-                                                <ShoppingBag className="size-4 text-primary" />
-                                                {__('messages.categories.ecommerce')}
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="digital-services">
-                                            <div className="flex items-center gap-2">
-                                                <Cpu className="size-4 text-primary" />
-                                                {__('messages.categories.digital_services')}
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="home-services">
-                                            <div className="flex items-center gap-2">
-                                                <Home className="size-4 text-primary" />
-                                                {__('messages.categories.home_services')}
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="handicrafts">
-                                            <div className="flex items-center gap-2">
-                                                <Palette className="size-4 text-primary" />
-                                                {__('messages.categories.handicrafts')}
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="tech">
-                                            <div className="flex items-center gap-2">
-                                                <Cpu className="size-4 text-primary" />
-                                                {__('messages.categories.tech')}
-                                            </div>
-                                        </SelectItem>
-                                        <SelectItem value="other">
-                                            <div className="flex items-center gap-2">
-                                                <MoreHorizontal className="size-4 text-primary" />
-                                                {__('messages.categories.other')}
-                                            </div>
-                                        </SelectItem>
+                                        {categories.map((category) => {
+                                            const Icon = categoryIcons[category.icon] || MoreHorizontal;
+                                            return (
+                                                <SelectItem key={category.id} value={category.id.toString()}>
+                                                    <div className="flex items-center gap-2">
+                                                        <Icon className="size-4 text-primary" />
+                                                        {locale === 'ar' ? category.name_ar : category.name_en}
+                                                    </div>
+                                                </SelectItem>
+                                            );
+                                        })}
                                     </SelectContent>
                                 </Select>
-                                <InputError message={errors.category ? __(errors.category) : undefined} />
+                                <InputError message={errors.category_id ? __(errors.category_id) : undefined} />
                             </div>
 
                             <div className="space-y-2">

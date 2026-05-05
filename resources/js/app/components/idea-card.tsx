@@ -1,10 +1,21 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
+import { 
+    ShoppingBag, 
+    Home, 
+    Palette, 
+    Cpu, 
+    Leaf, 
+    GraduationCap, 
+    Heart, 
+    MoreHorizontal 
+} from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 
 type Props = {
     id: number;
     category: string;
+    categoryIcon?: string;
     budget: string;
     title: string;
     description: string;
@@ -21,9 +32,21 @@ type Props = {
     variant?: 'home' | 'archive';
 };
 
+const categoryIcons: Record<string, any> = {
+    'shopping-bag': ShoppingBag,
+    'home': Home,
+    'palette': Palette,
+    'cpu': Cpu,
+    'leaf': Leaf,
+    'graduation-cap': GraduationCap,
+    'heart': Heart,
+    'more-horizontal': MoreHorizontal,
+};
+
 export function IdeaCard({
     id,
     category,
+    categoryIcon,
     budget,
     title,
     description,
@@ -40,6 +63,8 @@ export function IdeaCard({
     variant = 'home',
 }: Props) {
     const { __ } = useLang();
+    
+    const Icon = categoryIcon ? (categoryIcons[categoryIcon] || MoreHorizontal) : null;
 
     if (variant === 'archive') {
         return (
@@ -63,9 +88,12 @@ export function IdeaCard({
                 )}
                 <div className="flex flex-1 flex-col p-5 sm:p-8">
                     <div className="mb-4 flex items-start justify-between">
-                        <span className="text-xs font-bold tracking-widest text-primary uppercase">
-                            {category}
-                        </span>
+                        <div className="flex items-center gap-2">
+                            {Icon && <Icon className="size-3.5 text-primary" />}
+                            <span className="text-xs font-bold tracking-widest text-primary uppercase">
+                                {category}
+                            </span>
+                        </div>
                         {date && (
                             <span className="text-xs text-outline">{date}</span>
                         )}
@@ -108,9 +136,12 @@ export function IdeaCard({
             className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card"
         >
             <div className="mb-4 flex items-start justify-between">
-                <span className="rounded-md bg-primary-fixed px-3 py-1 text-xs font-bold text-on-primary-fixed">
-                    {category}
-                </span>
+                <div className="flex items-center gap-2 rounded-md bg-primary-fixed px-3 py-1">
+                    {Icon && <Icon className="size-3.5 text-on-primary-fixed" />}
+                    <span className="text-xs font-bold text-on-primary-fixed">
+                        {category}
+                    </span>
+                </div>
                 <div className="flex items-center gap-1 text-primary">
                     <span className="material-symbols-outlined text-base">
                         payments

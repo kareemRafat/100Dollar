@@ -15,11 +15,18 @@ class SetRequestLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->input('_locale')
-            ?? $request->session()->get('locale')
-            ?? config('app.locale');
+        $locale = $request->segment(1);
 
-        app()->setLocale($locale);
+        if (! in_array($locale, ['en', 'ar'])) {
+            $locale = $request->input('_locale')
+                ?? $request->session()->get('locale')
+                ?? config('app.locale');
+        }
+
+        if (in_array($locale, ['en', 'ar'])) {
+            app()->setLocale($locale);
+            $request->session()->put('locale', $locale);
+        }
 
         return $next($request);
     }

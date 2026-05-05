@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Sponsor;
 use App\Models\User;
@@ -19,7 +20,6 @@ class IdeaFactory extends Factory
      */
     public function definition(): array
     {
-        $categories = ['تجارة', 'تقنية', 'خدمات', 'غذاء', 'تعليم', 'صناعة', 'زراعة'];
         $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت'];
 
         $titles = [
@@ -35,9 +35,9 @@ class IdeaFactory extends Factory
         return [
             'user_id' => User::factory(),
             'sponsor_id' => null,
+            'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
             'title' => fake()->randomElement($titles),
             'description' => fake()->paragraph(5),
-            'category' => fake()->randomElement($categories),
             'country' => fake()->randomElement($countries),
             'city' => fake()->city(),
             'submission_day' => fake()->numberBetween(0, 6),

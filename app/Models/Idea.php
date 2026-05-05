@@ -12,9 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'user_id',
     'sponsor_id',
+    'category_id',
     'title',
     'description',
-    'category',
     'country',
     'city',
     'submission_day',
@@ -47,6 +47,11 @@ class Idea extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function sponsor(): BelongsTo

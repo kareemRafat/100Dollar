@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\App\IdeaResource;
 use App\Models\Idea;
 use App\Models\Sponsor;
 use Carbon\Carbon;
@@ -19,7 +20,7 @@ class HomeController extends Controller
         $currentWeek = $now->isoWeek();
         $currentYear = $now->isoWeekYear();
 
-        $ideas = Idea::with(['user:id,name', 'user.media'])
+        $ideas = Idea::with(['user:id,name', 'user.media', 'category'])
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
             ->where('year', $currentYear)
@@ -45,7 +46,7 @@ class HomeController extends Controller
         $secondsUntilEnd = $now->diffInSeconds($endOfDay);
 
         return Inertia::render('app/pages/home/index', [
-            'ideas' => Inertia::scroll($ideas),
+            'ideas' => Inertia::scroll(IdeaResource::collection($ideas)),
             'sponsor' => $sponsor,
             'previousWinners' => $previousWinners,
             'currentDay' => $currentDay,

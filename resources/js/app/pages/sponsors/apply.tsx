@@ -11,8 +11,6 @@ import {
     ShieldCheck, 
     Rocket, 
     ImagePlus,
-    MapPin,
-    Flag,
     UploadCloud
 } from 'lucide-react';
 import { useState  } from 'react';
@@ -24,20 +22,14 @@ import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { CountrySelect } from '@/app/components/country-select';
 import { cn } from '@/lib/utils';
 import { sponsors as sponsorsIndex } from '@/routes/app';
 import { store } from '@/routes/app/sponsors';
 
-export default function SponsorshipApply() {
+export default function SponsorshipApply({ countries }: { countries: Record<string, string> }) {
     const { __ } = useLang();
-    const { locale } = usePage().props;
+    const { locale } = usePage().props as any;
     const isRtl = locale === 'ar';
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -136,7 +128,6 @@ export default function SponsorshipApply() {
 
             <section className="mx-auto max-w-7xl px-8 py-24">
                 <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-                    {/* Left Column: Form */}
                     <div className="lg:col-span-7">
                         <div className="mb-8">
                             <Link
@@ -224,48 +215,20 @@ export default function SponsorshipApply() {
                                             />
                                             <InputError message={errors.website ? __(errors.website) : undefined} />
                                         </div>
-                                        <div className="flex flex-col gap-2">
-                                            <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
-                                                <MapPin className="size-3.5 text-primary" />
-                                                {__('messages.submit_idea.country_label')}
-                                            </Label>
-                                            <Select
-                                                value={data.country}
-                                                onValueChange={(val) => setData('country', val)}
-                                                required
-                                            >
-                                                <SelectTrigger size="lg" className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary">
-                                                    <SelectValue placeholder={__('messages.submit_idea.country_placeholder')} />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="Saudi Arabia">
-                                                        <div className="flex items-center gap-2">
-                                                            <Flag className="size-4 text-primary" />
-                                                            {__('messages.countries.saudi_arabia')}
-                                                        </div>
-                                                    </SelectItem>
-                                                    <SelectItem value="UAE">
-                                                        <div className="flex items-center gap-2">
-                                                            <Flag className="size-4 text-primary" />
-                                                            {__('messages.countries.uae')}
-                                                        </div>
-                                                    </SelectItem>
-                                                    <SelectItem value="Egypt">
-                                                        <div className="flex items-center gap-2">
-                                                            <Flag className="size-4 text-primary" />
-                                                            {__('messages.countries.egypt')}
-                                                        </div>
-                                                    </SelectItem>
-                                                    <SelectItem value="Jordan">
-                                                        <div className="flex items-center gap-2">
-                                                            <Flag className="size-4 text-primary" />
-                                                            {__('messages.countries.jordan')}
-                                                        </div>
-                                                    </SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <InputError message={errors.country ? __(errors.country) : undefined} />
-                                        </div>
+                                        <CountrySelect
+                                            value={data.country}
+                                            onValueChange={(val) => setData('country', val)}
+                                            label={
+                                                <>
+                                                    <Globe className="size-3.5 text-primary" />
+                                                    {__('messages.submit_idea.country_label')}
+                                                </>
+                                            }
+                                            labelClassName="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant"
+                                            variant="flat"
+                                            required
+                                            error={errors.country ? __(errors.country) : undefined}
+                                        />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
@@ -336,10 +299,7 @@ export default function SponsorshipApply() {
                             </form>
                         </div>
                     </div>
-{/* ... rest of columns unchanged */}
 
-
-                    {/* Right Column: Benefits/Info */}
                     <div className="lg:col-span-5 space-y-8">
                         <div className="rounded-3xl bg-primary/5 border border-primary/10 p-8 md:p-12">
                             <h3 className="mb-6 font-headline text-2xl font-black text-on-surface dark:text-white">

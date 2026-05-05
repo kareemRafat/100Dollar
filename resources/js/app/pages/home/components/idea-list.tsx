@@ -68,13 +68,14 @@ export default function IdeaList({ ideas }: Props) {
                                 key={`${idea.id}-${index}`}
                                 id={idea.id}
                                 category={idea.category}
+                                categoryIcon={idea.category_icon}
                                 budget="100$"
                                 title={idea.title}
                                 description={idea.description}
                                 authorName={idea.user?.name || __('messages.home.anonymous')}
-                                timeAgo={new Date(idea.created_at).toLocaleDateString()}
+                                timeAgo={idea.date}
                                 votes={idea.votes_count}
-                                voteProgress={Math.min((idea.votes_count / 500) * 100, 100)}
+                                voteProgress={idea.progress}
                                 imageUrl={idea.image}
                                 onVote={() => console.log('Vote for', idea.id)}
                             />
