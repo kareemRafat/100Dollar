@@ -74,6 +74,14 @@ return [
         'full_archive_desc' => 'View all previous winners since the platform launched',
         'read_more' => 'Read More',
         'loading' => 'Loading...',
+        'multi_select' => [
+            'search' => 'Search options...',
+            'select_all' => 'Select All',
+            'clear' => 'Clear',
+            'close' => 'Close',
+            'no_results' => 'No results found.',
+            'more' => 'more',
+        ],
     ],
 
     'home' => [

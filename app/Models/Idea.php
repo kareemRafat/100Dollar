@@ -45,6 +45,7 @@ class Idea extends Model
             'approved_at' => 'datetime',
             'winner_announced_at' => 'datetime',
             'target_audience' => 'array',
+            'marketing_channel' => 'array',
         ];
     }
 

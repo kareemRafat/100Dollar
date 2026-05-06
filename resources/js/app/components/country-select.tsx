@@ -77,6 +77,7 @@ export function CountrySelect({
                 value={value}
                 onValueChange={onValueChange}
                 required={required}
+                dir={locale === 'ar' ? 'rtl' : 'ltr'}
             >
                 <SelectTrigger 
                     id={id} 

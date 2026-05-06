@@ -87,7 +87,8 @@ class IdeaController extends Controller
             'agreed_terms' => ['required', 'accepted'],
             'agreed_privacy' => ['required', 'accepted'],
             'agreed_legal' => ['required', 'accepted'],
-            'marketing_channel' => ['required', 'string', 'in:social_media,word_of_mouth,physical,whatsapp,other'],
+            'marketing_channel' => ['required', 'array', 'min:1'],
+            'marketing_channel.*' => ['string', 'in:social_media,word_of_mouth,physical,whatsapp,other'],
             'target_audience' => ['required', 'array', 'min:1'],
             'implementation_time' => ['required', 'string'],
         ]);

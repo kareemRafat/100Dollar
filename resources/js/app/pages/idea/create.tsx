@@ -67,7 +67,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
         category_id: '',
         country: '',
         city: '',
-        marketing_channel: '',
+        marketing_channel: [] as string[],
         target_audience: [] as string[],
         implementation_time: '',
         image: null as File | null,
@@ -194,6 +194,52 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                 <div className="mx-auto max-w-[800px]">
                     <div className="border-outline-variant/10 bg-surface-container-lowest dark:bg-card relative overflow-hidden rounded-xl border p-8 shadow-xl md:p-12">
                         <form onSubmit={submit} className="relative z-10 space-y-8">
+                            <div className="space-y-2">
+                                <Label htmlFor="title" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                    {__('messages.submit_idea.title_label')}
+                                </Label>
+                                <Input
+                                    id="title"
+                                    size="lg"
+                                    className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                    placeholder={__('messages.submit_idea.title_placeholder')}
+                                    type="text"
+                                    value={data.title}
+                                    onChange={e => setData('title', e.target.value)}
+                                />
+                                <InputError message={errors.title ? __(errors.title) : undefined} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="category" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                    {__('messages.submit_idea.category_label')}
+                                </Label>
+                                <Select
+                                    value={data.category_id}
+                                    onValueChange={value => setData('category_id', value)}
+                                    dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                                >
+                                    <SelectTrigger id="category" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
+                                        <SelectValue placeholder={__('messages.submit_idea.category_placeholder')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {categories.map((category) => {
+                                            const Icon = categoryIcons[category.icon] || MoreHorizontal;
+
+                                            return (
+                                                <SelectItem key={category.id} value={category.id.toString()}>
+                                                    <div className="flex items-center gap-2">
+                                                        <Icon className="size-4 text-primary" />
+                                                        {locale === 'ar' ? category.name_ar : category.name_en}
+                                                    </div>
+                                                </SelectItem>
+                                            );
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                                <InputError message={errors.category_id ? __(errors.category_id) : undefined} />
+                            </div>
+
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <CountrySelect
                                     value={data.country}
@@ -221,79 +267,6 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                             </div>
 
                             <div className="space-y-2">
-                                <Label htmlFor="category" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
-                                    {__('messages.submit_idea.category_label')}
-                                </Label>
-                                <Select
-                                    value={data.category_id}
-                                    onValueChange={value => setData('category_id', value)}
-                                >
-                                    <SelectTrigger id="category" size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
-                                        <SelectValue placeholder={__('messages.submit_idea.category_placeholder')} />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((category) => {
-                                            const Icon = categoryIcons[category.icon] || MoreHorizontal;
-
-                                            return (
-                                                <SelectItem key={category.id} value={category.id.toString()}>
-                                                    <div className="flex items-center gap-2">
-                                                        <Icon className="size-4 text-primary" />
-                                                        {locale === 'ar' ? category.name_ar : category.name_en}
-                                                    </div>
-                                                </SelectItem>
-                                            );
-                                        })}
-                                    </SelectContent>
-                                </Select>
-                                <InputError message={errors.category_id ? __(errors.category_id) : undefined} />
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                                <div className="space-y-4">
-                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
-                                        {__('messages.submit_idea.marketing_channel_label')}
-                                    </Label>
-                                    <RadioGroup
-                                        value={data.marketing_channel}
-                                        onValueChange={value => setData('marketing_channel', value)}
-                                        className="grid grid-cols-1 gap-3"
-                                    >
-                                        {['social_media', 'word_of_mouth', 'physical', 'whatsapp', 'other'].map((channel) => (
-                                            <div key={channel} className="flex items-center space-x-3 rtl:space-x-reverse">
-                                                <RadioGroupItem value={channel} id={`channel-${channel}`} />
-                                                <Label htmlFor={`channel-${channel}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80">
-                                                    {__(`messages.submit_idea.channels.${channel}`)}
-                                                </Label>
-                                            </div>
-                                        ))}
-                                    </RadioGroup>
-                                    <InputError message={errors.marketing_channel ? __(errors.marketing_channel) : undefined} />
-                                </div>
-
-                                <div className="space-y-4">
-                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
-                                        {__('messages.submit_idea.implementation_time_label')}
-                                    </Label>
-                                    <RadioGroup
-                                        value={data.implementation_time}
-                                        onValueChange={value => setData('implementation_time', value)}
-                                        className="grid grid-cols-1 gap-3"
-                                    >
-                                        {['less_than_week', 'one_two_weeks', 'month', 'more_than_month'].map((time) => (
-                                            <div key={time} className="flex items-center space-x-3 rtl:space-x-reverse">
-                                                <RadioGroupItem value={time} id={`time-${time}`} />
-                                                <Label htmlFor={`time-${time}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80">
-                                                    {__(`messages.submit_idea.times.${time}`)}
-                                                </Label>
-                                            </div>
-                                        ))}
-                                    </RadioGroup>
-                                    <InputError message={errors.implementation_time ? __(errors.implementation_time) : undefined} />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
                                 <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.submit_idea.target_audience_label')}
                                 </Label>
@@ -312,25 +285,60 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                     defaultValue={data.target_audience}
                                     placeholder={__('messages.submit_idea.target_audience_placeholder')}
                                     variant="inverted"
+                                    dir={locale === 'ar' ? 'rtl' : 'ltr'}
                                     className="bg-surface-container-low dark:bg-surface-container-high border-none min-h-[48px]"
                                 />
                                 <InputError message={errors.target_audience ? __(errors.target_audience) : undefined} />
                             </div>
 
-                            <div className="space-y-2">
-                                <Label htmlFor="title" className="font-headline block text-sm font-bold text-on-surface dark:text-white">
-                                    {__('messages.submit_idea.title_label')}
-                                </Label>
-                                <Input
-                                    id="title"
-                                    size="lg"
-                                    className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                    placeholder={__('messages.submit_idea.title_placeholder')}
-                                    type="text"
-                                    value={data.title}
-                                    onChange={e => setData('title', e.target.value)}
-                                />
-                                <InputError message={errors.title ? __(errors.title) : undefined} />
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                                <div className="space-y-4">
+                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                        {__('messages.submit_idea.marketing_channel_label')}
+                                    </Label>
+                                    <div className="grid grid-cols-1 gap-3" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+                                        {['social_media', 'word_of_mouth', 'physical', 'whatsapp', 'other'].map((channel) => (
+                                            <div key={channel} className="flex items-center gap-3">
+                                                <Checkbox
+                                                    id={`channel-${channel}`}
+                                                    checked={data.marketing_channel.includes(channel)}
+                                                    onCheckedChange={(checked) => {
+                                                        const newValue = checked
+                                                            ? [...data.marketing_channel, channel]
+                                                            : data.marketing_channel.filter((c) => c !== channel);
+                                                        setData('marketing_channel', newValue);
+                                                    }}
+                                                />
+                                                <Label htmlFor={`channel-${channel}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80 text-start">
+                                                    {__(`messages.submit_idea.channels.${channel}`)}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <InputError message={errors.marketing_channel ? __(errors.marketing_channel) : undefined} />
+                                </div>
+
+                                <div className="space-y-4">
+                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                        {__('messages.submit_idea.implementation_time_label')}
+                                    </Label>
+                                    <RadioGroup
+                                        value={data.implementation_time}
+                                        onValueChange={value => setData('implementation_time', value)}
+                                        className="grid grid-cols-1 gap-3"
+                                        dir={locale === 'ar' ? 'rtl' : 'ltr'}
+                                    >
+                                        {['less_than_week', 'one_two_weeks', 'month', 'more_than_month'].map((time) => (
+                                            <div key={time} className="flex items-center gap-3">
+                                                <RadioGroupItem value={time} id={`time-${time}`} />
+                                                <Label htmlFor={`time-${time}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80 text-start">
+                                                    {__(`messages.submit_idea.times.${time}`)}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                    <InputError message={errors.implementation_time ? __(errors.implementation_time) : undefined} />
+                                </div>
                             </div>
 
                             <div className="space-y-2">
@@ -420,7 +428,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                 <InputError message={errors.pdf_file ? __(errors.pdf_file) : undefined} />
                             </div>
 
-                            <div className="border-outline-variant/20 dark:border-outline-variant/10 space-y-4 border-t pt-6">
+                            <div className="border-outline-variant/20 dark:border-outline-variant/10 space-y-4 border-t pt-6" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
                                 <div className="group flex items-start gap-3">
                                     <Checkbox
                                         id="agreed_terms"
@@ -428,7 +436,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                         checked={data.agreed_terms}
                                         onCheckedChange={checked => setData('agreed_terms', !!checked)}
                                     />
-                                    <Label htmlFor="agreed_terms" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
+                                    <Label htmlFor="agreed_terms" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal text-start">
                                         {__('messages.submit_idea.agree_terms')}
                                     </Label>
                                 </div>
@@ -441,7 +449,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                         checked={data.agreed_privacy}
                                         onCheckedChange={checked => setData('agreed_privacy', !!checked)}
                                     />
-                                    <Label htmlFor="agreed_privacy" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
+                                    <Label htmlFor="agreed_privacy" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal text-start">
                                         {__('messages.submit_idea.pledge_originality')}
                                     </Label>
                                 </div>
@@ -454,7 +462,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                         checked={data.agreed_legal}
                                         onCheckedChange={checked => setData('agreed_legal', !!checked)}
                                     />
-                                    <Label htmlFor="agreed_legal" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal">
+                                    <Label htmlFor="agreed_legal" className="text-sm leading-relaxed text-on-surface dark:text-white/80 group-hover:text-on-surface dark:text-white cursor-pointer font-normal text-start">
                                         {__('messages.submit_idea.agreed_legal')}
                                     </Label>
                                 </div>

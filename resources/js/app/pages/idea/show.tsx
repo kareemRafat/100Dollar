@@ -149,9 +149,22 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                                         <span className="material-symbols-outlined text-primary">campaign</span>
                                         {__('messages.submit_idea.marketing_channel_label')}
                                     </h4>
-                                    <div className="flex items-center gap-2 text-on-surface-variant">
-                                        <span className="w-2 h-2 rounded-full bg-primary"></span>
-                                        {idea.marketing_channel ? __(`messages.submit_idea.channels.${idea.marketing_channel}`) : '---'}
+                                    <div className="space-y-2">
+                                        {Array.isArray(idea.marketing_channel) && idea.marketing_channel.length > 0 ? (
+                                            idea.marketing_channel.map((channel: string) => (
+                                                <div key={channel} className="flex items-center gap-2 text-on-surface-variant">
+                                                    <span className="w-2 h-2 rounded-full bg-primary"></span>
+                                                    {__(`messages.submit_idea.channels.${channel}`)}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="flex items-center gap-2 text-on-surface-variant">
+                                                <span className="w-2 h-2 rounded-full bg-primary"></span>
+                                                {idea.marketing_channel && !Array.isArray(idea.marketing_channel)
+                                                    ? __(`messages.submit_idea.channels.${idea.marketing_channel}`)
+                                                    : '---'}
+                                            </div>
+                                        )}
                                     </div>
                                     <h4 className="font-bold text-on-surface mt-6 mb-4 flex items-center gap-2 font-headline">
                                         <span className="material-symbols-outlined text-primary">schedule</span>
