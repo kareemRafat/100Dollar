@@ -59,28 +59,32 @@ class ProfileController extends Controller
 
         // Fetch activity data based on active section with pagination and deferring
         if ($activeSection === 'voted-ideas') {
-            $props['votedIdeas'] = Inertia::defer(fn () => Vote::where('voter_email', $user->email)
+            $query = Vote::where('voter_email', $user->email)
                 ->whereNotNull('otp_verified_at')
-                ->with('idea.user')
-                ->latest()
-                ->paginate(10)
-                ->through(fn ($vote) => $vote->idea));
+                ->whereHas('idea')
+                ->with(['idea.user.media', 'idea.category'])
+                ->latest();
+            
+            $props['votedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($vote) => $vote->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($vote) => $vote->idea));
         } elseif ($activeSection === 'followed-ideas') {
-            $props['followedIdeas'] = Inertia::defer(fn () => $user->followedIdeas()
-                ->with('idea.user')
-                ->latest()
-                ->paginate(10)
-                ->through(fn ($follow) => $follow->idea));
+            $query = $user->followedIdeas()
+                ->whereHas('idea')
+                ->with(['idea.user.media', 'idea.category'])
+                ->latest();
+                
+            $props['followedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->idea));
         } elseif ($activeSection === 'followed-people') {
-            $props['followedPeople'] = Inertia::defer(fn () => $user->following()
-                ->with('following')
-                ->latest()
-                ->paginate(10)
-                ->through(fn ($follow) => $follow->following));
+            $query = $user->following()
+                ->whereHas('following')
+                ->with('following.media')
+                ->latest();
+                
+            $props['followedPeople'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->following) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->following));
         } elseif ($activeSection === 'notifications') {
-            $props['notifications'] = Inertia::defer(fn () => $user->customNotifications()
-                ->latest()
-                ->paginate(10));
+            $query = $user->customNotifications()
+                ->latest();
+                
+            $props['notifications'] = $request->inertia() ? $query->paginate(10) : Inertia::defer(fn () => $query->paginate(10));
         }
 
         return Inertia::render('app/pages/profile', $props);

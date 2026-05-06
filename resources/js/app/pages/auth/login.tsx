@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import type {  SubmitEvent } from 'react';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -37,7 +38,7 @@ export default function Login({
         redirect: redirectPath,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store.url(), {
             onFinish: () => reset('password'),
@@ -107,9 +108,9 @@ export default function Login({
                 </div>
 
                 <div className="flex items-center justify-start gap-3">
-                    <Checkbox 
-                        id="remember-me" 
-                        name="remember" 
+                    <Checkbox
+                        id="remember-me"
+                        name="remember"
                         checked={data.remember}
                         onCheckedChange={(checked) => setData('remember', checked === true)}
                     />

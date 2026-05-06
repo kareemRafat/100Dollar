@@ -1,14 +1,14 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { 
-    Mail, 
-    MessageSquare, 
-    AlertCircle, 
+import {
+    Mail,
+    AlertCircle,
     MoreHorizontal,
     Rocket,
     Phone,
     Clock
 } from 'lucide-react';
+import type { SubmitEvent } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
@@ -36,7 +36,7 @@ export default function Contact() {
         message: '',
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store().url, {
             preserveScroll: 'errors',

@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Vote as VoteIcon, ArrowRight, User } from 'lucide-react';
 import { memo } from 'react';
 import { Pagination } from '@/components/ui/pagination';
@@ -7,7 +7,10 @@ import { Pagination } from '@/components/ui/pagination';
 type Idea = {
     id: number;
     title: string;
-    category: string;
+    category?: {
+        name_en: string;
+        name_ar: string;
+    };
     user: {
         name: string;
     };
@@ -23,6 +26,9 @@ type Props = {
 
 function VotedIdeas({ ideas }: Props) {
     const { __ } = useLang();
+    const { props: pageProps } = usePage();
+    const locale = pageProps.locale as string;
+    const isRtl = locale === 'ar';
     const items = Array.isArray(ideas) ? ideas : (ideas?.data || []);
 
     // Standardized pagination data retrieval
@@ -69,7 +75,7 @@ function VotedIdeas({ ideas }: Props) {
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
                                 <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] font-bold text-secondary uppercase dark:bg-white/10 dark:text-white/60">
-                                    {idea.category}
+                                    {isRtl ? idea.category?.name_ar : idea.category?.name_en}
                                 </span>
                             </div>
                             <h3 className="text-sm font-bold text-secondary group-hover:text-primary dark:text-white">

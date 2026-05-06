@@ -1,7 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { useMemo, useState } from 'react';
+import { useMemo, useState  } from 'react';
+import type {SubmitEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -44,7 +45,7 @@ export default function TwoFactorChallenge() {
         };
     }, [showRecoveryInput, __]);
 
-    const submit = (e: React.FormEvent) => {
+    const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post('/two-factor-challenge', {
             onFinish: () => {

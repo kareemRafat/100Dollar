@@ -1,7 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { useForm, usePage } from '@inertiajs/react';
-import { Camera, Loader2, User as UserIcon } from 'lucide-react';
-import React, { memo } from 'react';
+import { Camera, Loader2, User as UserIcon, AlertCircle } from 'lucide-react';
+import React, { memo  } from 'react';
+import type {SubmitEvent} from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
@@ -48,7 +49,7 @@ function ProfileInformationForm({ user }: Props) {
         }
     };
 
-    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+    const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(updateProfile.url(), {
             preserveScroll: true,
@@ -123,7 +124,6 @@ function ProfileInformationForm({ user }: Props) {
                                     value={data.name}
                                     onChange={(e) => setData('name', e.target.value)}
                                 />
-                                {errors.name && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.name}</p>}
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="email" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
@@ -136,7 +136,6 @@ function ProfileInformationForm({ user }: Props) {
                                     value={data.email}
                                     onChange={(e) => setData('email', e.target.value)}
                                 />
-                                {errors.email && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.email}</p>}
                             </div>
                         </div>
 
@@ -156,7 +155,6 @@ function ProfileInformationForm({ user }: Props) {
                                 onChange={(e) => setData('phone', e.target.value)}
                                 placeholder="+966 50 123 4567"
                             />
-                            {errors.phone && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.phone}</p>}
                         </div>
 
                         <div className="space-y-2">
@@ -173,40 +171,54 @@ function ProfileInformationForm({ user }: Props) {
                                 onChange={(e) => setData('bio', e.target.value)}
                                 placeholder={__('messages.profile.bio_placeholder')}
                             />
-                            {errors.bio && <p className={cn("mt-1 text-xs text-error", isRtl ? "text-right" : "text-left")}>{errors.bio}</p>}
                         </div>
 
-                        <div className={cn("flex items-center gap-3 pt-4 border-t border-outline-variant/10 dark:border-white/5", isRtl ? "justify-start flex-row-reverse" : "justify-end")}>
-                            {recentlySuccessful && (
-                                <p className="text-xs font-bold text-primary animate-in fade-in">
-                                    {__('messages.profile.save_changes')} ✓
-                                </p>
-                            )}
-                            <Button
-                                variant="ghost"
-                                className="rounded-xl font-bold"
-                                type="button"
-                                onClick={() => {
-                                    setData({
-                                        _method: 'patch',
-                                        name: user.name,
-                                        email: user.email,
-                                        phone: user.phone || '',
-                                        bio: user.bio || '',
-                                        avatar: null,
-                                    });
-                                    setAvatarPreview(null);
-                                }}
-                            >
-                                {__('messages.profile.cancel')}
-                            </Button>
-                            <Button
-                                disabled={processing}
-                                className="h-11 w-full rounded-xl px-10 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 md:w-48"
-                            >
-                                {processing && <Loader2 className="me-2 size-4 animate-spin" />}
-                                {__('messages.profile.save_changes')}
-                            </Button>
+                        <div className={cn("flex items-center gap-3 pt-4 border-t border-outline-variant/10 dark:border-white/5", isRtl ? "flex-row-reverse" : "flex-row")}>
+                            <div className={cn("flex flex-1 items-center gap-3", isRtl ? "justify-start" : "justify-end")}>
+                                {recentlySuccessful && (
+                                    <p className="text-xs font-bold text-primary animate-in fade-in mt-0.5">
+                                        {__('messages.profile.save_changes')} ✓
+                                    </p>
+                                )}
+
+                                {Object.keys(errors).length > 0 && typeof Object.values(errors)[0] === 'string' && (
+                                    <p className={cn(
+                                        "text-xs font-bold text-error animate-in fade-in flex items-center gap-1.5 mt-0.5",
+                                        isRtl ? "flex-row-reverse text-right" : "text-left"
+                                    )}>
+                                        <AlertCircle className="size-3.5" />
+                                        {Object.values(errors)[0]}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                <Button
+                                    variant="ghost"
+                                    className="rounded-xl font-bold"
+                                    type="button"
+                                    onClick={() => {
+                                        setData({
+                                            _method: 'patch',
+                                            name: user.name,
+                                            email: user.email,
+                                            phone: user.phone || '',
+                                            bio: user.bio || '',
+                                            avatar: null,
+                                        });
+                                        setAvatarPreview(null);
+                                    }}
+                                >
+                                    {__('messages.profile.cancel')}
+                                </Button>
+                                <Button
+                                    disabled={processing}
+                                    className="h-11 w-full rounded-xl px-10 font-bold shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95 md:w-48"
+                                >
+                                    {processing && <Loader2 className="me-2 size-4 animate-spin" />}
+                                    {__('messages.profile.save_changes')}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

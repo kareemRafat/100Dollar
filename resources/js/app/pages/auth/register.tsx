@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import type { SubmitEvent } from 'react';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
@@ -34,7 +35,7 @@ export default function Register({ canLogin, countries }: Props) {
         _locale: locale,
     });
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store.url(), {
             onFinish: () => reset('password', 'password_confirmation'),
@@ -46,10 +47,10 @@ export default function Register({ canLogin, countries }: Props) {
             <Head title={__('messages.register.hero_title')} />
 
             <header className="mb-8 text-start">
-                <h2 className="font-headline mb-1.5 text-2xl font-extrabold tracking-tight text-on-surface dark:text-white md:text-3xl">
+                <h2 className="mb-1.5 font-headline text-2xl font-extrabold tracking-tight text-on-surface md:text-3xl dark:text-white">
                     {__('messages.register.welcome_title')}
                 </h2>
-                <p className="text-on-surface-variant text-sm">
+                <p className="text-sm text-on-surface-variant">
                     {__('messages.register.subtitle')}
                 </p>
             </header>
@@ -57,7 +58,9 @@ export default function Register({ canLogin, countries }: Props) {
             <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     <div className="space-y-2">
-                        <Label htmlFor="name">{__('messages.register.full_name')}</Label>
+                        <Label htmlFor="name">
+                            {__('messages.register.full_name')}
+                        </Label>
 
                         <Input
                             id="name"
@@ -67,13 +70,17 @@ export default function Register({ canLogin, countries }: Props) {
                             onChange={(e) => setData('name', e.target.value)}
                             required
                             autoFocus
-                            placeholder={__('messages.register.full_name_placeholder')}
+                            placeholder={__(
+                                'messages.register.full_name_placeholder',
+                            )}
                             className="h-10 text-start text-sm"
                         />
                         <InputError message={errors.name} />
                     </div>
                     <div className="space-y-1.5">
-                        <Label htmlFor="email" className="block w-full text-xs">{__('messages.login.email_label')}</Label>
+                        <Label htmlFor="email" className="block w-full text-xs">
+                            {__('messages.login.email_label')}
+                        </Label>
                         <Input
                             id="email"
                             name="email"
@@ -89,7 +96,9 @@ export default function Register({ canLogin, countries }: Props) {
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="phone" className="block w-full text-xs">{__('messages.register.phone_label')}</Label>
+                    <Label htmlFor="phone" className="block w-full text-xs">
+                        {__('messages.register.phone_label')}
+                    </Label>
                     <Input
                         id="phone"
                         name="phone"
@@ -116,15 +125,24 @@ export default function Register({ canLogin, countries }: Props) {
                     />
 
                     <div className="space-y-1.5">
-                        <Label htmlFor="nationality" className="block w-full text-xs">{__('messages.register.nationality')}</Label>
+                        <Label
+                            htmlFor="nationality"
+                            className="block w-full text-xs"
+                        >
+                            {__('messages.register.nationality')}
+                        </Label>
                         <Input
                             id="nationality"
                             name="nationality"
                             type="text"
                             value={data.nationality}
-                            onChange={(e) => setData('nationality', e.target.value)}
+                            onChange={(e) =>
+                                setData('nationality', e.target.value)
+                            }
                             required
-                            placeholder={__('messages.register.nationality_placeholder')}
+                            placeholder={__(
+                                'messages.register.nationality_placeholder',
+                            )}
                             className="h-10 text-start text-sm"
                         />
                         <InputError message={errors.nationality} />
@@ -133,12 +151,19 @@ export default function Register({ canLogin, countries }: Props) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div className="space-y-1.5">
-                        <Label htmlFor="password" className="block w-full text-xs">{__('messages.login.password_label')}</Label>
+                        <Label
+                            htmlFor="password"
+                            className="block w-full text-xs"
+                        >
+                            {__('messages.login.password_label')}
+                        </Label>
                         <PasswordInput
                             id="password"
                             name="password"
                             value={data.password}
-                            onChange={(e) => setData('password', e.target.value)}
+                            onChange={(e) =>
+                                setData('password', e.target.value)
+                            }
                             required
                             placeholder="••••••••"
                             className="h-10 text-start text-sm"
@@ -146,13 +171,20 @@ export default function Register({ canLogin, countries }: Props) {
                         <InputError message={errors.password} />
                     </div>
                     <div className="space-y-1.5">
-                        <Label htmlFor="password_confirmation" className="block w-full text-xs">{__('messages.register.confirm_password')}</Label>
+                        <Label
+                            htmlFor="password_confirmation"
+                            className="block w-full text-xs"
+                        >
+                            {__('messages.register.confirm_password')}
+                        </Label>
                         <Input
                             id="password_confirmation"
                             name="password_confirmation"
                             type="password"
                             value={data.password_confirmation}
-                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                            onChange={(e) =>
+                                setData('password_confirmation', e.target.value)
+                            }
                             required
                             placeholder="••••••••"
                             className="h-10 text-start text-sm"
@@ -168,11 +200,13 @@ export default function Register({ canLogin, countries }: Props) {
                             name="terms"
                             required
                             checked={data.terms}
-                            onCheckedChange={(checked) => setData('terms', checked === true)}
+                            onCheckedChange={(checked) =>
+                                setData('terms', checked === true)
+                            }
                             className="mt-0.5 h-4 w-4"
                         />
                         <Label
-                            className="text-on-surface-variant text-xs leading-relaxed cursor-pointer text-start"
+                            className="cursor-pointer text-start text-xs leading-relaxed text-on-surface-variant"
                             htmlFor="terms"
                         >
                             {__('messages.register.agree_terms')}{' '}
@@ -204,11 +238,11 @@ export default function Register({ canLogin, countries }: Props) {
 
             <div className="mt-6 flex flex-col items-center gap-5">
                 <div className="flex w-full items-center gap-4">
-                    <div className="bg-outline-variant/30 h-px flex-1" />
-                    <span className="text-on-surface-variant text-[10px] font-medium">
+                    <div className="h-px flex-1 bg-outline-variant/30" />
+                    <span className="text-[10px] font-medium text-on-surface-variant">
                         {__('messages.login.or_continue_with')}
                     </span>
-                    <div className="bg-outline-variant/30 h-px flex-1" />
+                    <div className="h-px flex-1 bg-outline-variant/30" />
                 </div>
                 <div className="w-full">
                     <Button
@@ -225,7 +259,7 @@ export default function Register({ canLogin, countries }: Props) {
                     </Button>
                 </div>
                 {canLogin && (
-                    <p className="text-on-surface-variant text-xs">
+                    <p className="text-xs text-on-surface-variant">
                         {__('messages.register.have_account')}{' '}
                         <a
                             className="font-bold text-primary hover:underline"
@@ -237,8 +271,11 @@ export default function Register({ canLogin, countries }: Props) {
                 )}
             </div>
 
-            <footer className="text-on-surface-variant mx-auto mt-12 flex w-full items-center justify-between text-[9px] opacity-60">
-                <span>© {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}</span>
+            <footer className="mx-auto mt-12 flex w-full items-center justify-between text-[9px] text-on-surface-variant opacity-60">
+                <span>
+                    © {new Date().getFullYear()} {__('messages.ideas_100')}.{' '}
+                    {__('messages.footer.rights_reserved')}
+                </span>
                 <div className="flex gap-4">
                     <Link
                         className="transition-colors hover:text-primary"

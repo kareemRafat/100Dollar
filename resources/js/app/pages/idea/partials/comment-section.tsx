@@ -2,6 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { InfiniteScroll, Link, useForm, router } from '@inertiajs/react';
 import { Loader2, Send } from 'lucide-react';
 import React from 'react';
+import type {SubmitEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
 import type { Idea, User, Paginated, Comment } from '@/types';
@@ -23,12 +24,12 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
             [id]: !prev[id]
         }));
     };
-    
+
     const { data, setData, post, processing, reset, errors } = useForm({
         body: '',
     });
 
-    const submitComment = (e: React.FormEvent<HTMLFormElement>) => {
+    const submitComment = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!auth.user || !data.body.trim() || processing) {
@@ -57,13 +58,13 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
         router.optimistic((props: any) => ({
             comments: {
                 ...props.comments,
-                data: props.comments.data.map((c: Comment) => 
-                    c.id === comment.id 
-                        ? { 
-                            ...c, 
+                data: props.comments.data.map((c: Comment) =>
+                    c.id === comment.id
+                        ? {
+                            ...c,
                             likes_count: c.is_liked ? c.likes_count - 1 : c.likes_count + 1,
-                            is_liked: !c.is_liked 
-                        } 
+                            is_liked: !c.is_liked
+                        }
                         : c
                 )
             }
@@ -141,7 +142,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button 
+                                            <button
                                                 onClick={() => toggleLike(comment)}
                                                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all cursor-pointer ${comment.is_liked ? 'bg-primary text-on-primary shadow-sm' : 'text-outline hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20'}`}
                                             >
@@ -153,7 +154,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                             {comment.body.length > 200 && !expandedComments[comment.id] ? (
                                                 <>
                                                     {comment.body.substring(0, 200)}...
-                                                    <button 
+                                                    <button
                                                         onClick={() => toggleExpand(comment.id)}
                                                         className="text-primary hover:underline ml-1 cursor-pointer font-black inline-flex items-center gap-0.5"
                                                     >
@@ -164,7 +165,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                 <>
                                                     {comment.body}
                                                     {comment.body.length > 200 && (
-                                                        <button 
+                                                        <button
                                                             onClick={() => toggleExpand(comment.id)}
                                                             className="text-primary hover:underline ml-1 cursor-pointer font-black inline-flex items-center gap-0.5"
                                                         >

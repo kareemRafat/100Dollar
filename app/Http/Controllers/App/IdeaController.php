@@ -71,7 +71,6 @@ class IdeaController extends Controller
     {
         return Inertia::render('app/pages/idea/create', [
             'categories' => Category::all(),
-            'countries' => __('messages.countries'),
         ]);
     }
 

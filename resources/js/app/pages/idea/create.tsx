@@ -13,7 +13,7 @@ import {
     GraduationCap,
     Heart
 } from 'lucide-react';
-import type { ChangeEvent, FormEvent } from 'react';
+import type { ChangeEvent, SubmitEvent, DragEvent } from 'react';
 import { useState } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { CountrySelect } from '@/app/components/country-select';
@@ -41,7 +41,7 @@ interface Category {
     icon: string;
 }
 
-export default function SubmitIdea({ categories, countries }: { categories: Category[], countries: Record<string, string> }) {
+export default function SubmitIdea({ categories }: { categories: Category[] }) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -89,33 +89,33 @@ export default function SubmitIdea({ categories, countries }: { categories: Cate
         }
     };
 
-    const handleDragEnter = (e: React.DragEvent) => {
+    const handleDragEnter = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setDragCounter(prev => prev + 1);
         setIsDragging(true);
     };
 
-    const handleDragOver = (e: React.DragEvent) => {
+    const handleDragOver = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
     };
 
-    const handleDragLeave = (e: React.DragEvent) => {
+    const handleDragLeave = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setDragCounter(prev => {
             const next = prev - 1;
 
             if (next === 0) {
-setIsDragging(false);
-}
+                setIsDragging(false);
+            }
 
             return next;
         });
     };
 
-    const handleDrop = (e: React.DragEvent) => {
+    const handleDrop = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
@@ -136,7 +136,7 @@ setIsDragging(false);
         }
     };
 
-    const submit = (e: FormEvent<HTMLFormElement>) => {
+    const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store.url(), {
             preserveScroll: 'errors',

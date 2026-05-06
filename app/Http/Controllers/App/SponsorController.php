@@ -29,9 +29,7 @@ class SponsorController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('app/pages/sponsors/apply', [
-            'countries' => __('messages.countries'),
-        ]);
+        return Inertia::render('app/pages/sponsors/apply');
     }
 
     public function store(Request $request)

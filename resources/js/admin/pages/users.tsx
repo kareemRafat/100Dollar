@@ -1,6 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { Loader2, Pencil, Search, Trash2, UserPlus } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
+import type {SubmitEvent} from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
@@ -118,7 +119,7 @@ params.status = status;
 
     const deleteForm = useForm({});
 
-    const handleCreateSubmit = (e: React.FormEvent) => {
+    const handleCreateSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         createForm.post(admin.users.store().url, {
             onSuccess: () => {
@@ -142,7 +143,7 @@ params.status = status;
         setIsEditModalOpen(true);
     };
 
-    const handleEditSubmit = (e: React.FormEvent) => {
+    const handleEditSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!selectedUser) {
@@ -163,7 +164,7 @@ return;
         setIsDeleteModalOpen(true);
     };
 
-    const handleDeleteSubmit = (e: React.FormEvent) => {
+    const handleDeleteSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!selectedUser) {

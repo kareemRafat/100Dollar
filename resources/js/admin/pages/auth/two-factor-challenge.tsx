@@ -1,6 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { useMemo, useState } from 'react';
+import { useMemo, useState  } from 'react';
+import type {SubmitEvent} from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -56,7 +57,7 @@ export default function TwoFactorChallenge() {
         });
     };
 
-    const submit = (e: React.FormEvent) => {
+    const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store.url(), {
             onFinish: () => {

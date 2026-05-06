@@ -1,20 +1,20 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { 
-    ArrowLeft, 
-    ArrowRight, 
-    Building2, 
-    Mail, 
-    Phone, 
-    Globe, 
-    MessageSquare, 
-    ShieldCheck, 
-    Rocket, 
+import {
+    ArrowLeft,
+    ArrowRight,
+    Building2,
+    Mail,
+    Phone,
+    Globe,
+    MessageSquare,
+    ShieldCheck,
+    Rocket,
     ImagePlus,
     UploadCloud
 } from 'lucide-react';
 import { useState  } from 'react';
-import type {ChangeEvent} from 'react';
+import type {ChangeEvent, SubmitEvent, DragEvent} from 'react';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils';
 import { sponsors as sponsorsIndex } from '@/routes/app';
 import { store } from '@/routes/app/sponsors';
 
-export default function SponsorshipApply({ countries }: { countries: Record<string, string> }) {
+export default function SponsorshipApply() {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const isRtl = locale === 'ar';
@@ -61,19 +61,19 @@ export default function SponsorshipApply({ countries }: { countries: Record<stri
         }
     };
 
-    const handleDragOver = (e: React.DragEvent) => {
+    const handleDragOver = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(true);
     };
 
-    const handleDragLeave = (e: React.DragEvent) => {
+    const handleDragLeave = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
     };
 
-    const handleDrop = (e: React.DragEvent) => {
+    const handleDrop = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(false);
@@ -85,7 +85,7 @@ export default function SponsorshipApply({ countries }: { countries: Record<stri
         }
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(store().url, {
             preserveScroll: 'errors',
