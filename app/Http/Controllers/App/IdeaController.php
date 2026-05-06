@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\App\CommentResource;
 use App\Http\Resources\App\IdeaResource;
-use App\Http\Controllers\Controller;
-use App\Models\Idea;
 use App\Models\Category;
+use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -146,14 +146,15 @@ class IdeaController extends Controller
                 $idea->comments()
                     ->with(['user.media'])
                     ->withCount('likes')
+                    ->when(auth()->check(), fn ($q) => $q->withExists(['likes as is_liked' => fn ($f) => $f->where('user_id', auth()->id())]))
                     ->latest('id')
                     ->cursorPaginate(7)
             ))),
-            'isFollowingIdea' => auth()->check() 
-                ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists() 
+            'isFollowingIdea' => auth()->check()
+                ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists()
                 : false,
-            'isFollowingOwner' => auth()->check() 
-                ? auth()->user()->following()->where('following_id', $idea->user_id)->exists() 
+            'isFollowingOwner' => auth()->check()
+                ? auth()->user()->following()->where('following_id', $idea->user_id)->exists()
                 : false,
         ]);
     }

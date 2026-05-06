@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Idea;
 use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -31,7 +32,7 @@ class NotificationFactory extends Factory
 
         $data = [];
         if ($type !== 'new_follower') {
-            $data['idea_id'] = \App\Models\Idea::inRandomOrder()->first()?->id ?? 1;
+            $data['idea_id'] = Idea::inRandomOrder()->first()?->id ?? 1;
         } else {
             $data['follower_id'] = User::inRandomOrder()->first()?->id ?? 1;
         }

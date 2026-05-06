@@ -101,6 +101,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
                     {winnersArray.map((winner, index) => (
                         <div key={`${winner.id}-${index}`} className="min-w-0 flex-[0_0_auto] select-none flex">
                             <WinnerCard 
+                                id={winner.id}
                                 name={winner.user?.name || __('messages.home.anonymous')} 
                                 idea={winner.title} 
                                 badge={winner.winner_announced_at 

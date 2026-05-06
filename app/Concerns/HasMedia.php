@@ -39,7 +39,7 @@ trait HasMedia
     public function getAvatarAttribute(): ?string
     {
         return $this->media->where('collection_name', 'avatar')->first()?->url
-            ?? 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? 'User') . '&color=7F9CF5&background=EBF4FF';
+            ?? 'https://ui-avatars.com/api/?name='.urlencode($this->name ?? 'User').'&color=7F9CF5&background=EBF4FF';
     }
 
     /**
@@ -48,6 +48,6 @@ trait HasMedia
     public function getLogoAttribute(): ?string
     {
         return $this->media->where('collection_name', 'logo')->first()?->url
-            ?? 'https://ui-avatars.com/api/?name=' . urlencode($this->name ?? $this->company_name ?? 'Sponsor') . '&size=256&background=random';
+            ?? 'https://ui-avatars.com/api/?name='.urlencode($this->name ?? $this->company_name ?? 'Sponsor').'&size=256&background=random';
     }
 }

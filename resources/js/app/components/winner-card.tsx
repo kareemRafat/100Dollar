@@ -1,6 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Link } from '@inertiajs/react';
 
 type Props = {
+    id: number;
     name: string;
     idea: string;
     avatarUrl?: string;
@@ -9,6 +11,7 @@ type Props = {
 };
 
 export function WinnerCard({
+    id,
     name,
     idea,
     avatarUrl,
@@ -18,7 +21,11 @@ export function WinnerCard({
     const { __ } = useLang();
 
     return (
-        <div className="group relative flex h-full w-72 flex-shrink-0 flex-col snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card">
+        <Link 
+            href={`/ideas/${id}`}
+            prefetch
+            className="group relative flex h-full w-72 flex-shrink-0 flex-col snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card"
+        >
             <div className="absolute top-0 inset-inline-start-0 h-1 w-full bg-gradient-to-inline-end from-primary to-transparent" />
             <div className="relative mx-auto mb-6 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
@@ -60,6 +67,6 @@ export function WinnerCard({
                     </span>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

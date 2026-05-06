@@ -1,20 +1,10 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { InfiniteScroll, Link, useForm } from '@inertiajs/react';
+import { InfiniteScroll, Link, useForm, router } from '@inertiajs/react';
 import { Loader2, Send } from 'lucide-react';
 import React from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
-import type { Idea, User, Paginated } from '@/types';
-
-interface Comment {
-    id: number;
-    user_id: number;
-    idea_id: number;
-    body: string;
-    likes_count: number;
-    created_at: string;
-    user?: User;
-}
+import type { Idea, User, Paginated, Comment } from '@/types';
 
 interface CommentSectionProps {
     idea: Idea & { comments_count: number };
@@ -54,6 +44,33 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                     commentsTopRef.current?.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
             },
+        });
+    };
+
+    const toggleLike = (comment: Comment) => {
+        if (!auth.user) {
+            router.visit(`/login?redirect=${window.location.pathname}`);
+
+            return;
+        }
+
+        router.optimistic((props: any) => ({
+            comments: {
+                ...props.comments,
+                data: props.comments.data.map((c: Comment) => 
+                    c.id === comment.id 
+                        ? { 
+                            ...c, 
+                            likes_count: c.is_liked ? c.likes_count - 1 : c.likes_count + 1,
+                            is_liked: !c.is_liked 
+                        } 
+                        : c
+                )
+            }
+        })).post(`/comments/${comment.id}/like`, {}, {
+            preserveScroll: true,
+            showProgress: false,
+            only: ['idea', 'isFollowingIdea', 'isFollowingOwner', 'auth', 'flash', 'errors'],
         });
     };
 
@@ -124,8 +141,11 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button className="flex items-center gap-2 text-outline hover:text-primary hover:bg-primary/5 px-4 py-2 rounded-full transition-all">
-                                                <span className="material-symbols-outlined text-lg">favorite</span>
+                                            <button 
+                                                onClick={() => toggleLike(comment)}
+                                                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all cursor-pointer ${comment.is_liked ? 'bg-primary text-on-primary shadow-sm' : 'text-outline hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20'}`}
+                                            >
+                                                <span className={`material-symbols-outlined text-lg ${comment.is_liked ? 'fill-1' : ''}`} style={{ fontVariationSettings: comment.is_liked ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
                                                 <span className="text-sm font-bold">{comment.likes_count}</span>
                                             </button>
                                         </div>

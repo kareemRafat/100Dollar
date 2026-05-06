@@ -64,7 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {
-            file_put_contents(storage_path('logs/error_test.log'), 'Status: ' . $response->getStatusCode() . PHP_EOL, FILE_APPEND);
+            file_put_contents(storage_path('logs/error_test.log'), 'Status: '.$response->getStatusCode().PHP_EOL, FILE_APPEND);
             if (in_array($response->getStatusCode(), [500, 503, 404, 403])) {
                 return Inertia::render('app/pages/errors/error', ['status' => $response->getStatusCode()])
                     ->toResponse($request)

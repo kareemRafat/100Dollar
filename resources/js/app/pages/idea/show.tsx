@@ -5,13 +5,13 @@ import {
     UserPlus,
     Check
 } from 'lucide-react';
-import { useState, useRef, lazy, Suspense, useEffect } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
 import ideasRoute from '@/routes/app/ideas';
 import usersRoute from '@/routes/app/users';
-import type { Idea, User, Paginated } from '@/types';
+import type { Idea, Paginated, Comment } from '@/types';
 
 // Partials
 import { CommentSection } from './partials/comment-section';
@@ -21,16 +21,6 @@ import { VotingCard } from './partials/voting-card';
 
 // Lazy load modal
 const PinModal = lazy(() => import('@/app/components/pin-modal').then(module => ({ default: module.PinModal })));
-
-interface Comment {
-    id: number;
-    user_id: number;
-    idea_id: number;
-    body: string;
-    likes_count: number;
-    created_at: string;
-    user?: User;
-}
 
 interface Props {
     idea: Idea & { votes_count: number, comments_count: number };
@@ -45,19 +35,6 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
-    // Optimistic State
-    const [optimisticFollowingIdea, setOptimisticFollowingIdea] = useState(isFollowingIdea);
-    const [optimisticFollowingOwner, setOptimisticFollowingOwner] = useState(isFollowingOwner);
-
-    // Sync optimistic state when deferred props load
-    useEffect(() => {
-        setOptimisticFollowingIdea(isFollowingIdea);
-    }, [isFollowingIdea]);
-
-    useEffect(() => {
-        setOptimisticFollowingOwner(isFollowingOwner);
-    }, [isFollowingOwner]);
-
     const toggleFollowIdea = () => {
         if (!auth.user) {
             router.visit(`/login?redirect=${window.location.pathname}`);
@@ -65,21 +42,19 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             return;
         }
 
-        const nextState = !optimisticFollowingIdea;
-        setOptimisticFollowingIdea(nextState);
-
-        router.post(ideasRoute.follow(idea.id).url, {}, {
+        router.optimistic((props: Props) => ({
+            isFollowingIdea: !props.isFollowingIdea
+        })).post(ideasRoute.follow(idea.id).url, {}, {
             preserveScroll: true,
+            showProgress: false,
+            only: ['idea', 'isFollowingIdea', 'isFollowingOwner', 'auth', 'flash', 'errors'],
             onSuccess: () => {
                 toast.success(
-                    nextState
+                    !isFollowingIdea
                         ? __('messages.archive.follow_idea_success')
                         : __('messages.archive.unfollow_idea_success')
                 );
             },
-            onError: () => {
-                setOptimisticFollowingIdea(!nextState);
-            }
         });
     };
 
@@ -90,21 +65,19 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             return;
         }
 
-        const nextState = !optimisticFollowingOwner;
-        setOptimisticFollowingOwner(nextState);
-
-        router.post(usersRoute.follow(idea.user_id).url, {}, {
+        router.optimistic((props: Props) => ({
+            isFollowingOwner: !props.isFollowingOwner
+        })).post(usersRoute.follow(idea.user_id).url, {}, {
             preserveScroll: true,
+            showProgress: false,
+            only: ['idea', 'isFollowingIdea', 'isFollowingOwner', 'auth', 'flash', 'errors'],
             onSuccess: () => {
                 toast.success(
-                    nextState
+                    !isFollowingOwner
                         ? __('messages.archive.follow_user_success')
                         : __('messages.archive.unfollow_user_success')
                 );
             },
-            onError: () => {
-                setOptimisticFollowingOwner(!nextState);
-            }
         });
     };
 
@@ -134,24 +107,24 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                         <div className="grid grid-cols-2 gap-3">
                             <button
                                 onClick={toggleFollowIdea}
-                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${optimisticFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                             >
-                                <div className={`p-2 rounded-lg transition-colors ${optimisticFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
-                                    {optimisticFollowingIdea ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
+                                <div className={`p-2 rounded-lg transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {isFollowingIdea ? <Check className="w-5 h-5" /> : <Bell className="w-5 h-5" />}
                                 </div>
                                 <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
-                                    {optimisticFollowingIdea ? __('messages.archive.following') : __('messages.archive.follow_idea')}
+                                    {isFollowingIdea ? __('messages.archive.following') : __('messages.archive.follow_idea')}
                                 </span>
                             </button>
                             <button
                                 onClick={toggleFollowOwner}
-                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${optimisticFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
+                                className={`flex flex-col items-center justify-center gap-2 p-4 rounded-xl bg-surface-container-lowest shadow-sm transition-all group cursor-pointer border ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                             >
-                                <div className={`p-2 rounded-lg transition-colors ${optimisticFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
-                                    {optimisticFollowingOwner ? <Check className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
+                                <div className={`p-2 rounded-lg transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary border border-primary/20'}`}>
+                                    {isFollowingOwner ? <Check className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
                                 </div>
                                 <span className="text-[10px] font-black uppercase tracking-wider text-on-surface">
-                                    {optimisticFollowingOwner ? __('messages.archive.following') : __('messages.archive.follow_owner')}
+                                    {isFollowingOwner ? __('messages.archive.following') : __('messages.archive.follow_owner')}
                                 </span>
                             </button>
                         </div>

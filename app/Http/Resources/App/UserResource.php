@@ -2,13 +2,14 @@
 
 namespace App\Http\Resources\App;
 
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @property int $id
  * @property string $name
- * @property \App\Models\Media|null $avatar
+ * @property Media|null $avatar
  */
 class UserResource extends JsonResource
 {

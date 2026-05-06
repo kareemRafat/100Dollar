@@ -44,7 +44,7 @@ it('filters ideas by day', function () {
 
     // Act & Assert
     $this->withoutMiddleware()
-        ->get('/?day=' . $sunday)
+        ->get('/?day='.$sunday)
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->where('currentDay', $sunday)

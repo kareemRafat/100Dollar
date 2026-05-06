@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\App;
 
+use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -10,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property string $name
  * @property int $day_of_week
  * @property bool $is_active
- * @property \App\Models\Media|null $media
+ * @property Media|null $media
  */
 class SponsorResource extends JsonResource
 {

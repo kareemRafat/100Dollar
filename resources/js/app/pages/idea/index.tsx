@@ -280,6 +280,7 @@ export default function MyIdeas({
                                 </div>
                                 <Link
                                     href={app.ideas.show.url(idea.id)}
+                                    prefetch
                                     className="group block"
                                 >
                                     <h3 className="mb-3 text-lg leading-tight font-black text-on-surface transition-colors group-hover:text-primary dark:text-white">

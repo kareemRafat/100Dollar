@@ -8,8 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use App\Http\Resources\App\UserResource;
 use App\Models\Notification;
-use App\Models\Vote;
+use App\Models\User;
 use App\Models\UserFollow;
+use App\Models\Vote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -123,7 +124,7 @@ class ProfileController extends Controller
     /**
      * Toggle follow for a user.
      */
-    public function toggleFollow(\App\Models\User $user): RedirectResponse
+    public function toggleFollow(User $user): RedirectResponse
     {
         $follower = auth()->user();
 

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sponsorship_requests', function (Illuminate\Database\Schema\Blueprint $table) {
+        Schema::create('sponsorship_requests', function (Blueprint $table) {
             $table->id();
             $table->string('company_name');
             $table->string('email');

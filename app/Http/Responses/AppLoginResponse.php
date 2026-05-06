@@ -19,7 +19,7 @@ class AppLoginResponse implements LoginResponseContract
         }
 
         $locale = $request->input('_locale') ?: app()->getLocale();
-        
+
         if ($request->filled('redirect')) {
             return redirect()->to($request->input('redirect'));
         }

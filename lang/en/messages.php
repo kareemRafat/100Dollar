@@ -481,7 +481,7 @@ return [
 
     'verify_email' => [
         'hero_title' => 'Verify Your Email',
-        'subtitle' => "Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? ",
+        'subtitle' => 'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? ',
         'resent_link_sent' => 'A new verification link has been sent to the email address you provided during registration.',
         'resend_button' => 'Resend Verification Email',
         'edit_profile' => 'Edit Profile',
@@ -545,7 +545,7 @@ return [
         ],
         'profile' => [
             'title' => 'Profile Information',
-            'description' => "Update your name and email address",
+            'description' => 'Update your name and email address',
             'name_label' => 'Name',
             'name_placeholder' => 'Full Name',
             'email_label' => 'Email Address',

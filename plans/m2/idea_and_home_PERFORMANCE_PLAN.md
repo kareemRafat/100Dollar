@@ -27,8 +27,8 @@ This document outlines the strategic milestones to eliminate bottlenecks and imp
 - [x] **Deferred Comments:** Ensure the `Inertia::defer` for comments is properly utilizing the `WhenVisible` component on the frontend to prevent loading comments until the user scrolls to them.
 
 ### Milestone 2: Perceived Performance
-- [ ] **Optimistic State:** Implement Inertia v3 Optimistic Updates for the "Follow" and "Like" actions so the UI updates before the server confirmation.
-- [ ] **Prefetching:** Add the `prefetch` prop to all directory cards linking to this page.
+- [x] **Optimistic State:** Implement Inertia v3 Optimistic Updates for the "Follow" and "Like" actions so the UI updates before the server confirmation.
+- [x] **Prefetching:** Add the `prefetch` prop to all directory cards linking to this page.
 
 ---
 

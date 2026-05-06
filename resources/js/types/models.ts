@@ -40,3 +40,14 @@ export interface Sponsor {
     contract_end: string;
     is_active: boolean;
 }
+
+export interface Comment {
+    id: number;
+    user_id: number;
+    idea_id: number;
+    body: string;
+    likes_count: number;
+    is_liked: boolean;
+    created_at: string;
+    user?: User;
+}

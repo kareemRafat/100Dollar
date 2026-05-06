@@ -25,7 +25,17 @@ class CommentController extends Controller
 
     public function toggleLike(Comment $comment)
     {
-        // Delayed as per user request, but route exists
+        $user = auth()->user();
+        $like = $comment->likes()->where('user_id', $user->id)->first();
+
+        if ($like) {
+            $like->delete();
+            $comment->decrement('likes_count');
+        } else {
+            $comment->likes()->create(['user_id' => $user->id]);
+            $comment->increment('likes_count');
+        }
+
         return back();
     }
 }

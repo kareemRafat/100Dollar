@@ -70,6 +70,7 @@ export function IdeaCard({
         return (
             <Link 
                 href={`/ideas/${id}`}
+                prefetch
                 className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card"
             >
                 {imageUrl && (
@@ -133,6 +134,7 @@ export function IdeaCard({
     return (
         <Link 
             href={`/ideas/${id}`}
+            prefetch
             className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card"
         >
             <div className="mb-4 flex items-start justify-between">

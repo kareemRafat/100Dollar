@@ -4,7 +4,8 @@ use App\Models\Idea;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use function Pest\Laravel\{actingAs};
+
+use function Pest\Laravel\actingAs;
 
 beforeEach(function () {
     Storage::fake('public');
@@ -46,7 +47,7 @@ test('user can submit a valid idea with image and pdf', function () {
     $idea = Idea::latest()->first();
     expect($idea->title)->toBe('My Great Business Idea');
     expect($idea->status)->toBe('pending');
-    
+
     // Check media relationship
     expect($idea->media()->count())->toBe(2);
     expect($idea->media()->where('collection_name', 'image')->exists())->toBeTrue();
