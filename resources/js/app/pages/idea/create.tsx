@@ -23,6 +23,8 @@ import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { MultiSelect } from '@/components/ui/multi-select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
     Select,
     SelectContent,
@@ -65,6 +67,9 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
         category_id: '',
         country: '',
         city: '',
+        marketing_channel: '',
+        target_audience: [] as string[],
+        implementation_time: '',
         image: null as File | null,
         pdf_file: null as File | null,
         agreed_terms: false,
@@ -242,6 +247,74 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
                                     </SelectContent>
                                 </Select>
                                 <InputError message={errors.category_id ? __(errors.category_id) : undefined} />
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                                <div className="space-y-4">
+                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                        {__('messages.submit_idea.marketing_channel_label')}
+                                    </Label>
+                                    <RadioGroup
+                                        value={data.marketing_channel}
+                                        onValueChange={value => setData('marketing_channel', value)}
+                                        className="grid grid-cols-1 gap-3"
+                                    >
+                                        {['social_media', 'word_of_mouth', 'physical', 'whatsapp', 'other'].map((channel) => (
+                                            <div key={channel} className="flex items-center space-x-3 rtl:space-x-reverse">
+                                                <RadioGroupItem value={channel} id={`channel-${channel}`} />
+                                                <Label htmlFor={`channel-${channel}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80">
+                                                    {__(`messages.submit_idea.channels.${channel}`)}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                    <InputError message={errors.marketing_channel ? __(errors.marketing_channel) : undefined} />
+                                </div>
+
+                                <div className="space-y-4">
+                                    <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                        {__('messages.submit_idea.implementation_time_label')}
+                                    </Label>
+                                    <RadioGroup
+                                        value={data.implementation_time}
+                                        onValueChange={value => setData('implementation_time', value)}
+                                        className="grid grid-cols-1 gap-3"
+                                    >
+                                        {['less_than_week', 'one_two_weeks', 'month', 'more_than_month'].map((time) => (
+                                            <div key={time} className="flex items-center space-x-3 rtl:space-x-reverse">
+                                                <RadioGroupItem value={time} id={`time-${time}`} />
+                                                <Label htmlFor={`time-${time}`} className="cursor-pointer font-normal text-on-surface dark:text-white/80">
+                                                    {__(`messages.submit_idea.times.${time}`)}
+                                                </Label>
+                                            </div>
+                                        ))}
+                                    </RadioGroup>
+                                    <InputError message={errors.implementation_time ? __(errors.implementation_time) : undefined} />
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label className="font-headline block text-sm font-bold text-on-surface dark:text-white">
+                                    {__('messages.submit_idea.target_audience_label')}
+                                </Label>
+                                <MultiSelect
+                                    options={[
+                                        { label: __('messages.submit_idea.audiences.youth'), value: 'youth' },
+                                        { label: __('messages.submit_idea.audiences.students'), value: 'students' },
+                                        { label: __('messages.submit_idea.audiences.entrepreneurs'), value: 'entrepreneurs' },
+                                        { label: __('messages.submit_idea.audiences.housewives'), value: 'housewives' },
+                                        { label: __('messages.submit_idea.audiences.professionals'), value: 'professionals' },
+                                        { label: __('messages.submit_idea.audiences.small_business_owners'), value: 'small_business_owners' },
+                                        { label: __('messages.submit_idea.audiences.children'), value: 'children' },
+                                        { label: __('messages.submit_idea.audiences.elderly'), value: 'elderly' },
+                                    ]}
+                                    onValueChange={value => setData('target_audience', value)}
+                                    defaultValue={data.target_audience}
+                                    placeholder={__('messages.submit_idea.target_audience_placeholder')}
+                                    variant="inverted"
+                                    className="bg-surface-container-low dark:bg-surface-container-high border-none min-h-[48px]"
+                                />
+                                <InputError message={errors.target_audience ? __(errors.target_audience) : undefined} />
                             </div>
 
                             <div className="space-y-2">

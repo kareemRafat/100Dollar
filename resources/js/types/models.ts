@@ -13,6 +13,9 @@ export interface Idea {
     city: string;
     image?: string;
     pdf_file?: string;
+    marketing_channel?: string;
+    target_audience?: string[];
+    implementation_time?: string;
     submission_day: number;
     week_number: number;
     year: number;

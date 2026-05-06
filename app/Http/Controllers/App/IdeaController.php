@@ -87,6 +87,9 @@ class IdeaController extends Controller
             'agreed_terms' => ['required', 'accepted'],
             'agreed_privacy' => ['required', 'accepted'],
             'agreed_legal' => ['required', 'accepted'],
+            'marketing_channel' => ['required', 'string', 'in:social_media,word_of_mouth,physical,whatsapp,other'],
+            'target_audience' => ['required', 'array', 'min:1'],
+            'implementation_time' => ['required', 'string'],
         ]);
 
         $idea = DB::transaction(function () use ($validated, $request) {
@@ -97,6 +100,9 @@ class IdeaController extends Controller
                 'category_id' => $validated['category_id'],
                 'country' => $validated['country'],
                 'city' => $validated['city'],
+                'marketing_channel' => $validated['marketing_channel'],
+                'target_audience' => $validated['target_audience'],
+                'implementation_time' => $validated['implementation_time'],
                 'status' => 'pending',
                 'submission_day' => now()->dayOfWeek,
                 'week_number' => now()->weekOfYear,

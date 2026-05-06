@@ -146,43 +146,38 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                                 <div className="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                                     <h4 className="font-bold text-on-surface mb-4 flex items-center gap-2 font-headline">
-                                        <span className="material-symbols-outlined text-primary">analytics</span>
-                                        {__('messages.about.core_values_title')}
+                                        <span className="material-symbols-outlined text-primary">campaign</span>
+                                        {__('messages.submit_idea.marketing_channel_label')}
                                     </h4>
-                                    <ul className="space-y-3 text-sm text-on-surface-variant">
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.innovative_features')}
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.low_operational_costs')}
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.ease_of_implementation')}
-                                        </li>
-                                    </ul>
+                                    <div className="flex items-center gap-2 text-on-surface-variant">
+                                        <span className="w-2 h-2 rounded-full bg-primary"></span>
+                                        {idea.marketing_channel ? __(`messages.submit_idea.channels.${idea.marketing_channel}`) : '---'}
+                                    </div>
+                                    <h4 className="font-bold text-on-surface mt-6 mb-4 flex items-center gap-2 font-headline">
+                                        <span className="material-symbols-outlined text-primary">schedule</span>
+                                        {__('messages.submit_idea.implementation_time_label')}
+                                    </h4>
+                                    <div className="flex items-center gap-2 text-on-surface-variant">
+                                        <span className="w-2 h-2 rounded-full bg-primary"></span>
+                                        {idea.implementation_time ? __(`messages.submit_idea.times.${idea.implementation_time}`) : '---'}
+                                    </div>
                                 </div>
                                 <div className="bg-surface-container-low p-6 rounded-xl border border-outline-variant/10">
                                     <h4 className="font-bold text-on-surface mb-4 flex items-center gap-2 font-headline">
-                                        <span className="material-symbols-outlined text-primary">payments</span>
-                                        {__('messages.idea_detail.profit_model')}
+                                        <span className="material-symbols-outlined text-primary">groups</span>
+                                        {__('messages.submit_idea.target_audience_label')}
                                     </h4>
-                                    <ul className="space-y-3 text-sm text-on-surface-variant">
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.high_profit_margin')}
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.rapid_scalability')}
-                                        </li>
-                                        <li className="flex items-center gap-2">
-                                            <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                                            {__('messages.idea_detail.added_value_services')}
-                                        </li>
-                                    </ul>
+                                    <div className="flex flex-wrap gap-2">
+                                        {idea.target_audience && idea.target_audience.length > 0 ? (
+                                            idea.target_audience.map((audience) => (
+                                                <div key={audience} className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold border border-primary/20">
+                                                    {__(`messages.submit_idea.audiences.${audience}`)}
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <span className="text-on-surface-variant text-sm">---</span>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <h3 className="text-xl font-bold text-on-surface mb-6 flex items-center gap-3 font-headline">

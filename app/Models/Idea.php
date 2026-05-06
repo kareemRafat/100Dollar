@@ -26,6 +26,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'rejection_reason',
     'approved_at',
     'winner_announced_at',
+    'marketing_channel',
+    'target_audience',
+    'implementation_time',
 ])]
 class Idea extends Model
 {
@@ -41,6 +44,7 @@ class Idea extends Model
             'is_winner' => 'boolean',
             'approved_at' => 'datetime',
             'winner_announced_at' => 'datetime',
+            'target_audience' => 'array',
         ];
     }
 
