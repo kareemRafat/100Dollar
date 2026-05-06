@@ -8,9 +8,9 @@ This document outlines the strategic milestones to eliminate bottlenecks and imp
 *Objective: Optimize the high-traffic landing page for maximum speed and minimum database load.*
 
 ### Milestone 1: Data Access Optimization
-- [ ] **Eager Loading Fix:** Add `media` to the `Idea::with()` chain to prevent N+1 queries when rendering idea thumbnails.
-- [ ] **Relationship Counting:** Implement `withCount('comments')` to replace manual counting inside the `IdeaResource`.
-- [ ] **Database Indexing:** Create a compound index on `(status, submission_day, week_number, year, votes_count)` to allow the database to return results in a single scan.
+- [x] **Eager Loading Fix:** Add `media` to the `Idea::with()` chain to prevent N+1 queries when rendering idea thumbnails.
+- [x] **Relationship Counting:** Implement `withCount('comments')` to replace manual counting inside the `IdeaResource`.
+- [x] **Database Indexing:** Create a compound index on `(status, submission_day, week_number, year, votes_count)` to allow the database to return results in a single scan.
 
 ### Milestone 2: Caching & Payloads
 - [ ] **Sponsor Caching:** Wrap the Sponsor query in `Cache::remember` with a 24-hour TTL, as the sponsor only changes daily.
@@ -23,8 +23,8 @@ This document outlines the strategic milestones to eliminate bottlenecks and imp
 *Objective: Ensure deep-dive pages load instantly and feel interactive.*
 
 ### Milestone 1: Resource Loading
-- [ ] **Owner/Sponsor Optimization:** Eager load `user.media` and `sponsor.media` specifically for the hero section to avoid separate queries for logos/avatars.
-- [ ] **Deferred Comments:** Ensure the `Inertia::defer` for comments is properly utilizing the `WhenVisible` component on the frontend to prevent loading comments until the user scrolls to them.
+- [x] **Owner/Sponsor Optimization:** Eager load `user.media` and `sponsor.media` specifically for the hero section to avoid separate queries for logos/avatars.
+- [x] **Deferred Comments:** Ensure the `Inertia::defer` for comments is properly utilizing the `WhenVisible` component on the frontend to prevent loading comments until the user scrolls to them.
 
 ### Milestone 2: Perceived Performance
 - [ ] **Optimistic State:** Implement Inertia v3 Optimistic Updates for the "Follow" and "Like" actions so the UI updates before the server confirmation.
@@ -36,8 +36,8 @@ This document outlines the strategic milestones to eliminate bottlenecks and imp
 *Objective: Streamline the management view for users with many submissions.*
 
 ### Milestone 1: Query Efficiency
-- [ ] **Global Search Index:** Ensure a full-text or composite index exists for `title` and `description` to support the dashboard search filter.
-- [ ] **Eager Loading:** Add `media` and `category` to the query in `IdeaController@index` to fix the N+1 issues currently present in the user dashboard.
+- [x] **Global Search Index:** Ensure a full-text or composite index exists for `title` and `description` to support the dashboard search filter.
+- [x] **Eager Loading:** Add `media` and `category` to the query in `IdeaController@index` to fix the N+1 issues currently present in the user dashboard.
 
 ### Milestone 2: Stats Optimization
 - [ ] **Aggregated Queries:** Replace individual `count()` and `sum()` queries with a single `selectRaw` query to fetch `total_ideas`, `total_votes`, and `winning_ideas` in one trip to the database.

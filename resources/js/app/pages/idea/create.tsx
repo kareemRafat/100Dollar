@@ -16,13 +16,13 @@ import {
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CountrySelect } from '@/app/components/country-select';
 import {
     Select,
     SelectContent,
@@ -106,7 +106,11 @@ export default function SubmitIdea({ categories, countries }: { categories: Cate
         e.stopPropagation();
         setDragCounter(prev => {
             const next = prev - 1;
-            if (next === 0) setIsDragging(false);
+
+            if (next === 0) {
+setIsDragging(false);
+}
+
             return next;
         });
     };
@@ -225,6 +229,7 @@ export default function SubmitIdea({ categories, countries }: { categories: Cate
                                     <SelectContent>
                                         {categories.map((category) => {
                                             const Icon = categoryIcons[category.icon] || MoreHorizontal;
+
                                             return (
                                                 <SelectItem key={category.id} value={category.id.toString()}>
                                                     <div className="flex items-center gap-2">

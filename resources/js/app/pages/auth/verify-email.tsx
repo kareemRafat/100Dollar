@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, Head, Link, usePage } from '@inertiajs/react';
-import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { Button } from '@/app/components/ui/button';
+import AuthLayout from '@/app/layouts/auth/auth-layout';
 import { Spinner } from '@/components/ui/spinner';
 import { logout } from '@/routes';
 import { send } from '@/routes/verification';

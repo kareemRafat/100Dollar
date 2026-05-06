@@ -4,10 +4,10 @@ import { ShieldCheck, Loader2 } from 'lucide-react';
 import React, { useRef } from 'react';
 import { updatePassword as updatePasswordAction } from '@/actions/App/Http/Controllers/App/ProfileController';
 import { Button } from '@/app/components/ui/button';
+import { toast } from '@/app/components/ui/toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { toast } from '@/app/components/ui/toast';
 
 export default function UpdatePasswordForm() {
     const { locale } = usePage().props;

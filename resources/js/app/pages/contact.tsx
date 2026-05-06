@@ -9,9 +9,9 @@ import {
     Phone,
     Clock
 } from 'lucide-react';
-import { toast } from '@/app/components/ui/toast';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
+import { toast } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';

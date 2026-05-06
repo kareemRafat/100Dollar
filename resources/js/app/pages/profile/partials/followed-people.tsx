@@ -3,9 +3,9 @@ import { Link, useForm } from '@inertiajs/react';
 import { Users, UserMinus, User } from 'lucide-react';
 import { memo } from 'react';
 import { Button } from '@/app/components/ui/button';
-import { follow } from '@/routes/app/users';
 import { toast } from '@/app/components/ui/toast';
 import { Pagination } from '@/components/ui/pagination';
+import { follow } from '@/routes/app/users';
 
 type Person = {
     id: number;

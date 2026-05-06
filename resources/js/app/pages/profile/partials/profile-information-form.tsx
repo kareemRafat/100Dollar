@@ -3,12 +3,12 @@ import { useForm, usePage } from '@inertiajs/react';
 import { Camera, Loader2, User as UserIcon } from 'lucide-react';
 import React, { memo } from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/app/components/ui/button';
+import { toast } from '@/app/components/ui/toast';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { toast } from '@/app/components/ui/toast';
 
 type Props = {
     user: {
@@ -37,6 +37,7 @@ function ProfileInformationForm({ user }: Props) {
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             setData('avatar', file);
             const reader = new FileReader();

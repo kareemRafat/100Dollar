@@ -50,6 +50,12 @@ Authentication is handled by **Laravel Fortify** but is context-aware via `App\S
 - Translation strings are shared with Inertia pages via `HandleInertiaRequests` middleware.
 - RTL (Right-to-Left) is dynamically toggled based on the current locale.
 
+### Performance & Lazy Loading
+For data that sits "below the fold" (e.g., comments, related items), use **Lazy Loading on Scroll** to minimize initial load time:
+- **Backend:** Use `Inertia::optional(fn () => ...)` instead of `Inertia::defer`. `defer` auto-fetches on page mount, while `optional` waits for a frontend request.
+- **Frontend:** Wrap the component in `<WhenVisible data="prop_name" fallback={<Skeleton />} buffer={300}>`.
+- **Note:** Always ensure the child component handles the `null` state during the fetch by adding a conditional check: `{prop_name && <ChildComponent data={prop_name} />}`.
+
 ### Models & Relations
 - **User:** Handles both admins and users.
 - **Idea:** The core entity. Belongs to a User and a Sponsor (for the day).

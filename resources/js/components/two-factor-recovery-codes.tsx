@@ -2,13 +2,13 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Form, usePage } from '@inertiajs/react';
 import { Check, Copy, Eye, EyeOff, RefreshCcw } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from '@/app/components/ui/toast';
 import AlertError from '@/components/alert-error';
 import { Button } from '@/components/ui/button';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
 import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
-import { toast } from '@/app/components/ui/toast';
 
 type Props = {
     recoveryCodesList: string[];

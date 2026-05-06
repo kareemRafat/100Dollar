@@ -20,7 +20,8 @@ class HomeController extends Controller
         $currentWeek = $now->isoWeek();
         $currentYear = $now->isoWeekYear();
 
-        $ideas = Idea::with(['user:id,name', 'user.media', 'category'])
+        $ideas = Idea::with(['user:id,name', 'user.media', 'category', 'media'])
+            ->withCount('comments')
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
             ->where('year', $currentYear)
@@ -34,12 +35,12 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->first(['id', 'name', 'day_of_week']);
 
-        $previousWinners = Idea::with(['user:id,name', 'user.media', 'sponsor:id,name', 'sponsor.media'])
+        $previousWinners = Inertia::optional(fn () => Idea::with(['user:id,name', 'user.media', 'sponsor:id,name', 'sponsor.media', 'media'])
             ->where('is_winner', true)
             ->orderByDesc('winner_announced_at')
             ->take(7)
             ->get(['id', 'user_id', 'sponsor_id', 'title', 'winner_announced_at'])
-            ->values();
+            ->values());
 
         // Calculate countdown to the end of the day (no cache needed)
         $endOfDay = $now->copy()->endOfDay();

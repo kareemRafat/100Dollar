@@ -2,8 +2,8 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
-import { WinnerCard } from '@/app/components/winner-card';
 import { Button } from '@/app/components/ui/button';
+import { WinnerCard } from '@/app/components/winner-card';
 import type { Idea } from '@/types';
 
 interface Props {
@@ -16,10 +16,6 @@ export default function PreviousWinners({ winners = [] }: Props) {
     const isRtl = locale === 'ar';
 
     const winnersArray = (Array.isArray(winners) ? winners : Object.values(winners || {})) as Idea[];
-
-    if (winnersArray.length === 0) {
-        return null;
-    }
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         direction: isRtl ? 'rtl' : 'ltr',
@@ -47,6 +43,10 @@ export default function PreviousWinners({ winners = [] }: Props) {
         emblaApi.on('reInit', onSelect);
         emblaApi.on('select', onSelect);
     }, [emblaApi, onSelect]);
+
+    if (winnersArray.length === 0) {
+        return null;
+    }
 
     return (
         <section className="mx-auto mb-20 max-w-7xl px-6">

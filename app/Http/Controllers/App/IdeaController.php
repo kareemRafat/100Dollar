@@ -20,12 +20,10 @@ class IdeaController extends Controller
     {
         $user = auth()->user();
         $query = $user->ideas()
+            ->with(['media', 'category'])
             ->latest()
             ->when($request->search, function ($query, $search) {
-                $query->where(function ($q) use ($search) {
-                    $q->where('title', 'like', "%{$search}%")
-                        ->orWhere('description', 'like', "%{$search}%");
-                });
+                $query->whereFullText(['title', 'description'], $search);
             })
             ->when($request->status, function ($query, $status) {
                 if ($status === 'winner') {
@@ -144,7 +142,7 @@ class IdeaController extends Controller
 
         return Inertia::render('app/pages/idea/show', [
             'idea' => new IdeaResource($idea),
-            'comments' => Inertia::defer(fn () => Inertia::scroll(fn () => CommentResource::collection(
+            'comments' => Inertia::optional(fn () => Inertia::scroll(fn () => CommentResource::collection(
                 $idea->comments()
                     ->with(['user.media'])
                     ->withCount('likes')

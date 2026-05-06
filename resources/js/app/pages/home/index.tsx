@@ -1,18 +1,19 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head } from '@inertiajs/react';
+import { Head, WhenVisible } from '@inertiajs/react';
 import AppLayout from '@/app/layouts/app-layout';
 import type { Idea, Sponsor, Paginated } from '@/types';
 import DayTabs from './components/day-tabs';
 import Hero from './components/hero';
 import IdeaList from './components/idea-list';
 import PreviousWinners from './components/previous-winners';
+import PreviousWinnersSkeleton from './components/previous-winners-skeleton';
 import SponsorBanner from './components/sponsor-banner';
 import VotingCountdown from './components/voting-countdown';
 
 interface Props {
     ideas: Paginated<Idea>;
     sponsor?: Sponsor;
-    previousWinners: Idea[];
+    previousWinners: Idea[] | null;
     currentDay: number;
     secondsUntilEnd: number;
     weekDays: { id: number; name: string }[];
@@ -43,7 +44,9 @@ export default function Home({
 
             <IdeaList ideas={ideas} />
 
-            <PreviousWinners winners={previousWinners} />
+            <WhenVisible data="previousWinners" fallback={<PreviousWinnersSkeleton />} buffer={300}>
+                {previousWinners && <PreviousWinners winners={previousWinners} />}
+            </WhenVisible>
         </AppLayout>
     );
 }

@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { usePage } from '@inertiajs/react';
 import { Flag } from 'lucide-react';
+import React from 'react';
 import InputError from '@/components/input-error';
 import { Label } from '@/components/ui/label';
 import {
@@ -11,7 +12,6 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import React from 'react';
 
 interface Props {
     value: string;

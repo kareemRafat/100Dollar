@@ -170,6 +170,7 @@ export function Toaster() {
                     // Update current ones with new data, preserve isExiting
                     const merged = newToasts.map(nt => {
                         const existing = current.find(t => t.id === nt.id);
+
                         return existing ? { ...nt, isExiting: existing.isExiting } : nt;
                     });
 
@@ -187,6 +188,7 @@ export function Toaster() {
                     if (removedIds.includes(t.id)) {
                         return { ...t, isExiting: true };
                     }
+
                     return t;
                 });
 

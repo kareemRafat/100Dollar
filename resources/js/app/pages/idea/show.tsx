@@ -1,24 +1,23 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, usePage, router, Deferred } from '@inertiajs/react';
+import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
 import {
     Bell,
     UserPlus,
-    Loader2,
     Check
 } from 'lucide-react';
 import { useState, useRef, lazy, Suspense, useEffect } from 'react';
+import { Skeleton } from '@/app/components/ui/skeleton';
+import { toast } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
-import type { Idea, User, Paginated } from '@/types';
 import ideasRoute from '@/routes/app/ideas';
 import usersRoute from '@/routes/app/users';
-import { toast } from '@/app/components/ui/toast';
-import { Skeleton } from '@/app/components/ui/skeleton';
+import type { Idea, User, Paginated } from '@/types';
 
 // Partials
-import { HeroSection } from './partials/hero-section';
-import { VotingCard } from './partials/voting-card';
-import { SocialShare } from './partials/social-share';
 import { CommentSection } from './partials/comment-section';
+import { HeroSection } from './partials/hero-section';
+import { SocialShare } from './partials/social-share';
+import { VotingCard } from './partials/voting-card';
 
 // Lazy load modal
 const PinModal = lazy(() => import('@/app/components/pin-modal').then(module => ({ default: module.PinModal })));
@@ -62,6 +61,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const toggleFollowIdea = () => {
         if (!auth.user) {
             router.visit(`/login?redirect=${window.location.pathname}`);
+
             return;
         }
 
@@ -72,8 +72,8 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             preserveScroll: true,
             onSuccess: () => {
                 toast.success(
-                    nextState 
-                        ? __('messages.archive.follow_idea_success') 
+                    nextState
+                        ? __('messages.archive.follow_idea_success')
                         : __('messages.archive.unfollow_idea_success')
                 );
             },
@@ -86,6 +86,7 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
     const toggleFollowOwner = () => {
         if (!auth.user || !idea.user_id) {
             router.visit(`/login?redirect=${window.location.pathname}`);
+
             return;
         }
 
@@ -96,8 +97,8 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
             preserveScroll: true,
             onSuccess: () => {
                 toast.success(
-                    nextState 
-                        ? __('messages.archive.follow_user_success') 
+                    nextState
+                        ? __('messages.archive.follow_user_success')
                         : __('messages.archive.unfollow_user_success')
                 );
             },
@@ -225,14 +226,16 @@ export default function IdeaShow({ idea, comments, isFollowingIdea, isFollowingO
 
                         <div ref={commentsTopRef} className="scroll-mt-32" />
 
-                        <Deferred data="comments" fallback={<CommentSkeleton />}>
-                            <CommentSection 
-                                idea={idea} 
-                                comments={comments} 
-                                auth={auth} 
-                                commentsTopRef={commentsTopRef} 
-                            />
-                        </Deferred>
+                        <WhenVisible data="comments" fallback={<CommentSkeleton />} buffer={300}>
+                            {comments && (
+                                <CommentSection
+                                    idea={idea}
+                                    comments={comments}
+                                    auth={auth}
+                                    commentsTopRef={commentsTopRef}
+                                />
+                            )}
+                        </WhenVisible>
                     </div>
                 </div>
             </main>

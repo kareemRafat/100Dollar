@@ -138,7 +138,7 @@ export default function MyIdeas({
                     <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
                         {stats.map((stat) => {
                             const Icon = iconMap[stat.icon];
-                            
+
                             return (
                                 <div
                                     key={stat.label}
@@ -235,7 +235,7 @@ export default function MyIdeas({
                         {ideas.data.map((idea) => (
                             <div
                                 key={idea.id}
-                                className={`group flex h-full flex-col rounded-2xl border p-6 transition-all duration-300 hover:shadow-2xl ${
+                                className={`group flex h-full flex-col rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg ${
                                     idea.status === 'winner'
                                         ? 'relative overflow-hidden border-2 border-primary/30 bg-surface-container-lowest shadow-lg dark:bg-card'
                                         : 'border-outline-variant/10 bg-surface-container-lowest dark:bg-card'

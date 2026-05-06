@@ -33,10 +33,10 @@ import { Switch } from '@/components/ui/switch';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { logout, login, register } from '@/routes';
+import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
 import { index } from '@/routes/app/ideas';
 import type { NavItem } from '@/types';
 
-import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
 
 type Props = {
     activeRoute?: string;

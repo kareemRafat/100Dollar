@@ -25,6 +25,14 @@ interface CommentSectionProps {
 
 export const CommentSection = ({ idea, comments, auth, commentsTopRef }: CommentSectionProps) => {
     const { __ } = useLang();
+    const [expandedComments, setExpandedComments] = React.useState<Record<number, boolean>>({});
+
+    const toggleExpand = (id: number) => {
+        setExpandedComments(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
     
     const { data, setData, post, processing, reset, errors } = useForm({
         body: '',
@@ -121,9 +129,31 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                 <span className="text-sm font-bold">{comment.likes_count}</span>
                                             </button>
                                         </div>
-                                        <p className="text-on-surface text-base leading-relaxed pr-0 md:pr-16 font-bold whitespace-pre-wrap">
-                                            {comment.body}
-                                        </p>
+                                        <div className="text-on-surface text-base leading-relaxed pr-0 md:pr-16 font-bold whitespace-pre-wrap">
+                                            {comment.body.length > 200 && !expandedComments[comment.id] ? (
+                                                <>
+                                                    {comment.body.substring(0, 200)}...
+                                                    <button 
+                                                        onClick={() => toggleExpand(comment.id)}
+                                                        className="text-primary hover:underline ml-1 cursor-pointer font-black inline-flex items-center gap-0.5"
+                                                    >
+                                                        {__('messages.ui.read_more')}
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {comment.body}
+                                                    {comment.body.length > 200 && (
+                                                        <button 
+                                                            onClick={() => toggleExpand(comment.id)}
+                                                            className="text-primary hover:underline ml-1 cursor-pointer font-black inline-flex items-center gap-0.5"
+                                                        >
+                                                            {__('messages.ui.read_less')}
+                                                        </button>
+                                                    )}
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                     {index < (comments.data?.length ?? 0) - 1 && (
                                         <div className="h-px bg-gradient-to-r from-transparent via-outline-variant/60 to-transparent my-2"></div>

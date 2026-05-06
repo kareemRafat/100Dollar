@@ -2,9 +2,9 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useMemo, useState } from 'react';
+import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
-import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
     InputOTP,
