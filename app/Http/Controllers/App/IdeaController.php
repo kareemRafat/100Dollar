@@ -35,22 +35,26 @@ class IdeaController extends Controller
 
         $ideas = $query->get();
 
+        $userStats = $user->ideas()
+            ->selectRaw('count(*) as total_ideas, coalesce(sum(votes_count), 0) as total_votes, sum(is_winner) as winning_ideas')
+            ->first();
+
         $stats = [
             [
                 'label' => __('messages.my_ideas.stats_total_ideas'),
-                'value' => (string) $user->ideas()->count(),
+                'value' => (string) ($userStats->total_ideas ?? 0),
                 'unit' => __('messages.my_ideas.unit_idea'),
                 'icon' => 'lightbulb',
             ],
             [
                 'label' => __('messages.my_ideas.stats_total_votes'),
-                'value' => number_format($user->ideas()->sum('votes_count')),
+                'value' => number_format($userStats->total_votes ?? 0),
                 'unit' => __('messages.my_ideas.unit_vote'),
                 'icon' => 'vote',
             ],
             [
                 'label' => __('messages.my_ideas.stats_winning_ideas'),
-                'value' => str_pad($user->ideas()->where('is_winner', true)->count(), 2, '0', STR_PAD_LEFT),
+                'value' => str_pad($userStats->winning_ideas ?? 0, 2, '0', STR_PAD_LEFT),
                 'unit' => __('messages.my_ideas.unit_prizes'),
                 'icon' => 'emoji_events',
             ],

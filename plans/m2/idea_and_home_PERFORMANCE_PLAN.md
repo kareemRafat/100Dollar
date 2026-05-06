@@ -40,13 +40,13 @@ This document outlines the strategic milestones to eliminate bottlenecks and imp
 - [x] **Eager Loading:** Add `media` and `category` to the query in `IdeaController@index` to fix the N+1 issues currently present in the user dashboard.
 
 ### Milestone 2: Stats Optimization
-- [ ] **Aggregated Queries:** Replace individual `count()` and `sum()` queries with a single `selectRaw` query to fetch `total_ideas`, `total_votes`, and `winning_ideas` in one trip to the database.
+- [x] **Aggregated Queries:** Replace individual `count()` and `sum()` queries with a single `selectRaw` query to fetch `total_ideas`, `total_votes`, and `winning_ideas` in one trip to the database.
 
 ---
 
 ## 📍 Part 4: Global Infrastructure
 *Objective: System-wide settings to prevent performance regression.*
 
-- [ ] **Strict Loading:** Enable `Model::preventLazyLoading()` in the `AppServiceProvider` for the local environment to catch future N+1 issues during development.
-- [ ] **Public User Resource:** Create a `PublicUserResource` that strictly limits shared user data to `id`, `name`, and `avatar`, removing sensitive fields like `phone` or `email` from public payloads.
+- [x] **Strict Loading:** Enable `Model::preventLazyLoading()` in the `AppServiceProvider` for the local environment to catch future N+1 issues during development.
+- [x] **Public User Resource:** Create a `PublicUserResource` that strictly limits shared user data to `id`, `name`, and `avatar`, removing sensitive fields like `phone` or `email` from public payloads.
 - [ ] **Image Optimization:** Implement a dynamic image resizing solution (e.g., Spatie Media Library or a middleware) to serve web-optimized versions of idea images instead of full-resolution uploads.

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\App;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
@@ -26,7 +25,7 @@ class CommentResource extends JsonResource
             'likes_count' => $this->whenCounted('likes', $this->likes_count),
             'is_liked' => (bool) ($this->is_liked ?? false),
             'created_at' => $this->created_at,
-            'user' => new UserResource($this->whenLoaded('user')),
+            'user' => new PublicUserResource($this->whenLoaded('user')),
         ];
     }
 }

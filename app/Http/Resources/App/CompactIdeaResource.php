@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\App;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -39,7 +38,7 @@ class CompactIdeaResource extends JsonResource
             'image' => $this->image,
             'votes_count' => (int) ($this->votes_count ?? 0),
             'comments_count' => (int) ($this->comments_count ?? 0),
-            'user' => new UserResource($this->whenLoaded('user')),
+            'user' => new PublicUserResource($this->whenLoaded('user')),
             'user_id' => $this->user_id,
             'status' => $this->is_winner ? 'winner' : $this->status,
             'is_winner' => $this->is_winner,
