@@ -86,9 +86,13 @@ export default function IdeaShow({
     };
 
     const toggleFollowOwner = () => {
-        if (!auth.user || !idea.user_id) {
+        if (!auth.user) {
             router.visit(`/login?redirect=${window.location.pathname}`);
 
+            return;
+        }
+
+        if (!idea.user_id || auth.user.id === idea.user_id) {
             return;
         }
 

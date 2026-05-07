@@ -161,10 +161,10 @@ class IdeaController extends Controller
                     ->cursorPaginate(7)
             ))),
             'isFollowingIdea' => auth()->check()
-                ? auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists()
+                ? (bool) auth()->user()->followedIdeas()->where('idea_id', $idea->id)->exists()
                 : false,
             'isFollowingOwner' => auth()->check()
-                ? auth()->user()->following()->where('following_id', $idea->user_id)->exists()
+                ? (bool) auth()->user()->following()->where('following_id', $idea->user_id)->exists()
                 : false,
         ]);
     }
