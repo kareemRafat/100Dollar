@@ -21,6 +21,9 @@ class IdeaResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $countryKey = 'messages.countries.'.$this->country;
+        $translatedCountry = __($countryKey);
+        
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -28,7 +31,7 @@ class IdeaResource extends JsonResource
             'category' => $this->category?->{'name_'.app()->getLocale()},
             'category_id' => $this->category_id,
             'category_icon' => $this->category?->icon,
-            'country' => $this->country ? __('messages.countries.'.$this->country) : null,
+            'country' => $this->country ? ($translatedCountry === $countryKey ? $this->country : $translatedCountry) : null,
             'country_code' => $this->country,
             'city' => $this->city,
             'image' => $this->image,

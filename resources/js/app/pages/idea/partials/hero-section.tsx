@@ -1,4 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Lightbulb, User, Globe } from 'lucide-react';
 import React from 'react';
 import type { Idea } from '@/types';
 
@@ -10,22 +11,49 @@ export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
     const { __ } = useLang();
 
     return (
-        <section className="relative h-[400px] w-full overflow-hidden mb-12">
-            <div className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${idea.image || 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop'}')` }}>
+        <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[420px] mb-12">
+            <div
+                className="absolute inset-0 z-0 bg-fixed bg-cover bg-center"
+                style={{
+                    backgroundImage: "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000')",
+                }}
+            >
+                <div
+                    className="hero-overlay absolute inset-0"
+                    style={{
+                        background:
+                            'linear-gradient(to bottom, rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.9))',
+                    }}
+                />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-transparent"></div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-                <div className="bg-primary text-on-primary px-4 py-1 rounded-full text-xs font-bold mb-4 tracking-widest uppercase">
-                    {idea.category}
+
+            <div className="relative z-10 mx-auto px-8 text-center flex flex-col items-center">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/25 px-4 py-1 text-primary-fixed shadow-lg shadow-primary/20 backdrop-blur-sm">
+                    <Lightbulb className="w-3.5 h-3.5 text-yellow-400" />
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                        {idea.category}
+                    </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight font-headline max-w-4xl tracking-tighter">
+
+                <h1 className="mb-6 font-headline text-3xl leading-tight font-black text-white md:text-4xl max-w-3xl tracking-wide">
                     {idea?.title}
                 </h1>
-                <div className="flex items-center gap-3 text-white/90 font-medium">
-                    <span>{__('messages.idea_detail.idea_owner')}: {idea?.user?.name}</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                    <span>{idea?.city}، {idea?.country}</span>
+
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                        <User className="w-4 h-4 text-yellow-400" />
+                        <span className="text-white/70 text-[13px] mt-0.5 font-medium uppercase tracking-wider">{__('messages.idea_detail.idea_owner')} : </span>
+                        <span className="text-white font-semibold text-sm">
+                            {idea?.user?.name}
+                        </span>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                        <Globe className="w-4 h-4 text-yellow-400" />
+                        <span className="text-white font-semibold text-sm">
+                            {idea?.country}
+                        </span>
+                    </div>
                 </div>
             </div>
         </section>

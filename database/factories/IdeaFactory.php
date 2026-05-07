@@ -20,7 +20,7 @@ class IdeaFactory extends Factory
      */
     public function definition(): array
     {
-        $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت'];
+        $countries = ['jordan', 'saudi_arabia', 'egypt', 'uae', 'kuwait', 'algeria', 'morocco', 'qatar'];
 
         $titles = [
             'مشروع إعادة تدوير البلاستيك المنزلي',
