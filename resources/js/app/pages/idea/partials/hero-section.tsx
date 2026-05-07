@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Lightbulb, User, Globe } from 'lucide-react';
+import { Lightbulb, User, Globe, MapPin } from 'lucide-react';
 import React from 'react';
 import type { Idea } from '@/types';
 
@@ -39,19 +39,28 @@ export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
                     {idea?.title}
                 </h1>
 
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                    <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
-                        <User className="w-4 h-4 text-yellow-400" />
-                        <span className="text-white/70 text-[13px] mt-0.5 font-medium uppercase tracking-wider">{__('messages.idea_detail.idea_owner')} : </span>
-                        <span className="text-white font-semibold text-sm">
-                            {idea?.user?.name}
-                        </span>
+                <div className="flex flex-col gap-3 max-w-fit mx-auto">
+                    <div className="flex flex-wrap items-center justify-center gap-3">
+                        <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                            <User className="w-4 h-4 text-yellow-400" />
+                            <span className="text-white/70 text-[13px] mt-0.5 font-medium uppercase tracking-wider">{__('messages.idea_detail.idea_owner')} : </span>
+                            <span className="text-white font-semibold text-sm">
+                                {idea?.user?.name}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
+                            <Globe className="w-4 h-4 text-yellow-400" />
+                            <span className="text-white font-semibold text-sm">
+                                {idea?.country}
+                            </span>
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md">
-                        <Globe className="w-4 h-4 text-yellow-400" />
+                    <div className="flex items-center justify-center gap-2.5 bg-white/10 border border-white/20 px-4 py-2 rounded-xl backdrop-blur-md w-full">
+                        <MapPin className="w-4 h-4 text-yellow-400" />
                         <span className="text-white font-semibold text-sm">
-                            {idea?.country}
+                            {idea?.city}
                         </span>
                     </div>
                 </div>

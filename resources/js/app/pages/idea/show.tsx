@@ -368,20 +368,21 @@ export default function IdeaShow({
 
             {/* Image Modal */}
             <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
-                <DialogContent className="max-w-4xl border-outline-variant/10 bg-surface-container-lowest p-4">
-                    <DialogHeader>
-                        <DialogTitle className="font-headline text-2xl font-black text-on-surface">
-                            {idea.title}
-                        </DialogTitle>
+                <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] border-none bg-transparent p-0 shadow-none outline-none">
+                    <DialogHeader className="hidden">
+                        <DialogTitle>{idea.title}</DialogTitle>
                     </DialogHeader>
-                    <div className="mt-6 overflow-hidden rounded-2xl border border-outline-variant/10 bg-surface-container-low">
-                        {idea.image && (
-                            <img
-                                src={idea.image}
-                                alt={idea.title}
-                                className="mx-auto h-auto max-h-[75vh] w-full object-contain"
-                            />
-                        )}
+                    <div className="relative group">
+                        <div className="overflow-hidden rounded-2xl bg-surface-container-low/50 backdrop-blur-sm flex justify-center items-center">
+                            {idea.image && (
+                                <img
+                                    src={idea.image}
+                                    alt={idea.title}
+                                    className="block h-auto w-auto max-w-full max-h-[90vh] object-contain cursor-zoom-out"
+                                    onClick={() => setIsImageModalOpen(false)}
+                                />
+                            )}
+                        </div>
                     </div>
                 </DialogContent>
             </Dialog>
