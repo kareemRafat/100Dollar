@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import React from 'react';
 import { Button } from '@/app/components/ui/button';
+import { formatDuration } from '@/lib/utils';
 import type { Idea } from '@/types';
 
 interface VotingCardProps {
@@ -10,10 +10,19 @@ interface VotingCardProps {
         progress?: number;
     };
     onVoteClick: () => void;
+    isLoading?: boolean;
+    blockedUntil?: number | null;
+    remainingSeconds?: number;
 }
 
-export const VotingCard = ({ idea, onVoteClick }: VotingCardProps) => {
-    const { __ } = useLang();
+export const VotingCard = ({ 
+    idea, 
+    onVoteClick, 
+    isLoading = false,
+    blockedUntil = null,
+    remainingSeconds = 0
+}: VotingCardProps) => {
+    const { __, locale } = useLang();
 
     // Data Sync
     const voteGoal = idea?.target_votes ?? 100;
@@ -24,6 +33,8 @@ export const VotingCard = ({ idea, onVoteClick }: VotingCardProps) => {
     const r = 72;
     const circumference = 2 * Math.PI * r; // ~452.39
     const strokeDashoffset = circumference - (votePercentage / 100) * circumference;
+
+    const isBlocked = !!blockedUntil;
 
     return (
         <div className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden group">
@@ -74,10 +85,21 @@ export const VotingCard = ({ idea, onVoteClick }: VotingCardProps) => {
                 {/* Enhanced Vote Button */}
                 <Button
                     onClick={onVoteClick}
+                    disabled={isLoading || isBlocked}
                     className="w-full h-14 rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
                 >
-                    {__('messages.home.vote_now')}
-                    <span className="material-symbols-outlined text-primary-fixed">thumb_up</span>
+                    {isLoading ? (
+                        <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                    ) : isBlocked ? (
+                        <span className="text-sm">
+                            {formatDuration(remainingSeconds, locale)}
+                        </span>
+                    ) : (
+                        <>
+                            {__('messages.home.vote_now')}
+                            <span className="material-symbols-outlined text-primary-fixed">thumb_up</span>
+                        </>
+                    )}
                 </Button>
 
                 <div className="flex items-center gap-3 mb-2">

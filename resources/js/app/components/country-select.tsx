@@ -61,6 +61,7 @@ export function CountrySelect({
     const sortedCountries = [...countriesSource].sort((a, b) => {
         const nameA = locale === 'ar' ? a.name_ar : a.name_en;
         const nameB = locale === 'ar' ? b.name_ar : b.name_en;
+
         return nameA.localeCompare(nameB, locale, { sensitivity: 'base' });
     });
 

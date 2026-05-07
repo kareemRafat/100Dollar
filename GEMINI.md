@@ -57,8 +57,10 @@ For data that sits "below the fold" (e.g., comments, related items), use **Lazy 
 - **Note:** Always ensure the child component handles the `null` state during the fetch by adding a conditional check: `{prop_name && <ChildComponent data={prop_name} />}`.
 
 ### Models & Relations
-- **User:** Handles both admins and users.
-- **Idea:** The core entity. Belongs to a User and a Sponsor (for the day).
+- **User:** Handles both admins and users. Uses `country_id` (foreign key to `countries`).
+- **Idea:** The core entity. Belongs to a User, a Sponsor, a Category, and a Country.
+- **Category:** Defines project categories (name_en, name_ar, icon).
+- **Country:** Defines supported countries for users, ideas, and sponsorship requests (name_en, name_ar, code).
 - **Vote:** OTP-verified votes to prevent spam.
 - **Sponsor:** One unique sponsor per day of the week (0-6).
 - **Notification:** In-app notification system.

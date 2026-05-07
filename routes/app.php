@@ -7,6 +7,7 @@ use App\Http\Controllers\App\IdeaController;
 use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SponsorController;
+use App\Http\Controllers\App\VoteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('app.home');
@@ -21,6 +22,7 @@ Route::get('/contact', [ContactController::class, 'index'])->name('app.contact')
 Route::post('/contact', [ContactController::class, 'store'])->name('app.contact.submit');
 Route::get('/how-it-works', [PageController::class, 'howItWorks'])->name('app.info');
 Route::get('/terms', [PageController::class, 'terms'])->name('app.terms');
+
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile');
     Route::get('/profile/personal-info', [ProfileController::class, 'edit'])->name('app.profile.personal-info');
@@ -52,3 +54,5 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 });
 
 Route::get('/ideas/{idea}', [IdeaController::class, 'show'])->name('app.ideas.show');
+Route::post('/ideas/{idea}/vote/send-otp', [VoteController::class, 'sendOtp'])->name('app.ideas.vote.send-otp');
+Route::post('/ideas/{idea}/vote/verify', [VoteController::class, 'verifyOtp'])->name('app.ideas.vote.verify');

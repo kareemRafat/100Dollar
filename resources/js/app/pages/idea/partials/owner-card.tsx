@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import React from 'react';
 import { User, Globe, MapPin } from 'lucide-react';
+import React from 'react';
 import type { Idea } from '@/types';
 
 interface OwnerCardProps {

@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
+import { Head, usePage, router, WhenVisible, useHttp } from '@inertiajs/react';
 import { Bell, UserPlus, Check, Image as ImageIcon } from 'lucide-react';
-import { useState, useRef, lazy, Suspense } from 'react';
+import { useState, useRef, lazy, Suspense, useEffect } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
@@ -12,7 +12,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { formatDuration } from '@/lib/utils';
 import ideasRoute from '@/routes/app/ideas';
+import voteRoute from '@/routes/app/ideas/vote';
 import usersRoute from '@/routes/app/users';
 import type { Idea, Paginated, Comment } from '@/types';
 
@@ -43,11 +45,154 @@ export default function IdeaShow({
     isFollowingIdea,
     isFollowingOwner,
 }: Props) {
-    const { __ } = useLang();
-    const { auth } = usePage().props as any;
+    const { __, locale } = useLang();
+    const { auth, name: appName } = usePage().props as any;
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+    const [votesCount, setVotesCount] = useState(idea.votes_count);
+    const [isAutoSending, setIsAutoSending] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
+
+    // Rate Limiting States
+    const [closeCount, setCloseCount] = useState(() => {
+        const stored = localStorage.getItem(`vote_block_${idea.id}`);
+
+        if (stored) {
+            try {
+                const { count } = JSON.parse(stored);
+
+                return count || 0;
+            } catch {
+                return 0;
+            }
+        }
+
+        return 0;
+    });
+    const [blockedUntil, setBlockedUntil] = useState<number | null>(() => {
+        const stored = localStorage.getItem(`vote_block_${idea.id}`);
+
+        if (stored) {
+            try {
+                const { until } = JSON.parse(stored);
+
+                if (until && until > Date.now()) {
+                    return until;
+                }
+            } catch {
+                return null;
+            }
+        }
+
+        return null;
+    });
+    const [remainingSeconds, setRemainingSeconds] = useState(0);
+    const wasSuccessRef = useRef(false);
+
+    useEffect(() => {
+        if (!blockedUntil) {
+            return;
+        }
+
+        const updateTimer = () => {
+            const seconds = Math.ceil((blockedUntil - Date.now()) / 1000);
+
+            if (seconds <= 0) {
+                setBlockedUntil(null);
+                setCloseCount(0);
+                localStorage.removeItem(`vote_block_${idea.id}`);
+                setRemainingSeconds(0);
+            } else {
+                setRemainingSeconds(seconds);
+            }
+        };
+
+        updateTimer();
+        const interval = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(interval);
+    }, [blockedUntil, idea.id]);
+
+    const { post: sendOtp } = useHttp({
+        email: auth.user?.email || '',
+    });
+
+    const handleVoteSuccess = (newCount: number) => {
+        setVotesCount(newCount);
+        wasSuccessRef.current = true;
+        setCloseCount(0);
+        setBlockedUntil(null);
+        localStorage.removeItem(`vote_block_${idea.id}`);
+    };
+
+    const handleVoteClick = () => {
+        if (blockedUntil) {
+            toast.error(__('messages.common.too_many_attempts', { 
+                time: formatDuration(remainingSeconds, locale) 
+            }));
+
+            return;
+        }
+
+        if (auth.user) {
+            setIsAutoSending(true);
+            sendOtp(voteRoute.sendOtp.url(idea.id), {
+                data: { email: auth.user.email },
+                onSuccess: (response: any) => {
+                    toast.success(response.message);
+                    setIsPinModalOpen(true);
+                },
+                onError: (errors: any) => {
+                    toast.error(errors.message || __('messages.common.error'));
+                },
+                onHttpException: (response: any) => {
+                    let message = __('messages.common.error');
+                    
+                    try {
+                        const data = typeof response.data === 'string' 
+                            ? JSON.parse(response.data) 
+                            : response.data;
+                            
+                        message = data?.message || message;
+                    } catch {
+                        if (typeof response.data === 'string' && response.data.trim()) {
+                            message = response.data;
+                        }
+                    }
+                    
+                    toast.error(message);
+                },
+                onFinish: () => {
+                    setIsAutoSending(false);
+                }
+            });
+        } else {
+            setIsPinModalOpen(true);
+        }
+    };
+
+    const handleModalClose = () => {
+        setIsPinModalOpen(false);
+
+        if (!wasSuccessRef.current) {
+            const newCount = closeCount + 1;
+            setCloseCount(newCount);
+
+            let until: number | null = null;
+
+            if (newCount >= 3) {
+                until = Date.now() + 10 * 60 * 1000;
+                setBlockedUntil(until);
+            }
+
+            localStorage.setItem(`vote_block_${idea.id}`, JSON.stringify({
+                count: newCount,
+                until: until
+            }));
+        }
+
+        wasSuccessRef.current = false;
+    };
 
     const toggleFollowIdea = () => {
         if (!auth.user) {
@@ -140,7 +285,7 @@ export default function IdeaShow({
 
                 {/* Open Graph / Facebook / WhatsApp */}
                 <meta property="og:type" content="article" />
-                <meta property="og:site_name" content={usePage().props.name as string} />
+                <meta property="og:site_name" content={appName as string} />
                 <meta property="og:url" content={window.location.href} />
                 <meta property="og:title" content={idea.title} />
                 <meta
@@ -171,14 +316,17 @@ export default function IdeaShow({
             </Head>
 
             <main className="pb-24">
-                <HeroSection idea={idea} />
+                <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
                     {/* Sidebar */}
                     <aside className="order-1 space-y-6 lg:order-2 lg:col-span-4">
                         <VotingCard
-                            idea={idea}
-                            onVoteClick={() => setIsPinModalOpen(true)}
+                            idea={{ ...idea, votes_count: votesCount }}
+                            onVoteClick={handleVoteClick}
+                            isLoading={isAutoSending}
+                            blockedUntil={blockedUntil}
+                            remainingSeconds={remainingSeconds}
                         />
 
                         <OwnerCard idea={idea} />
@@ -418,12 +566,10 @@ export default function IdeaShow({
                 <Suspense fallback={null}>
                     <PinModal
                         isOpen={isPinModalOpen}
-                        onClose={() => setIsPinModalOpen(false)}
-                        onSubmit={(pin) => {
-                            console.log('Voting with pin:', pin);
-                            setIsPinModalOpen(false);
-                        }}
-                        email={auth.user?.email || 'test@example.com'}
+                        onClose={handleModalClose}
+                        onSuccess={handleVoteSuccess}
+                        ideaId={idea.id}
+                        initialEmail={auth.user?.email}
                     />
                 </Suspense>
             )}

@@ -326,6 +326,8 @@ return [
 
     'common' => [
         'processing' => 'Processing...',
+        'error' => 'An error occurred. Please try again.',
+        'too_many_attempts' => 'Too many attempts. Please try again in :time.',
     ],
 
     'messages' => [
@@ -337,6 +339,18 @@ return [
         'desc' => 'Enter the 6-digit code sent to',
         'confirm' => 'Confirm Vote',
         'resend' => 'Resend Code',
+        'email_title' => 'Support this idea',
+        'email_desc' => 'Enter your email to receive a verification code and cast your vote.',
+        'email_label' => 'Email Address',
+        'email_placeholder' => 'example@domain.com',
+        'send_code' => 'Send Verification Code',
+        'change_email' => 'Change Email',
+        'success' => 'Your vote has been cast successfully!',
+        'already_voted' => 'You have already voted for this idea.',
+        'otp_sent' => 'A verification code has been sent to your email.',
+        'no_request' => 'No verification request found for this email.',
+        'expired' => 'The verification code has expired. Please request a new one.',
+        'invalid' => 'The verification code is invalid.',
     ],
 
     'profile' => [
