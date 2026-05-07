@@ -235,6 +235,12 @@ return [
         'unfollow_user_success' => 'تم إلغاء متابعة العضو',
     ],
 
+    'social' => [
+        'share_title' => 'شارك الفكرة مع أصدقائك',
+        'share_text' => 'اكتشف فكرة {title} على منصة أفكار بـ 100 دولار',
+        'copy_success' => 'تم نسخ الرابط بنجاح!',
+    ],
+
     'how_it_works' => [
         'hero_badge' => 'كيف نعمل',
         'hero_title' => 'من الفكرة إلى التمويل في',

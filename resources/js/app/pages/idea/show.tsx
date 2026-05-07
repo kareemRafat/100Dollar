@@ -137,13 +137,36 @@ export default function IdeaShow({
                     name="description"
                     content={idea.description?.substring(0, 160)}
                 />
+
+                {/* Open Graph / Facebook / WhatsApp */}
+                <meta property="og:type" content="article" />
+                <meta property="og:site_name" content={usePage().props.name as string} />
+                <meta property="og:url" content={window.location.href} />
                 <meta property="og:title" content={idea.title} />
                 <meta
                     property="og:description"
                     content={idea.description?.substring(0, 160)}
                 />
                 {idea.image && (
-                    <meta property="og:image" content={idea.image} />
+                    <>
+                        <meta property="og:image" content={idea.image} />
+                        <meta property="og:image:secure_url" content={idea.image} />
+                        <meta property="og:image:type" content="image/jpeg" />
+                        <meta property="og:image:width" content="1200" />
+                        <meta property="og:image:height" content="630" />
+                    </>
+                )}
+
+                {/* Twitter */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:url" content={window.location.href} />
+                <meta name="twitter:title" content={idea.title} />
+                <meta
+                    name="twitter:description"
+                    content={idea.description?.substring(0, 160)}
+                />
+                {idea.image && (
+                    <meta name="twitter:image" content={idea.image} />
                 )}
             </Head>
 

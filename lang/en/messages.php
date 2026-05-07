@@ -235,6 +235,12 @@ return [
         'unfollow_user_success' => 'User removed from your follows',
     ],
 
+    'social' => [
+        'share_title' => 'Share this idea with friends',
+        'share_text' => 'Check out this idea: {title} on 100 Dollar Ideas',
+        'copy_success' => 'Link copied successfully!',
+    ],
+
     'how_it_works' => [
         'hero_badge' => 'How It Works',
         'hero_title' => 'From idea to funding in',
