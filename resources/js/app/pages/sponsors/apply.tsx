@@ -27,7 +27,14 @@ import { cn } from '@/lib/utils';
 import { sponsors as sponsorsIndex } from '@/routes/app';
 import { store } from '@/routes/app/sponsors';
 
-export default function SponsorshipApply() {
+interface Country {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    code: string;
+}
+
+export default function SponsorshipApply({ countries }: { countries: Country[] }) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const isRtl = locale === 'ar';
@@ -39,7 +46,7 @@ export default function SponsorshipApply() {
         email: '',
         phone: '',
         website: '',
-        country: '',
+        country_id: '',
         logo: null as File | null,
         message: '',
     });
@@ -216,8 +223,9 @@ export default function SponsorshipApply() {
                                             <InputError message={errors.website ? __(errors.website) : undefined} />
                                         </div>
                                         <CountrySelect
-                                            value={data.country}
-                                            onValueChange={(val) => setData('country', val)}
+                                            value={data.country_id}
+                                            onValueChange={(val) => setData('country_id', val)}
+                                            countries={countries}
                                             label={
                                                 <>
                                                     <Globe className="size-3.5 text-primary" />
@@ -227,7 +235,7 @@ export default function SponsorshipApply() {
                                             labelClassName="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant"
                                             variant="flat"
                                             required
-                                            error={errors.country ? __(errors.country) : undefined}
+                                            error={errors.country_id ? __(errors.country_id) : undefined}
                                         />
                                     </div>
 

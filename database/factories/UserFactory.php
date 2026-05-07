@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -24,8 +25,6 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت', 'عمان', 'قطر', 'البحرين'];
-
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -33,8 +32,8 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'role' => 'user',
             'phone' => fake()->phoneNumber(),
-            'country' => fake()->randomElement($countries),
-            'nationality' => fake()->randomElement($countries),
+            'country_id' => Country::inRandomOrder()->first()?->id ?? Country::factory(),
+            'nationality' => fake()->country(),
             'is_active' => true,
             'remember_token' => Str::random(10),
             'two_factor_secret' => null,

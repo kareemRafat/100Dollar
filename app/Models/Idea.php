@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'user_id',
     'sponsor_id',
     'category_id',
+    'country_id',
     'title',
     'description',
-    'country',
     'city',
     'submission_day',
     'week_number',
@@ -46,12 +46,18 @@ class Idea extends Model
             'winner_announced_at' => 'datetime',
             'target_audience' => 'array',
             'marketing_channel' => 'array',
+            'country_id' => 'integer',
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
     }
 
     public function category(): BelongsTo

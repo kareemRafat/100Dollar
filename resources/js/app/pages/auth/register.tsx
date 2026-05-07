@@ -14,9 +14,16 @@ import { login } from '@/routes';
 import { contact, terms } from '@/routes/app';
 import { store } from '@/routes/register';
 
+interface Country {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    code: string;
+}
+
 type Props = {
     canLogin: boolean;
-    countries: Record<string, string>;
+    countries: Country[];
 };
 
 export default function Register({ canLogin, countries }: Props) {
@@ -27,7 +34,7 @@ export default function Register({ canLogin, countries }: Props) {
         name: '',
         email: '',
         phone: '',
-        country: '',
+        country_id: '',
         nationality: '',
         password: '',
         password_confirmation: '',
@@ -115,10 +122,11 @@ export default function Register({ canLogin, countries }: Props) {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <CountrySelect
-                        value={data.country}
-                        onValueChange={(value) => setData('country', value)}
+                        value={data.country_id}
+                        onValueChange={(value) => setData('country_id', value)}
+                        countries={countries}
                         label={__('messages.register.country_residence')}
-                        error={errors.country}
+                        error={errors.country_id}
                         size="default"
                         triggerClassName="h-10 text-start text-sm"
                         required

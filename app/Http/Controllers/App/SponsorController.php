@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\SponsorResource;
+use App\Models\Country;
 use App\Models\Sponsor;
 use App\Models\SponsorshipRequest;
 use Illuminate\Http\Request;
@@ -29,7 +30,9 @@ class SponsorController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('app/pages/sponsors/apply');
+        return Inertia::render('app/pages/sponsors/apply', [
+            'countries' => Country::all(),
+        ]);
     }
 
     public function store(Request $request)
@@ -39,7 +42,7 @@ class SponsorController extends Controller
             'email' => ['required', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'website' => ['nullable', 'url', 'max:255'],
-            'country' => ['required', 'string', 'max:255'],
+            'country_id' => ['required', 'exists:countries,id'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'message' => ['required', 'string', 'max:2000'],
         ]);

@@ -62,14 +62,14 @@ class ProfileController extends Controller
             $query = Vote::where('voter_email', $user->email)
                 ->whereNotNull('otp_verified_at')
                 ->whereHas('idea')
-                ->with(['idea.user.media', 'idea.category'])
+                ->with(['idea.user.media', 'idea.category', 'idea.country'])
                 ->latest();
             
             $props['votedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($vote) => $vote->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($vote) => $vote->idea));
         } elseif ($activeSection === 'followed-ideas') {
             $query = $user->followedIdeas()
                 ->whereHas('idea')
-                ->with(['idea.user.media', 'idea.category'])
+                ->with(['idea.user.media', 'idea.category', 'idea.country'])
                 ->latest();
                 
             $props['followedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->idea));

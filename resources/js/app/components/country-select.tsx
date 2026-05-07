@@ -13,10 +13,17 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+interface Country {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    code: string;
+}
+
 interface Props {
-    value: string;
+    value: string | number;
     onValueChange: (value: string) => void;
-    countries?: Record<string, string>;
+    countries?: Country[];
     placeholder?: string;
     error?: string;
     className?: string;
@@ -45,15 +52,17 @@ export function CountrySelect({
     required = false,
 }: Props) {
     const { __ } = useLang();
-    const { locale, translations } = usePage().props as any;
+    const { locale } = usePage().props as any;
 
-    // Use passed countries or fallback to shared translations
-    const countriesSource = countriesProp || translations?.messages?.countries || {};
+    // Use passed countries or fallback to empty array
+    const countriesSource = countriesProp || [];
     
-    // Convert to array and sort by localized name
-    const sortedCountries = Object.entries(countriesSource as Record<string, string>)
-        .map(([code, name]) => ({ code, name }))
-        .sort((a, b) => a.name.localeCompare(b.name, locale, { sensitivity: 'base' }));
+    // Sort by localized name
+    const sortedCountries = [...countriesSource].sort((a, b) => {
+        const nameA = locale === 'ar' ? a.name_ar : a.name_en;
+        const nameB = locale === 'ar' ? b.name_ar : b.name_en;
+        return nameA.localeCompare(nameB, locale, { sensitivity: 'base' });
+    });
 
     const variantClasses = variant === 'flat' 
         ? "bg-surface-container-low dark:bg-surface-container-high border-none focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary shadow-none"
@@ -74,7 +83,7 @@ export function CountrySelect({
                 </Label>
             )}
             <Select
-                value={value}
+                value={value?.toString()}
                 onValueChange={onValueChange}
                 required={required}
                 dir={locale === 'ar' ? 'rtl' : 'ltr'}
@@ -91,11 +100,11 @@ export function CountrySelect({
                     <SelectValue placeholder={placeholder || __('messages.submit_idea.country_placeholder')} />
                 </SelectTrigger>
                 <SelectContent>
-                    {sortedCountries.map(({ code, name }) => (
-                        <SelectItem key={code} value={code}>
+                    {sortedCountries.map((country) => (
+                        <SelectItem key={country.id} value={country.id.toString()}>
                             <div className="flex items-center gap-2">
                                 <Flag className="size-4 text-primary" />
-                                {name}
+                                {locale === 'ar' ? country.name_ar : country.name_en}
                             </div>
                         </SelectItem>
                     ))}

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\App\CommentResource;
 use App\Http\Resources\App\IdeaResource;
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Idea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class IdeaController extends Controller
     {
         $user = auth()->user();
         $query = $user->ideas()
-            ->with(['media', 'category'])
+            ->with(['media', 'category', 'country'])
             ->latest()
             ->when($request->search, function ($query, $search) {
                 $query->whereFullText(['title', 'description'], $search);
@@ -71,6 +72,7 @@ class IdeaController extends Controller
     {
         return Inertia::render('app/pages/idea/create', [
             'categories' => Category::all(),
+            'countries' => Country::all(),
         ]);
     }
 
@@ -80,7 +82,7 @@ class IdeaController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'category_id' => ['required', 'exists:categories,id'],
-            'country' => ['required', 'string'],
+            'country_id' => ['required', 'exists:countries,id'],
             'city' => ['required', 'string'],
             'image' => ['nullable', 'image', 'max:2048'], // 2MB
             'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // 5MB
@@ -99,7 +101,7 @@ class IdeaController extends Controller
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'category_id' => $validated['category_id'],
-                'country' => $validated['country'],
+                'country_id' => $validated['country_id'],
                 'city' => $validated['city'],
                 'marketing_channel' => $validated['marketing_channel'],
                 'target_audience' => $validated['target_audience'],
@@ -147,7 +149,7 @@ class IdeaController extends Controller
     {
         JsonResource::withoutWrapping();
 
-        $idea->load(['user.media', 'sponsor.media']);
+        $idea->load(['user.media', 'sponsor.media', 'country', 'category']);
         $idea->loadCount(['votes', 'comments']);
 
         return Inertia::render('app/pages/idea/show', [

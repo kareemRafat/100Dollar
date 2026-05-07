@@ -20,7 +20,7 @@ class HomeController extends Controller
         $currentWeek = $now->isoWeek();
         $currentYear = $now->isoWeekYear();
 
-        $ideas = Idea::with(['user:id,name', 'user.media', 'category', 'media'])
+        $ideas = Idea::with(['user:id,name', 'user.media', 'category', 'country', 'media'])
             ->withCount('comments')
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
@@ -35,7 +35,7 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->first(['id', 'name', 'day_of_week']);
 
-        $previousWinners = Inertia::optional(fn () => Idea::with(['user:id,name', 'user.media', 'sponsor:id,name', 'sponsor.media', 'media'])
+        $previousWinners = Inertia::optional(fn () => Idea::with(['user:id,name', 'user.media', 'sponsor:id,name', 'sponsor.media', 'media', 'category', 'country'])
             ->where('is_winner', true)
             ->orderByDesc('winner_announced_at')
             ->take(7)

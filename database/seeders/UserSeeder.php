@@ -12,12 +12,12 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $countries = ['الأردن', 'السعودية', 'مصر', 'الإمارات', 'الكويت'];
+        $countries = \App\Models\Country::all();
 
         foreach ($countries as $country) {
             User::factory()->count(10)->create([
-                'country' => $country,
-                'nationality' => $country,
+                'country_id' => $country->id,
+                'nationality' => $country->name_ar,
             ]);
         }
     }

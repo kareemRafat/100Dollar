@@ -43,7 +43,14 @@ interface Category {
     icon: string;
 }
 
-export default function SubmitIdea({ categories }: { categories: Category[] }) {
+interface Country {
+    id: number;
+    name_en: string;
+    name_ar: string;
+    code: string;
+}
+
+export default function SubmitIdea({ categories, countries }: { categories: Category[], countries: Country[] }) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -65,7 +72,7 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
         title: '',
         description: '',
         category_id: '',
-        country: '',
+        country_id: '',
         city: '',
         marketing_channel: [] as string[],
         target_audience: [] as string[],
@@ -242,10 +249,11 @@ export default function SubmitIdea({ categories }: { categories: Category[] }) {
 
                             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                 <CountrySelect
-                                    value={data.country}
-                                    onValueChange={value => setData('country', value)}
+                                    value={data.country_id}
+                                    onValueChange={value => setData('country_id', value)}
+                                    countries={countries}
                                     label={__('messages.submit_idea.country_label')}
-                                    error={errors.country ? __(errors.country) : undefined}
+                                    error={errors.country_id ? __(errors.country_id) : undefined}
                                     required
                                     variant="flat"
                                 />

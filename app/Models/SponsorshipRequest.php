@@ -6,17 +6,30 @@ use App\Concerns\HasMedia;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[Fillable([
     'company_name',
     'email',
     'phone',
     'website',
-    'country',
+    'country_id',
     'message',
     'status',
 ])]
 class SponsorshipRequest extends Model
 {
     use HasFactory, HasMedia;
+
+    protected function casts(): array
+    {
+        return [
+            'country_id' => 'integer',
+        ];
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
 }

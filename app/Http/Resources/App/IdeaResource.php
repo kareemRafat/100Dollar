@@ -9,30 +9,30 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property int $id
  * @property string $title
  * @property string $description
- * @property string $category
- * @property string $country
+ * @property \App\Models\Category $category
+ * @property \App\Models\Country $country
  * @property string $city
  * @property string|null $image
  * @property int $votes_count
  * @property int $comments_count
- * @property User $user
+ * @property \App\Models\User $user
  */
 class IdeaResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $countryKey = 'messages.countries.'.$this->country;
-        $translatedCountry = __($countryKey);
+        $locale = app()->getLocale();
+        $countryName = $this->country ? $this->country->{'name_'.$locale} : null;
         
         return [
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'category' => $this->category?->{'name_'.app()->getLocale()},
+            'category' => $this->category?->{'name_'.$locale},
             'category_id' => $this->category_id,
             'category_icon' => $this->category?->icon,
-            'country' => $this->country ? ($translatedCountry === $countryKey ? $this->country : $translatedCountry) : null,
-            'country_code' => $this->country,
+            'country' => $countryName,
+            'country_code' => $this->country?->code,
             'city' => $this->city,
             'image' => $this->image,
             'marketing_channel' => $this->marketing_channel,

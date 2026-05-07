@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\Country;
 use App\Models\Idea;
 use App\Models\Sponsor;
 use App\Models\User;
@@ -20,8 +21,6 @@ class IdeaFactory extends Factory
      */
     public function definition(): array
     {
-        $countries = ['jordan', 'saudi_arabia', 'egypt', 'uae', 'kuwait', 'algeria', 'morocco', 'qatar'];
-
         $titles = [
             'مشروع إعادة تدوير البلاستيك المنزلي',
             'تطبيق لتوصيل الطلبات للمناطق الريفية',
@@ -38,7 +37,7 @@ class IdeaFactory extends Factory
             'category_id' => Category::inRandomOrder()->first()?->id ?? Category::factory(),
             'title' => fake()->randomElement($titles),
             'description' => fake()->paragraph(5),
-            'country' => fake()->randomElement($countries),
+            'country_id' => Country::inRandomOrder()->first()?->id ?? Country::factory(),
             'city' => fake()->city(),
             'submission_day' => fake()->numberBetween(0, 6),
             'week_number' => now()->weekOfYear,
