@@ -39,12 +39,33 @@ New translation keys will be added to `lang/ar/messages.php` and `lang/en/messag
 - **Animations:** Subtle `hover:scale-105` and `active:scale-95` transitions.
 - **Glassmorphism:** Consistent with the existing "Golden Ledger" aesthetic (backdrop-blur, thin borders).
 
-## 5. Implementation Steps
-1. **Translations:** Update PHP language files with the keys defined in section 3.
-2. **Icons:** Import Lucide-react icons (`Share2`, `Twitter`, `Facebook`, `Linkedin`, `Link2`).
-3. **Logic:** Implement the `handleShare` helper function to process different platform intents.
-4. **Component Update:** Replace the current placeholder in `social-share.tsx` with the new interactive grid.
-5. **Validation:** Verify URL encoding (especially for Arabic titles) to ensure links don't break.
+## 5. Milestones & Tasks
+
+### Milestone 1: Preparation & Assets
+- [ ] **Task 1.1: Add Localization Keys**
+  - Update `lang/ar/messages.php` and `lang/en/messages.php` with social share strings.
+- [ ] **Task 1.2: Prepare Icon Assets**
+  - don`t change the current icons.
+
+### Milestone 2: Core Logic & Component
+- [ ] **Task 2.1: Implement Share Logic**
+  - Create URL generation helpers with proper encoding for Arabic text.
+- [ ] **Task 2.2: Build SocialShare Component**
+  - Implement the grid layout with platform-specific branding.
+- [ ] **Task 2.3: Implement Copy to Clipboard**
+  - Add `navigator.clipboard` logic with toast notification.
+
+### Milestone 3: Integration & Styling
+- [ ] **Task 3.1: Integrate into Idea Show Page**
+  - Ensure the component is correctly mounted in `resources/js/app/pages/idea/show.tsx`.
+- [ ] **Task 3.2: Apply High-Fidelity Styling**
+  - Add hover animations, transitions.
+
+### Milestone 4: Quality Assurance
+- [ ] **Task 4.1: Cross-Platform Testing**
+  - Test on WhatsApp, X, Facebook, and LinkedIn on mobile and desktop.
+- [ ] **Task 4.2: RTL/LTR Audit**
+  - Ensure layout mirrors correctly when switching between Arabic and English.
 
 ## 6. Verification Checklist
 - [ ] WhatsApp opens with pre-filled Arabic text.
