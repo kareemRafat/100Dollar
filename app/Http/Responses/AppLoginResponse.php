@@ -14,14 +14,17 @@ class AppLoginResponse implements LoginResponseContract
      */
     public function toResponse($request): JsonResponse|RedirectResponse
     {
-        if ($request->wantsJson()) {
+        if ($request->wantsJson() && ! $request->hasHeader('X-Inertia')) {
             return new JsonResponse('', 204);
         }
 
         $locale = $request->input('_locale') ?: app()->getLocale();
+        $redirect = $request->input('redirect');
 
-        if ($request->filled('redirect')) {
-            return redirect()->to($request->input('redirect'));
+        if ($redirect) {
+            return redirect()->to(
+                LaravelLocalization::getLocalizedURL($locale, $redirect)
+            );
         }
 
         $route = $request->user()?->hasVerifiedEmail()

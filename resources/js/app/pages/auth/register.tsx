@@ -269,12 +269,12 @@ export default function Register({ canLogin, countries }: Props) {
                 {canLogin && (
                     <p className="text-xs text-on-surface-variant">
                         {__('messages.register.have_account')}{' '}
-                        <a
+                        <Link
                             className="font-bold text-primary hover:underline"
                             href={login.url()}
                         >
                             {__('messages.login.login_button')}
-                        </a>
+                        </Link>
                     </p>
                 )}
             </div>

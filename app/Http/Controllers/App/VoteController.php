@@ -21,11 +21,15 @@ class VoteController extends Controller
         ]);
 
         $email = $request->email;
+        $user = $request->user();
         $ip = $request->ip();
+        
+        // Consistent rate limiting key
+        $key = $user 
+            ? 'vote-attempts:user:' . $user->id 
+            : 'vote-attempts:ip:' . $ip;
 
-        // Rate limiting: 3 OTP requests per hour per IP
-        $key = 'otp-limit:' . $ip;
-        if (RateLimiter::tooManyAttempts($key, 3)) {
+        if (RateLimiter::tooManyAttempts($key, 5)) {
             $seconds = RateLimiter::availableIn($key);
             $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
                 'join' => true,
@@ -36,17 +40,36 @@ class VoteController extends Controller
             ], 429);
         }
 
-        // Check if already voted (verified vote)
-        $existingVote = Vote::where('idea_id', $idea->id)
+        // Check if already voted for this specific idea (verified vote)
+        $existingIdeaVote = Vote::where('idea_id', $idea->id)
             ->where('voter_email', $email)
             ->whereNotNull('otp_verified_at')
             ->first();
 
-        if ($existingVote) {
+        if ($existingIdeaVote) {
             return response()->json([
                 'message' => __('messages.vote_pin.already_voted'),
-            ], 422);
+            ], 400);
         }
+
+        // Check if already voted for ANY idea in the same competition day (one vote per competition day rule)
+        $votedForThisCompetitionDay = Vote::where('voter_email', $email)
+            ->whereNotNull('otp_verified_at')
+            ->whereHas('idea', function ($query) use ($idea) {
+                $query->where('submission_day', $idea->submission_day)
+                    ->where('week_number', $idea->week_number)
+                    ->where('year', $idea->year);
+            })
+            ->exists();
+
+        if ($votedForThisCompetitionDay) {
+            return response()->json([
+                'message' => __('messages.vote_pin.already_voted_today'),
+            ], 400);
+        }
+
+        // Increment attempts on OTP request
+        RateLimiter::hit($key, 600); // 10 minutes block
 
         // Generate 6-digit OTP
         $otp = (string) rand(100000, 999999);
@@ -65,8 +88,6 @@ class VoteController extends Controller
         // Send Email
         Mail::to($email)->send(new OtpVerificationMail($otp));
 
-        RateLimiter::hit($key, 600);
-
         return response()->json([
             'message' => __('messages.vote_pin.otp_sent'),
         ]);
@@ -79,11 +100,31 @@ class VoteController extends Controller
             'otp' => ['required', 'string', 'size:6'],
         ]);
 
+        $user = $request->user();
+        $email = $request->email;
+        
+        // Consistent rate limiting key
+        $key = $user 
+            ? 'vote-attempts:user:' . $user->id 
+            : 'vote-attempts:ip:' . $request->ip();
+
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = RateLimiter::availableIn($key);
+            $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
+                'join' => true,
+            ]);
+            
+            return response()->json([
+                'message' => __('messages.common.too_many_attempts', ['time' => $time]),
+            ], 429);
+        }
+
         $vote = Vote::where('idea_id', $idea->id)
-            ->where('voter_email', $request->email)
+            ->where('voter_email', $email)
             ->first();
 
         if (!$vote) {
+            RateLimiter::hit($key, 600);
             throw ValidationException::withMessages([
                 'otp' => [__('messages.vote_pin.no_request')],
             ]);
@@ -92,10 +133,27 @@ class VoteController extends Controller
         if ($vote->otp_verified_at) {
             return response()->json([
                 'message' => __('messages.vote_pin.already_voted'),
-            ], 422);
+            ], 400);
+        }
+
+        // Check if already voted for ANY idea in the same competition day (one vote per competition day rule)
+        $votedForThisCompetitionDay = Vote::where('voter_email', $email)
+            ->whereNotNull('otp_verified_at')
+            ->whereHas('idea', function ($query) use ($idea) {
+                $query->where('submission_day', $idea->submission_day)
+                    ->where('week_number', $idea->week_number)
+                    ->where('year', $idea->year);
+            })
+            ->exists();
+
+        if ($votedForThisCompetitionDay) {
+            return response()->json([
+                'message' => __('messages.vote_pin.already_voted_today'),
+            ], 400);
         }
 
         if ($vote->otp_expires_at->isPast()) {
+            RateLimiter::hit($key, 600);
             throw ValidationException::withMessages([
                 'otp' => [__('messages.vote_pin.expired')],
             ]);
@@ -104,12 +162,14 @@ class VoteController extends Controller
         try {
             $decryptedOtp = Crypt::decryptString($vote->otp);
         } catch (\Exception $e) {
+            RateLimiter::hit($key, 600);
             throw ValidationException::withMessages([
                 'otp' => [__('messages.vote_pin.invalid')],
             ]);
         }
 
         if ($decryptedOtp !== $request->otp) {
+            RateLimiter::hit($key, 600);
             throw ValidationException::withMessages([
                 'otp' => [__('messages.vote_pin.invalid')],
             ]);
@@ -123,6 +183,9 @@ class VoteController extends Controller
 
         // Increment idea votes count
         $idea->increment('votes_count');
+
+        // Clear attempts on success
+        RateLimiter::clear($key);
 
         return response()->json([
             'message' => __('messages.vote_pin.success'),

@@ -11,6 +11,7 @@ import {
     MoreHorizontal 
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
+import { formatDuration } from '@/lib/utils';
 
 type Props = {
     id: number;
@@ -26,6 +27,9 @@ type Props = {
     votes: number;
     voteProgress: number;
     onVote?: () => void;
+    isLoading?: boolean;
+    blockedUntil?: number | null;
+    remainingSeconds?: number;
     isWinner?: boolean;
     imageUrl?: string;
     date?: string;
@@ -57,14 +61,18 @@ export function IdeaCard({
     votes,
     voteProgress,
     onVote,
+    isLoading,
+    blockedUntil,
+    remainingSeconds = 0,
     isWinner,
     imageUrl,
     date,
     variant = 'home',
 }: Props) {
-    const { __ } = useLang();
+    const { __, locale } = useLang();
     
     const Icon = categoryIcon ? (categoryIcons[categoryIcon] || MoreHorizontal) : null;
+    const isBlocked = !!blockedUntil;
 
     if (variant === 'archive') {
         return (
@@ -204,10 +212,23 @@ export function IdeaCard({
                         onVote?.();
                     }}
                     variant="secondary"
-                    className="w-full rounded-xl py-6 group-hover:bg-primary/90 group-hover:text-on-primary"
+                    disabled={isLoading || isBlocked}
+                    className="w-full animate-sparkle cursor-pointer rounded-xl py-6 transition-colors hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary"
                 >
-                    <span className="material-symbols-outlined text-xl">thumb_up</span>
-                    <span>{__('messages.home.vote_now')}</span>
+                    {isLoading ? (
+                        <span className="material-symbols-outlined animate-spin text-xl">
+                            sync
+                        </span>
+                    ) : (
+                        <span className="material-symbols-outlined text-xl">
+                            {isBlocked ? 'lock' : 'thumb_up'}
+                        </span>
+                    )}
+                    <span>
+                        {isBlocked
+                            ? formatDuration(remainingSeconds, locale)
+                            : __('messages.home.vote_now')}
+                    </span>
                 </Button>
             </div>
         </Link>

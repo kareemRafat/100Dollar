@@ -36,11 +36,24 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        
+        $blockKey = $user 
+            ? 'vote-attempts:user:' . $user->id 
+            : 'vote-attempts:ip:' . $request->ip();
+
+        $isBlocked = \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($blockKey, 5);
+        $availableIn = $isBlocked ? \Illuminate\Support\Facades\RateLimiter::availableIn($blockKey) : 0;
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user() ? $request->user()->load('media') : null,
+                'user' => $user ? $user->load('media') : null,
+            ],
+            'vote_block' => [
+                'is_blocked' => $isBlocked,
+                'available_in' => $availableIn,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'locale' => app()->getLocale(),

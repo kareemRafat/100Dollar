@@ -163,12 +163,12 @@ export default function Login({
                 {canRegister && (
                     <p className="text-on-surface-variant text-sm">
                         {__('messages.login.no_account')}{' '}
-                        <a
+                        <Link
                             className="font-bold text-primary hover:underline"
                             href={register.url()}
                         >
                             {__('messages.login.create_account')}
-                        </a>
+                        </Link>
                     </p>
                 )}
             </div>

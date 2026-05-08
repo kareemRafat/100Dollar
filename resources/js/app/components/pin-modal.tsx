@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { useHttp } from '@inertiajs/react';
+import { useHttp, router } from '@inertiajs/react';
 import { Loader2, Mail, ShieldCheck, X } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import type { KeyboardEvent, ChangeEvent } from 'react';
@@ -64,6 +64,10 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 toast.error(errs.message || __('messages.common.error'));
             },
             onHttpException: (response: any) => {
+                if (response.status === 429) {
+                    router.reload({ only: ['vote_block'] });
+                }
+
                 let message = __('messages.common.error');
                 
                 try {
@@ -72,6 +76,11 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                         : response.data;
                         
                     message = data?.message || message;
+
+                    if (message.includes(':time')) {
+                        // The server response usually has the time, but if it doesn't, we show a generic "10 minutes"
+                        message = message.replace(':time', '10 ' + __('messages.vote_pin.resend').split('(')[0].trim().includes('دقيقة') ? 'دقائق' : 'minutes');
+                    }
                 } catch {
                     if (typeof response.data === 'string' && response.data.trim()) {
                         message = response.data;
@@ -103,6 +112,10 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 toast.error(errs.otp?.[0] || errs.message || __('messages.common.error'));
             },
             onHttpException: (response: any) => {
+                if (response.status === 429) {
+                    router.reload({ only: ['vote_block'] });
+                }
+
                 let message = __('messages.common.error');
                 
                 try {
@@ -111,6 +124,11 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                         : response.data;
                         
                     message = data?.message || message;
+
+                    if (message.includes(':time')) {
+                        // The server response usually has the time, but if it doesn't, we show a generic "10 minutes"
+                        message = message.replace(':time', '10 ' + __('messages.vote_pin.resend').split('(')[0].trim().includes('دقيقة') ? 'دقائق' : 'minutes');
+                    }
                 } catch {
                     if (typeof response.data === 'string' && response.data.trim()) {
                         message = response.data;

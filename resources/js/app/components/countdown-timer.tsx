@@ -1,4 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
 import { Clock, Timer, Hourglass } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -26,11 +27,15 @@ function calculateTimeLeft(target: Date): TimeLeft {
     };
 }
 
-function TimeBlock({ value, label }: { value: number; label: string }) {
+function TimeBlock({ value, label, locale = 'en' }: { value: number; label: string; locale?: string }) {
+    const formattedValue = locale?.startsWith('ar') 
+        ? value.toLocaleString('ar-EG', { minimumIntegerDigits: 2, useGrouping: false })
+        : String(value).padStart(2, '0');
+
     return (
         <div className="flex flex-col items-center group/time">
             <div className="bg-surface-container-lowest flex h-14 w-14 items-center justify-center rounded-2xl text-2xl font-black text-primary shadow-sm border border-outline-variant/5 transition-all group-hover/time:scale-110 group-hover/time:bg-primary group-hover/time:text-on-primary">
-                {String(value).padStart(2, '0')}
+                {formattedValue}
             </div>
             <div className="mt-2 flex items-center gap-1 opacity-60 transition-opacity group-hover/time:opacity-100">
                 <span className="text-on-surface-variant text-[10px] font-black uppercase tracking-tighter">
@@ -43,6 +48,7 @@ function TimeBlock({ value, label }: { value: number; label: string }) {
 
 export function CountdownTimer({ targetDate }: Props) {
     const { __ } = useLang();
+    const { locale } = usePage().props as any;
     const [timeLeft, setTimeLeft] = useState<TimeLeft>(
         calculateTimeLeft(targetDate),
     );
@@ -57,9 +63,9 @@ export function CountdownTimer({ targetDate }: Props) {
 
     return (
         <div className="flex gap-4">
-            <TimeBlock value={timeLeft.hours} label={__('messages.home.hours')} />
-            <TimeBlock value={timeLeft.minutes} label={__('messages.home.minutes')} />
-            <TimeBlock value={timeLeft.seconds} label={__('messages.home.seconds')} />
+            <TimeBlock value={timeLeft.hours} label={__('messages.home.hours')} locale={locale} />
+            <TimeBlock value={timeLeft.minutes} label={__('messages.home.minutes')} locale={locale} />
+            <TimeBlock value={timeLeft.seconds} label={__('messages.home.seconds')} locale={locale} />
         </div>
     );
 }

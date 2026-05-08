@@ -1,20 +1,19 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, usePage, router, WhenVisible, useHttp } from '@inertiajs/react';
+import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
 import { Bell, UserPlus, Check, Image as ImageIcon } from 'lucide-react';
-import { useState, useRef, lazy, Suspense, useEffect } from 'react';
+import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
+import { useIdeaVote } from '@/app/hooks/use-idea-vote';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { formatDuration } from '@/lib/utils';
 import ideasRoute from '@/routes/app/ideas';
-import voteRoute from '@/routes/app/ideas/vote';
 import usersRoute from '@/routes/app/users';
 import type { Idea, Paginated, Comment } from '@/types';
 
@@ -45,154 +44,21 @@ export default function IdeaShow({
     isFollowingIdea,
     isFollowingOwner,
 }: Props) {
-    const { __, locale } = useLang();
+    const { __ } = useLang();
     const { auth, name: appName } = usePage().props as any;
-    const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-    const [votesCount, setVotesCount] = useState(idea.votes_count);
-    const [isAutoSending, setIsAutoSending] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
-    // Rate Limiting States
-    const [closeCount, setCloseCount] = useState(() => {
-        const stored = localStorage.getItem(`vote_block_${idea.id}`);
-
-        if (stored) {
-            try {
-                const { count } = JSON.parse(stored);
-
-                return count || 0;
-            } catch {
-                return 0;
-            }
-        }
-
-        return 0;
-    });
-    const [blockedUntil, setBlockedUntil] = useState<number | null>(() => {
-        const stored = localStorage.getItem(`vote_block_${idea.id}`);
-
-        if (stored) {
-            try {
-                const { until } = JSON.parse(stored);
-
-                if (until && until > Date.now()) {
-                    return until;
-                }
-            } catch {
-                return null;
-            }
-        }
-
-        return null;
-    });
-    const [remainingSeconds, setRemainingSeconds] = useState(0);
-    const wasSuccessRef = useRef(false);
-
-    useEffect(() => {
-        if (!blockedUntil) {
-            return;
-        }
-
-        const updateTimer = () => {
-            const seconds = Math.ceil((blockedUntil - Date.now()) / 1000);
-
-            if (seconds <= 0) {
-                setBlockedUntil(null);
-                setCloseCount(0);
-                localStorage.removeItem(`vote_block_${idea.id}`);
-                setRemainingSeconds(0);
-            } else {
-                setRemainingSeconds(seconds);
-            }
-        };
-
-        updateTimer();
-        const interval = setInterval(updateTimer, 1000);
-
-        return () => clearInterval(interval);
-    }, [blockedUntil, idea.id]);
-
-    const { post: sendOtp } = useHttp({
-        email: auth.user?.email || '',
-    });
-
-    const handleVoteSuccess = (newCount: number) => {
-        setVotesCount(newCount);
-        wasSuccessRef.current = true;
-        setCloseCount(0);
-        setBlockedUntil(null);
-        localStorage.removeItem(`vote_block_${idea.id}`);
-    };
-
-    const handleVoteClick = () => {
-        if (blockedUntil) {
-            toast.error(__('messages.common.too_many_attempts', { 
-                time: formatDuration(remainingSeconds, locale) 
-            }));
-
-            return;
-        }
-
-        if (auth.user) {
-            setIsAutoSending(true);
-            sendOtp(voteRoute.sendOtp.url(idea.id), {
-                data: { email: auth.user.email },
-                onSuccess: (response: any) => {
-                    toast.success(response.message);
-                    setIsPinModalOpen(true);
-                },
-                onError: (errors: any) => {
-                    toast.error(errors.message || __('messages.common.error'));
-                },
-                onHttpException: (response: any) => {
-                    let message = __('messages.common.error');
-                    
-                    try {
-                        const data = typeof response.data === 'string' 
-                            ? JSON.parse(response.data) 
-                            : response.data;
-                            
-                        message = data?.message || message;
-                    } catch {
-                        if (typeof response.data === 'string' && response.data.trim()) {
-                            message = response.data;
-                        }
-                    }
-                    
-                    toast.error(message);
-                },
-                onFinish: () => {
-                    setIsAutoSending(false);
-                }
-            });
-        } else {
-            setIsPinModalOpen(true);
-        }
-    };
-
-    const handleModalClose = () => {
-        setIsPinModalOpen(false);
-
-        if (!wasSuccessRef.current) {
-            const newCount = closeCount + 1;
-            setCloseCount(newCount);
-
-            let until: number | null = null;
-
-            if (newCount >= 3) {
-                until = Date.now() + 10 * 60 * 1000;
-                setBlockedUntil(until);
-            }
-
-            localStorage.setItem(`vote_block_${idea.id}`, JSON.stringify({
-                count: newCount,
-                until: until
-            }));
-        }
-
-        wasSuccessRef.current = false;
-    };
+    const {
+        votesCount,
+        isPinModalOpen,
+        isAutoSending,
+        isBlocked,
+        remainingSeconds,
+        handleVoteClick,
+        handleVoteSuccess,
+        setIsPinModalOpen,
+    } = useIdeaVote(idea.id, idea.votes_count);
 
     const toggleFollowIdea = () => {
         if (!auth.user) {
@@ -325,7 +191,7 @@ export default function IdeaShow({
                             idea={{ ...idea, votes_count: votesCount }}
                             onVoteClick={handleVoteClick}
                             isLoading={isAutoSending}
-                            blockedUntil={blockedUntil}
+                            isBlocked={isBlocked}
                             remainingSeconds={remainingSeconds}
                         />
 
@@ -562,17 +428,15 @@ export default function IdeaShow({
                 </DialogContent>
             </Dialog>
 
-            {isPinModalOpen && (
-                <Suspense fallback={null}>
-                    <PinModal
-                        isOpen={isPinModalOpen}
-                        onClose={handleModalClose}
-                        onSuccess={handleVoteSuccess}
-                        ideaId={idea.id}
-                        initialEmail={auth.user?.email}
-                    />
-                </Suspense>
-            )}
+            <Suspense fallback={null}>
+                <PinModal
+                    isOpen={isPinModalOpen}
+                    onClose={() => setIsPinModalOpen(false)}
+                    onSuccess={handleVoteSuccess}
+                    ideaId={idea.id}
+                    initialEmail={auth.user?.email}
+                />
+            </Suspense>
         </AppLayout>
     );
 }

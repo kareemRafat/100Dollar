@@ -229,13 +229,13 @@ export function TopNavBar({ activeRoute }: Props) {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2">
                                             <SheetClose asChild>
                                                 <Button
                                                     asChild
                                                     className="h-9 rounded-xl font-bold text-xs transition-all active:scale-[0.98]"
                                                 >
-                                                    <Link href={login()}>
+                                                    <Link href={login.url({ query: { redirect: window.location.pathname } })}>
                                                         {__(
                                                             'messages.ui.submit_your_idea',
                                                         )}
@@ -249,7 +249,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                         variant="ghost"
                                                         className="h-9 rounded-xl font-bold text-xs"
                                                     >
-                                                        <Link href={login()}>
+                                                        <Link href={login.url({ query: { redirect: window.location.pathname } })}>
                                                             {__('messages.auth.login')}
                                                         </Link>
                                                     </Button>
@@ -260,7 +260,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                         variant="outline"
                                                         className="h-9 rounded-xl font-bold text-xs"
                                                     >
-                                                        <Link href={register()}>
+                                                        <Link href={register.url()}>
                                                             {__(
                                                                 'messages.auth.register',
                                                             )}
@@ -495,13 +495,13 @@ export function TopNavBar({ activeRoute }: Props) {
                                 asChild
                                 className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden md:inline-flex"
                             >
-                                <Link href={login()}>
+                                <Link href={login.url({ query: { redirect: window.location.pathname } })}>
                                     {__('messages.ui.submit_your_idea')}
                                 </Link>
                             </Button>
                             <Link
                                 className="px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400 hidden md:inline-block"
-                                href={login()}
+                                href={login.url({ query: { redirect: window.location.pathname } })}
                             >
                                 {__('messages.auth.login')}
                             </Link>
@@ -510,7 +510,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                 variant="outline"
                                 className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] hidden md:inline-flex"
                             >
-                                <Link href={register()}>
+                                <Link href={register.url()}>
                                     {__(
                                         'messages.auth.register',
                                     )}

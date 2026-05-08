@@ -11,7 +11,7 @@ interface VotingCardProps {
     };
     onVoteClick: () => void;
     isLoading?: boolean;
-    blockedUntil?: number | null;
+    isBlocked?: boolean;
     remainingSeconds?: number;
 }
 
@@ -19,7 +19,7 @@ export const VotingCard = ({
     idea, 
     onVoteClick, 
     isLoading = false,
-    blockedUntil = null,
+    isBlocked = false,
     remainingSeconds = 0
 }: VotingCardProps) => {
     const { __, locale } = useLang();
@@ -33,8 +33,6 @@ export const VotingCard = ({
     const r = 72;
     const circumference = 2 * Math.PI * r; // ~452.39
     const strokeDashoffset = circumference - (votePercentage / 100) * circumference;
-
-    const isBlocked = !!blockedUntil;
 
     return (
         <div className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden group">
@@ -86,7 +84,7 @@ export const VotingCard = ({
                 <Button
                     onClick={onVoteClick}
                     disabled={isLoading || isBlocked}
-                    className="w-full h-14 rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
+                    className="w-full h-14 animate-sparkle cursor-pointer rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
                 >
                     {isLoading ? (
                         <span className="material-symbols-outlined animate-spin">progress_activity</span>

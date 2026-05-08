@@ -347,6 +347,7 @@ return [
         'change_email' => 'Change Email',
         'success' => 'Your vote has been cast successfully!',
         'already_voted' => 'You have already voted for this idea.',
+        'already_voted_today' => 'You can only vote for one idea per day. You have already cast your vote today.',
         'otp_sent' => 'A verification code has been sent to your email.',
         'no_request' => 'No verification request found for this email.',
         'expired' => 'The verification code has expired. Please request a new one.',

@@ -45,10 +45,9 @@ Authentication is handled by **Laravel Fortify** but is context-aware via `App\S
 - **Backend:** Routes are split into `web.php` (localization & auth), `app.php` (user routes), and `admin.php` (admin routes).
 - **Frontend:** Use Laravel Wayfinder for typed route generation. Import from `@/actions` or `@/routes`.
 
-### Localization
-- Localization is handled via `mcamara/laravel-localization`.
-- Translation strings are shared with Inertia pages via `HandleInertiaRequests` middleware.
-- RTL (Right-to-Left) is dynamically toggled based on the current locale.
+### Localization & RTL Support
+- **Direction Awareness:** Every UI/UX change must be context-aware regarding text direction. Use logical properties (e.g., `ms-`, `me-`, `inset-inline-start`) or conditional classes based on the current locale to support both RTL (Arabic) and LTR (English) seamlessly.
+- **Translation:** Never hardcode user-facing strings. Always use localization helpers (`__()` in PHP/React).
 
 ### Performance & Lazy Loading
 For data that sits "below the fold" (e.g., comments, related items), use **Lazy Loading on Scroll** to minimize initial load time:

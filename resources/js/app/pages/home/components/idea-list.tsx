@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { InfiniteScroll } from '@inertiajs/react';
 import { Loader2 } from 'lucide-react';
-import { IdeaCard } from '@/app/components/idea-card';
+import { VoteableIdeaCard } from '@/app/components/voteable-idea-card';
 import { Button } from '@/app/components/ui/button';
 import type { Idea, Paginated } from '@/types';
 
@@ -64,20 +64,9 @@ export default function IdeaList({ ideas }: Props) {
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {ideasData.map((idea, index) => (
                         idea && (
-                            <IdeaCard
+                            <VoteableIdeaCard
                                 key={`${idea.id}-${index}`}
-                                id={idea.id}
-                                category={idea.category}
-                                categoryIcon={idea.category_icon}
-                                budget="100$"
-                                title={idea.title}
-                                description={idea.description}
-                                authorName={idea.user?.name || __('messages.home.anonymous')}
-                                timeAgo={idea.date}
-                                votes={idea.votes_count}
-                                voteProgress={idea.progress}
-                                imageUrl={idea.image}
-                                onVote={() => console.log('Vote for', idea.id)}
+                                idea={idea}
                             />
                         )
                     ))}
