@@ -12,10 +12,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('sponsor_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('category_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
             $table->string('title');
             $table->text('description');
-            $table->string('category');
-            $table->string('country');
+            $table->json('marketing_channel')->nullable();
+            $table->json('target_audience')->nullable();
+            $table->string('implementation_time')->nullable();
             $table->string('city')->nullable();
             $table->unsignedSmallInteger('submission_day')->default(0);
             $table->unsignedInteger('week_number');
@@ -28,13 +31,12 @@ return new class extends Migration
             $table->timestamp('winner_announced_at')->nullable();
             $table->timestamps();
 
-            $table->index('status');
             $table->index('submission_day');
             $table->index(['week_number', 'year']);
             $table->index('is_winner');
-            $table->index('user_id');
-            $table->index('sponsor_id');
             $table->index('votes_count');
+            $table->index(['status', 'submission_day', 'week_number', 'year', 'votes_count'], 'ideas_directory_optimized_index');
+            $table->fullText(['title', 'description'], 'ideas_search_fulltext');
         });
     }
 

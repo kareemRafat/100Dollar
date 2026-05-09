@@ -21,8 +21,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('status');
-            $table->index('idea_id');
-            $table->index('sponsor_id');
         });
     }
 

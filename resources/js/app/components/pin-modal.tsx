@@ -61,7 +61,9 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 setResendTimer(60);
             },
             onError: (errs: any) => {
-                toast.error(errs.message || __('messages.common.error'));
+                if (!errs.email) {
+                    toast.error(errs.message || __('messages.common.error'));
+                }
             },
             onHttpException: (response: any) => {
                 if (response.status === 429) {
@@ -109,7 +111,9 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 handleClose();
             },
             onError: (errs: any) => {
-                toast.error(errs.otp?.[0] || errs.message || __('messages.common.error'));
+                if (!errs.otp) {
+                    toast.error(errs.message || __('messages.common.error'));
+                }
             },
             onHttpException: (response: any) => {
                 if (response.status === 429) {

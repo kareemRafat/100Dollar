@@ -15,7 +15,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['user_id', 'comment_id']);
-            $table->index('comment_id');
         });
     }
 

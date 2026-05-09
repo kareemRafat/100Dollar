@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('website')->nullable();
+            $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
             $table->text('message');
             $table->string('status')->default('pending'); // pending, reviewed, approved, rejected
             $table->timestamps();

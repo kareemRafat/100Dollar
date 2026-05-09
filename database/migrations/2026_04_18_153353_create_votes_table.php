@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('idea_id')->constrained()->cascadeOnDelete();
             $table->string('voter_email');
-            $table->string('otp', 6)->nullable();
+            $table->text('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
             $table->timestamp('otp_verified_at')->nullable();
             $table->string('ip_address', 45)->nullable();
@@ -20,7 +20,6 @@ return new class extends Migration
 
             $table->unique(['idea_id', 'voter_email']);
             $table->index('voter_email');
-            $table->index('idea_id');
         });
     }
 

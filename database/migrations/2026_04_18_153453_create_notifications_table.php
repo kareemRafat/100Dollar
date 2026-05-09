@@ -20,7 +20,6 @@ return new class extends Migration
             $table->boolean('is_email_sent')->default(false);
             $table->timestamps();
 
-            $table->index('user_id');
             $table->index('is_read');
             $table->index('type');
         });

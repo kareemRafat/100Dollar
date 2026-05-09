@@ -15,9 +15,6 @@ return new class extends Migration
             $table->text('body');
             $table->unsignedInteger('likes_count')->default(0);
             $table->timestamps();
-
-            $table->index('user_id');
-            $table->index('idea_id');
         });
     }
 
