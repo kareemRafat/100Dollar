@@ -1,6 +1,13 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { InfiniteScroll, Link, useForm, router } from '@inertiajs/react';
-import { Loader2, Send } from 'lucide-react';
+import { 
+    Loader2, 
+    Send, 
+    MessageSquare, 
+    ChevronDown, 
+    Heart, 
+    Lock 
+} from 'lucide-react';
 import React from 'react';
 import type {SubmitEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
@@ -79,7 +86,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
         <section className="space-y-8" id="comments">
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-on-surface flex items-center gap-3 font-headline">
-                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>forum</span>
+                    <MessageSquare className="size-6 text-primary fill-primary/20" />
                     {__('messages.comments.title')}
                     <span className="bg-primary/10 text-primary text-sm py-1 px-3 rounded-full font-bold">
                         {idea.comments_count}
@@ -107,7 +114,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                         ) : (
                                             <>
                                                 {__('messages.comments.show_more')} (5)
-                                                <span className="material-symbols-outlined text-sm">expand_more</span>
+                                                <ChevronDown className="size-4" />
                                             </>
                                         )}
                                     </button>
@@ -146,7 +153,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                 onClick={() => toggleLike(comment)}
                                                 className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all cursor-pointer ${comment.is_liked ? 'bg-primary text-on-primary shadow-sm' : 'text-outline hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20'}`}
                                             >
-                                                <span className={`material-symbols-outlined text-lg ${comment.is_liked ? 'fill-1' : ''}`} style={{ fontVariationSettings: comment.is_liked ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
+                                                <Heart className={`size-4 ${comment.is_liked ? 'fill-current' : ''}`} />
                                                 <span className="text-sm font-bold">{comment.likes_count}</span>
                                             </button>
                                         </div>
@@ -224,7 +231,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                     ) : (
                         <div className="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center gap-4">
                             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                                <span className="material-symbols-outlined text-3xl text-primary">lock</span>
+                                <Lock className="size-8 text-primary" />
                             </div>
                             <p className="text-on-surface text-lg font-bold">
                                 <Link

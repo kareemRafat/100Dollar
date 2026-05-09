@@ -104,8 +104,11 @@ return [
         'one_hundred_dollars' => '$100',
         'prize_label' => 'Prize',
         'hours' => 'Hours',
+        'minute' => 'Minute',
         'minutes' => 'Minutes',
+        'second' => 'Second',
         'seconds' => 'Seconds',
+        'and' => 'and',
     ],
 
     'about' => [

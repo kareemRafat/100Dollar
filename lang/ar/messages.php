@@ -106,6 +106,7 @@ return [
         'hours' => 'ساعة',
         'minutes' => 'دقيقة',
         'seconds' => 'ثانية',
+        'and' => 'و',
     ],
 
     'about' => [

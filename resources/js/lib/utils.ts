@@ -15,8 +15,7 @@ export function formatDuration(seconds: number, locale: string = 'en'): string {
     if (isAr) {
         const getArLabel = (value: number, type: 'minute' | 'second') => {
             if (value === 1) return type === 'minute' ? 'دقيقة' : 'ثانية';
-            if (value === 2) return type === 'minute' ? 'دقيقتان' : 'ثانيتان';
-            if (value >= 3 && value <= 10) return type === 'minute' ? 'دقائق' : 'ثواني';
+            if (value >= 2 && value <= 10) return type === 'minute' ? 'دقائق' : 'ثواني';
             return type === 'minute' ? 'دقيقة' : 'ثانية';
         };
 
@@ -31,23 +30,15 @@ export function formatDuration(seconds: number, locale: string = 'en'): string {
         return parts.join(' و ');
     }
 
-    const labels = {
-        minute: 'minute',
-        minutes: 'minutes',
-        second: 'second',
-        seconds: 'seconds',
-        and: 'and',
-    };
-
     const parts: string[] = [];
     if (minutes > 0) {
-        parts.push(`${minutes} ${minutes === 1 ? labels.minute : labels.minutes}`);
+        parts.push(`${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`);
     }
     if (remainingSeconds > 0) {
-        parts.push(`${remainingSeconds} ${remainingSeconds === 1 ? labels.second : labels.seconds}`);
+        parts.push(`${remainingSeconds} ${remainingSeconds === 1 ? 'second' : 'seconds'}`);
     }
-    if (parts.length === 0) return `0 ${labels.seconds}`;
-    if (parts.length === 2) return `${parts[0]} ${labels.and} ${parts[1]}`;
+    if (parts.length === 0) return '0 seconds';
+    if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
     return parts[0];
 }
 

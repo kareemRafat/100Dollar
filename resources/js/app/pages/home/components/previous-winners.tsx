@@ -2,6 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useCallback, useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight, ArrowRight, History } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { WinnerCard } from '@/app/components/winner-card';
 import type { Idea } from '@/types';
@@ -68,9 +69,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
                             disabled={prevBtnDisabled}
                             className="h-10 w-10 rounded-full bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary"
                         >
-                            <span className="material-symbols-outlined">
-                                {isRtl ? 'chevron_right' : 'chevron_left'}
-                            </span>
+                            <ChevronLeft className="size-5 rtl:rotate-180" />
                         </Button>
                         <Button
                             variant="secondary"
@@ -79,9 +78,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
                             disabled={nextBtnDisabled}
                             className="h-10 w-10 rounded-full bg-surface-container-high text-on-surface hover:bg-primary hover:text-on-primary"
                         >
-                            <span className="material-symbols-outlined">
-                                {isRtl ? 'chevron_left' : 'chevron_right'}
-                            </span>
+                            <ChevronRight className="size-5 rtl:rotate-180" />
                         </Button>
                     </div>
                     <Link
@@ -89,9 +86,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
                         href="/archive"
                     >
                         {__('messages.ui.browse_full_archive')}
-                        <span className="material-symbols-outlined text-lg transition-transform group-hover:-translate-x-1">
-                            {isRtl ? 'arrow_back' : 'arrow_forward'}
-                        </span>
+                        <ArrowRight className="size-4 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
                     </Link>
                 </div>
             </div>
@@ -116,9 +111,7 @@ export default function PreviousWinners({ winners = [] }: Props) {
                             className="group flex w-72 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low p-6 text-center transition-colors hover:border-primary/50"
                         >
                             <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-surface-container-high transition-colors group-hover:bg-primary/10 dark:bg-surface-container-high">
-                                <span className="material-symbols-outlined text-4xl text-on-surface-variant transition-colors group-hover:text-primary">
-                                    history
-                                </span>
+                                <History className="size-8 text-on-surface-variant transition-colors group-hover:text-primary" />
                             </div>
                             <p className="font-headline text-lg font-bold text-on-surface dark:text-white">
                                 {__('messages.ui.full_archive')}

@@ -1,6 +1,16 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
-import { Bell, UserPlus, Check, Image as ImageIcon } from 'lucide-react';
+import { 
+    Bell, 
+    UserPlus, 
+    Check, 
+    Image as ImageIcon,
+    Lightbulb,
+    Megaphone,
+    Clock,
+    Users,
+    Receipt
+} from 'lucide-react';
 import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
@@ -247,14 +257,7 @@ export default function IdeaShow({
                         {/* About Section */}
                         <section className="arabic-dynamic-padding rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-8 lg:p-12">
                             <h2 className="mb-6 flex items-center gap-3 font-headline text-2xl font-bold text-on-surface">
-                                <span
-                                    className="material-symbols-outlined text-primary"
-                                    style={{
-                                        fontVariationSettings: "'FILL' 1",
-                                    }}
-                                >
-                                    lightbulb
-                                </span>
+                                <Lightbulb className="size-6 text-primary" />
                                 {__('messages.idea_detail.about_idea')}
                             </h2>
                             <p className="mb-8 text-lg leading-relaxed whitespace-pre-wrap text-on-surface-variant">
@@ -263,9 +266,7 @@ export default function IdeaShow({
                             <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2">
                                 <div className="rounded-xl border border-outline-variant/10 bg-surface-container-low p-6">
                                     <h4 className="mb-4 flex items-center gap-2 font-headline font-bold text-on-surface">
-                                        <span className="material-symbols-outlined text-primary">
-                                            campaign
-                                        </span>
+                                        <Megaphone className="size-5 text-primary" />
                                         {__(
                                             'messages.submit_idea.marketing_channel_label',
                                         )}
@@ -303,9 +304,7 @@ export default function IdeaShow({
                                         )}
                                     </div>
                                     <h4 className="mt-6 mb-4 flex items-center gap-2 font-headline font-bold text-on-surface">
-                                        <span className="material-symbols-outlined text-primary">
-                                            schedule
-                                        </span>
+                                        <Clock className="size-5 text-primary" />
                                         {__(
                                             'messages.submit_idea.implementation_time_label',
                                         )}
@@ -321,9 +320,7 @@ export default function IdeaShow({
                                 </div>
                                 <div className="rounded-xl border border-outline-variant/10 bg-surface-container-low p-6">
                                     <h4 className="mb-4 flex items-center gap-2 font-headline font-bold text-on-surface">
-                                        <span className="material-symbols-outlined text-primary">
-                                            groups
-                                        </span>
+                                        <Users className="size-5 text-primary" />
                                         {__(
                                             'messages.submit_idea.target_audience_label',
                                         )}
@@ -352,9 +349,7 @@ export default function IdeaShow({
                                 </div>
                             </div>
                             <h3 className="mb-6 flex items-center gap-3 font-headline text-xl font-bold text-on-surface">
-                                <span className="material-symbols-outlined text-primary">
-                                    receipt_long
-                                </span>
+                                <Receipt className="size-6 text-primary" />
                                 {__('messages.home.prize_label')} ({__('messages.home.one_hundred_dollars')}){' '}
                                 {__('messages.idea_detail.prize_covers')}
                             </h3>

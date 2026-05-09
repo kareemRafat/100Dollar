@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
+import { Trophy } from 'lucide-react';
 
 type Props = {
     id: number;
@@ -43,9 +44,7 @@ export function WinnerCard({
                     </div>
                 )}
                 <div className="absolute -inset-inline-end-1 -bottom-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
-                    <span className="material-symbols-outlined text-base">
-                        emoji_events
-                    </span>
+                    <Trophy className="size-4" />
                 </div>
             </div>
             <div className="flex flex-1 flex-col text-center">

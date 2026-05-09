@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { InfiniteScroll } from '@inertiajs/react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Lightbulb } from 'lucide-react';
 import { VoteableIdeaCard } from '@/app/components/voteable-idea-card';
 import { Button } from '@/app/components/ui/button';
 import type { Idea, Paginated } from '@/types';
@@ -21,9 +21,7 @@ export default function IdeaList({ ideas }: Props) {
     if (ideasData.length === 0) {
         return (
             <div className="mx-auto mb-20 flex max-w-7xl flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 py-20 px-6 text-center">
-                <span className="material-symbols-outlined text-6xl text-outline-variant">
-                    lightbulb_outline
-                </span>
+                <Lightbulb className="size-16 text-outline-variant" />
                 <h3 className="mt-4 text-xl font-bold text-on-surface dark:text-white">
                     {__('messages.home.no_ideas_yet')}
                 </h3>

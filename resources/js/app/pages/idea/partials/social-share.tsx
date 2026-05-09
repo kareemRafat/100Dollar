@@ -1,5 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
 import React from 'react';
+import { Copy } from 'lucide-react';
 import { toast } from '@/app/components/ui/toast';
 import type { Idea } from '@/types';
 
@@ -9,6 +11,7 @@ interface SocialShareProps {
 
 export const SocialShare = React.memo(({ idea }: SocialShareProps) => {
     const { __ } = useLang();
+    const { locale } = usePage().props;
 
     const handleShare = (platform: string) => {
         const url = window.location.href;
@@ -77,9 +80,7 @@ export const SocialShare = React.memo(({ idea }: SocialShareProps) => {
                     onClick={() => handleShare('copy')}
                     className="group flex aspect-square cursor-pointer items-center justify-center rounded-xl bg-surface-container-low transition-all hover:bg-success hover:text-white"
                 >
-                    <span className="material-symbols-outlined text-on-surface-variant group-hover:text-white transition-colors">
-                        content_copy
-                    </span>
+                    <Copy className="size-5 text-on-surface-variant group-hover:text-white transition-colors" />
                 </button>
             </div>
         </div>

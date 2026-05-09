@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { 
     ShoppingBag, 
     Home, 
@@ -8,7 +8,11 @@ import {
     Leaf, 
     GraduationCap, 
     Heart, 
-    MoreHorizontal 
+    MoreHorizontal,
+    Banknote,
+    Loader2,
+    Lock,
+    ThumbsUp
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
@@ -69,7 +73,8 @@ export function IdeaCard({
     date,
     variant = 'home',
 }: Props) {
-    const { __, locale } = useLang();
+    const { __ } = useLang();
+    const { locale } = usePage().props as any;
     
     const Icon = categoryIcon ? (categoryIcons[categoryIcon] || MoreHorizontal) : null;
     const isBlocked = !!blockedUntil;
@@ -153,9 +158,7 @@ export function IdeaCard({
                     </span>
                 </div>
                 <div className="flex items-center gap-1 text-primary">
-                    <span className="material-symbols-outlined text-base">
-                        payments
-                    </span>
+                    <Banknote className="size-4" />
                     <span className="text-sm font-bold">{budget}</span>
                 </div>
             </div>
@@ -216,13 +219,13 @@ export function IdeaCard({
                     className="w-full animate-sparkle cursor-pointer rounded-xl py-6 transition-colors hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary"
                 >
                     {isLoading ? (
-                        <span className="material-symbols-outlined animate-spin text-xl">
-                            sync
-                        </span>
+                        <Loader2 className="size-5 animate-spin" />
                     ) : (
-                        <span className="material-symbols-outlined text-xl">
-                            {isBlocked ? 'lock' : 'thumb_up'}
-                        </span>
+                        isBlocked ? (
+                            <Lock className="size-5" />
+                        ) : (
+                            <ThumbsUp className="size-5" />
+                        )
                     )}
                     <span>
                         {isBlocked

@@ -1,4 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
+import { Loader2, ThumbsUp } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
 import type { Idea } from '@/types';
@@ -22,7 +24,8 @@ export const VotingCard = ({
     isBlocked = false,
     remainingSeconds = 0
 }: VotingCardProps) => {
-    const { __, locale } = useLang();
+    const { __ } = useLang();
+    const { locale } = usePage().props as any;
 
     // Data Sync
     const voteGoal = idea?.target_votes ?? 100;
@@ -87,7 +90,7 @@ export const VotingCard = ({
                     className="w-full h-14 animate-sparkle cursor-pointer rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
                 >
                     {isLoading ? (
-                        <span className="material-symbols-outlined animate-spin">progress_activity</span>
+                        <Loader2 className="size-5 animate-spin" />
                     ) : isBlocked ? (
                         <span className="text-sm">
                             {formatDuration(remainingSeconds, locale)}
@@ -95,7 +98,7 @@ export const VotingCard = ({
                     ) : (
                         <>
                             {__('messages.home.vote_now')}
-                            <span className="material-symbols-outlined text-primary-fixed">thumb_up</span>
+                            <ThumbsUp className="size-5 text-primary-fixed" />
                         </>
                     )}
                 </Button>
