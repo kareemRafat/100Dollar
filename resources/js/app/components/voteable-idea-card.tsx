@@ -11,9 +11,10 @@ const PinModal = lazy(() =>
 
 type Props = {
     idea: any; // Using any for simplicity as it maps to Idea type
+    isVoted?: boolean;
 };
 
-export function VoteableIdeaCard({ idea }: Props) {
+export function VoteableIdeaCard({ idea, isVoted }: Props) {
     const { auth } = usePage().props as any;
     const {
         votesCount,
@@ -44,6 +45,7 @@ export function VoteableIdeaCard({ idea }: Props) {
                 isLoading={isAutoSending}
                 blockedUntil={isBlocked ? Date.now() + remainingSeconds * 1000 : null}
                 remainingSeconds={remainingSeconds}
+                isVoted={isVoted}
             />
 
             <Suspense fallback={null}>

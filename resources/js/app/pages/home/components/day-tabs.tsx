@@ -23,7 +23,7 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
     const handleDayChange = (dayId: number) => {
         router.get('/', { day: dayId }, {
             preserveScroll: true,
-            only: ['ideas', 'sponsor', 'currentDay'],
+            only: ['ideas', 'sponsor', 'currentDay', 'votedIdeaId'],
             reset: ['ideas'],
         });
     };

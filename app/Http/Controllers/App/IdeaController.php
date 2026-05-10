@@ -8,6 +8,7 @@ use App\Http\Resources\App\IdeaResource;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Idea;
+use App\Models\Vote;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -156,6 +157,19 @@ class IdeaController extends Controller
         $idea->load(['user.media', 'sponsor.media', 'country', 'category']);
         $idea->loadCount(['votes', 'comments']);
 
+        // Find if user/IP already voted for an idea in this competition day
+        $votedIdeaId = null;
+        $voterEmail = auth()->check() ? auth()->user()->email : null;
+
+        $votedIdeaId = Vote::whereNotNull('otp_verified_at')
+            ->when($voterEmail, fn($q) => $q->where('voter_email', $voterEmail), fn($q) => $q->where('ip_address', request()->ip()))
+            ->whereHas('idea', function ($query) use ($idea) {
+                $query->where('submission_day', $idea->submission_day)
+                    ->where('week_number', $idea->week_number)
+                    ->where('year', $idea->year);
+            })
+            ->value('idea_id');
+
         return Inertia::render('app/pages/idea/show', [
             'idea' => new IdeaResource($idea),
             'comments' => Inertia::optional(fn () => Inertia::scroll(fn () => CommentResource::collection(
@@ -172,6 +186,7 @@ class IdeaController extends Controller
             'isFollowingOwner' => auth()->check()
                 ? (bool) auth()->user()->following()->where('following_id', $idea->user_id)->exists()
                 : false,
+            'votedIdeaId' => (int) $votedIdeaId ?: null,
         ]);
     }
 

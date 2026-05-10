@@ -27,7 +27,7 @@ export function WinnerCard({
             prefetch
             className="group relative flex h-full w-72 flex-shrink-0 flex-col snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card"
         >
-            <div className="absolute top-0 inset-inline-start-0 h-1 w-full bg-gradient-to-inline-end from-primary to-transparent" />
+            <div className="absolute top-0 start-0 h-1 w-full bg-gradient-to-inline-end from-primary to-transparent" />
             <div className="relative mx-auto mb-6 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
                 {avatarUrl ? (
@@ -43,7 +43,7 @@ export function WinnerCard({
                         </span>
                     </div>
                 )}
-                <div className="absolute -inset-inline-end-1 -bottom-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
+                <div className="absolute -end-1 -bottom-1 z-20 flex h-8 w-8 items-center justify-center rounded-full border-4 border-surface-container-lowest bg-primary text-on-primary dark:border-card">
                     <Trophy className="size-4" />
                 </div>
             </div>

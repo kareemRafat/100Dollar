@@ -46,6 +46,7 @@ interface Props {
     comments: Paginated<Comment>;
     isFollowingIdea: boolean;
     isFollowingOwner: boolean;
+    votedIdeaId: number | null;
 }
 
 export default function IdeaShow({
@@ -53,6 +54,7 @@ export default function IdeaShow({
     comments,
     isFollowingIdea,
     isFollowingOwner,
+    votedIdeaId,
 }: Props) {
     const { __ } = useLang();
     const { auth, name: appName } = usePage().props as any;
@@ -206,6 +208,7 @@ export default function IdeaShow({
                             isBlocked={isBlocked}
                             isOwner={isOwner}
                             remainingSeconds={remainingSeconds}
+                            isVoted={votedIdeaId === idea.id}
                         />
 
                         <OwnerCard idea={idea} />

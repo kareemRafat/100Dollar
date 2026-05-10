@@ -31,13 +31,11 @@ class VoteController extends Controller
         $ip = $request->ip();
         $locale = LaravelLocalization::getCurrentLocale() ?: app()->getLocale();
         
-        // Consistent rate limiting key
-        $key = $user 
-            ? 'vote-attempts:user:' . $user->id 
-            : 'vote-attempts:ip:' . $ip;
+        $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$ip}";
+        $globalKey = "vote-global:ip:{$ip}";
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
+        if (RateLimiter::tooManyAttempts($sendKey, 5) || RateLimiter::tooManyAttempts($globalKey, 10)) {
+            $seconds = max(RateLimiter::availableIn($sendKey), RateLimiter::availableIn($globalKey));
             $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
                 'join' => true,
             ]);
@@ -46,6 +44,10 @@ class VoteController extends Controller
                 'message' => __('messages.common.too_many_attempts', ['time' => $time]),
             ], 429);
         }
+
+        // Hit keys on each request
+        RateLimiter::hit($sendKey, 600);
+        RateLimiter::hit($globalKey, 600);
 
         // Check if user is the owner (logged in or matching email)
         if ($this->isIdeaOwner($idea, $user, $email)) {
@@ -83,8 +85,21 @@ class VoteController extends Controller
             ], 400);
         }
 
-        // Increment attempts on OTP request
-        RateLimiter::hit($key, 600); // 10 minutes block
+        // IP-based limit: max 5 votes per IP per competition day
+        $votesFromThisIp = Vote::where('ip_address', $ip)
+            ->whereNotNull('otp_verified_at')
+            ->whereHas('idea', function ($query) use ($idea) {
+                $query->where('submission_day', $idea->submission_day)
+                    ->where('week_number', $idea->week_number)
+                    ->where('year', $idea->year);
+            })
+            ->count();
+
+        if ($votesFromThisIp >= 5) {
+            return response()->json([
+                'message' => __('messages.vote_pin.ip_limit_reached'),
+            ], 400);
+        }
 
         // Generate 6-digit OTP
         $otp = (string) random_int(100000, 999999);
@@ -123,13 +138,18 @@ class VoteController extends Controller
         $email = $request->email;
         $ip = $request->ip();
         
-        // Consistent rate limiting key
-        $key = $user 
-            ? 'vote-attempts:user:' . $user->id 
-            : 'vote-attempts:ip:' . $ip;
+        $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$ip}";
+        $globalKey = "vote-global:ip:{$ip}";
+        $verifyKey = "vote-verify:idea:{$idea->id}:email:{$email}";
 
-        if (RateLimiter::tooManyAttempts($key, 5)) {
-            $seconds = RateLimiter::availableIn($key);
+        if (RateLimiter::tooManyAttempts($sendKey, 5) || 
+            RateLimiter::tooManyAttempts($globalKey, 10) || 
+            RateLimiter::tooManyAttempts($verifyKey, 5)) {
+            $seconds = max(
+                RateLimiter::availableIn($sendKey), 
+                RateLimiter::availableIn($globalKey), 
+                RateLimiter::availableIn($verifyKey)
+            );
             $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
                 'join' => true,
             ]);
@@ -139,7 +159,10 @@ class VoteController extends Controller
             ], 429);
         }
 
-        return DB::transaction(function () use ($idea, $email, $request, $key, $user) {
+        // Always hit global key on attempt
+        RateLimiter::hit($globalKey, 600);
+
+        return DB::transaction(function () use ($idea, $email, $request, $sendKey, $globalKey, $verifyKey, $user, $ip) {
             // Check if user is the owner (logged in or matching email)
             if ($this->isIdeaOwner($idea, $user, $email)) {
                 return response()->json([
@@ -154,7 +177,7 @@ class VoteController extends Controller
                 ->first();
 
             if (!$vote) {
-                RateLimiter::hit($key, 600);
+                RateLimiter::hit($verifyKey, 600);
                 throw ValidationException::withMessages([
                     'otp' => [__('messages.vote_pin.no_request')],
                 ]);
@@ -182,8 +205,24 @@ class VoteController extends Controller
                 ], 400);
             }
 
+            // IP-based limit: max 5 votes per IP per competition day
+            $votesFromThisIp = Vote::where('ip_address', $ip)
+                ->whereNotNull('otp_verified_at')
+                ->whereHas('idea', function ($query) use ($idea) {
+                    $query->where('submission_day', $idea->submission_day)
+                        ->where('week_number', $idea->week_number)
+                        ->where('year', $idea->year);
+                })
+                ->count();
+
+            if ($votesFromThisIp >= 5) {
+                return response()->json([
+                    'message' => __('messages.vote_pin.ip_limit_reached'),
+                ], 400);
+            }
+
             if ($vote->otp_expires_at->isPast()) {
-                RateLimiter::hit($key, 600);
+                RateLimiter::hit($verifyKey, 600);
                 throw ValidationException::withMessages([
                     'otp' => [__('messages.vote_pin.expired')],
                 ]);
@@ -192,14 +231,14 @@ class VoteController extends Controller
             try {
                 $decryptedOtp = Crypt::decryptString($vote->otp);
             } catch (\Exception $e) {
-                RateLimiter::hit($key, 600);
+                RateLimiter::hit($verifyKey, 600);
                 throw ValidationException::withMessages([
                     'otp' => [__('messages.vote_pin.invalid')],
                 ]);
             }
 
             if ($decryptedOtp !== $request->otp) {
-                RateLimiter::hit($key, 600);
+                RateLimiter::hit($verifyKey, 600);
                 throw ValidationException::withMessages([
                     'otp' => [__('messages.vote_pin.invalid')],
                 ]);
@@ -216,8 +255,9 @@ class VoteController extends Controller
             $idea->lockForUpdate();
             $idea->increment('votes_count');
 
-            // Clear attempts on success
-            RateLimiter::clear($key);
+            // Clear global and send attempts on success
+            RateLimiter::clear($sendKey);
+            RateLimiter::clear($globalKey);
 
             return response()->json([
                 'message' => __('messages.vote_pin.success'),

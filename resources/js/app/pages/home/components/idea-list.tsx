@@ -7,9 +7,10 @@ import type { Idea, Paginated } from '@/types';
 
 interface Props {
     ideas: Paginated<Idea>;
+    votedIdeaId: number | null;
 }
 
-export default function IdeaList({ ideas }: Props) {
+export default function IdeaList({ ideas, votedIdeaId }: Props) {
     const { __ } = useLang();
 
     if (!ideas) {
@@ -65,6 +66,7 @@ export default function IdeaList({ ideas }: Props) {
                             <VoteableIdeaCard
                                 key={`${idea.id}-${index}`}
                                 idea={idea}
+                                isVoted={votedIdeaId === idea.id}
                             />
                         )
                     ))}

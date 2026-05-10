@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\App\IdeaResource;
 use App\Models\Idea;
 use App\Models\Sponsor;
+use App\Models\Vote;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,8 +18,8 @@ class HomeController extends Controller
     {
         $now = Carbon::now();
         $currentDay = (int) $request->query('day', $now->dayOfWeek);
-        $currentWeek = $now->isoWeek();
-        $currentYear = $now->isoWeekYear();
+        $currentWeek = $now->weekOfYear;
+        $currentYear = $now->year;
 
         $ideas = Idea::with(['user:id,name', 'user.media', 'category', 'country', 'media'])
             ->withCount('comments')
@@ -46,6 +47,19 @@ class HomeController extends Controller
         $endOfDay = $now->copy()->endOfDay();
         $secondsUntilEnd = $now->diffInSeconds($endOfDay);
 
+        // Find if user/IP already voted for an idea today
+        $votedIdeaId = null;
+        $voterEmail = auth()->check() ? auth()->user()->email : null;
+
+        $votedIdeaId = Vote::whereNotNull('otp_verified_at')
+            ->when($voterEmail, fn($q) => $q->where('voter_email', $voterEmail), fn($q) => $q->where('ip_address', $request->ip()))
+            ->whereHas('idea', function ($query) use ($currentDay, $currentWeek, $currentYear) {
+                $query->where('submission_day', $currentDay)
+                    ->where('week_number', $currentWeek)
+                    ->where('year', $currentYear);
+            })
+            ->value('idea_id');
+
         return Inertia::render('app/pages/home/index', [
             'ideas' => Inertia::scroll(IdeaResource::collection($ideas)),
             'sponsor' => $sponsor,
@@ -53,6 +67,7 @@ class HomeController extends Controller
             'currentDay' => $currentDay,
             'secondsUntilEnd' => $secondsUntilEnd,
             'weekDays' => $this->getWeekDays(),
+            'votedIdeaId' => (int) $votedIdeaId ?: null,
         ]);
     }
 

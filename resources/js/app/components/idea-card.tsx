@@ -1,17 +1,18 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
-import { 
-    ShoppingBag, 
-    Home, 
-    Palette, 
-    Cpu, 
-    Leaf, 
-    GraduationCap, 
-    Heart, 
+import {
+    ShoppingBag,
+    Home,
+    Palette,
+    Cpu,
+    Leaf,
+    GraduationCap,
+    Heart,
     MoreHorizontal,
     Banknote,
     Loader2,
     Lock,
+    Award,
     ThumbsUp
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
@@ -38,6 +39,7 @@ type Props = {
     imageUrl?: string;
     date?: string;
     variant?: 'home' | 'archive';
+    isVoted?: boolean;
 };
 
 const categoryIcons: Record<string, any> = {
@@ -72,16 +74,17 @@ export function IdeaCard({
     imageUrl,
     date,
     variant = 'home',
+    isVoted = false,
 }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
-    
+
     const Icon = categoryIcon ? (categoryIcons[categoryIcon] || MoreHorizontal) : null;
     const isBlocked = !!blockedUntil;
 
     if (variant === 'archive') {
         return (
-            <Link 
+            <Link
                 href={`/ideas/${id}`}
                 prefetch
                 className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card"
@@ -94,7 +97,7 @@ export function IdeaCard({
                             alt={title}
                         />
                         {isWinner && (
-                            <div className="absolute inset-inline-end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:inset-inline-end-4 sm:top-4">
+                            <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:end-4 sm:top-4">
                                 <span>🏆 {__('messages.archive.winner_status')}</span>
                             </div>
                         )}
@@ -145,11 +148,24 @@ export function IdeaCard({
     }
 
     return (
-        <Link 
+        <Link
             href={`/ideas/${id}`}
             prefetch
-            className="group flex h-full flex-col rounded-3xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card"
+            className={`group relative flex h-full flex-col rounded-3xl border p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card ${
+                isVoted
+                    ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                    : 'border-outline-variant/10 bg-surface-container-lowest'
+            }`}
         >
+            {isVoted && (
+                <div className="absolute -top-3 -end-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-4 ring-surface dark:ring-card">
+                    <Award className="size-3.5 text-on-primary" />
+                    <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
+                        {__('messages.home.voted_badge')}
+                    </span>
+                </div>
+            )}
+
             <div className="mb-4 flex items-start justify-between">
                 <div className="flex items-center gap-2 rounded-md bg-primary-fixed px-3 py-1">
                     {Icon && <Icon className="size-3.5 text-on-primary-fixed" />}
@@ -214,23 +230,30 @@ export function IdeaCard({
                         e.stopPropagation();
                         onVote?.();
                     }}
-                    variant="secondary"
-                    disabled={isLoading || isBlocked}
-                    className="w-full animate-sparkle cursor-pointer rounded-xl py-6 transition-colors hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary"
-                >
-                    {isLoading ? (
+                    variant={isVoted ? "primary" : "secondary"}
+                    disabled={isVoted || isLoading || isBlocked}
+                    className={`w-full cursor-pointer rounded-xl py-6 transition-all ${
+                        isVoted 
+                            ? 'bg-primary text-on-primary shadow-inner opacity-100' 
+                            : 'animate-sparkle hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary'
+                    }`}
+                >                    {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />
                     ) : (
-                        isBlocked ? (
+                        isVoted ? (
+                            <Award className="size-5" />
+                        ) : isBlocked ? (
                             <Lock className="size-5" />
                         ) : (
                             <ThumbsUp className="size-5" />
                         )
                     )}
-                    <span>
-                        {isBlocked
-                            ? formatDuration(remainingSeconds, locale)
-                            : __('messages.home.vote_now')}
+                    <span className="font-bold">
+                        {isVoted
+                            ? __('messages.home.voted')
+                            : isBlocked
+                                ? formatDuration(remainingSeconds, locale)
+                                : __('messages.home.vote_now')}
                     </span>
                 </Button>
             </div>

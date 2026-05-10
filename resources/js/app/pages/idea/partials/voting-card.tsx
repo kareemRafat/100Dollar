@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { usePage } from '@inertiajs/react';
-import { Loader2, ThumbsUp } from 'lucide-react';
+import { Loader2, Award, ThumbsUp } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
 import type { Idea } from '@/types';
@@ -16,15 +16,17 @@ interface VotingCardProps {
     isBlocked?: boolean;
     isOwner?: boolean;
     remainingSeconds?: number;
+    isVoted?: boolean;
 }
 
-export const VotingCard = ({ 
-    idea, 
-    onVoteClick, 
+export const VotingCard = ({
+    idea,
+    onVoteClick,
     isLoading = false,
     isBlocked = false,
     isOwner = false,
-    remainingSeconds = 0
+    remainingSeconds = 0,
+    isVoted = false
 }: VotingCardProps) => {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
@@ -40,9 +42,21 @@ export const VotingCard = ({
     const strokeDashoffset = circumference - (votePercentage / 100) * circumference;
 
     return (
-        <div className="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/10 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden group">
+        <div className={`bg-surface-container-lowest rounded-3xl p-8 border shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden group transition-all ${
+            isVoted ? 'border-primary' : 'border-outline-variant/10'
+        }`}>
+            {isVoted && (
+                <div className="absolute top-0 end-0 z-20">
+                    <div className="bg-primary text-on-primary text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bs-2xl shadow-lg">
+                        {__('messages.home.voted_badge')}
+                    </div>
+                </div>
+            )}
+
             {/* Ambient Background Glow */}
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700" />
+            <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl transition-colors duration-700 ${
+                isVoted ? 'bg-primary/10' : 'bg-primary/5 group-hover:bg-primary/10'
+            }`} />
 
             <div className="relative z-10 flex flex-col items-center text-center">
                 {/* High-Fidelity Circular Progress */}
@@ -88,11 +102,20 @@ export const VotingCard = ({
                 {/* Enhanced Vote Button */}
                 <Button
                     onClick={onVoteClick}
-                    disabled={isLoading || isBlocked || isOwner}
-                    className="w-full h-14 animate-sparkle cursor-pointer rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
+                    disabled={isVoted || isLoading || isBlocked || isOwner}
+                    className={`w-full h-14 rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl gap-3 ${
+                        isVoted 
+                            ? 'bg-primary text-on-primary shadow-primary/20 opacity-100' 
+                            : 'animate-sparkle cursor-pointer shadow-primary/10'
+                    }`}
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />
+                    ) : isVoted ? (
+                        <>
+                            {__('messages.home.voted')}
+                            <Award className="size-5" />
+                        </>
                     ) : isOwner ? (
                         <span className="text-sm">
                             {__('messages.vote_pin.owner_cannot_vote')}

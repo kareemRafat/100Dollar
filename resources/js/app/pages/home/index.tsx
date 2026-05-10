@@ -17,6 +17,7 @@ interface Props {
     currentDay: number;
     secondsUntilEnd: number;
     weekDays: { id: number; name: string }[];
+    votedIdeaId: number | null;
 }
 
 export default function Home({
@@ -26,6 +27,7 @@ export default function Home({
     currentDay,
     secondsUntilEnd,
     weekDays,
+    votedIdeaId,
 }: Props) {
     const { __ } = useLang();
 
@@ -42,7 +44,7 @@ export default function Home({
 
             <DayTabs weekDays={weekDays} currentDay={currentDay} />
 
-            <IdeaList ideas={ideas} />
+            <IdeaList ideas={ideas} votedIdeaId={votedIdeaId} />
 
             <WhenVisible data="previousWinners" fallback={<PreviousWinnersSkeleton />} buffer={300}>
                 {previousWinners && <PreviousWinners winners={previousWinners} />}

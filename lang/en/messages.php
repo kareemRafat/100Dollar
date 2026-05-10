@@ -96,6 +96,8 @@ return [
         'be_the_first' => 'Be the first to share your brilliant idea!',
         'anonymous' => 'Anonymous',
         'vote_now' => 'Vote Now',
+        'voted' => 'Voted',
+        'voted_badge' => 'Your Vote',
         'vote_progress' => 'Voting Progress',
         'community_support' => 'Votes',
         'support_idea_question' => 'Do you support this idea?',
@@ -356,6 +358,7 @@ return [
         'expired' => 'The verification code has expired. Please request a new one.',
         'invalid' => 'The verification code is invalid.',
         'owner_cannot_vote' => 'You cannot vote for your own idea.',
+        'ip_limit_reached' => 'Too many votes from this IP address today. Please try again later.',
     ],
 
     'profile' => [

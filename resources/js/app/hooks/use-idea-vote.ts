@@ -43,7 +43,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
     const handleVoteSuccess = useCallback((newCount: number) => {
         setVotesCount(newCount);
         setRemainingSeconds(0);
-        router.reload({ only: ['vote_block'] });
+        router.reload({ only: ['vote_block', 'votedIdeaId'] });
     }, []);
     const handleVoteClick = useCallback(() => {
         if (remainingSeconds > 0) {

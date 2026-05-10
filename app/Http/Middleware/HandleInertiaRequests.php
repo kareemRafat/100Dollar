@@ -38,12 +38,16 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         
-        $blockKey = $user 
-            ? 'vote-attempts:user:' . $user->id 
-            : 'vote-attempts:ip:' . $request->ip();
+        $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$request->ip()}";
+        $globalKey = "vote-global:ip:{$request->ip()}";
 
-        $isBlocked = \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($blockKey, 5);
-        $availableIn = $isBlocked ? \Illuminate\Support\Facades\RateLimiter::availableIn($blockKey) : 0;
+        $isBlocked = \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($sendKey, 5) || 
+                     \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($globalKey, 10);
+        
+        $availableIn = $isBlocked ? max(
+            \Illuminate\Support\Facades\RateLimiter::availableIn($sendKey),
+            \Illuminate\Support\Facades\RateLimiter::availableIn($globalKey)
+        ) : 0;
 
         return [
             ...parent::share($request),
