@@ -83,4 +83,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function sendEmailVerificationNotification($token = null)
+    {
+        $this->notify((new \Illuminate\Auth\Notifications\VerifyEmail)->onQueue('emails'));
+    }
 }

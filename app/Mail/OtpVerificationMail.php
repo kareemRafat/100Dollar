@@ -9,17 +9,20 @@ use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
-class OtpVerificationMail extends Mailable
+class OtpVerificationMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(public string $otp)
+    public function __construct(public string $otp, public ?string $forcedLocale = null)
     {
-        //
+        if ($this->forcedLocale) {
+            $this->locale = $this->forcedLocale;
+        }
     }
 
     /**
@@ -27,8 +30,12 @@ class OtpVerificationMail extends Mailable
      */
     public function envelope(): Envelope
     {
+        if ($this->locale) {
+            App::setLocale($this->locale);
+        }
+
         return new Envelope(
-            subject: __('Verification Code') . ': ' . $this->otp,
+            subject: __('Verification Code'),
         );
     }
 

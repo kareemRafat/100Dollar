@@ -11,6 +11,10 @@ class CommentController extends Controller
 {
     public function store(Request $request, Idea $idea)
     {
+        if ($idea->status !== 'approved') {
+            abort(404);
+        }
+
         $validated = $request->validate([
             'body' => 'required|string|max:1000',
         ]);

@@ -147,6 +147,10 @@ class IdeaController extends Controller
 
     public function show(Idea $idea): Response
     {
+        if ($idea->status !== 'approved' && auth()->id() !== $idea->user_id) {
+            abort(404);
+        }
+
         JsonResource::withoutWrapping();
 
         $idea->load(['user.media', 'sponsor.media', 'country', 'category']);
@@ -173,6 +177,10 @@ class IdeaController extends Controller
 
     public function toggleFollow(Idea $idea)
     {
+        if ($idea->status !== 'approved') {
+            abort(404);
+        }
+
         $user = auth()->user();
         $follow = $user->followedIdeas()->where('idea_id', $idea->id)->first();
 

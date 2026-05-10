@@ -59,6 +59,8 @@ export default function IdeaShow({
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
+    const isOwner = auth.user?.id === idea.user_id;
+
     const {
         votesCount,
         isPinModalOpen,
@@ -113,7 +115,7 @@ export default function IdeaShow({
             return;
         }
 
-        if (!idea.user_id || auth.user.id === idea.user_id) {
+        if (!idea.user_id || isOwner) {
             return;
         }
 
@@ -202,6 +204,7 @@ export default function IdeaShow({
                             onVoteClick={handleVoteClick}
                             isLoading={isAutoSending}
                             isBlocked={isBlocked}
+                            isOwner={isOwner}
                             remainingSeconds={remainingSeconds}
                         />
 

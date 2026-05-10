@@ -1,4 +1,5 @@
 <x-mail::message>
+<div dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" style="text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }}; font-family: sans-serif;">
 # {{ __('Verification Code') }}
 
 {{ __('Hello,') }}
@@ -15,4 +16,5 @@
 
 {{ __('Thanks,') }}<br>
 {{ config('app.name') }}
+</div>
 </x-mail::message>

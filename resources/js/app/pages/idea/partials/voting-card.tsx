@@ -14,6 +14,7 @@ interface VotingCardProps {
     onVoteClick: () => void;
     isLoading?: boolean;
     isBlocked?: boolean;
+    isOwner?: boolean;
     remainingSeconds?: number;
 }
 
@@ -22,6 +23,7 @@ export const VotingCard = ({
     onVoteClick, 
     isLoading = false,
     isBlocked = false,
+    isOwner = false,
     remainingSeconds = 0
 }: VotingCardProps) => {
     const { __ } = useLang();
@@ -86,11 +88,15 @@ export const VotingCard = ({
                 {/* Enhanced Vote Button */}
                 <Button
                     onClick={onVoteClick}
-                    disabled={isLoading || isBlocked}
+                    disabled={isLoading || isBlocked || isOwner}
                     className="w-full h-14 animate-sparkle cursor-pointer rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl shadow-primary/10 gap-3"
                 >
                     {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />
+                    ) : isOwner ? (
+                        <span className="text-sm">
+                            {__('messages.vote_pin.owner_cannot_vote')}
+                        </span>
                     ) : isBlocked ? (
                         <span className="text-sm">
                             {formatDuration(remainingSeconds, locale)}

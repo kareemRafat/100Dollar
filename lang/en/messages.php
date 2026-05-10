@@ -355,6 +355,7 @@ return [
         'no_request' => 'No verification request found for this email.',
         'expired' => 'The verification code has expired. Please request a new one.',
         'invalid' => 'The verification code is invalid.',
+        'owner_cannot_vote' => 'You cannot vote for your own idea.',
     ],
 
     'profile' => [
