@@ -9,7 +9,15 @@ import {
     Megaphone,
     Clock,
     Users,
-    Receipt
+    Receipt,
+    ShoppingBag,
+    Home,
+    Palette,
+    Cpu,
+    Leaf,
+    GraduationCap,
+    Heart,
+    MoreHorizontal
 } from 'lucide-react';
 import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
@@ -48,6 +56,17 @@ interface Props {
     votedIdeaId: number | null;
 }
 
+const categoryIcons: Record<string, any> = {
+    'shopping-bag': ShoppingBag,
+    'home': Home,
+    'palette': Palette,
+    'cpu': Cpu,
+    'leaf': Leaf,
+    'graduation-cap': GraduationCap,
+    'heart': Heart,
+    'more-horizontal': MoreHorizontal,
+};
+
 export default function IdeaShow({
     idea,
     comments,
@@ -61,6 +80,8 @@ export default function IdeaShow({
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
     const isOwner = auth.user?.id === idea.user_id;
+
+    const CategoryIcon = idea.category_icon ? (categoryIcons[idea.category_icon] || MoreHorizontal) : Lightbulb;
 
     const {
         votesCount,
@@ -261,10 +282,18 @@ export default function IdeaShow({
                     <div className="order-2 space-y-12 lg:order-1 lg:col-span-8">
                         {/* About Section */}
                         <section className="arabic-dynamic-padding rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-8 lg:p-12">
-                            <h2 className="mb-6 flex items-center gap-3 font-headline text-2xl font-bold text-on-surface">
-                                <Lightbulb className="size-6 text-primary" />
-                                {__('messages.idea_detail.about_idea')}
-                            </h2>
+                            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+                                <h2 className="flex items-center gap-3 font-headline text-2xl font-bold text-on-surface">
+                                    <Lightbulb className="size-6 text-primary" />
+                                    {__('messages.idea_detail.about_idea')}
+                                </h2>
+                                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-primary transition-colors hover:bg-primary/10">
+                                    <CategoryIcon className="size-4" />
+                                    <span className="text-xs font-bold tracking-wider uppercase">
+                                        {idea.category}
+                                    </span>
+                                </div>
+                            </div>
                             <p className="mb-8 text-lg leading-relaxed whitespace-pre-wrap text-on-surface-variant">
                                 {idea.description}
                             </p>

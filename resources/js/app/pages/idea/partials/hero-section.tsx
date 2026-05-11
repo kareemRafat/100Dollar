@@ -1,5 +1,18 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Lightbulb, User, Globe, MapPin } from 'lucide-react';
+import { 
+    Lightbulb, 
+    User, 
+    Globe, 
+    MapPin,
+    ShoppingBag,
+    Home,
+    Palette,
+    Cpu,
+    Leaf,
+    GraduationCap,
+    Heart,
+    MoreHorizontal
+} from 'lucide-react';
 import React from 'react';
 import type { Idea } from '@/types';
 
@@ -7,8 +20,21 @@ interface HeroSectionProps {
     idea: Idea;
 }
 
+const categoryIcons: Record<string, any> = {
+    'shopping-bag': ShoppingBag,
+    'home': Home,
+    'palette': Palette,
+    'cpu': Cpu,
+    'leaf': Leaf,
+    'graduation-cap': GraduationCap,
+    'heart': Heart,
+    'more-horizontal': MoreHorizontal,
+};
+
 export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
     const { __ } = useLang();
+
+    const CategoryIcon = idea.category_icon ? (categoryIcons[idea.category_icon] || MoreHorizontal) : Lightbulb;
 
     return (
         <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[420px] mb-12">
@@ -28,8 +54,8 @@ export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
             </div>
 
             <div className="relative z-10 mx-auto px-8 text-center flex flex-col items-center">
-                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/25 px-4 py-1 text-primary-fixed shadow-lg shadow-primary/20 backdrop-blur-sm">
-                    <Lightbulb className="w-3.5 h-3.5 text-yellow-400" />
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/25 px-4 py-1.5 text-primary-fixed shadow-lg shadow-primary/20 backdrop-blur-sm">
+                    <CategoryIcon className="w-3.5 h-3.5 text-yellow-400" />
                     <span className="text-[11px] font-black uppercase tracking-[0.2em]">
                         {idea.category}
                     </span>

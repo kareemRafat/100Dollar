@@ -129,7 +129,6 @@ export function IdeaCard({
                         )}
                     </div>
                     <h3 className="mb-3 flex items-start gap-2 font-headline text-xl leading-tight font-bold text-on-surface dark:text-white">
-                        {isWinner && <Trophy className="mt-1 size-5 shrink-0 text-primary" />}
                         <span>{title}</span>
                     </h3>
                     <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-on-surface-variant">

@@ -4,6 +4,8 @@ import { IdeaCard } from '@/app/components/idea-card';
 import { Pagination } from '@/components/ui/pagination';
 import type { Idea } from '@/types';
 
+const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800';
+
 type Props = {
     ideas: {
         data: Idea[];
@@ -71,7 +73,7 @@ export default function IdeaList({ ideas }: Props) {
                             authorAvatar={idea.user?.avatar || ''}
                             votes={idea.votes_count}
                             isWinner={idea.is_winner}
-                            imageUrl={idea.image}
+                            imageUrl={idea.image || DEFAULT_IMAGE}
                             date={idea.date}
                             voteProgress={idea.progress}
                             timeAgo=""
