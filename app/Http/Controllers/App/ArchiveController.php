@@ -23,14 +23,14 @@ class ArchiveController extends Controller
                         ->orWhere('description', 'like', "%{$search}%");
                 });
             })
-            ->when($request->category && $request->category !== 'all', function ($query, $category) {
-                $query->where('category_id', $category);
+            ->when($request->category && $request->category !== 'all', function ($query) use ($request) {
+                $query->where('category_id', $request->category);
             })
             ->when($request->day !== null && $request->day !== '' && $request->day !== 'all', function ($query) use ($request) {
                 $query->where('submission_day', $request->day);
             })
-            ->when($request->month && $request->month !== 'all', function ($query, $month) {
-                $query->whereMonth('approved_at', $month);
+            ->when($request->month && $request->month !== 'all', function ($query) use ($request) {
+                $query->whereMonth('approved_at', $request->month);
             })
             ->when($request->status === 'winner', function ($query) {
                 $query->where('is_winner', true);

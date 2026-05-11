@@ -56,7 +56,8 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
         { value: '12', label: __('messages.archive.months.12') },
     ];
 
-    const hasActiveFilters = Object.entries(filters).some(([, value]) => value && value !== 'all');
+    const filterKeys = ['category', 'day', 'month', 'status'] as const;
+    const hasActiveFilters = Object.keys(filters).length > 0;
 
     return (
         <div className="mb-8 w-full">

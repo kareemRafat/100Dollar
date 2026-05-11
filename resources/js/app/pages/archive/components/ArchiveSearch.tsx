@@ -10,19 +10,15 @@ type Props = {
 export function ArchiveSearch({ defaultValue = '', onSearch }: Props) {
     const { __ } = useLang();
     const [value, setValue] = useState(defaultValue || '');
-    const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue);
-    const lastSentValue = useRef(defaultValue);
 
-    if (defaultValue !== prevDefaultValue) {
-        setPrevDefaultValue(defaultValue);
+    useEffect(() => {
         setValue(defaultValue || '');
-    }
+    }, [defaultValue]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (value !== defaultValue) {
+            if (value !== (defaultValue || '')) {
                 onSearch(value);
-                lastSentValue.current = value;
             }
         }, 300);
 
@@ -35,7 +31,7 @@ export function ArchiveSearch({ defaultValue = '', onSearch }: Props) {
                 <Search className="size-5 text-outline" />
             </div>
             <input
-                className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest dark:border-white dark:border-2"
+                className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all placeholder:text-outline-variant focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest dark:border-primary"
                 placeholder={__('messages.archive.search_placeholder')}
                 type="text"
                 value={value}

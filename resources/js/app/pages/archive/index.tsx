@@ -48,59 +48,45 @@ export default function Archive({ filters = {}, categories = [], ideas }: Props)
     const { __ } = useLang();
     const { locale } = usePage().props as any;
 
-    const handleFilterChange = useCallback((name: string, value: string) => {
-        const newFilters = { ...filters };
+    const updateFilters = useCallback((updatedFilters: any, showProgress = true) => {
+        const newFilters = { ...filters, ...updatedFilters };
 
-        if (value === 'all' || !value) {
-            delete (newFilters as any)[name];
-        } else {
-            (newFilters as any)[name] = value;
-        }
-        
+        // Remove 'all' and empty values to keep URL clean
+        Object.keys(newFilters).forEach((key) => {
+            const val = newFilters[key];
+            
+            if (val === 'all' || val === '' || val === undefined || val === null) {
+                delete newFilters[key];
+            }
+        });
+
         router.get(index.url(), newFilters, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
+            only: ['ideas', 'filters'],
+            showProgress,
         });
     }, [filters]);
+
+    const handleFilterChange = useCallback((name: string, value: string) => {
+        updateFilters({ [name]: value });
+    }, [updateFilters]);
 
     const handleSearch = useCallback((value: string) => {
-        const newFilters = { ...filters };
-
-        if (!value) {
-            delete newFilters.search;
-        } else {
-            newFilters.search = value;
-        }
-
-        router.get(index.url(), newFilters, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-        });
-    }, [filters]);
+        updateFilters({ search: value }, false);
+    }, [updateFilters]);
 
     const handleSortChange = useCallback((value: string) => {
-        const newFilters = { ...filters };
-
-        if (value === 'newest') {
-            delete newFilters.sort;
-        } else {
-            newFilters.sort = value;
-        }
-        
-        router.get(index.url(), newFilters, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-        });
-    }, [filters]);
+        updateFilters({ sort: value });
+    }, [updateFilters]);
 
     const handleClearFilters = useCallback(() => {
         router.get(index.url(), {}, {
             preserveState: true,
             preserveScroll: true,
             replace: true,
+            only: ['ideas', 'filters'],
         });
     }, []);
 
@@ -111,12 +97,12 @@ export default function Archive({ filters = {}, categories = [], ideas }: Props)
             <ArchiveHero />
 
             <div className="mx-auto flex max-w-7xl flex-col px-4 pb-12 sm:px-6">
-                <ArchiveSearch 
-                    defaultValue={filters.search} 
-                    onSearch={handleSearch} 
+                <ArchiveSearch
+                    defaultValue={filters.search}
+                    onSearch={handleSearch}
                 />
 
-                <ArchiveFilters 
+                <ArchiveFilters
                     filters={filters}
                     categories={categories}
                     onFilterChange={handleFilterChange}
@@ -124,13 +110,13 @@ export default function Archive({ filters = {}, categories = [], ideas }: Props)
                     locale={locale}
                 />
 
-                <ArchiveSort 
-                    value={filters.sort || 'newest'} 
-                    onSortChange={handleSortChange} 
+                <ArchiveSort
+                    value={filters.sort || 'newest'}
+                    onSortChange={handleSortChange}
                 />
 
-                <IdeaList 
-                    ideas={ideas} 
+                <IdeaList
+                    ideas={ideas}
                     key={JSON.stringify(filters)}
                 />
             </div>
