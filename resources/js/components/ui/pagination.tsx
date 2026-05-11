@@ -56,7 +56,7 @@ export function Pagination({ links, only, className }: PaginationProps) {
                                     href={link.url}
                                     preserveState
                                     preserveScroll
-                                    only={only as any}
+                                    only={only}
                                     className={cn(
                                         buttonVariants({
                                             variant: link.active ? 'default' : 'ghost',

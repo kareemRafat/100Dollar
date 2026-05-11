@@ -13,13 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-
-type Category = {
-    id: number;
-    name_ar: string;
-    name_en: string;
-    icon: string;
-};
+import type { Category } from '@/types';
 
 type Props = {
     filters: {
@@ -48,19 +42,21 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
     ];
 
     const months = [
-        { value: '1', label: 'يناير' },
-        { value: '2', label: 'فبراير' },
-        { value: '3', label: 'مارس' },
-        { value: '4', label: 'أبريل' },
-        { value: '5', label: 'مايو' },
-        { value: '6', label: 'يونيو' },
-        { value: '7', label: 'يوليو' },
-        { value: '8', label: 'أغسطس' },
-        { value: '9', label: 'سبتمبر' },
-        { value: '10', label: 'أكتوبر' },
-        { value: '11', label: 'نوفمبر' },
-        { value: '12', label: 'ديسمبر' },
+        { value: '1', label: __('messages.archive.months.1') },
+        { value: '2', label: __('messages.archive.months.2') },
+        { value: '3', label: __('messages.archive.months.3') },
+        { value: '4', label: __('messages.archive.months.4') },
+        { value: '5', label: __('messages.archive.months.5') },
+        { value: '6', label: __('messages.archive.months.6') },
+        { value: '7', label: __('messages.archive.months.7') },
+        { value: '8', label: __('messages.archive.months.8') },
+        { value: '9', label: __('messages.archive.months.9') },
+        { value: '10', label: __('messages.archive.months.10') },
+        { value: '11', label: __('messages.archive.months.11') },
+        { value: '12', label: __('messages.archive.months.12') },
     ];
+
+    const hasActiveFilters = Object.entries(filters).some(([, value]) => value && value !== 'all');
 
     return (
         <div className="mb-8 w-full">
@@ -154,13 +150,15 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
                     </Select>
                 </div>
 
-                <button 
-                    onClick={onClearFilters}
-                    className="ms-auto hidden shrink-0 items-center gap-1 text-sm font-bold text-primary hover:underline sm:flex"
-                >
-                    <FilterX className="size-4" />
-                    {__('messages.archive.clear_filter')}
-                </button>
+                {hasActiveFilters && (
+                    <button 
+                        onClick={onClearFilters}
+                        className="flex shrink-0 items-center gap-1 text-sm font-bold text-primary hover:underline sm:ms-auto"
+                    >
+                        <FilterX className="size-4" />
+                        {__('messages.archive.clear_filter')}
+                    </button>
+                )}
             </div>
         </div>
     );

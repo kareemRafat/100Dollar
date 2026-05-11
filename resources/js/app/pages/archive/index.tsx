@@ -1,12 +1,13 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, router, usePage } from '@inertiajs/react';
-import { ArchiveHero } from './components/ArchiveHero';
-import { ArchiveSearch } from './components/ArchiveSearch';
-import { ArchiveFilters } from './components/ArchiveFilters';
-import { ArchiveSort } from './components/ArchiveSort';
-import { IdeaList } from './components/IdeaList';
 import { useCallback } from 'react';
 import { index } from '@/actions/App/Http/Controllers/App/ArchiveController';
+import type { Category, Idea } from '@/types';
+import { ArchiveFilters } from './components/ArchiveFilters';
+import { ArchiveHero } from './components/ArchiveHero';
+import { ArchiveSearch } from './components/ArchiveSearch';
+import { ArchiveSort } from './components/ArchiveSort';
+import IdeaList from './components/IdeaList';
 
 type Props = {
     filters: {
@@ -17,37 +18,81 @@ type Props = {
         status?: string;
         sort?: string;
     };
-    categories: any[];
-    ideas: any;
+    categories: Category[];
+    ideas: {
+        data: Idea[];
+        links: {
+            first: string;
+            last: string;
+            prev: string | null;
+            next: string | null;
+        };
+        meta: {
+            current_page: number;
+            from: number;
+            last_page: number;
+            links: {
+                url: string | null;
+                label: string;
+                active: boolean;
+            }[];
+            path: string;
+            per_page: number;
+            to: number;
+            total: number;
+        };
+    };
 };
 
-export default function Archive({ filters, categories, ideas }: Props) {
+export default function Archive({ filters = {}, categories = [], ideas }: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
 
     const handleFilterChange = useCallback((name: string, value: string) => {
-        const newFilters = { ...filters, [name]: value === 'all' ? undefined : value };
+        const newFilters = { ...filters };
+
+        if (value === 'all' || !value) {
+            delete (newFilters as any)[name];
+        } else {
+            (newFilters as any)[name] = value;
+        }
         
         router.get(index.url(), newFilters, {
             preserveState: true,
             preserveScroll: true,
-            only: ['ideas', 'filters'],
+            replace: true,
         });
     }, [filters]);
 
     const handleSearch = useCallback((value: string) => {
-        router.get(index.url(), { ...filters, search: value || undefined }, {
+        const newFilters = { ...filters };
+
+        if (!value) {
+            delete newFilters.search;
+        } else {
+            newFilters.search = value;
+        }
+
+        router.get(index.url(), newFilters, {
             preserveState: true,
             preserveScroll: true,
-            only: ['ideas', 'filters'],
+            replace: true,
         });
     }, [filters]);
 
     const handleSortChange = useCallback((value: string) => {
-        router.get(index.url(), { ...filters, sort: value }, {
+        const newFilters = { ...filters };
+
+        if (value === 'newest') {
+            delete newFilters.sort;
+        } else {
+            newFilters.sort = value;
+        }
+        
+        router.get(index.url(), newFilters, {
             preserveState: true,
             preserveScroll: true,
-            only: ['ideas', 'filters'],
+            replace: true,
         });
     }, [filters]);
 
@@ -55,7 +100,7 @@ export default function Archive({ filters, categories, ideas }: Props) {
         router.get(index.url(), {}, {
             preserveState: true,
             preserveScroll: true,
-            only: ['ideas', 'filters'],
+            replace: true,
         });
     }, []);
 
@@ -86,7 +131,7 @@ export default function Archive({ filters, categories, ideas }: Props) {
 
                 <IdeaList 
                     ideas={ideas} 
-                    locale={locale} 
+                    key={JSON.stringify(filters)}
                 />
             </div>
         </>

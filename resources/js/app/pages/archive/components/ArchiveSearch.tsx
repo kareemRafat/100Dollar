@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 type Props = {
     defaultValue?: string;
@@ -9,12 +9,20 @@ type Props = {
 
 export function ArchiveSearch({ defaultValue = '', onSearch }: Props) {
     const { __ } = useLang();
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(defaultValue || '');
+    const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue);
+    const lastSentValue = useRef(defaultValue);
+
+    if (defaultValue !== prevDefaultValue) {
+        setPrevDefaultValue(defaultValue);
+        setValue(defaultValue || '');
+    }
 
     useEffect(() => {
         const timer = setTimeout(() => {
             if (value !== defaultValue) {
                 onSearch(value);
+                lastSentValue.current = value;
             }
         }, 300);
 

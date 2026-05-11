@@ -6,8 +6,8 @@ import { formatDuration } from '@/lib/utils';
 import voteRoute from '@/routes/app/ideas/vote';
 
 export function useIdeaVote(ideaId: number, initialVotesCount: number) {
-    const { __, locale } = useLang();
-    const { auth, vote_block } = usePage().props as any;
+    const { __ } = useLang();
+    const { auth, vote_block, locale } = usePage().props as any;
 
     const [isPinModalOpen, setIsPinModalOpen] = useState(false);
     const [votesCount, setVotesCount] = useState(initialVotesCount);
@@ -15,30 +15,29 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
 
     // Local timer for the block countdown
     const [remainingSeconds, setRemainingSeconds] = useState(vote_block?.available_in || 0);
+    const [prevAvailableIn, setPrevAvailableIn] = useState(vote_block?.available_in);
+    const isBlocked = remainingSeconds > 0;
 
     // Sync local timer with server-side block status when it changes
-    useEffect(() => {
-        if (vote_block?.available_in > 0) {
-            setRemainingSeconds(vote_block.available_in);
-        } else {
-            setRemainingSeconds(0);
-        }
-    }, [vote_block?.available_in]);
+    if (vote_block?.available_in !== prevAvailableIn) {
+        setPrevAvailableIn(vote_block?.available_in);
+        setRemainingSeconds(vote_block?.available_in || 0);
+    }
 
     // Timer logic
     useEffect(() => {
-        if (remainingSeconds <= 0) {
-return;
-}
+        if (!isBlocked) {
+            return;
+        }
 
         const timer = setInterval(() => {
-            setRemainingSeconds((prev) => (prev > 0 ? prev - 1 : 0));
+            setRemainingSeconds((prev: number) => (prev > 0 ? prev - 1 : 0));
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [remainingSeconds > 0]);
+    }, [isBlocked]);
 
-    const { post: sendOtp } = useHttp({
+    const { post: sendOtp, setData } = useHttp({
         email: auth.user?.email || '',
     });
 
@@ -47,6 +46,7 @@ return;
         setRemainingSeconds(0);
         router.reload({ only: ['vote_block', 'votedIdeaId'] });
     }, []);
+
     const handleVoteClick = useCallback(() => {
         if (remainingSeconds > 0) {
             const timeStr = formatDuration(remainingSeconds, locale);
@@ -60,8 +60,8 @@ return;
 
         if (auth.user) {
             setIsAutoSending(true);
+            setData('email', auth.user.email);
             sendOtp(voteRoute.sendOtp.url(ideaId), {
-                data: { email: auth.user.email },
                 onSuccess: (response: any) => {
                     toast.success(response.message);
                     setIsPinModalOpen(true);
@@ -99,13 +99,13 @@ return;
         } else {
             setIsPinModalOpen(true);
         }
-    }, [remainingSeconds, locale, auth.user, ideaId, sendOtp, __, vote_block?.available_in]);
+    }, [remainingSeconds, locale, auth.user, ideaId, sendOtp, __, vote_block?.available_in, setData]);
 
     return {
         votesCount,
         isPinModalOpen,
         isAutoSending,
-        isBlocked: remainingSeconds > 0,
+        isBlocked,
         remainingSeconds,
         handleVoteClick,
         handleVoteSuccess,

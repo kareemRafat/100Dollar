@@ -15,9 +15,9 @@ import {
     Award,
     ThumbsUp
 } from 'lucide-react';
+import { show } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
-import { show } from '@/actions/App/Http/Controllers/App/IdeaController';
 
 type Props = {
     id: number;
@@ -231,7 +231,7 @@ export function IdeaCard({
                         e.stopPropagation();
                         onVote?.();
                     }}
-                    variant={isVoted ? "primary" : "secondary"}
+                    variant={isVoted ? "default" : "secondary"}
                     disabled={isVoted || isLoading || isBlocked}
                     className={`w-full cursor-pointer rounded-xl py-6 transition-all ${
                         isVoted 
