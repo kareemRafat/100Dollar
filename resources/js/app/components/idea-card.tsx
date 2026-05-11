@@ -13,7 +13,8 @@ import {
     Loader2,
     Lock,
     Award,
-    ThumbsUp
+    ThumbsUp,
+    Trophy
 } from 'lucide-react';
 import { show } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { Button } from '@/app/components/ui/button';
@@ -88,20 +89,31 @@ export function IdeaCard({
             <Link
                 href={show.url(id)}
                 prefetch
-                className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card"
+                className={`group relative flex flex-col rounded-xl border transition-all duration-300 hover:shadow-md dark:bg-card ${
+                    isWinner
+                        ? 'border-primary/50 bg-primary/5 shadow-md ring-1 ring-primary/20 dark:border-primary/40'
+                        : 'border-outline-variant/20 bg-surface-container-lowest shadow-sm'
+                }`}
             >
+                {isWinner && (
+                    <>
+                        <div className="absolute top-0 start-0 z-20 h-1 w-full rounded-t-xl bg-gradient-to-inline-end from-primary to-transparent" />
+                        <div className="absolute -top-3 -start-3 z-30 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
+                            <Trophy className="size-3.5 text-on-primary" />
+                            <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
+                                {__('messages.archive.winner_status').replace(' 🏆', '')}
+                            </span>
+                        </div>
+                    </>
+                )}
+
                 {imageUrl && (
-                    <div className="relative h-40 overflow-hidden sm:h-48">
+                    <div className="relative h-40 overflow-hidden rounded-t-xl sm:h-48">
                         <img
                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                             src={imageUrl}
                             alt={title}
                         />
-                        {isWinner && (
-                            <div className="absolute end-3 top-3 flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-bold text-on-primary shadow-lg sm:end-4 sm:top-4">
-                                <span>🏆 {__('messages.archive.winner_status')}</span>
-                            </div>
-                        )}
                     </div>
                 )}
                 <div className="flex flex-1 flex-col p-5 sm:p-8">
@@ -116,8 +128,9 @@ export function IdeaCard({
                             <span className="text-xs text-outline">{date}</span>
                         )}
                     </div>
-                    <h3 className="mb-3 font-headline text-xl leading-snug font-bold text-on-surface dark:text-white">
-                        {title}
+                    <h3 className="mb-3 flex items-start gap-2 font-headline text-xl leading-tight font-bold text-on-surface dark:text-white">
+                        {isWinner && <Trophy className="mt-1 size-5 shrink-0 text-primary" />}
+                        <span>{title}</span>
                     </h3>
                     <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-on-surface-variant">
                         {description}
@@ -159,7 +172,7 @@ export function IdeaCard({
             }`}
         >
             {isVoted && (
-                <div className="absolute -top-3 -end-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-4 ring-surface dark:ring-card">
+                <div className="absolute -top-3 -end-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
                     <Award className="size-3.5 text-on-primary" />
                     <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
                         {__('messages.home.voted_badge')}
@@ -234,8 +247,8 @@ export function IdeaCard({
                     variant={isVoted ? "default" : "secondary"}
                     disabled={isVoted || isLoading || isBlocked}
                     className={`w-full cursor-pointer rounded-xl py-6 transition-all ${
-                        isVoted 
-                            ? 'bg-primary text-on-primary shadow-inner opacity-100' 
+                        isVoted
+                            ? 'bg-primary text-on-primary shadow-inner opacity-100'
                             : 'animate-sparkle hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary'
                     }`}
                 >                    {isLoading ? (
