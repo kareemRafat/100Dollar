@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/app/components/ui/button';
-import AppLayout from '@/app/layouts/app-layout';
 import { Input } from '@/components/ui/input';
 
 import app from '@/routes/app';
@@ -113,7 +112,7 @@ export default function MyIdeas({
     }, [search]);
 
     return (
-        <AppLayout activeRoute="/my-ideas">
+        <>
             <Head title="أفكاري" />
 
             <main className="flex-grow">
@@ -376,6 +375,7 @@ export default function MyIdeas({
                     </div>
                 </div>
             </main>
-        </AppLayout>
+        </>
     );
 }
+

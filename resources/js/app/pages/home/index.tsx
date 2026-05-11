@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, WhenVisible } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
+import { Head, WhenVisible, usePage } from '@inertiajs/react';
+import { memo } from 'react';
 import type { Idea, Sponsor, Paginated } from '@/types';
 import DayTabs from './components/day-tabs';
 import Hero from './components/hero';
@@ -20,6 +20,11 @@ interface Props {
     votedIdeaId: number | null;
 }
 
+const MemoizedHero = memo(Hero);
+const MemoizedVotingCountdown = memo(VotingCountdown);
+const MemoizedPreviousWinners = memo(PreviousWinners);
+const MemoizedSponsorBanner = memo(SponsorBanner);
+
 export default function Home({
     ideas,
     sponsor,
@@ -30,16 +35,17 @@ export default function Home({
     votedIdeaId,
 }: Props) {
     const { __ } = useLang();
+    const { auth } = usePage().props as any;
 
     return (
-        <AppLayout activeRoute="/">
+        <>
             <Head title={__('messages.welcome')} />
 
-            <Hero />
+            <MemoizedHero auth={auth} />
 
             <section className="mx-auto mb-16 grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-12">
-                <SponsorBanner sponsor={sponsor} />
-                <VotingCountdown secondsUntilEnd={secondsUntilEnd} />
+                <MemoizedSponsorBanner sponsor={sponsor} />
+                <MemoizedVotingCountdown secondsUntilEnd={secondsUntilEnd} />
             </section>
 
             <DayTabs weekDays={weekDays} currentDay={currentDay} />
@@ -47,8 +53,8 @@ export default function Home({
             <IdeaList ideas={ideas} votedIdeaId={votedIdeaId} />
 
             <WhenVisible data="previousWinners" fallback={<PreviousWinnersSkeleton />} buffer={300}>
-                {previousWinners && <PreviousWinners winners={previousWinners} />}
+                {previousWinners && <MemoizedPreviousWinners winners={previousWinners} />}
             </WhenVisible>
-        </AppLayout>
+        </>
     );
 }

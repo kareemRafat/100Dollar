@@ -18,7 +18,6 @@ import { useState } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
-import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -156,7 +155,7 @@ export default function SubmitIdea({ categories, countries }: { categories: Cate
     };
 
     return (
-        <AppLayout activeRoute="/submit-idea">
+        <>
             <Head title={__('messages.submit_idea.hero_badge')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-deep-navy md:h-[400px]">
@@ -491,6 +490,7 @@ export default function SubmitIdea({ categories, countries }: { categories: Cate
                     </div>
                 </div>
             </main>
-        </AppLayout>
+        </>
     );
 }
+

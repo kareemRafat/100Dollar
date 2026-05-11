@@ -12,7 +12,6 @@ import type { SubmitEvent } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
-import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -74,25 +73,17 @@ export default function Contact() {
     ];
 
     return (
-        <AppLayout activeRoute="/contact">
+        <>
             <Head title={__('messages.nav.contact')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-deep-navy md:h-[400px]">
                 <div className="absolute inset-0 z-0">
                     <img
-                        alt="Modern illustrative communication background"
-                        className="h-full w-full object-cover opacity-20 mix-blend-luminosity"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQmrXjQNj4mqHs1qLAEf1hXrItF0RD87tQiaVV50MiQvqVP02ptbOPzACCAo_vsrefiL1nrJATB1tdhBi5RRff9HjEOjl-zaGGMbTScRAt4EJQazcXFkVtIZwz9x9syXGCYhtWBtrzG4MWe2jV8oyxUBwDLqTJ5UFa1tQ87ZpZW5_8Ghg8vAkmVfFDjHGX-z_RWIK9YNNXXf2BjHych6RF6O6SEaVbu8yerNL9OaqAF8VV_RPiPo_gozxjB97qbBsp-B5e4eiAM8g"
+                        alt="Modern customer support team"
+                        className="h-full w-full object-cover object-center opacity-40"
+                        src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&q=80&w=2000"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/70 to-deep-navy/90" />
-                    <div className="pointer-events-none absolute inset-0 opacity-20">
-                        <span className="material-symbols-outlined absolute top-10 start-10 scale-150 rotate-12 text-primary">
-                            mail
-                        </span>
-                        <span className="material-symbols-outlined absolute end-20 bottom-20 scale-125 -rotate-12 text-primary">
-                            call
-                        </span>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/40 to-deep-navy/90" />
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                     <h1 className="relative mb-6 inline-block font-headline text-2xl font-extrabold text-white md:text-4xl">
@@ -248,6 +239,6 @@ export default function Contact() {
                     </Button>
                 </div>
             </section>
-        </AppLayout>
+        </>
     );
 }

@@ -15,7 +15,6 @@ import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
-import AppLayout from '@/app/layouts/app-layout';
 import { useIdeaVote } from '@/app/hooks/use-idea-vote';
 import {
     Dialog,
@@ -155,7 +154,7 @@ export default function IdeaShow({
     }
 
     return (
-        <AppLayout>
+        <>
             <Head>
                 <title>{idea.title}</title>
                 <meta
@@ -430,17 +429,20 @@ export default function IdeaShow({
             </Dialog>
 
             <Suspense fallback={null}>
-                <PinModal
-                    isOpen={isPinModalOpen}
-                    onClose={() => setIsPinModalOpen(false)}
-                    onSuccess={handleVoteSuccess}
-                    ideaId={idea.id}
-                    initialEmail={auth.user?.email}
-                />
+                {isPinModalOpen && (
+                    <PinModal
+                        isOpen={isPinModalOpen}
+                        onClose={() => setIsPinModalOpen(false)}
+                        onSuccess={handleVoteSuccess}
+                        ideaId={idea.id}
+                        initialEmail={auth.user?.email}
+                    />
+                )}
             </Suspense>
-        </AppLayout>
+        </>
     );
 }
+
 
 function CommentSkeleton() {
     return (

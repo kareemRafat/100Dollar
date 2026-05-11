@@ -1,13 +1,16 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { ParticlesBackground } from '@/app/components/particles-background';
 import { Button } from '@/app/components/ui/button';
 import { login } from '@/routes';
 
-export default function Hero() {
+interface Props {
+    auth: any;
+}
+
+export default function Hero({ auth }: Props) {
     const { __ } = useLang();
-    const { auth } = usePage().props;
 
     const submitUrl = !auth.user
         ? login()

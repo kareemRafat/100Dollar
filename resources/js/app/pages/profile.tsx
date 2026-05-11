@@ -13,7 +13,6 @@ import {
 import { lazy, Suspense, useMemo } from 'react';
 import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
 import { SideNav } from '@/app/components/side-nav';
-import AppLayout from '@/app/layouts/app-layout';
 import profile from '@/routes/app/profile';
 
 // Lazy load tab components
@@ -271,7 +270,5 @@ export default function Profile({
         </div>
     );
 }
-
-Profile.layout = (page: React.ReactNode) => <AppLayout activeRoute="/profile">{page}</AppLayout>;
 
 

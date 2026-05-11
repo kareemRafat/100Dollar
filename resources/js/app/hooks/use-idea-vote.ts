@@ -27,7 +27,9 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
 
     // Timer logic
     useEffect(() => {
-        if (remainingSeconds <= 0) return;
+        if (remainingSeconds <= 0) {
+return;
+}
 
         const timer = setInterval(() => {
             setRemainingSeconds((prev) => (prev > 0 ? prev - 1 : 0));
@@ -52,6 +54,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
                 .replace(':time', timeStr); // Manual fallback if helper fails
 
             toast.error(message);
+
             return;
         }
 
@@ -72,6 +75,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
                     }
 
                     let message = __('messages.common.error');
+
                     try {
                         const data = typeof response.data === 'string'
                             ? JSON.parse(response.data)
@@ -85,6 +89,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
                     } catch {
                         // ...
                     }
+
                     toast.error(message);
                 },
                 onFinish: () => {

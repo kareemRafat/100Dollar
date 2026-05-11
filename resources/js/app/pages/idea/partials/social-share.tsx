@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { usePage } from '@inertiajs/react';
-import React from 'react';
 import { Copy } from 'lucide-react';
+import React from 'react';
 import { toast } from '@/app/components/ui/toast';
 import type { Idea } from '@/types';
 

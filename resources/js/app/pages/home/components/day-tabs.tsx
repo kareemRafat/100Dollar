@@ -24,7 +24,6 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
         router.get('/', { day: dayId }, {
             preserveScroll: true,
             only: ['ideas', 'sponsor', 'currentDay', 'votedIdeaId'],
-            reset: ['ideas'],
         });
     };
 

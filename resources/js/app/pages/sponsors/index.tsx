@@ -1,7 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
 import { Button } from '@/app/components/ui/button';
-import AppLayout from '@/app/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import type { Sponsor } from '@/types';
 
@@ -55,7 +54,7 @@ export default function SponsorsIndex({ sponsors, today }: Props) {
     ];
 
     return (
-        <AppLayout activeRoute="/sponsors">
+        <>
             <Head title={__('messages.nav.sponsors')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[400px]">
@@ -184,7 +183,7 @@ export default function SponsorsIndex({ sponsors, today }: Props) {
                     </div>
                 </div>
             </section>
-        </AppLayout>
+        </>
     );
 }
 

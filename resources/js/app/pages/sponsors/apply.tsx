@@ -18,7 +18,6 @@ import type {ChangeEvent, SubmitEvent, DragEvent} from 'react';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
-import AppLayout from '@/app/layouts/app-layout';
 import InputError from '@/components/input-error';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -105,7 +104,7 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
     };
 
     return (
-        <AppLayout activeRoute="/sponsors">
+        <>
             <Head title={__('messages.sponsors.become_sponsor_button')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-deep-navy md:h-[400px]">
@@ -351,6 +350,6 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                     </div>
                 </div>
             </section>
-        </AppLayout>
+        </>
     );
 }

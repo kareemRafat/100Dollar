@@ -1,8 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, ArrowRight, History } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { WinnerCard } from '@/app/components/winner-card';
 import type { Idea } from '@/types';

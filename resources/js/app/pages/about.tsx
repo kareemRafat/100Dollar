@@ -1,6 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
 
 const partners = [
     'FINTECH_CO',
@@ -37,7 +36,7 @@ export default function About() {
     ];
 
     return (
-        <AppLayout activeRoute="/about">
+        <>
             <Head title={__('messages.nav.about')} />
 
             <section className="relative flex h-[320px] items-center justify-center overflow-hidden bg-[#0F172A] md:h-[400px]">
@@ -236,6 +235,6 @@ export default function About() {
                     </div>
                 </div>
             </section>
-        </AppLayout>
+        </>
     );
 }

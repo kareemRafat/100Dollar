@@ -11,7 +11,6 @@ import {
     ChevronLeft
 } from 'lucide-react';
 import { IdeaCard } from '@/app/components/idea-card';
-import AppLayout from '@/app/layouts/app-layout';
 import {
     Select,
     SelectContent,
@@ -128,7 +127,7 @@ export default function Archive() {
     const { __ } = useLang();
 
     return (
-        <AppLayout activeRoute="/archive">
+        <>
             <Head title={__('messages.nav.archive')} />
 
             <header className="relative mb-8 h-[250px] w-full overflow-hidden md:h-[320px]">
@@ -281,6 +280,6 @@ export default function Archive() {
                     </button>
                 </div>
             </div>
-        </AppLayout>
+        </>
     );
 }

@@ -1,6 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
-import AppLayout from '@/app/layouts/app-layout';
 
 export default function HowItWorks() {
     const { __ } = useLang();
@@ -60,7 +59,7 @@ export default function HowItWorks() {
     ];
 
     return (
-        <AppLayout activeRoute="/how-it-works">
+        <>
             <Head title={__('messages.ui.how_it_works')} />
 
             <section className="relative flex h-[280px] items-center justify-center overflow-hidden bg-secondary md:h-[350px]">
@@ -188,6 +187,6 @@ export default function HowItWorks() {
                     </div>
                 </div>
             </section>
-        </AppLayout>
+        </>
     );
 }
