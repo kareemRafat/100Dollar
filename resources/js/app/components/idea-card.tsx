@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
+import { show } from '@/actions/App/Http/Controllers/App/IdeaController';
 
 type Props = {
     id: number;
@@ -85,7 +86,7 @@ export function IdeaCard({
     if (variant === 'archive') {
         return (
             <Link
-                href={`/ideas/${id}`}
+                href={show.url(id)}
                 prefetch
                 className="group flex flex-col overflow-hidden rounded-xl border border-outline-variant/20 bg-surface-container-lowest shadow-sm transition-all duration-300 hover:shadow-md dark:bg-card"
             >
@@ -149,7 +150,7 @@ export function IdeaCard({
 
     return (
         <Link
-            href={`/ideas/${id}`}
+            href={show.url(id)}
             prefetch
             className={`group relative flex h-full flex-col rounded-3xl border p-6 shadow-sm transition-all hover:shadow-xl dark:bg-card ${
                 isVoted

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\App\ArchiveController;
 use App\Http\Controllers\App\CommentController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\HomeController;
@@ -14,7 +15,7 @@ Route::get('/', [HomeController::class, 'index'])->name('app.home');
 
 Route::get('/about', [PageController::class, 'about'])->name('app.about');
 Route::get('/privacy', [PageController::class, 'privacy'])->name('app.privacy');
-Route::get('/archive', [PageController::class, 'archive'])->name('app.archive');
+Route::get('/archive', [ArchiveController::class, 'index'])->name('app.archive');
 Route::get('/sponsors', [SponsorController::class, 'index'])->name('app.sponsors');
 Route::get('/sponsors/apply', [SponsorController::class, 'create'])->name('app.sponsors.apply');
 Route::post('/sponsors/apply', [SponsorController::class, 'store'])->name('app.sponsors.store');

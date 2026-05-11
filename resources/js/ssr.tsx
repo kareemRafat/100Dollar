@@ -6,6 +6,7 @@ import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import AdminSettingsLayout from '@/admin/layouts/settings-layout';
 import { Toaster as AppToaster } from '@/app/components/ui/toast';
+import AppLayout from '@/app/layouts/app-layout';
 import { Toaster as AdminToaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
@@ -28,6 +29,12 @@ createServer((page) =>
                     return [AdminLayout, AdminSettingsLayout];
                 case name.startsWith('admin/'):
                     return AdminLayout;
+                case name.startsWith('app/pages/auth/'):
+                    return null;
+                case name.startsWith('app/pages/errors/'):
+                    return null;
+                case name.startsWith('app/pages/'):
+                    return AppLayout;
                 default:
                     return null;
             }
