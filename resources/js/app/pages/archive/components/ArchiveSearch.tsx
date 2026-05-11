@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Search } from 'lucide-react';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
     defaultValue?: string;
@@ -9,21 +9,30 @@ type Props = {
 
 export function ArchiveSearch({ defaultValue = '', onSearch }: Props) {
     const { __ } = useLang();
-    const [value, setValue] = useState(defaultValue || '');
+    const [value, setValue] = useState(defaultValue);
+    const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue);
 
+    // Adjust state during render when prop changes
+    if (defaultValue !== prevDefaultValue) {
+        setValue(defaultValue);
+        setPrevDefaultValue(defaultValue);
+    }
+
+    const onSearchRef = useRef(onSearch);
+    
     useEffect(() => {
-        setValue(defaultValue || '');
-    }, [defaultValue]);
+        onSearchRef.current = onSearch;
+    }, [onSearch]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (value !== (defaultValue || '')) {
-                onSearch(value);
+            if (value !== defaultValue) {
+                onSearchRef.current(value);
             }
         }, 300);
 
         return () => clearTimeout(timer);
-    }, [value, onSearch, defaultValue]);
+    }, [value, defaultValue]);
 
     return (
         <div className="relative z-10 mx-auto -mt-16 mb-10 w-full max-w-2xl">

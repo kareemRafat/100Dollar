@@ -23,6 +23,7 @@ class UserController extends Controller
         $status = $request->input('status');
 
         $users = User::query()
+            ->with('media')
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
