@@ -43,20 +43,32 @@ createInertiaApp({
         document.documentElement.setAttribute('dir', dir);
         document.documentElement.setAttribute('lang', locale);
 
-        // Listen for navigation changes (like language switching)
+        const initialIsAdmin = props.initialPage.component.startsWith('admin/');
+        if (initialIsAdmin) {
+            document.documentElement.classList.remove('theme-gold');
+        } else {
+            document.documentElement.classList.add('theme-gold');
+        }
+
+        // Listen for navigation changes (like language switching and theme switching)
         router.on('success', (event) => {
             const nextLocale = (event.detail.page.props.locale as string) || 'en';
             const nextDir = nextLocale === 'ar' ? 'rtl' : 'ltr';
             document.documentElement.setAttribute('dir', nextDir);
             document.documentElement.setAttribute('lang', nextLocale);
+
+            const isAdmin = event.detail.page.component.startsWith('admin/');
+            if (isAdmin) {
+                document.documentElement.classList.remove('theme-gold');
+            } else {
+                document.documentElement.classList.add('theme-gold');
+            }
         });
 
-        const isAdmin = props.initialPage.component.startsWith('admin/');
-        
         const content = (
             <TooltipProvider delayDuration={0}>
                 <App {...props} />
-                {isAdmin ? (
+                {initialIsAdmin ? (
                     <AdminToaster
                         position="top-center"
                         dir={dir}

@@ -5,6 +5,8 @@ import AppearanceSwitcher from '@/components/appearance-switcher';
 import LanguageSwitcher from '@/components/language-switcher';
 import { cn } from '@/lib/utils';
 
+import '@/../css/frontend.css';
+
 type Props = {
     children: ReactNode;
     maxWidth?: string;
@@ -16,7 +18,7 @@ export default function AuthLayout({ children, maxWidth = 'max-w-md' }: Props) {
     return (
         <main className="flex min-h-screen flex-col md:flex-row">
             <section className="airy-dots relative z-10 flex flex-1 flex-col justify-center overflow-y-auto bg-surface-container-lowest px-6 py-12 text-start md:px-24 md:py-10">
-                <div className='flex justify-end mb-10'>
+                <div className="mb-10 flex justify-end">
                     <div className="flex items-center gap-3">
                         <AppearanceSwitcher />
                         <LanguageSwitcher variant="standalone" />
@@ -27,14 +29,14 @@ export default function AuthLayout({ children, maxWidth = 'max-w-md' }: Props) {
                     {children}
                 </div>
             </section>
-            <section className="bg-editorial-gradient relative hidden flex-col justify-between overflow-hidden p-12 text-white md:flex md:w-2/5 text-start">
+            <section className="bg-editorial-gradient relative hidden flex-col justify-between overflow-hidden p-12 text-start text-white md:flex md:w-2/5">
                 <div className="pointer-events-none absolute inset-0 opacity-10">
-                    <div 
-                        className="h-full w-full" 
-                        style={{ 
+                    <div
+                        className="h-full w-full"
+                        style={{
                             backgroundImage: "url('/images/cubes.png')",
-                            backgroundRepeat: 'repeat'
-                        }} 
+                            backgroundRepeat: 'repeat',
+                        }}
                     />
                 </div>
                 <div className="relative z-10">

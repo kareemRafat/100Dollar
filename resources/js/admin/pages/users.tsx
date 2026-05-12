@@ -1,7 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { Loader2, Pencil, Search, Trash2, UserPlus } from 'lucide-react';
-import React, { useState, useEffect  } from 'react';
-import type {SubmitEvent} from 'react';
+import React, { useState, useEffect } from 'react';
+import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
@@ -18,7 +18,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Pagination } from '@/components/ui/pagination';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import {
     Table,
@@ -75,18 +81,21 @@ export default function UsersPage({ users, filters }: UsersProps) {
             const params: any = {};
 
             if (search) {
-params.search = search;
-}
+                params.search = search;
+            }
 
             if (role) {
-params.role = role;
-}
+                params.role = role;
+            }
 
             if (status) {
-params.status = status;
-}
+                params.status = status;
+            }
 
-            router.get(admin.users.index().url, params, { preserveState: true, replace: true });
+            router.get(admin.users.index().url, params, {
+                preserveState: true,
+                replace: true,
+            });
         }, 300);
 
         return () => clearTimeout(timeout);
@@ -147,8 +156,8 @@ params.status = status;
         e.preventDefault();
 
         if (!selectedUser) {
-return;
-}
+            return;
+        }
 
         editForm.patch(admin.users.update(selectedUser.id).url, {
             onSuccess: () => {
@@ -168,8 +177,8 @@ return;
         e.preventDefault();
 
         if (!selectedUser) {
-return;
-}
+            return;
+        }
 
         deleteForm.delete(admin.users.destroy(selectedUser.id).url, {
             onSuccess: () => {
@@ -186,7 +195,9 @@ return;
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">المستخدمين</h1>
-                        <p className="text-muted-foreground text-sm">إدارة مستخدمي النظام وصلاحياتهم</p>
+                        <p className="text-sm text-muted-foreground">
+                            إدارة مستخدمي النظام وصلاحياتهم
+                        </p>
                     </div>
                     <Button onClick={() => setIsCreateModalOpen(true)}>
                         <UserPlus className="ml-2 h-4 w-4" />
@@ -199,7 +210,7 @@ return;
                         <CardTitle>قائمة المستخدمين</CardTitle>
                         <div className="flex items-center gap-3">
                             <div className="relative">
-                                <Search className="absolute right-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Search className="absolute top-2.5 right-3 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
                                     placeholder="بحث..."
@@ -208,7 +219,12 @@ return;
                                     className="w-64 pr-9"
                                 />
                             </div>
-                            <Select value={role || 'all'} onValueChange={(v) => setRole(v === 'all' ? '' : v)}>
+                            <Select
+                                value={role || 'all'}
+                                onValueChange={(v) =>
+                                    setRole(v === 'all' ? '' : v)
+                                }
+                            >
                                 <SelectTrigger className="w-32">
                                     <SelectValue placeholder="الدور" />
                                 </SelectTrigger>
@@ -218,17 +234,26 @@ return;
                                     <SelectItem value="user">مستخدم</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Select value={status || 'all'} onValueChange={(v) => setStatus(v === 'all' ? '' : v)}>
+                            <Select
+                                value={status || 'all'}
+                                onValueChange={(v) =>
+                                    setStatus(v === 'all' ? '' : v)
+                                }
+                            >
                                 <SelectTrigger className="w-32">
                                     <SelectValue placeholder="الحالة" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>
                                     <SelectItem value="active">نشط</SelectItem>
-                                    <SelectItem value="inactive">معطل</SelectItem>
+                                    <SelectItem value="inactive">
+                                        معطل
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
-                            <Button variant="outline" onClick={resetFilters}>إعادة تعيين</Button>
+                            <Button variant="outline" onClick={resetFilters}>
+                                إعادة تعيين
+                            </Button>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -239,22 +264,47 @@ return;
                                     <TableHead>البريد الإلكتروني</TableHead>
                                     <TableHead>الدور</TableHead>
                                     <TableHead>الحالة</TableHead>
-                                    <TableHead className="text-end">الإجراءات</TableHead>
+                                    <TableHead className="text-end">
+                                        الإجراءات
+                                    </TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {users.data.map((user) => (
                                     <TableRow key={user.id}>
-                                        <TableCell className="font-medium">{user.name}</TableCell>
+                                        <TableCell className="font-medium">
+                                            {user.name}
+                                        </TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>
-                                            <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>
-                                                {user.role === 'admin' ? 'مدير' : 'مستخدم'}
+                                            <Badge
+                                                variant={
+                                                    user.role === 'admin'
+                                                        ? 'default'
+                                                        : 'secondary'
+                                                }
+                                            >
+                                                {user.role === 'admin'
+                                                    ? 'مدير'
+                                                    : 'مستخدم'}
                                             </Badge>
                                         </TableCell>
                                         <TableCell>
-                                            <Badge variant={user.is_active ? 'default' : 'destructive'} className={user.is_active ? 'bg-green-100 text-green-800' : ''}>
-                                                {user.is_active ? 'نشط' : 'معطل'}
+                                            <Badge
+                                                variant={
+                                                    user.is_active
+                                                        ? 'default'
+                                                        : 'destructive'
+                                                }
+                                                className={
+                                                    user.is_active
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : ''
+                                                }
+                                            >
+                                                {user.is_active
+                                                    ? 'نشط'
+                                                    : 'معطل'}
                                             </Badge>
                                         </TableCell>
                                         <TableCell className="text-end">
@@ -262,7 +312,9 @@ return;
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    onClick={() => handleEditClick(user)}
+                                                    onClick={() =>
+                                                        handleEditClick(user)
+                                                    }
                                                     className="h-8 w-8 text-primary hover:bg-primary/10"
                                                 >
                                                     <Pencil className="h-4 w-4" />
@@ -270,7 +322,9 @@ return;
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    onClick={() => handleDeleteClick(user)}
+                                                    onClick={() =>
+                                                        handleDeleteClick(user)
+                                                    }
                                                     className="h-8 w-8 text-destructive hover:bg-destructive/10"
                                                 >
                                                     <Trash2 className="h-4 w-4" />
@@ -287,12 +341,17 @@ return;
             </div>
 
             {/* Create Modal */}
-            <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+            <Dialog
+                open={isCreateModalOpen}
+                onOpenChange={setIsCreateModalOpen}
+            >
                 <DialogContent>
                     <form onSubmit={handleCreateSubmit}>
                         <DialogHeader>
                             <DialogTitle>إضافة مستخدم جديد</DialogTitle>
-                            <DialogDescription>أدخل بيانات المستخدم الجديد هنا.</DialogDescription>
+                            <DialogDescription>
+                                أدخل بيانات المستخدم الجديد هنا.
+                            </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid gap-2">
@@ -300,9 +359,18 @@ return;
                                 <Input
                                     id="name"
                                     value={createForm.data.name}
-                                    onChange={e => createForm.setData('name', e.target.value)}
+                                    onChange={(e) =>
+                                        createForm.setData(
+                                            'name',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                                {createForm.errors.name && <p className="text-red-500 text-xs">{createForm.errors.name}</p>}
+                                {createForm.errors.name && (
+                                    <p className="text-xs text-red-500">
+                                        {createForm.errors.name}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="email">البريد الإلكتروني</Label>
@@ -310,9 +378,18 @@ return;
                                     id="email"
                                     type="email"
                                     value={createForm.data.email}
-                                    onChange={e => createForm.setData('email', e.target.value)}
+                                    onChange={(e) =>
+                                        createForm.setData(
+                                            'email',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                                {createForm.errors.email && <p className="text-red-500 text-xs">{createForm.errors.email}</p>}
+                                {createForm.errors.email && (
+                                    <p className="text-xs text-red-500">
+                                        {createForm.errors.email}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="password">كلمة المرور</Label>
@@ -320,35 +397,66 @@ return;
                                     id="password"
                                     type="password"
                                     value={createForm.data.password}
-                                    onChange={e => createForm.setData('password', e.target.value)}
+                                    onChange={(e) =>
+                                        createForm.setData(
+                                            'password',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                                {createForm.errors.password && <p className="text-red-500 text-xs">{createForm.errors.password}</p>}
+                                {createForm.errors.password && (
+                                    <p className="text-xs text-red-500">
+                                        {createForm.errors.password}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="role">الدور</Label>
-                                <Select value={createForm.data.role} onValueChange={(v: 'admin' | 'user') => createForm.setData('role', v)}>
+                                <Select
+                                    value={createForm.data.role}
+                                    onValueChange={(v: 'admin' | 'user') =>
+                                        createForm.setData('role', v)
+                                    }
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="اختر الدور" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="user">مستخدم</SelectItem>
-                                        <SelectItem value="admin">مدير</SelectItem>
+                                        <SelectItem value="user">
+                                            مستخدم
+                                        </SelectItem>
+                                        <SelectItem value="admin">
+                                            مدير
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex items-center space-x-2 space-x-reverse gap-3">
+                            <div className="flex items-center gap-3 space-x-2 space-x-reverse">
                                 <Switch
                                     id="active"
                                     checked={createForm.data.is_active}
-                                    onCheckedChange={v => createForm.setData('is_active', v)}
+                                    onCheckedChange={(v) =>
+                                        createForm.setData('is_active', v)
+                                    }
                                 />
                                 <Label htmlFor="active">حساب نشط</Label>
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setIsCreateModalOpen(false)}>إلغاء</Button>
-                            <Button type="submit" disabled={createForm.processing}>
-                                {createForm.processing && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsCreateModalOpen(false)}
+                            >
+                                إلغاء
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={createForm.processing}
+                            >
+                                {createForm.processing && (
+                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                )}
                                 حفظ
                             </Button>
                         </DialogFooter>
@@ -362,7 +470,9 @@ return;
                     <form onSubmit={handleEditSubmit}>
                         <DialogHeader>
                             <DialogTitle>تعديل بيانات المستخدم</DialogTitle>
-                            <DialogDescription>تعديل بيانات المستخدم المختار.</DialogDescription>
+                            <DialogDescription>
+                                تعديل بيانات المستخدم المختار.
+                            </DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
                             <div className="grid gap-2">
@@ -370,55 +480,105 @@ return;
                                 <Input
                                     id="edit-name"
                                     value={editForm.data.name}
-                                    onChange={e => editForm.setData('name', e.target.value)}
+                                    onChange={(e) =>
+                                        editForm.setData('name', e.target.value)
+                                    }
                                 />
-                                {editForm.errors.name && <p className="text-red-500 text-xs">{editForm.errors.name}</p>}
+                                {editForm.errors.name && (
+                                    <p className="text-xs text-red-500">
+                                        {editForm.errors.name}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="edit-email">البريد الإلكتروني</Label>
+                                <Label htmlFor="edit-email">
+                                    البريد الإلكتروني
+                                </Label>
                                 <Input
                                     id="edit-email"
                                     type="email"
                                     value={editForm.data.email}
-                                    onChange={e => editForm.setData('email', e.target.value)}
+                                    onChange={(e) =>
+                                        editForm.setData(
+                                            'email',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                                {editForm.errors.email && <p className="text-red-500 text-xs">{editForm.errors.email}</p>}
+                                {editForm.errors.email && (
+                                    <p className="text-xs text-red-500">
+                                        {editForm.errors.email}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="edit-password">كلمة المرور (اتركها فارغة لعدم التغيير)</Label>
+                                <Label htmlFor="edit-password">
+                                    كلمة المرور (اتركها فارغة لعدم التغيير)
+                                </Label>
                                 <Input
                                     id="edit-password"
                                     type="password"
                                     value={editForm.data.password}
-                                    onChange={e => editForm.setData('password', e.target.value)}
+                                    onChange={(e) =>
+                                        editForm.setData(
+                                            'password',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                                {editForm.errors.password && <p className="text-red-500 text-xs">{editForm.errors.password}</p>}
+                                {editForm.errors.password && (
+                                    <p className="text-xs text-red-500">
+                                        {editForm.errors.password}
+                                    </p>
+                                )}
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="edit-role">الدور</Label>
-                                <Select value={editForm.data.role} onValueChange={(v: 'admin' | 'user') => editForm.setData('role', v)}>
+                                <Select
+                                    value={editForm.data.role}
+                                    onValueChange={(v: 'admin' | 'user') =>
+                                        editForm.setData('role', v)
+                                    }
+                                >
                                     <SelectTrigger>
                                         <SelectValue placeholder="اختر الدور" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="user">مستخدم</SelectItem>
-                                        <SelectItem value="admin">مدير</SelectItem>
+                                        <SelectItem value="user">
+                                            مستخدم
+                                        </SelectItem>
+                                        <SelectItem value="admin">
+                                            مدير
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <div className="flex items-center space-x-2 space-x-reverse gap-3">
+                            <div className="flex items-center gap-3 space-x-2 space-x-reverse">
                                 <Switch
                                     id="edit-active"
                                     checked={editForm.data.is_active}
-                                    onCheckedChange={v => editForm.setData('is_active', v)}
+                                    onCheckedChange={(v) =>
+                                        editForm.setData('is_active', v)
+                                    }
                                 />
                                 <Label htmlFor="edit-active">حساب نشط</Label>
                             </div>
                         </div>
                         <DialogFooter>
-                            <Button type="button" variant="outline" onClick={() => setIsEditModalOpen(false)}>إلغاء</Button>
-                            <Button type="submit" disabled={editForm.processing}>
-                                {editForm.processing && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsEditModalOpen(false)}
+                            >
+                                إلغاء
+                            </Button>
+                            <Button
+                                type="submit"
+                                disabled={editForm.processing}
+                            >
+                                {editForm.processing && (
+                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                )}
                                 تحديث
                             </Button>
                         </DialogFooter>
@@ -427,17 +587,38 @@ return;
             </Dialog>
 
             {/* Delete Modal */}
-            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+            <Dialog
+                open={isDeleteModalOpen}
+                onOpenChange={setIsDeleteModalOpen}
+            >
                 <DialogContent className="p-6">
                     <form onSubmit={handleDeleteSubmit} className="space-y-4">
                         <DialogHeader>
-                            <DialogTitle className="text-start">حذف المستخدم</DialogTitle>
-                            <DialogDescription className="text-start">هل أنت متأكد من حذف المستخدم {selectedUser?.name}؟ لا يمكن التراجع عن هذا الإجراء.</DialogDescription>
+                            <DialogTitle className="text-start">
+                                حذف المستخدم
+                            </DialogTitle>
+                            <DialogDescription className="text-start">
+                                هل أنت متأكد من حذف المستخدم{' '}
+                                {selectedUser?.name}؟ لا يمكن التراجع عن هذا
+                                الإجراء.
+                            </DialogDescription>
                         </DialogHeader>
                         <DialogFooter className="mt-6 flex flex-row items-center justify-start gap-2">
-                            <Button type="button" variant="outline" onClick={() => setIsDeleteModalOpen(false)}>إلغاء</Button>
-                            <Button type="submit" variant="destructive" disabled={deleteForm.processing}>
-                                {deleteForm.processing && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsDeleteModalOpen(false)}
+                            >
+                                إلغاء
+                            </Button>
+                            <Button
+                                type="submit"
+                                variant="destructive"
+                                disabled={deleteForm.processing}
+                            >
+                                {deleteForm.processing && (
+                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                )}
                                 حذف نهائي
                             </Button>
                         </DialogFooter>

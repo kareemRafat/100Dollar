@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 import { Footer } from '@/app/components/footer';
 import { TopNavBar } from '@/app/components/top-nav-bar';
 
+import '@/../css/frontend.css';
+
 type Props = {
     children: ReactNode;
     activeRoute?: string;

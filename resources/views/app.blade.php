@@ -25,14 +25,10 @@
             })();
         </script>
 
-        {{-- Inline style to set the HTML background color based on our theme in app.css --}}
+        {{-- Inline style to set the HTML background color based on our theme variables --}}
         <style>
             html {
-                background-color: #f9f9f7;
-            }
-
-            html.dark {
-                background-color: #1A1A2E;
+                background-color: var(--background, #ffffff);
             }
         </style>
 
