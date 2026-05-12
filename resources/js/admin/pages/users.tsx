@@ -1,6 +1,6 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Eye, Loader2, Pencil, Search, Trash2, UserPlus, User as UserIcon } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
@@ -80,7 +80,20 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
     const [status, setStatus] = useState(filters.status || '');
     const [countryId, setCountryId] = useState(filters.country_id || '');
 
+    const isFirstRender = useRef(true);
+    const skipNextEffect = useRef(false);
+
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        if (skipNextEffect.current) {
+            skipNextEffect.current = false;
+            return;
+        }
+
         const timeout = setTimeout(() => {
             const params: any = {};
 
@@ -110,11 +123,14 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
     }, [search, role, status, countryId]);
 
     const resetFilters = () => {
+        skipNextEffect.current = true;
         setSearch('');
         setRole('');
         setStatus('');
         setCountryId('');
-        router.get(admin.users.index().url);
+        router.get(admin.users.index().url, {}, {
+            replace: true,
+        });
     };
 
     const createForm = useForm({
@@ -233,6 +249,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                             </div>
                             <div className="flex flex-1 items-center gap-2">
                                 <Select
+                                    dir="rtl"
                                     value={role || 'all'}
                                     onValueChange={(v) =>
                                         setRole(v === 'all' ? '' : v)
@@ -248,6 +265,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                     </SelectContent>
                                 </Select>
                                 <Select
+                                    dir="rtl"
                                     value={countryId || 'all'}
                                     onValueChange={(v) =>
                                         setCountryId(v === 'all' ? '' : v)
@@ -269,6 +287,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                     </SelectContent>
                                 </Select>
                                 <Select
+                                    dir="rtl"
                                     value={status || 'all'}
                                     onValueChange={(v) =>
                                         setStatus(v === 'all' ? '' : v)
@@ -502,6 +521,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <div className="grid gap-2">
                                     <Label htmlFor="country">الدولة</Label>
                                     <Select
+                                        dir="rtl"
                                         value={createForm.data.country_id?.toString()}
                                         onValueChange={(v) =>
                                             createForm.setData('country_id', v)
@@ -530,6 +550,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <div className="grid gap-2">
                                     <Label htmlFor="role">الدور</Label>
                                     <Select
+                                        dir="rtl"
                                         value={createForm.data.role}
                                         onValueChange={(v: 'admin' | 'user') =>
                                             createForm.setData('role', v)
@@ -654,6 +675,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <div className="grid gap-2">
                                     <Label htmlFor="edit-country">الدولة</Label>
                                     <Select
+                                        dir="rtl"
                                         value={editForm.data.country_id?.toString()}
                                         onValueChange={(v) =>
                                             editForm.setData('country_id', v)
@@ -682,6 +704,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <div className="grid gap-2">
                                     <Label htmlFor="edit-role">الدور</Label>
                                     <Select
+                                        dir="rtl"
                                         value={editForm.data.role}
                                         onValueChange={(v: 'admin' | 'user') =>
                                             editForm.setData('role', v)
