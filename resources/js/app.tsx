@@ -68,15 +68,6 @@ createInertiaApp({
         const content = (
             <TooltipProvider delayDuration={0}>
                 <App {...props} />
-                {initialIsAdmin ? (
-                    <AdminToaster
-                        position="top-center"
-                        dir={dir}
-                        toastOptions={{ className: '!border-none shadow-lg' }}
-                    />
-                ) : (
-                    <AppToaster />
-                )}
             </TooltipProvider>
         );
 

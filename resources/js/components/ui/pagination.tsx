@@ -20,11 +20,11 @@ export function Pagination({ links, only, className }: PaginationProps) {
     const isRtl = locale === 'ar';
 
     const renderLabel = (label: string) => {
-        if (label.includes('laquo')) {
-            return isRtl ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />;
+        if (label.includes('laquo') || label.includes('Previous') || label.includes('السابق')) {
+            return <ChevronLeft className="h-4 w-4 rtl:rotate-180" />;
         }
-        if (label.includes('raquo')) {
-            return isRtl ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />;
+        if (label.includes('raquo') || label.includes('Next') || label.includes('التالي')) {
+            return <ChevronRight className="h-4 w-4 rtl:rotate-180" />;
         }
         return label;
     };

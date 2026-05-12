@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,9 +22,10 @@ class UserController extends Controller
         $search = $request->input('search');
         $role = $request->input('role');
         $status = $request->input('status');
+        $countryId = $request->input('country_id');
 
         $users = User::query()
-            ->with('media')
+            ->with(['media', 'country'])
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
@@ -31,8 +33,11 @@ class UserController extends Controller
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
             })
-            ->when($status !== null, function ($query) use ($status) {
+            ->when($status !== null && $status !== '', function ($query) use ($status) {
                 $query->where('is_active', $status === 'active');
+            })
+            ->when($countryId, function ($query, $countryId) {
+                $query->where('country_id', $countryId);
             })
             ->latest()
             ->paginate(10)
@@ -40,7 +45,20 @@ class UserController extends Controller
 
         return Inertia::render('admin/pages/users', [
             'users' => $users,
-            'filters' => $request->only(['search', 'role', 'status']),
+            'countries' => Country::all(),
+            'filters' => $request->only(['search', 'role', 'status', 'country_id']),
+        ]);
+    }
+
+    /**
+     * Display the specified user.
+     */
+    public function show(User $user): Response
+    {
+        $user->load(['country', 'media', 'ideas', 'votes.idea']);
+
+        return Inertia::render('admin/pages/users/show', [
+            'user' => $user,
         ]);
     }
 
@@ -54,6 +72,7 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
             'password' => ['required', 'string', 'min:8'],
             'role' => ['required', 'string', Rule::in(['admin', 'user'])],
+            'country_id' => ['required', 'exists:countries,id'],
             'phone' => ['nullable', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],
         ]);
@@ -63,6 +82,7 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => $validated['role'],
+            'country_id' => $validated['country_id'],
             'phone' => $validated['phone'],
             'is_active' => $validated['is_active'],
             'email_verified_at' => now(),
@@ -80,6 +100,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
             'role' => ['required', 'string', Rule::in(['admin', 'user'])],
+            'country_id' => ['required', 'exists:countries,id'],
             'phone' => ['nullable', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],
         ]);
@@ -91,8 +112,7 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        $user->fill($validated);
-        $user->save();
+        $user->update($validated);
 
         return back()->with('status', 'user-updated');
     }
@@ -102,7 +122,7 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        if ($user->id === auth()->id()) {
+        if ($user->id === auth('admin')->id()) {
             return back()->withErrors(['error' => 'لا يمكنك حذف نفسك']);
         }
 

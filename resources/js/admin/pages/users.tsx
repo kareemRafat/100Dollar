@@ -1,9 +1,10 @@
-import { Head, router, useForm } from '@inertiajs/react';
-import { Loader2, Pencil, Search, Trash2, UserPlus } from 'lucide-react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Eye, Loader2, Pencil, Search, Trash2, UserPlus, User as UserIcon } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -35,7 +36,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import admin from '@/routes/admin';
-import type { BreadcrumbItem, User } from '@/types';
+import type { BreadcrumbItem, Country, User } from '@/types';
 
 interface UsersProps {
     users: {
@@ -48,10 +49,12 @@ interface UsersProps {
         current_page: number;
         last_page: number;
     };
+    countries: Country[];
     filters: {
         search?: string;
         role?: string;
         status?: string;
+        country_id?: string;
     };
 }
 
@@ -66,7 +69,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function UsersPage({ users, filters }: UsersProps) {
+export default function UsersPage({ users, countries, filters }: UsersProps) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -75,6 +78,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [role, setRole] = useState(filters.role || '');
     const [status, setStatus] = useState(filters.status || '');
+    const [countryId, setCountryId] = useState(filters.country_id || '');
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -92,6 +96,10 @@ export default function UsersPage({ users, filters }: UsersProps) {
                 params.status = status;
             }
 
+            if (countryId) {
+                params.country_id = countryId;
+            }
+
             router.get(admin.users.index().url, params, {
                 preserveState: true,
                 replace: true,
@@ -99,12 +107,13 @@ export default function UsersPage({ users, filters }: UsersProps) {
         }, 300);
 
         return () => clearTimeout(timeout);
-    }, [search, role, status]);
+    }, [search, role, status, countryId]);
 
     const resetFilters = () => {
         setSearch('');
         setRole('');
         setStatus('');
+        setCountryId('');
         router.get(admin.users.index().url);
     };
 
@@ -113,6 +122,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
         email: '',
         password: '',
         role: 'user' as 'admin' | 'user',
+        country_id: '' as string | number,
         phone: '',
         is_active: true,
     });
@@ -122,6 +132,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
         email: '',
         password: '',
         role: 'user' as 'admin' | 'user',
+        country_id: '' as string | number,
         phone: '',
         is_active: true,
     });
@@ -146,6 +157,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
             email: user.email,
             password: '',
             role: user.role as 'admin' | 'user',
+            country_id: user.country_id || '',
             phone: user.phone || '',
             is_active: user.is_active,
         });
@@ -191,151 +203,227 @@ export default function UsersPage({ users, filters }: UsersProps) {
     return (
         <>
             <Head title="إدارة المستخدمين" />
-            <div className="space-y-6 p-6">
-                <div className="flex items-center justify-between">
+            <div className="space-y-6 p-4 md:p-6">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">المستخدمين</h1>
                         <p className="text-sm text-muted-foreground">
                             إدارة مستخدمي النظام وصلاحياتهم
                         </p>
                     </div>
-                    <Button onClick={() => setIsCreateModalOpen(true)}>
-                        <UserPlus className="ml-2 h-4 w-4" />
+                    <Button onClick={() => setIsCreateModalOpen(true)} className="w-full md:w-auto">
+                        <UserPlus className="me-2 h-4 w-4" />
                         إضافة مستخدم جديد
                     </Button>
                 </div>
 
                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <CardHeader className="flex flex-col space-y-4 pb-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
                         <CardTitle>قائمة المستخدمين</CardTitle>
-                        <div className="flex items-center gap-3">
-                            <div className="relative">
-                                <Search className="absolute top-2.5 right-3 h-4 w-4 text-muted-foreground" />
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <div className="relative w-full sm:w-64">
+                                <Search className="absolute top-2.5 inset-inline-start-3 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
                                     placeholder="بحث..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-64 pr-9"
+                                    className="w-full ps-9"
                                 />
                             </div>
-                            <Select
-                                value={role || 'all'}
-                                onValueChange={(v) =>
-                                    setRole(v === 'all' ? '' : v)
-                                }
+                            <div className="flex flex-1 items-center gap-2">
+                                <Select
+                                    value={role || 'all'}
+                                    onValueChange={(v) =>
+                                        setRole(v === 'all' ? '' : v)
+                                    }
+                                >
+                                    <SelectTrigger className="w-full sm:w-32">
+                                        <SelectValue placeholder="الدور" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">الكل</SelectItem>
+                                        <SelectItem value="admin">مدير</SelectItem>
+                                        <SelectItem value="user">مستخدم</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                                <Select
+                                    value={countryId || 'all'}
+                                    onValueChange={(v) =>
+                                        setCountryId(v === 'all' ? '' : v)
+                                    }
+                                >
+                                    <SelectTrigger className="w-full sm:w-32">
+                                        <SelectValue placeholder="الدولة" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">كل الدول</SelectItem>
+                                        {countries.map((country) => (
+                                            <SelectItem
+                                                key={country.id}
+                                                value={country.id.toString()}
+                                            >
+                                                {country.name_ar}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Select
+                                    value={status || 'all'}
+                                    onValueChange={(v) =>
+                                        setStatus(v === 'all' ? '' : v)
+                                    }
+                                >
+                                    <SelectTrigger className="w-full sm:w-32">
+                                        <SelectValue placeholder="الحالة" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">الكل</SelectItem>
+                                        <SelectItem value="active">نشط</SelectItem>
+                                        <SelectItem value="inactive">
+                                            معطل
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <Button
+                                variant="link"
+                                onClick={resetFilters}
+                                className="h-9 px-2 text-muted-foreground hover:text-primary sm:px-4"
                             >
-                                <SelectTrigger className="w-32">
-                                    <SelectValue placeholder="الدور" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="admin">مدير</SelectItem>
-                                    <SelectItem value="user">مستخدم</SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Select
-                                value={status || 'all'}
-                                onValueChange={(v) =>
-                                    setStatus(v === 'all' ? '' : v)
-                                }
-                            >
-                                <SelectTrigger className="w-32">
-                                    <SelectValue placeholder="الحالة" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="active">نشط</SelectItem>
-                                    <SelectItem value="inactive">
-                                        معطل
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                            <Button variant="outline" onClick={resetFilters}>
                                 إعادة تعيين
                             </Button>
                         </div>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>الاسم</TableHead>
-                                    <TableHead>البريد الإلكتروني</TableHead>
-                                    <TableHead>الدور</TableHead>
-                                    <TableHead>الحالة</TableHead>
-                                    <TableHead className="text-end">
-                                        الإجراءات
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {users.data.map((user) => (
-                                    <TableRow key={user.id}>
-                                        <TableCell className="font-medium">
-                                            {user.name}
-                                        </TableCell>
-                                        <TableCell>{user.email}</TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                variant={
-                                                    user.role === 'admin'
-                                                        ? 'default'
-                                                        : 'secondary'
-                                                }
-                                            >
-                                                {user.role === 'admin'
-                                                    ? 'مدير'
-                                                    : 'مستخدم'}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Badge
-                                                variant={
-                                                    user.is_active
-                                                        ? 'default'
-                                                        : 'destructive'
-                                                }
-                                                className={
-                                                    user.is_active
-                                                        ? 'bg-green-100 text-green-800'
-                                                        : ''
-                                                }
-                                            >
-                                                {user.is_active
-                                                    ? 'نشط'
-                                                    : 'معطل'}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="text-end">
-                                            <div className="flex items-center justify-end gap-2">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() =>
-                                                        handleEditClick(user)
-                                                    }
-                                                    className="h-8 w-8 text-primary hover:bg-primary/10"
-                                                >
-                                                    <Pencil className="h-4 w-4" />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="icon"
-                                                    onClick={() =>
-                                                        handleDeleteClick(user)
-                                                    }
-                                                    className="h-8 w-8 text-destructive hover:bg-destructive/10"
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </TableCell>
+                    <CardContent className="p-0 sm:p-6 sm:pt-0">
+                        <div className="overflow-x-auto">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[50px]"></TableHead>
+                                        <TableHead className="min-w-[150px]">الاسم</TableHead>
+                                        <TableHead className="min-w-[200px]">البريد الإلكتروني</TableHead>
+                                        <TableHead className="min-w-[100px]">الدولة</TableHead>
+                                        <TableHead className="min-w-[100px]">الدور</TableHead>
+                                        <TableHead className="min-w-[100px]">الحالة</TableHead>
+                                        <TableHead className="text-end min-w-[120px]">
+                                            الإجراءات
+                                        </TableHead>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        <Pagination links={users.links} />
+                                </TableHeader>
+                                <TableBody>
+                                    {users.data.length === 0 ? (
+                                        <TableRow>
+                                            <TableCell colSpan={6} className="h-72 text-center">
+                                                <div className="flex flex-col items-center justify-center space-y-4 px-4">
+                                                    <div className="rounded-full bg-muted p-4 ring-8 ring-muted/20">
+                                                        <Search className="h-10 w-10 text-muted-foreground" />
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <p className="text-xl font-semibold">لم يتم العثور على نتائج</p>
+                                                        <p className="max-w-xs text-sm text-muted-foreground">
+                                                            لا يوجد مستخدمين يطابقون معايير البحث الحالية. جرب تغيير الفلاتر أو كلمة البحث.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ) : (
+                                        users.data.map((user) => (
+                                            <TableRow key={user.id}>
+                                                <TableCell>
+                                                    <Avatar className="h-8 w-8">
+                                                        <AvatarImage
+                                                            src={user.avatar}
+                                                            alt={user.name}
+                                                        />
+                                                        <AvatarFallback>
+                                                            <UserIcon className="h-4 w-4" />
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                </TableCell>
+                                                <TableCell className="font-medium whitespace-nowrap">
+                                                    {user.name}
+                                                </TableCell>
+                                                <TableCell className="whitespace-nowrap">{user.email}</TableCell>
+                                                <TableCell className="whitespace-nowrap">
+                                                    {user.country?.name_ar || '-'}
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant={
+                                                            user.role === 'admin'
+                                                                ? 'default'
+                                                                : 'secondary'
+                                                        }
+                                                    >
+                                                        {user.role === 'admin'
+                                                            ? 'مدير'
+                                                            : 'مستخدم'}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Badge
+                                                        variant={
+                                                            user.is_active
+                                                                ? 'default'
+                                                                : 'destructive'
+                                                        }
+                                                        className={
+                                                            user.is_active
+                                                                ? 'bg-green-100 text-green-800'
+                                                                : ''
+                                                        }
+                                                    >
+                                                        {user.is_active
+                                                            ? 'نشط'
+                                                            : 'معطل'}
+                                                    </Badge>
+                                                </TableCell>
+                                                <TableCell className="text-end">
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <Link
+                                                            href={admin.users.show(user.id).url}
+                                                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition-colors"
+                                                            title="عرض التفاصيل"
+                                                        >
+                                                            <Eye className="h-4 w-4" />
+                                                        </Link>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() =>
+                                                                handleEditClick(
+                                                                    user,
+                                                                )
+                                                            }
+                                                            className="h-8 w-8 text-primary hover:bg-primary/10"
+                                                        >
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() =>
+                                                                handleDeleteClick(
+                                                                    user,
+                                                                )
+                                                            }
+                                                            className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </div>
+                        <div className="p-4 border-t sm:p-0 sm:border-0 mt-6">
+                            <Pagination links={users.links} />
+                        </div>
                     </CardContent>
                 </Card>
             </div>
@@ -345,7 +433,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
                 open={isCreateModalOpen}
                 onOpenChange={setIsCreateModalOpen}
             >
-                <DialogContent>
+                <DialogContent dir="rtl">
                     <form onSubmit={handleCreateSubmit}>
                         <DialogHeader>
                             <DialogTitle>إضافة مستخدم جديد</DialogTitle>
@@ -410,28 +498,58 @@ export default function UsersPage({ users, filters }: UsersProps) {
                                     </p>
                                 )}
                             </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="role">الدور</Label>
-                                <Select
-                                    value={createForm.data.role}
-                                    onValueChange={(v: 'admin' | 'user') =>
-                                        createForm.setData('role', v)
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="اختر الدور" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="user">
-                                            مستخدم
-                                        </SelectItem>
-                                        <SelectItem value="admin">
-                                            مدير
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="country">الدولة</Label>
+                                    <Select
+                                        value={createForm.data.country_id?.toString()}
+                                        onValueChange={(v) =>
+                                            createForm.setData('country_id', v)
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="اختر الدولة" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {countries.map((country) => (
+                                                <SelectItem
+                                                    key={country.id}
+                                                    value={country.id.toString()}
+                                                >
+                                                    {country.name_ar}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {createForm.errors.country_id && (
+                                        <p className="text-xs text-red-500">
+                                            {createForm.errors.country_id}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="role">الدور</Label>
+                                    <Select
+                                        value={createForm.data.role}
+                                        onValueChange={(v: 'admin' | 'user') =>
+                                            createForm.setData('role', v)
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="اختر الدور" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="user">
+                                                مستخدم
+                                            </SelectItem>
+                                            <SelectItem value="admin">
+                                                مدير
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 space-x-2 space-x-reverse">
+                            <div className="flex items-center gap-3">
                                 <Switch
                                     id="active"
                                     checked={createForm.data.is_active}
@@ -455,7 +573,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
                                 disabled={createForm.processing}
                             >
                                 {createForm.processing && (
-                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                                 )}
                                 حفظ
                             </Button>
@@ -466,7 +584,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
 
             {/* Edit Modal */}
             <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-                <DialogContent>
+                <DialogContent dir="rtl">
                     <form onSubmit={handleEditSubmit}>
                         <DialogHeader>
                             <DialogTitle>تعديل بيانات المستخدم</DialogTitle>
@@ -532,28 +650,58 @@ export default function UsersPage({ users, filters }: UsersProps) {
                                     </p>
                                 )}
                             </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="edit-role">الدور</Label>
-                                <Select
-                                    value={editForm.data.role}
-                                    onValueChange={(v: 'admin' | 'user') =>
-                                        editForm.setData('role', v)
-                                    }
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="اختر الدور" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="user">
-                                            مستخدم
-                                        </SelectItem>
-                                        <SelectItem value="admin">
-                                            مدير
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="edit-country">الدولة</Label>
+                                    <Select
+                                        value={editForm.data.country_id?.toString()}
+                                        onValueChange={(v) =>
+                                            editForm.setData('country_id', v)
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="اختر الدولة" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {countries.map((country) => (
+                                                <SelectItem
+                                                    key={country.id}
+                                                    value={country.id.toString()}
+                                                >
+                                                    {country.name_ar}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    {editForm.errors.country_id && (
+                                        <p className="text-xs text-red-500">
+                                            {editForm.errors.country_id}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="edit-role">الدور</Label>
+                                    <Select
+                                        value={editForm.data.role}
+                                        onValueChange={(v: 'admin' | 'user') =>
+                                            editForm.setData('role', v)
+                                        }
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="اختر الدور" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="user">
+                                                مستخدم
+                                            </SelectItem>
+                                            <SelectItem value="admin">
+                                                مدير
+                                            </SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 space-x-2 space-x-reverse">
+                            <div className="flex items-center gap-3">
                                 <Switch
                                     id="edit-active"
                                     checked={editForm.data.is_active}
@@ -577,7 +725,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
                                 disabled={editForm.processing}
                             >
                                 {editForm.processing && (
-                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                                 )}
                                 تحديث
                             </Button>
@@ -591,7 +739,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
                 open={isDeleteModalOpen}
                 onOpenChange={setIsDeleteModalOpen}
             >
-                <DialogContent className="p-6">
+                <DialogContent className="p-6" dir="rtl">
                     <form onSubmit={handleDeleteSubmit} className="space-y-4">
                         <DialogHeader>
                             <DialogTitle className="text-start">
@@ -617,7 +765,7 @@ export default function UsersPage({ users, filters }: UsersProps) {
                                 disabled={deleteForm.processing}
                             >
                                 {deleteForm.processing && (
-                                    <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                                    <Loader2 className="me-2 h-4 w-4 animate-spin" />
                                 )}
                                 حذف نهائي
                             </Button>

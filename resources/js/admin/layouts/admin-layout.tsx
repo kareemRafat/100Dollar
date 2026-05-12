@@ -1,4 +1,5 @@
 import AppLayoutTemplate from '@/admin/layouts/app/app-sidebar-layout';
+import { Toaster as AdminToaster } from '@/components/ui/sonner';
 import type { BreadcrumbItem } from '@/types';
 
 export default function AdminLayout({
@@ -13,6 +14,11 @@ export default function AdminLayout({
             <AppLayoutTemplate breadcrumbs={breadcrumbs}>
                 {children}
             </AppLayoutTemplate>
+            <AdminToaster
+                position="top-center"
+                dir="rtl"
+                toastOptions={{ className: '!border-none shadow-lg' }}
+            />
         </div>
     );
 }

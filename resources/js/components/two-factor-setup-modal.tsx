@@ -366,7 +366,7 @@ export default function TwoFactorSetupModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogContent className="sm:max-w-md">
+            <DialogContent className="sm:max-w-md" dir={isRtl ? "rtl" : "ltr"}>
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
                     <DialogTitle className={cn(isRtl ? "text-right" : "text-left")}>

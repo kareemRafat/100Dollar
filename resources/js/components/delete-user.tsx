@@ -43,7 +43,7 @@ export default function DeleteUser() {
                             حذف الحساب
                         </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent dir="rtl">
                         <DialogTitle>
                             هل أنت متأكد أنك تريد حذف حسابك؟
                         </DialogTitle>

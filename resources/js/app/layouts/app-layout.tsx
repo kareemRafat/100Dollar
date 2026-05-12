@@ -2,6 +2,7 @@ import { usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import { Footer } from '@/app/components/footer';
 import { TopNavBar } from '@/app/components/top-nav-bar';
+import { Toaster as AppToaster } from '@/app/components/ui/toast';
 
 import '@/../css/frontend.css';
 
@@ -19,6 +20,7 @@ export default function AppLayout({ children, activeRoute }: Props) {
             <TopNavBar activeRoute={currentRoute} />
             <main className="flex-1 pt-16">{children}</main>
             <Footer />
+            <AppToaster />
         </div>
     );
 }

@@ -47,7 +47,8 @@ Authentication is handled by **Laravel Fortify** but is context-aware via `App\S
 
 ### Localization & RTL Support
 - **Direction Awareness:** Every UI/UX change must be context-aware regarding text direction. Use logical properties (e.g., `ms-`, `me-`, `inset-inline-start`) or conditional classes based on the current locale to support both RTL (Arabic) and LTR (English) seamlessly.
-- **Translation:** Never hardcode user-facing strings. Always use localization helpers (`__()` in PHP/React).
+- **Admin Panel (Exception):** The admin panel is **Arabic-only** and must always be **RTL**. Do NOT use localization helpers (e.g., `__()` or `lang-sync`) for the admin panel; hardcode Arabic strings directly into components and pages. Ensure all layouts and modals explicitly enforce `dir="rtl"`.
+- **User App:** Continue to use localization helpers (`__()` in PHP/React) for the user-facing application to support both Arabic and English.
 
 ### Performance & Lazy Loading
 For data that sits "below the fold" (e.g., comments, related items), use **Lazy Loading on Scroll** to minimize initial load time:

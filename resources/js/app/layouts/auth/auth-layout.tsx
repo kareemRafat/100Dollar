@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 import AppearanceSwitcher from '@/components/appearance-switcher';
 import LanguageSwitcher from '@/components/language-switcher';
+import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import { cn } from '@/lib/utils';
 
 import '@/../css/frontend.css';
@@ -84,6 +85,7 @@ export default function AuthLayout({ children, maxWidth = 'max-w-md' }: Props) {
                     </div>
                 </div>
             </section>
+            <AppToaster />
         </main>
     );
 }

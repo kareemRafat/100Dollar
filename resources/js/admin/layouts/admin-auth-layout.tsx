@@ -1,4 +1,5 @@
 import AuthLayoutTemplate from '@/admin/layouts/auth/auth-simple-layout';
+import { Toaster as AdminToaster } from '@/components/ui/sonner';
 
 export default function AdminAuthLayout({
     title = '',
@@ -10,8 +11,15 @@ export default function AdminAuthLayout({
     children: React.ReactNode;
 }) {
     return (
-        <AuthLayoutTemplate title={title} description={description}>
-            {children}
-        </AuthLayoutTemplate>
+        <div dir="rtl">
+            <AuthLayoutTemplate title={title} description={description}>
+                {children}
+            </AuthLayoutTemplate>
+            <AdminToaster
+                position="top-center"
+                dir="rtl"
+                toastOptions={{ className: '!border-none shadow-lg' }}
+            />
+        </div>
     );
 }

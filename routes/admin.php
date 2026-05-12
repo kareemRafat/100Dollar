@@ -17,7 +17,7 @@ use Laravel\Fortify\Features;
 Route::middleware('guest:admin')->group(function () {
     Route::get('login', function (Request $request) {
         return Inertia::render('admin/pages/auth/login', [
-            'canResetPassword' => Features::enabled(Features::resetPasswords()),
+            'canResetPassword' => false,
             'canRegister' => false,
             'status' => $request->session()->get('status'),
         ]);
@@ -26,21 +26,6 @@ Route::middleware('guest:admin')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('throttle:login')
         ->name('admin.login.store');
-
-    Route::get('forgot-password', function (Request $request) {
-        return Inertia::render('admin/pages/auth/forgot-password', [
-            'status' => $request->session()->get('status'),
-        ]);
-    })->name('admin.password.request');
-
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-        ->name('admin.password.email');
-
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-        ->name('admin.password.reset');
-
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-        ->name('admin.password.update');
 
     if (Features::enabled(Features::twoFactorAuthentication())) {
         Route::get('two-factor-challenge', [TwoFactorController::class, 'create'])
@@ -70,6 +55,7 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::inertia('/', 'admin/pages/dashboard')->name('admin.dashboard');
 
     Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
+    Route::get('users/{user}', [UserController::class, 'show'])->name('admin.users.show');
     Route::post('users', [UserController::class, 'store'])->name('admin.users.store');
     Route::patch('users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');

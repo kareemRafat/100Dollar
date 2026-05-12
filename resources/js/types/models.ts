@@ -1,5 +1,12 @@
 import type { User } from './auth';
 
+export interface Country {
+    id: number;
+    name_ar: string;
+    name_en: string;
+    code: string;
+}
+
 export interface Idea {
     id: number;
     user_id: number;
