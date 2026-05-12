@@ -56,6 +56,34 @@ export interface Sponsor {
     contract_start: string;
     contract_end: string;
     is_active: boolean;
+    ideas_count?: number;
+    prize_records_count?: number;
+}
+
+export interface SponsorshipRequest {
+    id: number;
+    company_name: string;
+    email: string;
+    phone: string;
+    website?: string;
+    country_id: number;
+    country?: Country;
+    message: string;
+    status: 'pending' | 'approved' | 'rejected';
+    logo?: string;
+    created_at: string;
+}
+
+export interface PrizeRecord {
+    id: number;
+    idea_id: number;
+    sponsor_id: number;
+    amount: number;
+    status: string;
+    delivered_at?: string;
+    created_at: string;
+    sponsor?: Sponsor;
+    idea?: Idea;
 }
 
 export interface Comment {

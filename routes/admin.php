@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\TwoFactorController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
 use App\Http\Controllers\Admin\Settings\SecurityController;
+use App\Http\Controllers\Admin\PrizeRecordController;
+use App\Http\Controllers\Admin\SponsorController;
+use App\Http\Controllers\Admin\SponsorshipRequestController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +62,24 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::post('users', [UserController::class, 'store'])->name('admin.users.store');
     Route::patch('users/{user}', [UserController::class, 'update'])->name('admin.users.update');
     Route::delete('users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+    // Sponsors
+    Route::get('sponsors', [SponsorController::class, 'index'])->name('admin.sponsors.index');
+    Route::post('sponsors', [SponsorController::class, 'store'])->name('admin.sponsors.store');
+    Route::patch('sponsors/{sponsor}', [SponsorController::class, 'update'])->name('admin.sponsors.update');
+    Route::delete('sponsors/{sponsor}', [SponsorController::class, 'destroy'])->name('admin.sponsors.destroy');
+    Route::patch('sponsors/{sponsor}/toggle-status', [SponsorController::class, 'toggleStatus'])->name('admin.sponsors.toggle-status');
+
+    // Sponsorship Requests
+    Route::get('sponsorship-requests', [SponsorshipRequestController::class, 'index'])->name('admin.sponsorship-requests.index');
+    Route::get('sponsorship-requests/{sponsorshipRequest}', [SponsorshipRequestController::class, 'show'])->name('admin.sponsorship-requests.show');
+    Route::patch('sponsorship-requests/{sponsorshipRequest}/status', [SponsorshipRequestController::class, 'updateStatus'])->name('admin.sponsorship-requests.update-status');
+    Route::delete('sponsorship-requests/{sponsorshipRequest}', [SponsorshipRequestController::class, 'destroy'])->name('admin.sponsorship-requests.destroy');
+
+    // Prize Records
+    Route::get('prizes', [PrizeRecordController::class, 'index'])->name('admin.prizes.index');
+    Route::patch('prizes/{prizeRecord}/status', [PrizeRecordController::class, 'updateStatus'])->name('admin.prizes.update-status');
+
 
     Route::get('confirm-password', function () {
         return Inertia::render('admin/pages/auth/confirm-password');

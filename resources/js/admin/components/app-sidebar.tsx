@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, Users } from 'lucide-react';
+import { Handshake, LayoutGrid, Users, FileText, Trophy } from 'lucide-react';
 import AppLogo from '@/admin/components/app-logo';
 import { NavMain } from '@/admin/components/nav-main';
 import { NavUser } from '@/admin/components/nav-user';
@@ -25,6 +25,21 @@ const mainNavItems: NavItem[] = [
         title: 'المستخدمين',
         href: admin.users.index().url,
         icon: Users,
+    },
+    {
+        title: 'الرعاة',
+        href: admin.sponsors.index().url,
+        icon: Handshake,
+    },
+    {
+        title: 'طلبات الرعاية',
+        href: admin.sponsorshipRequests.index().url,
+        icon: FileText,
+    },
+    {
+        title: 'الجوائز',
+        href: admin.prizes.index().url,
+        icon: Trophy,
     },
 ];
 
