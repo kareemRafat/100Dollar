@@ -80,6 +80,10 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::get('prizes', [PrizeRecordController::class, 'index'])->name('admin.prizes.index');
     Route::patch('prizes/{prizeRecord}/status', [PrizeRecordController::class, 'updateStatus'])->name('admin.prizes.update-status');
 
+    // Winners
+    Route::get('winners', [App\Http\Controllers\Admin\WinnerController::class, 'index'])->name('admin.winners.index');
+    Route::post('winners/{idea}/confirm', [App\Http\Controllers\Admin\WinnerController::class, 'confirm'])->name('admin.winners.confirm');
+
 
     Route::get('confirm-password', function () {
         return Inertia::render('admin/pages/auth/confirm-password');

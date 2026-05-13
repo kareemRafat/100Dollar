@@ -14,30 +14,43 @@ Deliver a complete admin workflow for reviewing pending ideas and managing appro
 
 ## Tasks
 
-- [ ] Build a pending ideas list with filtering and search
-- [ ] Build an idea review page showing full idea details, image, and attached file
-- [ ] Add an approve action that assigns the scheduled day before publishing
-- [ ] Add a reject action with rejection reason input and user notification trigger
-- [ ] Build an approved ideas list with ability to edit the assigned day
-- [ ] Build a rejected ideas list
+### 🛡️ Admin Dashboard (Metrics)
+- [ ] **Backend:** Add metrics data to `admin.dashboard` route (Ideas, Votes, Users, Sponsors counts)
+- [ ] **Frontend:** Replace placeholders in `resources/js/admin/pages/dashboard.tsx` with real metric cards
+
+### 📋 Idea Management
+- [ ] **Backend: Admin Idea Controller**
+    - Create `app/Http/Controllers/Admin/IdeaController.php`
+    - Implement `index`: support filtering by status (pending, approved, rejected) and search
+    - Implement `show`: return full idea details with media
+    - Implement `updateStatus`: logic for approval (assigning `submission_day`) and rejection (recording `rejection_reason`)
+- [ ] **Backend: Requests & Routes**
+    - Create `app/Http/Requests/Admin/UpdateIdeaStatusRequest.php`
+    - Register routes in `routes/admin.php`
+- [ ] **Frontend: Idea Views**
+    - Create `resources/js/admin/pages/ideas/index.tsx`: list view with status tabs
+    - Create `resources/js/admin/pages/ideas/show.tsx`: full review page with action buttons (Approve/Reject)
+- [ ] **Notifications**
+    - Create `app/Notifications/IdeaRejectedNotification.php`
+    - Trigger notification when an idea is rejected, passing the reason
 
 ---
 
 ## Deliverables
 
-- [ ] Pending ideas management view
-- [ ] Idea review page
-- [ ] Approve and reject workflows
-- [ ] Approved ideas management view
-- [ ] Rejected ideas management view
+- [ ] Admin Dashboard with live metrics
+- [ ] `Admin/IdeaController` and associated routes
+- [ ] Idea listing (paginated, filtered) and review pages
+- [ ] Approval/Rejection workflow
+- [ ] User notification for rejection
 
 ---
 
 ## Done Criteria
 
-- [ ] Admin can search and filter pending ideas
-- [ ] Admin can open a full review page for each idea
-- [ ] Approving an idea assigns a publishing day
-- [ ] Rejecting an idea requires a rejection reason
-- [ ] Approved and rejected ideas are accessible in separate lists
+- [ ] Admin Dashboard shows correct platform stats
+- [ ] Admin can search and filter ideas by status
+- [ ] Approving an idea successfully sets the publishing day
+- [ ] Rejecting an idea requires a reason and triggers a notification
+- [ ] All idea states (pending/approved/rejected) are accessible in the admin panel
 

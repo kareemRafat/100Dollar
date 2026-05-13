@@ -86,11 +86,13 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
+            
             return;
         }
 
         if (skipNextEffect.current) {
             skipNextEffect.current = false;
+
             return;
         }
 

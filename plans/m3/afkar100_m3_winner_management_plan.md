@@ -14,29 +14,44 @@ Deliver a winner management workflow that supports manual confirmation and sched
 
 ## Tasks
 
-- [ ] Display the expected winner for each day based on highest vote count before announcement
-- [ ] Add a confirm winner action that publishes the official winner announcement
-- [ ] Track prize delivery status as `pending` or `delivered`
-- [ ] Send an automatic notification to the winner when confirmed
-- [ ] Add Laravel Scheduler logic for automatic announcement at midnight if not manually announced
+### 🏆 Winner Selection & Workflow
+- [x] **Backend: Winner Management**
+    - Implement logic to identify the potential winner (highest `votes_count`) for a specific day
+    - Create `confirmWinner` action: mark idea as `is_winner`, set `winner_announced_at`, and create `PrizeRecord`
+- [x] **Backend: Routes**
+    - Define winner-related routes in `routes/admin.php`
+- [x] **Frontend: Winner Views**
+    - Create `resources/js/admin/pages/winners/preview.tsx`: view showing the leading idea for "Today" and previous days this week
+    - Add "Confirm Winner" action to the preview page
+
+### ⏰ Automation & Scheduling
+- [ ] **Console Command:** Create `app/Console/Commands/AnnounceWinner.php` to automatically confirm the winner if not done manually
+- [ ] **Scheduler:** Register the command in `routes/console.php` to run daily at midnight
+- [ ] **Notifications:**
+    - Create `app/Notifications/WinnerAnnouncedNotification.php`
+    - Trigger notification when a winner is confirmed (manual or automatic)
+
+### 💰 Prize Tracking (Partial Review)
+- [x] Track prize delivery status as `pending` or `delivered`
+- [x] Ensure `PrizeRecord` is automatically created when a winner is confirmed
 
 ---
 
 ## Deliverables
 
-- [ ] Winner preview view
-- [ ] Winner confirmation workflow
-- [ ] Prize delivery tracking
-- [ ] Winner notification trigger
-- [ ] Scheduled fallback announcement logic
+- [x] Winner Preview/Confirmation page in Admin Panel
+- [x] Manual and Automatic winner announcement logic
+- [ ] Daily scheduler for winners
+- [x] Prize delivery tracking UI
+- [ ] Winner notification system
 
 ---
 
 ## Done Criteria
 
-- [ ] Admin can see the leading idea before announcement
-- [ ] Admin can confirm the official winner
-- [ ] Prize delivery state is stored and editable
-- [ ] Winner notification is triggered on confirmation
-- [ ] Scheduler can announce winners automatically when needed
+- [x] Admin can see the leading idea in real-time before announcement
+- [x] Manual "Confirm Winner" marks the idea and creates a prize record
+- [ ] Automatic fallback works via scheduler at midnight
+- [ ] Winners receive a notification upon confirmation
+- [x] Prize delivery status is manageable by Admin
 
