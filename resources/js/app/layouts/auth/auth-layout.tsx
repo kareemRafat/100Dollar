@@ -1,9 +1,9 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
+import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import AppearanceSwitcher from '@/components/appearance-switcher';
 import LanguageSwitcher from '@/components/language-switcher';
-import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import { cn } from '@/lib/utils';
 
 import '@/../css/frontend.css';

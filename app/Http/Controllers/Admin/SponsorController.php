@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Sponsor;
 use App\Http\Requests\Admin\StoreSponsorRequest;
 use App\Http\Requests\Admin\UpdateSponsorRequest;
+use App\Models\Sponsor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -110,7 +110,7 @@ class SponsorController extends Controller
      */
     public function toggleStatus(Sponsor $sponsor): RedirectResponse
     {
-        $sponsor->update(['is_active' => !$sponsor->is_active]);
+        $sponsor->update(['is_active' => ! $sponsor->is_active]);
 
         return back()->with('status', 'sponsor-status-updated');
     }

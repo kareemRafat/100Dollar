@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -91,6 +92,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification($token = null)
     {
-        $this->notify((new \Illuminate\Auth\Notifications\VerifyEmail)->onQueue('emails'));
+        $this->notify((new VerifyEmail)->onQueue('emails'));
     }
 }

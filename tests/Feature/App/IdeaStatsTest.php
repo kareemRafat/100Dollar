@@ -2,6 +2,7 @@
 
 use App\Models\Idea;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 
 beforeEach(function () {

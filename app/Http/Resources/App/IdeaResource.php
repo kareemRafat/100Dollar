@@ -2,6 +2,9 @@
 
 namespace App\Http\Resources\App;
 
+use App\Models\Category;
+use App\Models\Country;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -9,13 +12,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property int $id
  * @property string $title
  * @property string $description
- * @property \App\Models\Category $category
- * @property \App\Models\Country $country
+ * @property Category $category
+ * @property Country $country
  * @property string $city
  * @property string|null $image
  * @property int $votes_count
  * @property int $comments_count
- * @property \App\Models\User $user
+ * @property User $user
  */
 class IdeaResource extends JsonResource
 {
@@ -23,7 +26,7 @@ class IdeaResource extends JsonResource
     {
         $locale = app()->getLocale();
         $countryName = $this->country ? $this->country->{'name_'.$locale} : null;
-        
+
         return [
             'id' => $this->id,
             'title' => $this->title,

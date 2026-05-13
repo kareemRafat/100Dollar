@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Handshake, LayoutGrid, Users, FileText, Trophy, Banknote } from 'lucide-react';
+import { Handshake, LayoutGrid, Users, FileText, Trophy, Banknote, Lightbulb } from 'lucide-react';
 import AppLogo from '@/admin/components/app-logo';
 import { NavMain } from '@/admin/components/nav-main';
 import { NavUser } from '@/admin/components/nav-user';
@@ -20,6 +20,11 @@ const mainNavItems: NavItem[] = [
         title: 'لوحة التحكم',
         href: admin.dashboard().url,
         icon: LayoutGrid,
+    },
+    {
+        title: 'إدارة الأفكار',
+        href: admin.ideas.index().url,
+        icon: Lightbulb,
     },
     {
         title: 'المستخدمين',

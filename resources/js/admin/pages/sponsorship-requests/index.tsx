@@ -172,20 +172,16 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                                     <div className="flex items-center justify-end gap-2">
                                                         <Link 
                                                             href={admin.sponsorshipRequests.show(request.id).url}
+                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary hover:bg-primary/20 transition-colors"
                                                         >
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                className="h-8 w-8 text-primary hover:bg-primary/10"
-                                                            >
-                                                                <Eye className="h-4 w-4" />
-                                                            </Button>
+                                                            <Eye className="me-2 h-4 w-4" />
+                                                            مراجعة
                                                         </Link>
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
                                                             onClick={() => handleDeleteClick(request)}
-                                                            className="h-8 w-8 text-destructive hover:bg-destructive/10"
+                                                            className="h-9 w-9 text-destructive hover:bg-destructive/10"
                                                         >
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>

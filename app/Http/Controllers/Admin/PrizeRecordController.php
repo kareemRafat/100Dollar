@@ -49,7 +49,7 @@ class PrizeRecordController extends Controller
             'delivered_at' => ['nullable', 'date'],
         ]);
 
-        if ($validated['status'] === 'paid' && !$prizeRecord->delivered_at) {
+        if ($validated['status'] === 'paid' && ! $prizeRecord->delivered_at) {
             $validated['delivered_at'] = now();
         }
 

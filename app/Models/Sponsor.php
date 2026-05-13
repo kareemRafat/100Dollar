@@ -19,6 +19,8 @@ class Sponsor extends Model
 {
     use HasFactory, HasMedia;
 
+    protected $appends = ['logo'];
+
     protected function casts(): array
     {
         return [

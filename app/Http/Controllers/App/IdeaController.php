@@ -154,7 +154,7 @@ class IdeaController extends Controller
 
         JsonResource::withoutWrapping();
 
-        $idea->load(['user.media', 'sponsor.media', 'country', 'category']);
+        $idea->load(['user.media', 'sponsor.media', 'country', 'category', 'media']);
         $idea->loadCount(['votes', 'comments']);
 
         // Find if user/IP already voted for an idea in this competition day
@@ -162,7 +162,7 @@ class IdeaController extends Controller
         $voterEmail = auth()->check() ? auth()->user()->email : null;
 
         $votedIdeaId = Vote::whereNotNull('otp_verified_at')
-            ->when($voterEmail, fn($q) => $q->where('voter_email', $voterEmail), fn($q) => $q->where('ip_address', request()->ip()))
+            ->when($voterEmail, fn ($q) => $q->where('voter_email', $voterEmail), fn ($q) => $q->where('ip_address', request()->ip()))
             ->whereHas('idea', function ($query) use ($idea) {
                 $query->where('submission_day', $idea->submission_day)
                     ->where('week_number', $idea->week_number)

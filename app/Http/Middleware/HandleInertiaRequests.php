@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Middleware;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -37,16 +38,16 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user();
-        
+
         $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$request->ip()}";
         $globalKey = "vote-global:ip:{$request->ip()}";
 
-        $isBlocked = \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($sendKey, 5) || 
-                     \Illuminate\Support\Facades\RateLimiter::tooManyAttempts($globalKey, 10);
-        
+        $isBlocked = RateLimiter::tooManyAttempts($sendKey, 5) ||
+                     RateLimiter::tooManyAttempts($globalKey, 10);
+
         $availableIn = $isBlocked ? max(
-            \Illuminate\Support\Facades\RateLimiter::availableIn($sendKey),
-            \Illuminate\Support\Facades\RateLimiter::availableIn($globalKey)
+            RateLimiter::availableIn($sendKey),
+            RateLimiter::availableIn($globalKey)
         ) : 0;
 
         return [

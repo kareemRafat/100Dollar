@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\Admin\ConfirmWinner;
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
-use App\Models\PrizeRecord;
 use App\Models\Sponsor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,16 +23,16 @@ class WinnerController extends Controller
 
         // Get sponsors to know which days are active
         $sponsors = Sponsor::where('is_active', true)->get();
-        
+
         $days = [];
         // Saturday (6) to Friday (5)
         $weekDays = [6, 0, 1, 2, 3, 4, 5];
-        
+
         foreach ($weekDays as $i) {
             $sponsor = $sponsors->where('day_of_week', $i)->first();
-            
+
             // Find the leading idea for this day
-            $leadingIdea = Idea::with(['user:id,name', 'media', 'category', 'country'])
+            $leadingIdea = Idea::with(['user.media', 'media', 'category', 'country'])
                 ->where('submission_day', $i)
                 ->where('week_number', $currentWeek)
                 ->where('year', $currentYear)
@@ -42,7 +41,7 @@ class WinnerController extends Controller
                 ->first();
 
             // Find if a winner is already announced for this day
-            $announcedWinner = Idea::with(['user:id,name', 'media', 'category', 'country'])
+            $announcedWinner = Idea::with(['user.media', 'media', 'category', 'country'])
                 ->where('submission_day', $i)
                 ->where('week_number', $currentWeek)
                 ->where('year', $currentYear)
@@ -68,7 +67,7 @@ class WinnerController extends Controller
     /**
      * Confirm an idea as the official winner.
      */
-    public function confirm(Request $request, Idea $idea, \App\Actions\Admin\ConfirmWinner $confirmWinner): RedirectResponse
+    public function confirm(Request $request, Idea $idea, ConfirmWinner $confirmWinner): RedirectResponse
     {
         if ($idea->is_winner) {
             return back()->withErrors(['error' => 'هذه الفكرة فائزة بالفعل.']);

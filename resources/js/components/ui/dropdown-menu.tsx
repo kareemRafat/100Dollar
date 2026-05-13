@@ -6,16 +6,9 @@ import { usePage } from "@inertiajs/react"
 import { cn } from "@/lib/utils"
 
 function DropdownMenu({
-  dir,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  const page = usePage();
-  const pageProps = page?.props || {};
-  const component = page?.component || '';
-  const isRtl = pageProps.locale === 'ar' || (component && component.startsWith('admin/'))
-  const direction = dir || (isRtl ? "rtl" : "ltr")
-
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" dir={direction} {...props} />
+  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
 }
 
 function DropdownMenuPortal({

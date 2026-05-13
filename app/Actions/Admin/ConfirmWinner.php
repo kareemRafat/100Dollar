@@ -36,7 +36,7 @@ class ConfirmWinner
 
             // 3. Trigger Notification
             $idea->user->notify(new WinnerAnnouncedNotification($idea));
-            
+
             // 4. Create internal notification record
             \App\Models\Notification::create([
                 'user_id' => $idea->user_id,

@@ -34,6 +34,8 @@ class Idea extends Model
 {
     use HasFactory, HasMedia;
 
+    protected $appends = ['date', 'pdf_file', 'image'];
+
     protected function casts(): array
     {
         return [
@@ -48,6 +50,16 @@ class Idea extends Model
             'marketing_channel' => 'array',
             'country_id' => 'integer',
         ];
+    }
+
+    public function getDateAttribute(): string
+    {
+        return $this->created_at->format('Y-m-d');
+    }
+
+    public function getPdfFileAttribute(): ?string
+    {
+        return $this->media->where('collection_name', 'pdf')->first()?->url;
     }
 
     public function user(): BelongsTo

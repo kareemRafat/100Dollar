@@ -1,5 +1,5 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { Loader2, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Pencil, Plus, Trash2, Eye, Image as ImageIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
@@ -66,6 +66,8 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedSponsor, setSelectedSponsor] = useState<Sponsor | null>(null);
+    const [createLogoPreview, setCreateLogoPreview] = useState<string | null>(null);
+    const [editLogoPreview, setEditLogoPreview] = useState<string | null>(null);
 
     const createForm = useForm({
         name: '',
@@ -87,12 +89,36 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
 
     const deleteForm = useForm({});
 
+    const handleCreateLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            createForm.setData('logo', file);
+            setCreateLogoPreview(URL.createObjectURL(file));
+        } else {
+            createForm.setData('logo', null);
+            setCreateLogoPreview(null);
+        }
+    };
+
+    const handleEditLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            editForm.setData('logo', file);
+            setEditLogoPreview(URL.createObjectURL(file));
+        } else {
+            editForm.setData('logo', null);
+            setEditLogoPreview(selectedSponsor?.logo || null);
+        }
+    };
+
     const handleCreateSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         createForm.post(admin.sponsors.store().url, {
+            forceFormData: true,
             onSuccess: () => {
                 setIsCreateModalOpen(false);
                 createForm.reset();
+                setCreateLogoPreview(null);
                 toast.success('تم إضافة الراعي بنجاح');
             },
         });
@@ -108,6 +134,7 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
             is_active: sponsor.is_active,
             logo: null,
         });
+        setEditLogoPreview(sponsor.logo);
         setIsEditModalOpen(true);
     };
 
@@ -119,15 +146,17 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
         }
 
         // Use post with _method=PATCH for multipart/form-data with file upload
+        editForm.transform((data) => ({
+            ...data,
+            _method: 'PATCH',
+        }));
+
         editForm.post(admin.sponsors.update(selectedSponsor.id).url, {
             forceFormData: true,
-            onBefore: () => {
-                // Manually add _method since we're using post for file support
-                (editForm.data as any)._method = 'PATCH';
-            },
             onSuccess: () => {
                 setIsEditModalOpen(false);
                 editForm.reset();
+                setEditLogoPreview(null);
                 toast.success('تم تحديث بيانات الراعي بنجاح');
             },
         });
@@ -320,12 +349,25 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="logo">الشعار</Label>
-                                <Input
-                                    id="logo"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => createForm.setData('logo', e.target.files?.[0] || null)}
-                                />
+                                <div className="flex items-center gap-4">
+                                    {createLogoPreview ? (
+                                        <div className="h-16 w-16 overflow-hidden rounded-lg border bg-muted shadow-sm">
+                                            <img src={createLogoPreview} alt="Preview" className="h-full w-full object-contain" />
+                                        </div>
+                                    ) : (
+                                        <div className="h-16 w-16 flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 text-muted-foreground/50 gap-1">
+                                            <ImageIcon className="size-6" />
+                                            <span className="text-[10px] font-bold">لا يوجد</span>
+                                        </div>
+                                    )}
+                                    <Input
+                                        id="logo"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleCreateLogoChange}
+                                        className="flex-1"
+                                    />
+                                </div>
                                 {createForm.errors.logo && <p className="text-xs text-red-500">{createForm.errors.logo}</p>}
                             </div>
                             <div className="flex items-center gap-3">
@@ -408,12 +450,25 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="edit-logo">الشعار (اختياري)</Label>
-                                <Input
-                                    id="edit-logo"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => editForm.setData('logo', e.target.files?.[0] || null)}
-                                />
+                                <div className="flex items-center gap-4">
+                                    {editLogoPreview ? (
+                                        <div className="h-16 w-16 overflow-hidden rounded-lg border bg-muted shadow-sm">
+                                            <img src={editLogoPreview} alt="Preview" className="h-full w-full object-contain" />
+                                        </div>
+                                    ) : (
+                                        <div className="h-16 w-16 flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/20 text-muted-foreground/50 gap-1">
+                                            <ImageIcon className="size-6" />
+                                            <span className="text-[10px] font-bold">لا يوجد</span>
+                                        </div>
+                                    )}
+                                    <Input
+                                        id="edit-logo"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleEditLogoChange}
+                                        className="flex-1"
+                                    />
+                                </div>
                                 {editForm.errors.logo && <p className="text-xs text-red-500">{editForm.errors.logo}</p>}
                             </div>
                             <div className="flex items-center gap-3">

@@ -44,6 +44,7 @@ createInertiaApp({
         document.documentElement.setAttribute('lang', locale);
 
         const initialIsAdmin = props.initialPage.component.startsWith('admin/');
+
         if (initialIsAdmin) {
             document.documentElement.classList.remove('theme-gold');
         } else {
@@ -58,6 +59,7 @@ createInertiaApp({
             document.documentElement.setAttribute('lang', nextLocale);
 
             const isAdmin = event.detail.page.component.startsWith('admin/');
+
             if (isAdmin) {
                 document.documentElement.classList.remove('theme-gold');
             } else {

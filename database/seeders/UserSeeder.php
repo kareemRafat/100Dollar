@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -12,7 +13,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $countries = \App\Models\Country::all();
+        $countries = Country::all();
 
         foreach ($countries as $country) {
             User::factory()->count(10)->create([

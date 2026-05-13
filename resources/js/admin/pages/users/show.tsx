@@ -122,13 +122,13 @@ export default function UserShowPage({ user }: ShowProps) {
                                 </div>
                             </div>
 
-                            {user.bio && (
+                            {Boolean(user.bio) && (
                                 <>
                                     <Separator />
                                     <div className="space-y-2">
                                         <h3 className="text-sm font-semibold">السيرة الذاتية</h3>
                                         <p className="text-sm text-muted-foreground leading-relaxed">
-                                            {user.bio}
+                                            {user.bio as string}
                                         </p>
                                     </div>
                                 </>

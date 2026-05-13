@@ -15,9 +15,7 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(public Idea $idea)
-    {
-    }
+    public function __construct(public Idea $idea) {}
 
     /**
      * Get the notification's delivery channels.
@@ -39,7 +37,7 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
             ->greeting(__('messages.notifications.winner_announced_mail_greeting', ['name' => $notifiable->name]))
             ->line(__('messages.notifications.winner_announced_mail_line1', ['title' => $this->idea->title]))
             ->line(__('messages.notifications.winner_announced_mail_line2'))
-            ->action(__('messages.notifications.winner_announced_mail_action'), url('/ideas/' . $this->idea->id))
+            ->action(__('messages.notifications.winner_announced_mail_action'), url('/ideas/'.$this->idea->id))
             ->line(__('messages.notifications.winner_announced_mail_line3'))
             ->line(__('messages.notifications.winner_announced_mail_line4'));
     }

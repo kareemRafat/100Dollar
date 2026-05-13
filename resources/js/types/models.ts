@@ -12,7 +12,7 @@ export interface Idea {
     user_id: number;
     sponsor_id?: number;
     category_id: number;
-    category: string;
+    category: string | Category;
     category_icon?: string;
     title: string;
     description: string;

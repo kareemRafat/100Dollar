@@ -1,12 +1,12 @@
 <?php
 
+use App\Mail\OtpVerificationMail;
 use App\Models\Idea;
 use App\Models\Vote;
-use App\Models\User;
-use App\Mail\OtpVerificationMail;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
+
 use function Pest\Laravel\postJson;
 
 beforeEach(function () {
@@ -16,7 +16,7 @@ beforeEach(function () {
 
 test('user can request an otp for voting', function () {
     Mail::fake();
-    
+
     $idea = Idea::factory()->create();
     $email = 'voter@example.com';
 
@@ -54,7 +54,7 @@ test('user is blocked after 5 failed otp requests', function () {
 test('user is blocked after 5 failed verification attempts', function () {
     $idea = Idea::factory()->create();
     $email = 'voter@example.com';
-    
+
     Vote::create([
         'idea_id' => $idea->id,
         'voter_email' => $email,
@@ -81,7 +81,7 @@ test('successful vote clears the block counter', function () {
     $idea = Idea::factory()->create();
     $email = 'voter@example.com';
     $otp = '123456';
-    
+
     Vote::create([
         'idea_id' => $idea->id,
         'voter_email' => $email,
@@ -104,7 +104,7 @@ test('successful vote clears the block counter', function () {
     ]);
 
     $response->assertOk();
-    
+
     // Counter should be cleared, next request should work
     $anotherIdea = Idea::factory()->create();
     postJson(route('app.ideas.vote.send-otp', ['locale' => 'en', 'idea' => $anotherIdea]), ['email' => $email])->assertOk();

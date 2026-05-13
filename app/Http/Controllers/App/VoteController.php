@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
-use App\Models\Idea;
-use App\Models\Vote;
 use App\Mail\OtpVerificationMail;
+use App\Models\Idea;
+use App\Models\User;
+use App\Models\Vote;
+use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -30,16 +32,16 @@ class VoteController extends Controller
         $user = $request->user();
         $ip = $request->ip();
         $locale = LaravelLocalization::getCurrentLocale() ?: app()->getLocale();
-        
+
         $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$ip}";
         $globalKey = "vote-global:ip:{$ip}";
 
         if (RateLimiter::tooManyAttempts($sendKey, 5) || RateLimiter::tooManyAttempts($globalKey, 10)) {
             $seconds = max(RateLimiter::availableIn($sendKey), RateLimiter::availableIn($globalKey));
-            $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
+            $time = CarbonInterval::seconds($seconds)->cascade()->forHumans([
                 'join' => true,
             ]);
-            
+
             return response()->json([
                 'message' => __('messages.common.too_many_attempts', ['time' => $time]),
             ], 429);
@@ -137,23 +139,23 @@ class VoteController extends Controller
         $user = $request->user();
         $email = $request->email;
         $ip = $request->ip();
-        
+
         $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$ip}";
         $globalKey = "vote-global:ip:{$ip}";
         $verifyKey = "vote-verify:idea:{$idea->id}:email:{$email}";
 
-        if (RateLimiter::tooManyAttempts($sendKey, 5) || 
-            RateLimiter::tooManyAttempts($globalKey, 10) || 
+        if (RateLimiter::tooManyAttempts($sendKey, 5) ||
+            RateLimiter::tooManyAttempts($globalKey, 10) ||
             RateLimiter::tooManyAttempts($verifyKey, 5)) {
             $seconds = max(
-                RateLimiter::availableIn($sendKey), 
-                RateLimiter::availableIn($globalKey), 
+                RateLimiter::availableIn($sendKey),
+                RateLimiter::availableIn($globalKey),
                 RateLimiter::availableIn($verifyKey)
             );
-            $time = \Carbon\CarbonInterval::seconds($seconds)->cascade()->forHumans([
+            $time = CarbonInterval::seconds($seconds)->cascade()->forHumans([
                 'join' => true,
             ]);
-            
+
             return response()->json([
                 'message' => __('messages.common.too_many_attempts', ['time' => $time]),
             ], 429);
@@ -176,7 +178,7 @@ class VoteController extends Controller
                 ->lockForUpdate()
                 ->first();
 
-            if (!$vote) {
+            if (! $vote) {
                 RateLimiter::hit($verifyKey, 600);
                 throw ValidationException::withMessages([
                     'otp' => [__('messages.vote_pin.no_request')],
@@ -266,7 +268,7 @@ class VoteController extends Controller
         });
     }
 
-    private function isIdeaOwner(Idea $idea, ?\App\Models\User $user, string $email): bool
+    private function isIdeaOwner(Idea $idea, ?User $user, string $email): bool
     {
         if ($user && $idea->user_id === $user->id) {
             return true;

@@ -3,15 +3,16 @@
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationController;
-use App\Http\Controllers\Admin\Auth\NewPasswordController;
-use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\TwoFactorController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\IdeaController;
+use App\Http\Controllers\Admin\PrizeRecordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
 use App\Http\Controllers\Admin\Settings\SecurityController;
-use App\Http\Controllers\Admin\PrizeRecordController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\SponsorshipRequestController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WinnerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -55,7 +56,12 @@ Route::middleware(['auth:admin', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
-    Route::inertia('/', 'admin/pages/dashboard')->name('admin.dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
+
+    // Ideas
+    Route::get('ideas', [IdeaController::class, 'index'])->name('admin.ideas.index');
+    Route::get('ideas/{idea}', [IdeaController::class, 'show'])->name('admin.ideas.show');
+    Route::patch('ideas/{idea}/status', [IdeaController::class, 'updateStatus'])->name('admin.ideas.update-status');
 
     Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('users/{user}', [UserController::class, 'show'])->name('admin.users.show');
@@ -81,9 +87,8 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::patch('prizes/{prizeRecord}/status', [PrizeRecordController::class, 'updateStatus'])->name('admin.prizes.update-status');
 
     // Winners
-    Route::get('winners', [App\Http\Controllers\Admin\WinnerController::class, 'index'])->name('admin.winners.index');
-    Route::post('winners/{idea}/confirm', [App\Http\Controllers\Admin\WinnerController::class, 'confirm'])->name('admin.winners.confirm');
-
+    Route::get('winners', [WinnerController::class, 'index'])->name('admin.winners.index');
+    Route::post('winners/{idea}/confirm', [WinnerController::class, 'confirm'])->name('admin.winners.confirm');
 
     Route::get('confirm-password', function () {
         return Inertia::render('admin/pages/auth/confirm-password');

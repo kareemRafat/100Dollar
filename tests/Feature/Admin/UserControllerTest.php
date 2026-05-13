@@ -1,13 +1,11 @@
 <?php
 
 use App\Models\Country;
-use App\Models\User;
 use App\Models\Idea;
+use App\Models\User;
 use App\Models\Vote;
+
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\get;
-use function Pest\Laravel\patch;
-use function Pest\Laravel\delete;
 
 beforeEach(function () {
     $this->admin = User::factory()->create(['role' => 'admin']);

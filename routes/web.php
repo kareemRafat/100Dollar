@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\Auth\AuthenticatedSessionController;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,7 +28,7 @@ Route::group([
             Route::get('register', function () {
                 return Inertia::render('app/pages/auth/register', [
                     'canLogin' => true,
-                    'countries' => \App\Models\Country::all(),
+                    'countries' => Country::all(),
                 ]);
             })->name('register');
         }

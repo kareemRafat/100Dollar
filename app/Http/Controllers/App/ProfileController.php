@@ -64,26 +64,26 @@ class ProfileController extends Controller
                 ->whereHas('idea')
                 ->with(['idea.user.media', 'idea.category', 'idea.country'])
                 ->latest();
-            
+
             $props['votedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($vote) => $vote->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($vote) => $vote->idea));
         } elseif ($activeSection === 'followed-ideas') {
             $query = $user->followedIdeas()
                 ->whereHas('idea')
                 ->with(['idea.user.media', 'idea.category', 'idea.country'])
                 ->latest();
-                
+
             $props['followedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->idea));
         } elseif ($activeSection === 'followed-people') {
             $query = $user->following()
                 ->whereHas('following')
                 ->with('following.media')
                 ->latest();
-                
+
             $props['followedPeople'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->following) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->following));
         } elseif ($activeSection === 'notifications') {
             $query = $user->customNotifications()
                 ->latest();
-                
+
             $props['notifications'] = $request->inertia() ? $query->paginate(10) : Inertia::defer(fn () => $query->paginate(10));
         }
 

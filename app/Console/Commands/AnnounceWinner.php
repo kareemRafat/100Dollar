@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Actions\Admin\ConfirmWinner;
 use App\Models\Idea;
 use Illuminate\Console\Command;
-use Illuminate\Support\Carbon;
 
 class AnnounceWinner extends Command
 {
@@ -29,7 +28,7 @@ class AnnounceWinner extends Command
     public function handle(ConfirmWinner $confirmWinner): int
     {
         $day = $this->argument('day');
-        
+
         // If no day provided, default to yesterday
         if ($day === null) {
             $day = now()->subDay()->dayOfWeek;
@@ -56,7 +55,8 @@ class AnnounceWinner extends Command
             ->exists();
 
         if ($existingWinner) {
-            $this->warn("A winner has already been announced for this day.");
+            $this->warn('A winner has already been announced for this day.');
+
             return Command::SUCCESS;
         }
 
@@ -68,8 +68,9 @@ class AnnounceWinner extends Command
             ->orderByDesc('votes_count')
             ->first();
 
-        if (!$leadingIdea) {
-            $this->error("No approved ideas found for this day.");
+        if (! $leadingIdea) {
+            $this->error('No approved ideas found for this day.');
+
             return Command::FAILURE;
         }
 
@@ -77,7 +78,7 @@ class AnnounceWinner extends Command
 
         $confirmWinner->execute($leadingIdea);
 
-        $this->info("Winner successfully announced!");
+        $this->info('Winner successfully announced!');
 
         return Command::SUCCESS;
     }

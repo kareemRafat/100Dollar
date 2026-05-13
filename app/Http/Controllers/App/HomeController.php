@@ -52,7 +52,7 @@ class HomeController extends Controller
         $voterEmail = auth()->check() ? auth()->user()->email : null;
 
         $votedIdeaId = Vote::whereNotNull('otp_verified_at')
-            ->when($voterEmail, fn($q) => $q->where('voter_email', $voterEmail), fn($q) => $q->where('ip_address', $request->ip()))
+            ->when($voterEmail, fn ($q) => $q->where('voter_email', $voterEmail), fn ($q) => $q->where('ip_address', $request->ip()))
             ->whereHas('idea', function ($query) use ($currentDay, $currentWeek, $currentYear) {
                 $query->where('submission_day', $currentDay)
                     ->where('week_number', $currentWeek)
