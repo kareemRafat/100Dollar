@@ -238,13 +238,15 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                         <CardTitle>قائمة المستخدمين</CardTitle>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <div className="relative w-full sm:w-64">
-                                <Search className="absolute top-2.5 inset-inline-start-3 h-4 w-4 text-muted-foreground" />
+                                <div className="pointer-events-none absolute inset-y-0 inset-inline-start-0 flex items-center ps-3">
+                                    <Search className="h-4 w-4 text-muted-foreground" />
+                                </div>
                                 <Input
                                     type="search"
                                     placeholder="بحث..."
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
-                                    className="w-full ps-9"
+                                    className="w-full ps-10"
                                 />
                             </div>
                             <div className="flex flex-1 items-center gap-2">

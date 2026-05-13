@@ -43,7 +43,7 @@ class UserController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return Inertia::render('admin/pages/users', [
+        return Inertia::render('admin/pages/users/index', [
             'users' => $users,
             'countries' => Country::all(),
             'filters' => $request->only(['search', 'role', 'status', 'country_id']),

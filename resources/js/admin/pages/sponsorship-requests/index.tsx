@@ -1,5 +1,5 @@
-import { Head, router } from '@inertiajs/react';
-import { Eye, Loader2, Search, Trash2, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Head, router, Link } from '@inertiajs/react';
+import { Eye, Trash2, CheckCircle, XCircle, Clock } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
@@ -14,7 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
 import {
     Select,
     SelectContent,
@@ -30,7 +30,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Pagination } from '@/components/ui/pagination';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Paginated, SponsorshipRequest } from '@/types';
 
@@ -67,18 +66,18 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState<SponsorshipRequest | null>(null);
-    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
-    const [isProcessing, setIsProcessing] = useState(false);
 
     const isFirstRender = useRef(true);
 
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
+
             return;
         }
 
         const params: any = {};
+
         if (statusFilter !== 'all') {
             params.status = statusFilter;
         }
@@ -89,33 +88,15 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
         });
     }, [statusFilter]);
 
-    const handleReviewClick = (request: SponsorshipRequest) => {
-        setSelectedRequest(request);
-        setIsReviewModalOpen(true);
-    };
-
-    const handleUpdateStatus = (status: 'approved' | 'rejected') => {
-        if (!selectedRequest) return;
-        
-        setIsProcessing(true);
-        router.patch(admin.sponsorshipRequests.updateStatus(selectedRequest.id).url, {
-            status: status
-        }, {
-            onSuccess: () => {
-                setIsReviewModalOpen(false);
-                toast.success('تم تحديث حالة الطلب بنجاح');
-            },
-            onFinish: () => setIsProcessing(false)
-        });
-    };
-
     const handleDeleteClick = (request: SponsorshipRequest) => {
         setSelectedRequest(request);
         setIsDeleteModalOpen(true);
     };
 
     const handleDeleteSubmit = () => {
-        if (!selectedRequest) return;
+        if (!selectedRequest) {
+            return ;
+        }
 
         router.delete(admin.sponsorshipRequests.destroy(selectedRequest.id).url, {
             onSuccess: () => {
@@ -189,14 +170,17 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                                 <TableCell>{getStatusBadge(request.status)}</TableCell>
                                                 <TableCell className="text-end">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            onClick={() => handleReviewClick(request)}
-                                                            className="h-8 w-8 text-primary hover:bg-primary/10"
+                                                        <Link 
+                                                            href={admin.sponsorshipRequests.show(request.id).url}
                                                         >
-                                                            <Eye className="h-4 w-4" />
-                                                        </Button>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="h-8 w-8 text-primary hover:bg-primary/10"
+                                                            >
+                                                                <Eye className="h-4 w-4" />
+                                                            </Button>
+                                                        </Link>
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
@@ -219,89 +203,6 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                     </CardContent>
                 </Card>
             </div>
-
-            {/* Review Modal */}
-            <Dialog open={isReviewModalOpen} onOpenChange={setIsReviewModalOpen}>
-                <DialogContent className="max-w-2xl" dir="rtl">
-                    <DialogHeader>
-                        <DialogTitle>تفاصيل طلب الرعاية</DialogTitle>
-                        <DialogDescription>مراجعة بيانات الشركة المقدمة لطلب الرعاية.</DialogDescription>
-                    </DialogHeader>
-                    {selectedRequest && (
-                        <div className="grid gap-6 py-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">اسم الشركة</p>
-                                    <p className="text-base font-semibold">{selectedRequest.company_name}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">الحالة</p>
-                                    <div>{getStatusBadge(selectedRequest.status)}</div>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">البريد الإلكتروني</p>
-                                    <p className="text-base">{selectedRequest.email}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">رقم الهاتف</p>
-                                    <p className="text-base" dir="ltr">{selectedRequest.phone}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">الدولة</p>
-                                    <p className="text-base">{selectedRequest.country?.name_ar || '-'}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-medium text-muted-foreground">الموقع الإلكتروني</p>
-                                    <p className="text-base text-primary hover:underline">
-                                        {selectedRequest.website ? (
-                                            <a href={selectedRequest.website} target="_blank" rel="noopener noreferrer">{selectedRequest.website}</a>
-                                        ) : '-'}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <p className="text-sm font-medium text-muted-foreground">الرسالة</p>
-                                <div className="rounded-lg bg-muted p-4 text-sm leading-relaxed">
-                                    {selectedRequest.message}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    <DialogFooter className="flex flex-row items-center justify-between gap-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setIsReviewModalOpen(false)}
-                            className="flex-1"
-                        >
-                            إغلاق
-                        </Button>
-                        {selectedRequest?.status === 'pending' && (
-                            <div className="flex flex-1 gap-2">
-                                <Button
-                                    type="button"
-                                    variant="destructive"
-                                    onClick={() => handleUpdateStatus('rejected')}
-                                    disabled={isProcessing}
-                                    className="flex-1"
-                                >
-                                    {isProcessing && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
-                                    رفض
-                                </Button>
-                                <Button
-                                    type="button"
-                                    onClick={() => handleUpdateStatus('approved')}
-                                    disabled={isProcessing}
-                                    className="flex-1"
-                                >
-                                    {isProcessing && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
-                                    قبول
-                                </Button>
-                            </div>
-                        )}
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
 
             {/* Delete Modal */}
             <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>

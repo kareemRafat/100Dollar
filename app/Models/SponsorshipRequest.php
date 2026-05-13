@@ -21,6 +21,13 @@ class SponsorshipRequest extends Model
 {
     use HasFactory, HasMedia;
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
+    protected $appends = ['logo'];
+
     protected function casts(): array
     {
         return [

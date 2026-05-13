@@ -72,9 +72,9 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
 
     // Sponsorship Requests
     Route::get('sponsorship-requests', [SponsorshipRequestController::class, 'index'])->name('admin.sponsorship-requests.index');
-    Route::get('sponsorship-requests/{sponsorshipRequest}', [SponsorshipRequestController::class, 'show'])->name('admin.sponsorship-requests.show');
-    Route::patch('sponsorship-requests/{sponsorshipRequest}/status', [SponsorshipRequestController::class, 'updateStatus'])->name('admin.sponsorship-requests.update-status');
-    Route::delete('sponsorship-requests/{sponsorshipRequest}', [SponsorshipRequestController::class, 'destroy'])->name('admin.sponsorship-requests.destroy');
+    Route::get('sponsorship-requests/{sponsorship_request}', [SponsorshipRequestController::class, 'show'])->name('admin.sponsorship-requests.show');
+    Route::patch('sponsorship-requests/{sponsorship_request}/status', [SponsorshipRequestController::class, 'updateStatus'])->name('admin.sponsorship-requests.update-status');
+    Route::delete('sponsorship-requests/{sponsorship_request}', [SponsorshipRequestController::class, 'destroy'])->name('admin.sponsorship-requests.destroy');
 
     // Prize Records
     Route::get('prizes', [PrizeRecordController::class, 'index'])->name('admin.prizes.index');

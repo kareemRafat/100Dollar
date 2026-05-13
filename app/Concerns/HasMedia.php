@@ -47,7 +47,6 @@ trait HasMedia
      */
     public function getLogoAttribute(): ?string
     {
-        return $this->media->where('collection_name', 'logo')->first()?->url
-            ?? 'https://ui-avatars.com/api/?name='.urlencode($this->name ?? $this->company_name ?? 'Sponsor').'&size=256&background=random';
+        return $this->media->where('collection_name', 'logo')->first()?->url;
     }
 }

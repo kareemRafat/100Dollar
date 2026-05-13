@@ -37,21 +37,21 @@ class SponsorshipRequestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SponsorshipRequest $sponsorshipRequest): Response
+    public function show(SponsorshipRequest $sponsorship_request): Response
     {
-        $sponsorshipRequest->load(['country', 'media']);
+        $sponsorship_request->load(['country', 'media']);
 
         return Inertia::render('admin/pages/sponsorship-requests/show', [
-            'request' => $sponsorshipRequest,
+            'request' => $sponsorship_request,
         ]);
     }
 
     /**
      * Update the specified resource status.
      */
-    public function updateStatus(UpdateSponsorshipRequestStatusRequest $request, SponsorshipRequest $sponsorshipRequest): RedirectResponse
+    public function updateStatus(UpdateSponsorshipRequestStatusRequest $request, SponsorshipRequest $sponsorship_request): RedirectResponse
     {
-        $sponsorshipRequest->update($request->validated());
+        $sponsorship_request->update($request->validated());
 
         return back()->with('status', 'request-status-updated');
     }
@@ -59,9 +59,9 @@ class SponsorshipRequestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SponsorshipRequest $sponsorshipRequest): RedirectResponse
+    public function destroy(SponsorshipRequest $sponsorship_request): RedirectResponse
     {
-        $sponsorshipRequest->delete();
+        $sponsorship_request->delete();
 
         return back()->with('status', 'request-deleted');
     }
