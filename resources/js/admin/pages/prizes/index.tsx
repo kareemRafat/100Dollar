@@ -1,11 +1,12 @@
 import { Head, router } from '@inertiajs/react';
-import { CheckCircle, Clock, Search, Trophy } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Pagination } from '@/components/ui/pagination';
 import {
     Select,
     SelectContent,
@@ -21,7 +22,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Pagination } from '@/components/ui/pagination';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Paginated, PrizeRecord, Sponsor } from '@/types';
 
@@ -63,12 +63,19 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
+
             return;
         }
 
         const params: any = {};
-        if (statusFilter !== 'all') params.status = statusFilter;
-        if (sponsorFilter !== 'all') params.sponsor_id = sponsorFilter;
+
+        if (statusFilter !== 'all') {
+            params.status = statusFilter;
+        }
+
+        if (sponsorFilter !== 'all') {
+            params.sponsor_id = sponsorFilter;
+        }
 
         router.get(admin.prizes.index().url, params, {
             preserveState: true,
@@ -160,12 +167,16 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                     ) : (
                                         prizes.data.map((prize) => (
                                             <TableRow key={prize.id}>
-                                                <TableCell className="font-medium">{prize.sponsor?.name || '-'}</TableCell>
+                                                <TableCell className="font-semibold">{prize.sponsor?.name || '-'}</TableCell>
                                                 <TableCell>{prize.idea?.user?.name || '-'}</TableCell>
-                                                <TableCell className="max-w-xs truncate">{prize.idea?.title || '-'}</TableCell>
-                                                <TableCell className="font-bold text-primary">${prize.amount}</TableCell>
-                                                <TableCell className="text-sm text-muted-foreground">
-                                                    {new Date(prize.created_at).toLocaleDateString('ar-EG')}
+                                                <TableCell className="max-w-xs truncate font-semibold">{prize.idea?.title || '-'}</TableCell>
+                                                <TableCell className="font-medium text-primary">${prize.amount}</TableCell>
+                                                <TableCell className="text-sm font-bold text-muted-foreground">
+                                                    {new Date(prize.created_at).toLocaleDateString('en-GB', {
+                                                        year: 'numeric',
+                                                        month: '2-digit',
+                                                        day: '2-digit',
+                                                    }).split('/').reverse().join('-')}
                                                 </TableCell>
                                                 <TableCell>{getStatusBadge(prize.status)}</TableCell>
                                                 <TableCell className="text-end">

@@ -1,13 +1,21 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react"
 import * as React from "react"
+import { usePage } from "@inertiajs/react"
 
 import { cn } from "@/lib/utils"
 
 function DropdownMenu({
+  dir,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  const page = usePage();
+  const pageProps = page?.props || {};
+  const component = page?.component || '';
+  const isRtl = pageProps.locale === 'ar' || (component && component.startsWith('admin/'))
+  const direction = dir || (isRtl ? "rtl" : "ltr")
+
+  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" dir={direction} {...props} />
 }
 
 function DropdownMenuPortal({
@@ -34,11 +42,17 @@ function DropdownMenuContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  const page = usePage();
+  const pageProps = page?.props || {};
+  const component = page?.component || '';
+  const isRtl = pageProps.locale === 'ar' || (component && component.startsWith('admin/'))
+
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
+        dir={isRtl ? "rtl" : "ltr"}
         className={cn(
           "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
           className

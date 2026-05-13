@@ -183,8 +183,8 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                                 <TableCell className="font-medium">{request.company_name}</TableCell>
                                                 <TableCell>{request.email}</TableCell>
                                                 <TableCell>{request.country?.name_ar || '-'}</TableCell>
-                                                <TableCell className="text-sm text-muted-foreground">
-                                                    {new Date(request.created_at).toLocaleDateString('ar-EG')}
+                                                <TableCell className="text-sm font-bold text-muted-foreground">
+                                                    {new Date(request.created_at).toISOString().split('T')[0]}
                                                 </TableCell>
                                                 <TableCell>{getStatusBadge(request.status)}</TableCell>
                                                 <TableCell className="text-end">

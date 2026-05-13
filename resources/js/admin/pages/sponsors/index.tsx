@@ -1,11 +1,10 @@
 import { Head, router, useForm } from '@inertiajs/react';
-import { Calendar, Loader2, Pencil, Plus, Trash2 } from 'lucide-react';
+import { Loader2, Pencil, Plus, Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -114,7 +113,10 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
 
     const handleEditSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!selectedSponsor) return;
+
+        if (!selectedSponsor) {
+            return;
+        }
 
         // Use post with _method=PATCH for multipart/form-data with file upload
         editForm.post(admin.sponsors.update(selectedSponsor.id).url, {
@@ -138,7 +140,10 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
 
     const handleDeleteSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!selectedSponsor) return;
+
+        if (!selectedSponsor) {
+             return;
+        }
 
         deleteForm.delete(admin.sponsors.destroy(selectedSponsor.id).url, {
             onSuccess: () => {
@@ -209,20 +214,19 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
                                                         <AvatarFallback>{sponsor.name.substring(0, 2)}</AvatarFallback>
                                                     </Avatar>
                                                 </TableCell>
-                                                <TableCell className="font-medium whitespace-nowrap">{sponsor.name}</TableCell>
-                                                <TableCell>{DAYS_OF_WEEK[sponsor.day_of_week]}</TableCell>
+                                                <TableCell className="font-semibold whitespace-nowrap">{sponsor.name}</TableCell>
+                                                <TableCell className='font-semibold'>{DAYS_OF_WEEK[sponsor.day_of_week]}</TableCell>
                                                 <TableCell className="text-sm">
-                                                    <div className="flex items-center gap-1 text-muted-foreground">
-                                                        <span>{new Date(sponsor.contract_start).toLocaleDateString('ar-EG')}</span>
-                                                        <span>-</span>
-                                                        <span>{new Date(sponsor.contract_end).toLocaleDateString('ar-EG')}</span>
+                                                    <div className="flex flex-col text-sm text-muted-foreground">
+                                                        <span>من: <span className="font-bold">{new Date(sponsor.contract_start).toISOString().split('T')[0]}</span></span>
+                                                        <span>إلى: <span className="font-bold">{new Date(sponsor.contract_end).toISOString().split('T')[0]}</span></span>
                                                     </div>
                                                 </TableCell>
                                                 <TableCell>{sponsor.ideas_count || 0}</TableCell>
                                                 <TableCell>{sponsor.prize_records_count || 0}</TableCell>
                                                 <TableCell>
-                                                    <Switch 
-                                                        checked={sponsor.is_active} 
+                                                    <Switch
+                                                        checked={sponsor.is_active}
                                                         onCheckedChange={() => handleToggleStatus(sponsor)}
                                                     />
                                                 </TableCell>

@@ -40,22 +40,9 @@ createServer((page) =>
             }
         },
         setup: ({ App, props }) => {
-            const locale = (props.initialPage.props.locale as string) || 'en';
-            const dir = locale === 'ar' ? 'rtl' : 'ltr';
-            const isAdmin = props.initialPage.component.startsWith('admin/');
-
             return (
                 <TooltipProvider delayDuration={0}>
                     <App {...props} />
-                    {isAdmin ? (
-                        <AdminToaster
-                            position="top-center"
-                            dir={dir}
-                            toastOptions={{ className: '!border-none shadow-lg' }}
-                        />
-                    ) : (
-                        <AppToaster />
-                    )}
                 </TooltipProvider>
             );
         },

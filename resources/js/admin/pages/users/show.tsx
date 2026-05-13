@@ -116,8 +116,8 @@ export default function UserShowPage({ user }: ShowProps) {
                                 <div className="flex items-center gap-3 text-sm">
                                     <Calendar className="h-4 w-4 text-muted-foreground" />
                                     <span className="text-muted-foreground">تاريخ التسجيل:</span>
-                                    <span className="font-medium">
-                                        {new Date(user.created_at).toLocaleDateString('ar-EG')}
+                                    <span className="font-bold">
+                                        {new Date(user.created_at).toISOString().split('T')[0]}
                                     </span>
                                 </div>
                             </div>
@@ -200,8 +200,8 @@ export default function UserShowPage({ user }: ShowProps) {
                                                              idea.status === 'rejected' ? 'مرفوض' : 'قيد الانتظار'}
                                                         </Badge>
                                                     </TableCell>
-                                                    <TableCell>
-                                                        {new Date(idea.created_at).toLocaleDateString('ar-EG')}
+                                                    <TableCell className="font-bold">
+                                                        {new Date(idea.created_at).toISOString().split('T')[0]}
                                                     </TableCell>
                                                 </TableRow>
                                             ))
@@ -237,8 +237,8 @@ export default function UserShowPage({ user }: ShowProps) {
                                                 <TableRow key={vote.id}>
                                                     <TableCell className="font-medium">{vote.idea.title}</TableCell>
                                                     <TableCell>{vote.idea.user?.name || 'غير معروف'}</TableCell>
-                                                    <TableCell>
-                                                        {new Date(vote.created_at).toLocaleDateString('ar-EG')}
+                                                    <TableCell className="font-bold">
+                                                        {new Date(vote.created_at).toISOString().split('T')[0]}
                                                     </TableCell>
                                                 </TableRow>
                                             ))
