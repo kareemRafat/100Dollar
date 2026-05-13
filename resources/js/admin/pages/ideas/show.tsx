@@ -1,15 +1,15 @@
 import { Head, useForm, Link } from '@inertiajs/react';
-import { 
-    CheckCircle, 
-    XCircle, 
-    ArrowRight, 
-    User, 
-    Calendar, 
-    MapPin, 
-    Briefcase, 
-    Target, 
-    Megaphone, 
-    Clock, 
+import {
+    CheckCircle,
+    XCircle,
+    ArrowRight,
+    User,
+    Calendar,
+    MapPin,
+    Briefcase,
+    Target,
+    Megaphone,
+    Clock,
     Loader2,
     AlertCircle,
     FileText,
@@ -42,7 +42,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import admin from '@/routes/admin';
-import type { Idea, BreadcrumbItem } from '@/types';
+import type { Idea } from '@/types';
 
 interface IdeaShowProps {
     idea: Idea;
@@ -73,7 +73,7 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
         rejection_reason: '',
     });
 
-    const handleApprove = (e: React.FormEvent) => {
+    const handleApprove = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         approveForm.patch(admin.ideas.updateStatus(idea.id).url, {
             onSuccess: () => {
@@ -83,7 +83,7 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
         });
     };
 
-    const handleReject = (e: React.FormEvent) => {
+    const handleReject = (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         rejectForm.patch(admin.ideas.updateStatus(idea.id).url, {
             onSuccess: () => {
@@ -93,11 +93,6 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
         });
     };
 
-    const breadcrumbs: BreadcrumbItem[] = [
-        { title: 'لوحة التحكم', href: admin.dashboard().url },
-        { title: 'إدارة الأفكار', href: admin.ideas.index().url },
-        { title: idea.title, href: admin.ideas.show(idea.id).url },
-    ];
 
     return (
         <>
@@ -222,9 +217,9 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
                                 <CardContent className="p-0">
                                     <div className={`w-full bg-muted/30 relative flex flex-col items-center justify-center transition-all duration-300 ${showPdfPreview ? 'aspect-[1/1.4] sm:aspect-video md:aspect-[1/1.4]' : 'py-12 px-8 text-center'}`}>
                                         {showPdfPreview ? (
-                                            <iframe 
-                                                src={`${idea.pdf_file}#toolbar=0&navpanes=0`} 
-                                                className="h-full w-full border-none animate-in fade-in duration-500" 
+                                            <iframe
+                                                src={`${idea.pdf_file}#toolbar=0&navpanes=0`}
+                                                className="h-full w-full border-none animate-in fade-in duration-500"
                                                 title="PDF Preview"
                                             />
                                         ) : (
@@ -238,9 +233,9 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
                                                         انقر للمعاينة مباشرة هنا أو استخدم الخيارات أعلاه للتحميل
                                                     </p>
                                                 </div>
-                                                <Button 
-                                                    onClick={() => setShowPdfPreview(true)} 
-                                                    variant="secondary" 
+                                                <Button
+                                                    onClick={() => setShowPdfPreview(true)}
+                                                    variant="secondary"
                                                     className="font-bold px-10 shadow-sm hover:shadow-md transition-all"
                                                 >
                                                     <Eye className="me-2 size-4" />
@@ -338,9 +333,9 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
                             <CardContent className="p-6">
                                 {idea.image ? (
                                     <div className="overflow-hidden rounded-xl border bg-muted shadow-sm group relative aspect-video sm:aspect-square">
-                                        <img 
-                                            src={idea.image} 
-                                            alt={idea.title} 
+                                        <img
+                                            src={idea.image}
+                                            alt={idea.title}
                                             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                                         />
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">

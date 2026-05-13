@@ -22,7 +22,7 @@ class WinnerController extends Controller
         $currentYear = now()->year;
 
         // Get sponsors to know which days are active
-        $sponsors = Sponsor::where('is_active', true)->get();
+        $sponsors = Sponsor::with('media')->where('is_active', true)->get();
 
         $days = [];
         // Saturday (6) to Friday (5)

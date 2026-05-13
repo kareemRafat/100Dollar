@@ -20,23 +20,21 @@ class CompactIdeaResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
-     * @property \App\Models\Category $category
-     * @property \App\Models\Country $country
-     ...
-        public function toArray(Request $request): array
-        {
-            $locale = app()->getLocale();
+     */
+    public function toArray(Request $request): array
+    {
+        $locale = app()->getLocale();
 
-            return [
-                'id' => $this->id,
-                'title' => $this->title,
-                // Full description and PDF are excluded for payload reduction
-                'category' => $this->category?->{'name_'.$locale},
-                'category_id' => $this->category_id,
-                'category_icon' => $this->category?->icon,
-                'country' => $this->country ? $this->country->{'name_'.$locale} : null,
-                'country_code' => $this->country?->code,
-                'city' => $this->city,
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            // Full description and PDF are excluded for payload reduction
+            'category' => $this->category?->{'name_'.$locale},
+            'category_id' => $this->category_id,
+            'category_icon' => $this->category?->icon,
+            'country' => $this->country ? $this->country->{'name_'.$locale} : null,
+            'country_code' => $this->country?->code,
+            'city' => $this->city,
             'image' => $this->image,
             'votes_count' => (int) ($this->votes_count ?? 0),
             'comments_count' => (int) ($this->comments_count ?? 0),

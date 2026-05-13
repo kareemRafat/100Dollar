@@ -21,7 +21,7 @@ class PrizeRecordController extends Controller
         $sponsorId = $request->input('sponsor_id');
 
         $prizes = PrizeRecord::query()
-            ->with(['sponsor', 'idea.user.media'])
+            ->with(['sponsor.media', 'idea.user.media', 'idea.media'])
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
             })
@@ -34,7 +34,7 @@ class PrizeRecordController extends Controller
 
         return Inertia::render('admin/pages/prizes/index', [
             'prizes' => $prizes,
-            'sponsors' => Sponsor::all(),
+            'sponsors' => Sponsor::with('media')->get(),
             'filters' => $request->only(['status', 'sponsor_id']),
         ]);
     }

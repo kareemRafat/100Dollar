@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function show(User $user): Response
     {
-        $user->load(['country', 'media', 'ideas', 'votes.idea']);
+        $user->load(['country', 'media', 'ideas.media', 'votes.idea.media']);
 
         return Inertia::render('admin/pages/users/show', [
             'user' => $user,
