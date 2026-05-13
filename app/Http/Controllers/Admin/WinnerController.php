@@ -68,7 +68,7 @@ class WinnerController extends Controller
     /**
      * Confirm an idea as the official winner.
      */
-    public function confirm(Request $request, Idea $idea): RedirectResponse
+    public function confirm(Request $request, Idea $idea, \App\Actions\Admin\ConfirmWinner $confirmWinner): RedirectResponse
     {
         if ($idea->is_winner) {
             return back()->withErrors(['error' => 'هذه الفكرة فائزة بالفعل.']);
@@ -89,23 +89,7 @@ class WinnerController extends Controller
             return back()->withErrors(['error' => 'تم الإعلان عن فائز بالفعل لهذا اليوم.']);
         }
 
-        DB::transaction(function () use ($idea) {
-            // 1. Mark as winner
-            $idea->update([
-                'is_winner' => true,
-                'winner_announced_at' => now(),
-            ]);
-
-            // 2. Create Prize Record
-            PrizeRecord::create([
-                'idea_id' => $idea->id,
-                'sponsor_id' => $idea->sponsor_id,
-                'amount' => 100.00, // Default prize amount
-                'status' => 'pending',
-            ]);
-            
-            // TODO: Trigger Notification (WinnerAnnouncedNotification)
-        });
+        $confirmWinner->execute($idea);
 
         return back()->with('status', 'winner-confirmed');
     }

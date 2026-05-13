@@ -707,4 +707,16 @@ return [
         '2fa_enable_failed' => 'Failed to enable two-factor authentication.',
         'recovery_codes_regenerated' => 'Recovery codes regenerated successfully.',
     ],
+
+    'notifications' => [
+        'winner_announced_title' => 'Congratulations! You are the winner!',
+        'winner_announced_body' => 'Your idea ":title" has been selected as the winner of the day!',
+        'winner_announced_mail_subject' => 'Congratulations! You are the winner!',
+        'winner_announced_mail_greeting' => 'Hello :name,',
+        'winner_announced_mail_line1' => 'We are excited to inform you that your idea ":title" has been selected as the winner of the day!',
+        'winner_announced_mail_line2' => 'You have won a prize of $100 to help start your project.',
+        'winner_announced_mail_action' => 'View Your Idea',
+        'winner_announced_mail_line3' => 'Our team will contact you soon to arrange the prize delivery.',
+        'winner_announced_mail_line4' => 'Thank you for participating in 100Dollar!',
+    ],
 ];

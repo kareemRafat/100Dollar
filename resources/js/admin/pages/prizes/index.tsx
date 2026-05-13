@@ -1,11 +1,19 @@
 import { Head, router } from '@inertiajs/react';
-import { CheckCircle, Clock } from 'lucide-react';
+import { CheckCircle, Clock, AlertTriangle } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Pagination } from '@/components/ui/pagination';
 import {
     Select,
@@ -48,15 +56,29 @@ const breadcrumbs: BreadcrumbItem[] = [
 const getStatusBadge = (status: string) => {
     switch (status) {
         case 'paid':
-            return <Badge className="bg-green-100 text-green-800 hover:bg-green-100"><CheckCircle className="me-1 h-3 w-3" /> تم الدفع</Badge>;
+            return (
+                <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <CheckCircle className="me-1 h-3 w-3" /> تم الدفع
+                </Badge>
+            );
         default:
-            return <Badge variant="secondary"><Clock className="me-1 h-3 w-3" /> معلق</Badge>;
+            return (
+                <Badge variant="secondary">
+                    <Clock className="me-1 h-3 w-3" /> معلق
+                </Badge>
+            );
     }
 };
 
 export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
-    const [sponsorFilter, setSponsorFilter] = useState(filters.sponsor_id || 'all');
+    const [sponsorFilter, setSponsorFilter] = useState(
+        filters.sponsor_id || 'all',
+    );
+    const [confirmingPrize, setConfirmingPrize] = useState<PrizeRecord | null>(
+        null,
+    );
+    const [processing, setProcessing] = useState(false);
 
     const isFirstRender = useRef(true);
 
@@ -83,16 +105,29 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
         });
     }, [statusFilter, sponsorFilter]);
 
-    const handleToggleStatus = (prize: PrizeRecord) => {
-        const newStatus = prize.status === 'paid' ? 'pending' : 'paid';
-        router.patch(admin.prizes.updateStatus(prize.id).url, {
-            status: newStatus
-        }, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success('تم تحديث حالة الدفع');
+    const handleToggleStatus = () => {
+        if (!confirmingPrize) {
+            return;
+        }
+
+        const newStatus =
+            confirmingPrize.status === 'paid' ? 'pending' : 'paid';
+
+        setProcessing(true);
+        router.patch(
+            admin.prizes.updateStatus(confirmingPrize.id).url,
+            {
+                status: newStatus,
             },
-        });
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success('تم تحديث حالة الدفع');
+                    setConfirmingPrize(null);
+                },
+                onFinish: () => setProcessing(false),
+            },
+        );
     };
 
     return (
@@ -119,9 +154,14 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                     <SelectValue placeholder="تصفية حسب الراعي" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="all">كل الرعاة</SelectItem>
+                                    <SelectItem value="all">
+                                        كل الرعاة
+                                    </SelectItem>
                                     {sponsors.map((sponsor) => (
-                                        <SelectItem key={sponsor.id} value={sponsor.id.toString()}>
+                                        <SelectItem
+                                            key={sponsor.id}
+                                            value={sponsor.id.toString()}
+                                        >
                                             {sponsor.name}
                                         </SelectItem>
                                     ))}
@@ -137,8 +177,12 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="pending">معلق</SelectItem>
-                                    <SelectItem value="paid">تم الدفع</SelectItem>
+                                    <SelectItem value="pending">
+                                        معلق
+                                    </SelectItem>
+                                    <SelectItem value="paid">
+                                        تم الدفع
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -154,39 +198,75 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                         <TableHead>المبلغ</TableHead>
                                         <TableHead>التاريخ</TableHead>
                                         <TableHead>الحالة</TableHead>
-                                        <TableHead className="text-end">الإجراءات</TableHead>
+                                        <TableHead className="text-end">
+                                            الإجراءات
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {prizes.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={7} className="h-48 text-center text-muted-foreground">
-                                                لا يوجد سجلات جوائز تطابق المعايير.
+                                            <TableCell
+                                                colSpan={7}
+                                                className="h-48 text-center text-muted-foreground"
+                                            >
+                                                لا يوجد سجلات جوائز تطابق
+                                                المعايير.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
                                         prizes.data.map((prize) => (
                                             <TableRow key={prize.id}>
-                                                <TableCell className="font-semibold">{prize.sponsor?.name || '-'}</TableCell>
-                                                <TableCell>{prize.idea?.user?.name || '-'}</TableCell>
-                                                <TableCell className="max-w-xs truncate font-semibold">{prize.idea?.title || '-'}</TableCell>
-                                                <TableCell className="font-medium text-primary">${prize.amount}</TableCell>
-                                                <TableCell className="text-sm font-bold text-muted-foreground">
-                                                    {new Date(prize.created_at).toLocaleDateString('en-GB', {
-                                                        year: 'numeric',
-                                                        month: '2-digit',
-                                                        day: '2-digit',
-                                                    }).split('/').reverse().join('-')}
+                                                <TableCell className="font-semibold">
+                                                    {prize.sponsor?.name || '-'}
                                                 </TableCell>
-                                                <TableCell>{getStatusBadge(prize.status)}</TableCell>
+                                                <TableCell>
+                                                    {prize.idea?.user?.name ||
+                                                        '-'}
+                                                </TableCell>
+                                                <TableCell className="max-w-xs truncate font-semibold">
+                                                    {prize.idea?.title || '-'}
+                                                </TableCell>
+                                                <TableCell className="font-medium text-primary">
+                                                    ${prize.amount}
+                                                </TableCell>
+                                                <TableCell className="text-sm font-bold text-muted-foreground">
+                                                    {new Date(prize.created_at)
+                                                        .toLocaleDateString(
+                                                            'en-GB',
+                                                            {
+                                                                year: 'numeric',
+                                                                month: '2-digit',
+                                                                day: '2-digit',
+                                                            },
+                                                        )
+                                                        .split('/')
+                                                        .reverse()
+                                                        .join('-')}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {getStatusBadge(
+                                                        prize.status,
+                                                    )}
+                                                </TableCell>
                                                 <TableCell className="text-end">
                                                     <Button
-                                                        variant="outline"
                                                         size="sm"
-                                                        onClick={() => handleToggleStatus(prize)}
-                                                        className={prize.status === 'paid' ? 'text-muted-foreground' : 'text-green-600 border-green-200 hover:bg-green-50'}
+                                                        onClick={() =>
+                                                            setConfirmingPrize(
+                                                                prize,
+                                                            )
+                                                        }
+                                                        className={
+                                                            prize.status ===
+                                                            'paid'
+                                                                ? 'bg-emerald-600 text-xs font-semibold text-white hover:bg-emerald-700'
+                                                                : 'bg-sky-800 text-xs font-semibold text-white hover:bg-sky-900'
+                                                        }
                                                     >
-                                                        {prize.status === 'paid' ? 'تغيير للمعلق' : 'تأكيد الدفع'}
+                                                        {prize.status === 'paid'
+                                                            ? 'تغيير للمعلق'
+                                                            : 'تأكيد الدفع'}
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -201,6 +281,77 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                     </CardContent>
                 </Card>
             </div>
+
+            <Dialog
+                open={!!confirmingPrize}
+                onOpenChange={(open) => !open && setConfirmingPrize(null)}
+            >
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
+                            <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <DialogTitle className="mt-4 text-center">
+                            {confirmingPrize?.status === 'paid'
+                                ? 'تغيير حالة الدفع إلى معلق'
+                                : 'تأكيد عملية الدفع'}
+                        </DialogTitle>
+                        <DialogDescription className="text-center font-bold">
+                            هل أنت متأكد من تغيير حالة الجائزة الخاصة بـ{' '}
+                            <span className="block font-bold text-foreground">
+                                "{confirmingPrize?.idea?.user?.name}" ؟{' '}
+                            </span>
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="mt-4 space-y-2 rounded-lg bg-muted p-4">
+                        <div className="flex justify-between text-sm">
+                            <span className="font-bold text-muted-foreground">
+                                الفكرة :
+                            </span>
+                            <span className="max-w-50 truncate text-end font-semibold">
+                                {confirmingPrize?.idea?.title}
+                            </span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="font-bold text-muted-foreground">
+                                المبلغ :
+                            </span>
+                            <span className="font-bold text-primary">
+                                ${confirmingPrize?.amount}
+                            </span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                            <span className="font-bold text-muted-foreground">
+                                الراعي :
+                            </span>
+                            <span className="font-semibold">
+                                {confirmingPrize?.sponsor?.name}
+                            </span>
+                        </div>
+                    </div>
+                    <DialogFooter className="mt-6 flex flex-row gap-3">
+                        <Button
+                            variant="outline"
+                            onClick={() => setConfirmingPrize(null)}
+                            disabled={processing}
+                            className="flex-1"
+                        >
+                            إلغاء
+                        </Button>
+                        <Button
+                            onClick={handleToggleStatus}
+                            disabled={processing}
+                            className={
+                                confirmingPrize?.status === 'paid'
+                                    ? 'flex-1 bg-amber-600 hover:bg-amber-700'
+                                    : 'flex-1 bg-green-600 hover:bg-green-700'
+                            }
+                        >
+                            {processing ? 'جاري التحديث...' : 'تأكيد'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

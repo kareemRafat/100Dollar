@@ -3,7 +3,6 @@ import { CheckCircle2, Trophy, Users, Vote, AlertTriangle } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
-import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,6 +14,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Idea, Sponsor } from '@/types';
 
@@ -63,7 +63,9 @@ export default function WinnersPreview({ days, week, year }: WinnersPreviewProps
     const sortedDays = [...days].sort((a, b) => weekOrder.indexOf(a.day_index) - weekOrder.indexOf(b.day_index));
 
     const handleConfirmWinner = () => {
-        if (!confirmingIdea) return;
+        if (!confirmingIdea) {
+            return;
+        }
 
         setProcessing(true);
         router.post(admin.winners.confirm(confirmingIdea.id).url, {}, {
@@ -85,7 +87,7 @@ export default function WinnersPreview({ days, week, year }: WinnersPreviewProps
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">إدارة الفائزين</h1>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground font-semibold">
                             متابعة وتأكيد الفائزين للأسبوع الحالي (أسبوع {week} - {year})
                         </p>
                     </div>
@@ -105,14 +107,14 @@ export default function WinnersPreview({ days, week, year }: WinnersPreviewProps
                                 <div className="flex items-center justify-between">
                                     <CardTitle className="text-lg">{dayNames[day.day_index]}</CardTitle>
                                     {day.is_today && (
-                                        <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 font-black">اليوم</Badge>
+                                        <Badge variant="outline" className="bg-orange-700/10  border-bg-orange-700/20 font-bold text-base text-orange-700">اليوم</Badge>
                                     )}
                                 </div>
                                 <CardDescription className="flex items-center gap-2">
                                     {day.sponsor ? (
                                         <>
-                                            <span className="text-xs text-muted-foreground">الراعي:</span>
-                                            <span className="font-semibold text-foreground">{day.sponsor.name}</span>
+                                            <span className="text-xs text-muted-foreground font-bold">  الراعي : </span>
+                                            <span className="font-bold text-sm text-sky-800">{day.sponsor.name}</span>
                                         </>
                                     ) : (
                                         <span className="text-xs text-destructive">لا يوجد راعٍ مخصص</span>
@@ -129,11 +131,11 @@ export default function WinnersPreview({ days, week, year }: WinnersPreviewProps
                                         <p className="font-bold text-foreground line-clamp-2">{day.announced_winner.title}</p>
                                         <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                                             <Users className="h-3 w-3" />
-                                            <span>{day.announced_winner.user?.name}</span>
+                                            <span className='font-semibold text-sm'>{day.announced_winner.user?.name}</span>
                                         </div>
                                         <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
                                             <Vote className="h-3 w-3" />
-                                            <span>{day.announced_winner.votes_count} صوت</span>
+                                            <span className='font-semibold text-sm'>{day.announced_winner.votes_count} صوت</span>
                                         </div>
                                     </div>
                                 ) : day.leading_idea ? (
@@ -145,15 +147,16 @@ export default function WinnersPreview({ days, week, year }: WinnersPreviewProps
                                         <p className="font-bold text-foreground line-clamp-2">{day.leading_idea.title}</p>
                                         <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                                             <Users className="h-3 w-3" />
-                                            <span>{day.leading_idea.user?.name}</span>
+                                            <span className='font-semibold text-sm'>{day.leading_idea.user?.name}</span>
                                         </div>
                                         <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground font-bold">
                                             <Vote className="h-3 w-3" />
-                                            <span className="text-primary">{day.leading_idea.votes_count} صوت</span>
+                                            <span className="text-primary font-semibold text-sm">{day.leading_idea.votes_count} صوت</span>
+
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex h-32 flex-col items-center justify-center rounded-lg border border-dashed text-muted-foreground h-full">
+                                    <div className="flex flex-col items-center justify-center rounded-lg border border-dashed text-muted-foreground h-full">
                                         <p className="text-xs">لا يوجد أفكار لهذا اليوم</p>
                                     </div>
                                 )}

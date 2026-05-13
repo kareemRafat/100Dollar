@@ -25,11 +25,11 @@ Deliver a winner management workflow that supports manual confirmation and sched
     - Add "Confirm Winner" action to the preview page
 
 ### ⏰ Automation & Scheduling
-- [ ] **Console Command:** Create `app/Console/Commands/AnnounceWinner.php` to automatically confirm the winner if not done manually
-- [ ] **Scheduler:** Register the command in `routes/console.php` to run daily at midnight
-- [ ] **Notifications:**
-    - Create `app/Notifications/WinnerAnnouncedNotification.php`
-    - Trigger notification when a winner is confirmed (manual or automatic)
+- [x] **Console Command:** Create `app/Console/Commands/AnnounceWinner.php` to automatically confirm the winner if not done manually
+- [x] **Scheduler:** Register the command in `routes/console.php` to run daily at midnight
+- [x] **Notifications:**
+    - [x] Create `app/Notifications/WinnerAnnouncedNotification.php`
+    - [x] Trigger notification when a winner is confirmed (manual or automatic)
 
 ### 💰 Prize Tracking (Partial Review)
 - [x] Track prize delivery status as `pending` or `delivered`
@@ -41,9 +41,9 @@ Deliver a winner management workflow that supports manual confirmation and sched
 
 - [x] Winner Preview/Confirmation page in Admin Panel
 - [x] Manual and Automatic winner announcement logic
-- [ ] Daily scheduler for winners
+- [x] Daily scheduler for winners
 - [x] Prize delivery tracking UI
-- [ ] Winner notification system
+- [x] Winner notification system
 
 ---
 
@@ -51,7 +51,8 @@ Deliver a winner management workflow that supports manual confirmation and sched
 
 - [x] Admin can see the leading idea in real-time before announcement
 - [x] Manual "Confirm Winner" marks the idea and creates a prize record
-- [ ] Automatic fallback works via scheduler at midnight
-- [ ] Winners receive a notification upon confirmation
+- [x] Automatic fallback works via scheduler at midnight
+- [x] Winners receive a notification upon confirmation
 - [x] Prize delivery status is manageable by Admin
+
 

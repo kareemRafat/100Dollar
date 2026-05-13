@@ -705,4 +705,16 @@ return [
         '2fa_enable_failed' => 'فشل في تفعيل المصادقة الثنائية.',
         'recovery_codes_regenerated' => 'تم إعادة توليد رموز الاسترداد بنجاح.',
     ],
+
+    'notifications' => [
+        'winner_announced_title' => 'تهانينا! أنت الفائز!',
+        'winner_announced_body' => 'لقد تم اختيار فكرتك ":title" كفائزة لهذا اليوم!',
+        'winner_announced_mail_subject' => 'تهانينا! أنت الفائز!',
+        'winner_announced_mail_greeting' => 'مرحباً :name،',
+        'winner_announced_mail_line1' => 'يسعدنا إبلاغك بأن فكرتك ":title" قد تم اختيارها كفائزة لهذا اليوم!',
+        'winner_announced_mail_line2' => 'لقد فزت بجائزة قدرها 100 دولار لمساعدتك في بدء مشروعك.',
+        'winner_announced_mail_action' => 'عرض فكرتك',
+        'winner_announced_mail_line3' => 'سيتواصل معك فريقنا قريباً لترتيب تسليم الجائزة.',
+        'winner_announced_mail_line4' => 'شكراً لمشاركتك في أفكار بـ 100 دولار!',
+    ],
 ];
