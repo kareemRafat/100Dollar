@@ -174,6 +174,7 @@ class IdeaController extends Controller
             'idea' => new IdeaResource($idea),
             'comments' => Inertia::optional(fn () => Inertia::scroll(fn () => CommentResource::collection(
                 $idea->comments()
+                    ->withTrashed()
                     ->with(['user.media'])
                     ->withCount('likes')
                     ->when(auth()->check(), fn ($q) => $q->withExists(['likes as is_liked' => fn ($f) => $f->where('user_id', auth()->id())]))

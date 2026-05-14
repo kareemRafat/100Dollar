@@ -94,5 +94,7 @@ export interface Comment {
     likes_count: number;
     is_liked: boolean;
     created_at: string;
+    deleted_at?: string;
+    is_deleted: boolean;
     user?: User;
 }

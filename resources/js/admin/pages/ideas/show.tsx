@@ -1,5 +1,5 @@
-import { Head, useForm, Link } from '@inertiajs/react';
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { Head, useForm, Link, router } from '@inertiajs/react';
 import {
     CheckCircle,
     XCircle,
@@ -17,7 +17,9 @@ import {
     Image as ImageIcon,
     Eye,
     Download,
-    ExternalLink
+    ExternalLink,
+    MessageSquare,
+    Trash2
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -42,8 +44,9 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
-import type { Idea } from '@/types';
+import type { Idea, Comment } from '@/types';
 
 interface IdeaShowProps {
     idea: Idea;
@@ -52,6 +55,7 @@ interface IdeaShowProps {
         search?: string;
         page?: string;
     };
+    comments?: Comment[];
 }
 
 const daysOfWeek = [
@@ -64,11 +68,14 @@ const daysOfWeek = [
     { value: '6', label: 'السبت' },
 ];
 
-export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
+export default function IdeaShowPage({ idea, filters, comments }: IdeaShowProps) {
     const { __ } = useLang();
     const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const [showPdfPreview, setShowPdfPreview] = useState(false);
+    const [isLoadingComments, setIsLoadingComments] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
     const approveForm = useForm({
         status: 'approved',
@@ -97,6 +104,38 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                 setIsRejectModalOpen(false);
                 toast.success('تم رفض الفكرة وإرسال إشعار للمستخدم');
             },
+        });
+    };
+
+    const loadComments = () => {
+        setIsLoadingComments(true);
+        router.reload({
+            only: ['comments'],
+            onFinish: () => setIsLoadingComments(false)
+        });
+    };
+
+    const handleDeleteComment = () => {
+        if (!commentToDelete) {
+            return;
+        }
+
+        setIsDeleting(true);
+
+        router.optimistic((props: IdeaShowProps) => ({
+            comments: props.comments?.map(c =>
+                c.id === commentToDelete
+                    ? { ...c, deleted_at: new Date().toISOString() }
+                    : c
+            )
+        })).delete(admin.comments.destroy(commentToDelete).url, {
+            preserveScroll: true,
+            only: ['comments'],
+            onSuccess: () => {
+                setCommentToDelete(null);
+                toast.success('تم حذف التعليق بنجاح');
+            },
+            onFinish: () => setIsDeleting(false)
         });
     };
 
@@ -277,6 +316,103 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                                 </CardContent>
                             </Card>
                         )}
+
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between border-b py-4">
+                                <CardTitle className="flex items-center gap-2 font-bold text-lg">
+                                    <MessageSquare className="size-5 text-primary" />
+                                    التعليقات
+                                </CardTitle>
+                                {!comments && (
+                                    <Button
+                                        onClick={loadComments}
+                                        disabled={isLoadingComments}
+                                        variant="outline"
+                                        size="sm"
+                                        className="font-bold"
+                                    >
+                                        {isLoadingComments && <Loader2 className="me-2 size-4 animate-spin" />}
+                                        عرض التعليقات
+                                    </Button>
+                                )}
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                {comments ? (
+                                    <div className="divide-y">
+                                        {comments.length === 0 ? (
+                                            <div className="flex flex-col items-center justify-center py-12 text-center">
+                                                <MessageSquare className="size-12 text-muted-foreground/30 mb-4" />
+                                                <p className="text-lg font-bold">لا توجد تعليقات</p>
+                                                <p className="text-sm text-muted-foreground font-semibold">لم يتم إضافة أي تعليقات على هذه الفكرة بعد.</p>
+                                            </div>
+                                        ) : (
+                                            comments.map((comment) => (
+                                                <div key={comment.id} className="p-6 transition-colors hover:bg-muted/30">
+                                                    <div className="flex justify-between items-start gap-4">
+                                                        <div className="flex gap-4">
+                                                            <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary shrink-0">
+                                                                {comment.user?.name?.[0] || 'U'}
+                                                            </div>
+                                                            <div className="space-y-1">
+                                                                <div className="flex items-center gap-2">
+                                                                    <span className="font-bold">{comment.user?.name}</span>
+                                                                    {comment.deleted_at && (
+                                                                        <Badge variant="destructive" className="text-[10px] px-2 py-0 h-5 font-bold">تم الإشراف (محذوف)</Badge>
+                                                                    )}
+                                                                </div>
+                                                                <div className="flex items-center gap-2 text-xs text-muted-foreground font-bold">
+                                                                    <Clock className="size-3" />
+                                                                    {new Date(comment.created_at).toLocaleDateString('ar-SA', {
+                                                                        year: 'numeric',
+                                                                        month: 'long',
+                                                                        day: 'numeric',
+                                                                        hour: '2-digit',
+                                                                        minute: '2-digit'
+                                                                    })}
+                                                                </div>
+                                                                <p className={cn(
+                                                                    "mt-3 text-sm font-semibold leading-relaxed",
+                                                                    comment.deleted_at ? "text-muted-foreground line-through opacity-70 italic" : "text-foreground"
+                                                                )}>
+                                                                    {comment.body}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        {!comment.deleted_at && (
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                className="text-red-500 hover:text-red-600 hover:bg-red-50 shrink-0"
+                                                                onClick={() => setCommentToDelete(comment.id)}
+                                                                title="حذف التعليق"
+                                                            >
+                                                                <Trash2 className="size-4" />
+                                                            </Button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                                        <MessageSquare className="size-12 text-muted-foreground/20 mb-4" />
+                                        <p className="text-muted-foreground font-semibold mb-6">يتم تحميل التعليقات عند الطلب لتسريع تحميل الصفحة.</p>
+                                        <Button
+                                            onClick={loadComments}
+                                            disabled={isLoadingComments}
+                                            className="font-bold px-8"
+                                        >
+                                            {isLoadingComments ? (
+                                                <><Loader2 className="me-2 size-4 animate-spin" /> جاري التحميل...</>
+                                            ) : (
+                                                'تحميل التعليقات الآن'
+                                            )}
+                                        </Button>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
 
                     <div className="space-y-6">
@@ -476,6 +612,38 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                             </Button>
                         </DialogFooter>
                     </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Comment Confirmation Modal */}
+            <Dialog open={commentToDelete !== null} onOpenChange={(open) => !open && setCommentToDelete(null)}>
+                <DialogContent dir="rtl">
+                    <DialogHeader>
+                        <DialogTitle className="text-start font-bold">حذف التعليق</DialogTitle>
+                        <DialogDescription className="text-start font-semibold">
+                            هل أنت متأكد من رغبتك في حذف هذا التعليق؟ سيتم إخفاؤه عن المستخدمين مع بقائه في لوحة التحكم للأرشفة.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="flex flex-row items-center gap-2 mt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setCommentToDelete(null)}
+                            className="font-bold"
+                        >
+                            إلغاء
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={isDeleting}
+                            onClick={handleDeleteComment}
+                            className="font-bold"
+                        >
+                            {isDeleting && <Loader2 className="me-2 size-4 animate-spin" />}
+                            تأكيد الحذف
+                        </Button>
+                    </DialogFooter>
                 </DialogContent>
             </Dialog>
         </>

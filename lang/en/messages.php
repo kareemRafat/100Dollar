@@ -614,6 +614,7 @@ return [
         'rules_hint' => 'Please adhere to participation rules to maintain a positive community.',
         'show_more' => 'Show more comments',
         'comment_success' => 'Your comment has been added successfully',
+        'comment_deleted_violation' => 'This comment has been deleted for violating the terms of use',
     ],
 
     'footer' => [

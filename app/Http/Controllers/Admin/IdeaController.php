@@ -48,6 +48,12 @@ class IdeaController extends Controller
         return Inertia::render('admin/pages/ideas/show', [
             'idea' => $idea,
             'filters' => $request->only(['status', 'search', 'page']),
+            'comments' => Inertia::optional(fn () => $idea->comments()
+                ->with('user.media')
+                ->withTrashed()
+                ->latest()
+                ->get()
+            ),
         ]);
     }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\EmailVerificationController;
 use App\Http\Controllers\Admin\Auth\TwoFactorController;
+use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IdeaController;
 use App\Http\Controllers\Admin\PrizeRecordController;
@@ -62,6 +63,9 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::get('ideas', [IdeaController::class, 'index'])->name('admin.ideas.index');
     Route::get('ideas/{idea}', [IdeaController::class, 'show'])->name('admin.ideas.show');
     Route::patch('ideas/{idea}/status', [IdeaController::class, 'updateStatus'])->name('admin.ideas.update-status');
+
+    // Comments
+    Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('admin.comments.destroy');
 
     Route::get('users', [UserController::class, 'index'])->name('admin.users.index');
     Route::get('users/{user}', [UserController::class, 'show'])->name('admin.users.show');

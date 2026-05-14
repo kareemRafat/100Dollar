@@ -72,6 +72,8 @@ For data that sits "below the fold" (e.g., comments, related items), use **Lazy 
 - `plans/`: Detailed project milestones and architectural designs.
 - `tests/`: Feature and Unit tests using Pest.
 
-## Status: Milestone 2 in Progress
-- **M1 (Infrastructure & Auth):** Completed. Database schema, models, factories, and context-aware auth are ready.
-- **M2 (Core Pages):** Implementation started. Focus on Home page, Idea Submission, and OTP Voting.
+## Status: Milestone 4 in Progress
+- **M1 (Infrastructure & Auth):** Completed.
+- **M2 (Core Pages):** Completed. Home, Idea Detail, Submit Idea, and Voting are functional.
+- **M3 (Admin & Moderation):** Completed. Idea management, moderation, and dashboard optimizations are ready.
+- **M4 (Follows & Notifications):** Implementation started. Focus on User/Idea follows and real-time notifications.

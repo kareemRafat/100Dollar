@@ -12,6 +12,7 @@ import React from 'react';
 import type {SubmitEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
+import { cn } from '@/lib/utils';
 import type { Idea, User, Paginated, Comment } from '@/types';
 
 interface CommentSectionProps {
@@ -56,8 +57,8 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
     };
 
     const toggleLike = (comment: Comment) => {
-        if (!auth.user) {
-            router.visit(`/login?redirect=${window.location.pathname}`);
+        if (!auth.user || comment.is_deleted) {
+            if (!auth.user) router.visit(`/login?redirect=${window.location.pathname}`);
 
             return;
         }
@@ -125,10 +126,18 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                         {(comments?.data?.length ?? 0) > 0 ? (
                             comments.data.map((comment, index) => (
                                 <div key={comment.id}>
-                                    <div className="group relative bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 hover:border-primary/30 hover:shadow-md transition-all duration-300">
+                                    <div className={cn(
+                                        "group relative rounded-xl p-6 border transition-all duration-300",
+                                        comment.is_deleted
+                                            ? "bg-surface-container-low/40 border-outline-variant/5 opacity-80"
+                                            : "bg-surface-container-low border-outline-variant/10 hover:border-primary/30 hover:shadow-md"
+                                    )}>
                                         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-4">
                                             <div className="flex gap-4">
-                                                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-primary/10 bg-surface-container-high">
+                                                <div className={cn(
+                                                    "w-12 h-12 rounded-full overflow-hidden border-2 bg-surface-container-high shrink-0",
+                                                    comment.is_deleted ? "border-outline-variant/10 grayscale-[0.8]" : "border-primary/10"
+                                                )}>
                                                     {comment.user?.avatar ? (
                                                         <img src={comment.user.avatar} alt={comment.user.name} className="w-full h-full object-cover" />
                                                     ) : (
@@ -139,26 +148,34 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                                 </div>
                                                 <div>
                                                     <div className="flex items-center gap-2 mb-1">
-                                                        <h4 className="font-semibold text-on-surface">{comment.user?.name}</h4>
-                                                        {comment.user_id === idea.user_id && (
+                                                        <h4 className={cn(
+                                                            "font-semibold",
+                                                            comment.is_deleted ? "text-outline opacity-70" : "text-on-surface"
+                                                        )}>{comment.user?.name}</h4>
+                                                        {comment.user_id === idea.user_id && !comment.is_deleted && (
                                                             <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold">{__('messages.idea_detail.idea_owner')}</span>
                                                         )}
                                                     </div>
-                                                    <div className="flex items-center gap-2 text-xs text-outline">
+                                                    <div className="flex items-center gap-2 text-xs text-outline opacity-60">
                                                         <span>{comment.created_at ? new Date(comment.created_at).toLocaleDateString() : ''}</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() => toggleLike(comment)}
-                                                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all cursor-pointer ${comment.is_liked ? 'bg-primary text-on-primary shadow-sm' : 'text-outline hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20'}`}
-                                            >
-                                                <Heart className={`size-4 ${comment.is_liked ? 'fill-current' : ''}`} />
-                                                <span className="text-sm font-bold">{comment.likes_count}</span>
-                                            </button>
+                                            {!comment.is_deleted && (
+                                                <button
+                                                    onClick={() => toggleLike(comment)}
+                                                    className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all cursor-pointer ${comment.is_liked ? 'bg-primary text-on-primary shadow-sm' : 'text-outline hover:text-primary hover:bg-primary/5 border border-transparent hover:border-primary/20'}`}
+                                                >
+                                                    <Heart className={`size-4 ${comment.is_liked ? 'fill-current' : ''}`} />
+                                                    <span className="text-sm font-bold">{comment.likes_count}</span>
+                                                </button>
+                                            )}
                                         </div>
-                                        <div className="text-on-surface text-base leading-relaxed pr-0 md:pr-16 font-bold whitespace-pre-wrap">
-                                            {comment.body.length > 200 && !expandedComments[comment.id] ? (
+                                        <div className={cn(
+                                            "text-base leading-relaxed pr-0 md:pr-16 whitespace-pre-wrap",
+                                            comment.is_deleted ? "text-outline italic font-medium" : "text-on-surface font-bold"
+                                        )}>
+                                            {comment.body.length > 200 && !expandedComments[comment.id] && !comment.is_deleted ? (
                                                 <>
                                                     {comment.body.substring(0, 200)}...
                                                     <button
@@ -171,7 +188,7 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
                                             ) : (
                                                 <>
                                                     {comment.body}
-                                                    {comment.body.length > 200 && (
+                                                    {comment.body.length > 200 && !comment.is_deleted && (
                                                         <button
                                                             onClick={() => toggleExpand(comment.id)}
                                                             className="text-primary hover:underline ml-1 cursor-pointer font-black inline-flex items-center gap-0.5"
