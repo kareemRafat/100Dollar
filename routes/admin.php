@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\IdeaController;
 use App\Http\Controllers\Admin\PrizeRecordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
 use App\Http\Controllers\Admin\Settings\SecurityController;
+use App\Http\Controllers\Admin\SocialLinksController;
 use App\Http\Controllers\Admin\SponsorController;
 use App\Http\Controllers\Admin\SponsorshipRequestController;
 use App\Http\Controllers\Admin\UserController;
@@ -118,12 +119,14 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
             ->name('admin.two-factor.recovery-codes.store');
     }
 
+    Route::get('social-links', [SocialLinksController::class, 'edit'])->name('admin.social-links.edit');
+    Route::patch('social-links', [SocialLinksController::class, 'update'])->name('admin.social-links.update');
+
     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('admin.settings.profile.edit');
     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('admin.settings.profile.update');
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('admin.settings.profile.destroy');
 
     Route::get('settings/security', [SecurityController::class, 'edit'])->name('admin.settings.security.edit');
-
     Route::put('settings/password', [SecurityController::class, 'update'])
         ->middleware('throttle:6,1')
         ->name('admin.settings.password.update');

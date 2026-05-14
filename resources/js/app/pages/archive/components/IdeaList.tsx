@@ -1,4 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
 import { Shapes } from 'lucide-react';
 import { IdeaCard } from '@/app/components/idea-card';
 import { Pagination } from '@/components/ui/pagination';
@@ -34,6 +35,8 @@ type Props = {
 
 export default function IdeaList({ ideas }: Props) {
     const { __ } = useLang();
+    const { locale } = usePage().props as any;
+    const isRtl = locale === 'ar';
 
     if (!ideas || !ideas.data || ideas.data.length === 0) {
         return (
@@ -67,7 +70,7 @@ export default function IdeaList({ ideas }: Props) {
                             title={idea.title}
                             description={idea.description}
                             budget="100$"
-                            category={idea.category}
+                            category={typeof idea.category === 'object' ? (isRtl ? idea.category.name_ar : idea.category.name_en) : idea.category}
                             categoryIcon={idea.category_icon || ''}
                             authorName={idea.user?.name || ''}
                             authorAvatar={idea.user?.avatar || ''}

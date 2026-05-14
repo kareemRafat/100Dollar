@@ -1,4 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
+import { usePage } from '@inertiajs/react';
 import { 
     Lightbulb, 
     User, 
@@ -33,6 +34,8 @@ const categoryIcons: Record<string, any> = {
 
 export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
     const { __ } = useLang();
+    const { locale } = usePage().props as any;
+    const isRtl = locale === 'ar';
 
     const CategoryIcon = idea.category_icon ? (categoryIcons[idea.category_icon] || MoreHorizontal) : Lightbulb;
 
@@ -57,7 +60,9 @@ export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
                 <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/25 px-4 py-1.5 text-primary-fixed shadow-lg shadow-primary/20 backdrop-blur-sm">
                     <CategoryIcon className="w-3.5 h-3.5 text-yellow-400" />
                     <span className="text-[11px] font-black uppercase tracking-[0.2em]">
-                        {idea.category}
+                        {typeof idea.category === 'object' 
+                            ? (isRtl ? idea.category.name_ar : idea.category.name_en) 
+                            : idea.category}
                     </span>
                 </div>
 

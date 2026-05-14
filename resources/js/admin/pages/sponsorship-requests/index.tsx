@@ -163,7 +163,7 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                         requests.data.map((request, index) => (
                                             <TableRow key={request.id}>
                                                 <TableCell className="text-center font-bold text-muted-foreground">
-                                                    {(requests.current_page - 1) * 10 + index + 1}
+                                                    {(requests.meta.current_page - 1) * 10 + index + 1}
                                                 </TableCell>
                                                 <TableCell className="font-medium">{request.company_name}</TableCell>
                                                 <TableCell>{request.email}</TableCell>

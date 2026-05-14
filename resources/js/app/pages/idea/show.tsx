@@ -290,7 +290,9 @@ export default function IdeaShow({
                                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-primary transition-colors hover:bg-primary/10">
                                     <CategoryIcon className="size-4" />
                                     <span className="text-xs font-bold tracking-wider uppercase">
-                                        {idea.category}
+                                        {typeof idea.category === 'object' 
+                                            ? (usePage().props.locale === 'ar' ? idea.category.name_ar : idea.category.name_en) 
+                                            : idea.category}
                                     </span>
                                 </div>
                             </div>

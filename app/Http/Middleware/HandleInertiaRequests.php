@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Middleware;
@@ -70,6 +71,12 @@ class HandleInertiaRequests extends Middleware
                     'url' => LaravelLocalization::getLocalizedURL($locale, null, [], true),
                 ];
             })->values(),
+            'social_links' => [
+                'whatsapp' => Setting::get('social_whatsapp'),
+                'x' => Setting::get('social_x'),
+                'facebook' => Setting::get('social_facebook'),
+                'instagram' => Setting::get('social_instagram'),
+            ],
         ];
     }
 }

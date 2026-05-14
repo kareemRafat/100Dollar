@@ -190,7 +190,7 @@ export default function UserShowPage({ user }: ShowProps) {
                                             user.ideas.map((idea) => (
                                                 <TableRow key={idea.id}>
                                                     <TableCell className="font-medium">{idea.title}</TableCell>
-                                                    <TableCell>{idea.category}</TableCell>
+                                                    <TableCell>{typeof idea.category === 'object' ? idea.category.name_ar : idea.category}</TableCell>
                                                     <TableCell>
                                                         <Badge variant={
                                                             idea.status === 'approved' ? 'default' :

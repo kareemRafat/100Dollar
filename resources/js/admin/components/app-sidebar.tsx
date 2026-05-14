@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Handshake, LayoutGrid, Users, FileText, Trophy, Banknote, Lightbulb } from 'lucide-react';
+import { Handshake, LayoutGrid, Users, FileText, Trophy, Banknote, Lightbulb, Share2 } from 'lucide-react';
 import AppLogo from '@/admin/components/app-logo';
 import { NavMain } from '@/admin/components/nav-main';
 import { NavUser } from '@/admin/components/nav-user';
@@ -50,6 +50,11 @@ const mainNavItems: NavItem[] = [
         title: 'الجوائز',
         href: admin.prizes.index().url,
         icon: Banknote,
+    },
+    {
+        title: 'روابط التواصل',
+        href: admin.socialLinks.edit().url,
+        icon: Share2,
     },
 ];
 
