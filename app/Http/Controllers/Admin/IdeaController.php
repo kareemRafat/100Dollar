@@ -37,16 +37,17 @@ class IdeaController extends Controller
 
         return Inertia::render('admin/pages/ideas/index', [
             'ideas' => $ideas,
-            'filters' => $request->only(['status', 'search']),
+            'filters' => $request->only(['status', 'search', 'page']),
         ]);
     }
 
-    public function show(Idea $idea): Response
+    public function show(Request $request, Idea $idea): Response
     {
         $idea->load(['user.media', 'category', 'country', 'media']);
 
         return Inertia::render('admin/pages/ideas/show', [
             'idea' => $idea,
+            'filters' => $request->only(['status', 'search', 'page']),
         ]);
     }
 
@@ -59,6 +60,7 @@ class IdeaController extends Controller
                 'status' => 'approved',
                 'submission_day' => $validated['submission_day'],
                 'approved_at' => now(),
+                'rejection_reason' => null,
             ]);
 
             return back()->with('status', 'idea-approved');
@@ -68,6 +70,8 @@ class IdeaController extends Controller
             $idea->update([
                 'status' => 'rejected',
                 'rejection_reason' => $validated['rejection_reason'],
+                'approved_at' => null,
+                'submission_day' => 0,
             ]);
 
             $idea->user->notify(new IdeaRejectedNotification($idea, $validated['rejection_reason']));

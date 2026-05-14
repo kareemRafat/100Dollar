@@ -46,6 +46,11 @@ import type { Idea } from '@/types';
 
 interface IdeaShowProps {
     idea: Idea;
+    filters: {
+        status?: string;
+        search?: string;
+        page?: string;
+    };
 }
 
 const daysOfWeek = [
@@ -58,19 +63,19 @@ const daysOfWeek = [
     { value: '6', label: 'السبت' },
 ];
 
-export default function IdeaShowPage({ idea }: IdeaShowProps) {
+export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
     const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const [showPdfPreview, setShowPdfPreview] = useState(false);
 
     const approveForm = useForm({
         status: 'approved',
-        submission_day: '',
+        submission_day: idea.submission_day?.toString() || '',
     });
 
     const rejectForm = useForm({
         status: 'rejected',
-        rejection_reason: '',
+        rejection_reason: idea.rejection_reason || '',
     });
 
     const handleApprove = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -102,6 +107,7 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
                     <div className="flex items-center gap-3">
                         <Link
                             href={admin.ideas.index().url}
+                            data={filters}
                             className="inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
                         >
                             <ArrowRight className="size-5" />
@@ -119,25 +125,27 @@ export default function IdeaShowPage({ idea }: IdeaShowProps) {
                         </div>
                     </div>
 
-                    {idea.status === 'pending' && (
-                        <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3">
+                        {idea.status !== 'rejected' && (
                             <Button
                                 variant="destructive"
                                 onClick={() => setIsRejectModalOpen(true)}
                                 className="font-bold"
                             >
                                 <XCircle className="me-2 size-4" />
-                                رفض الفكرة
+                                {idea.status === 'approved' ? 'تغيير لرفض' : 'رفض الفكرة'}
                             </Button>
+                        )}
+                        {idea.status !== 'approved' && (
                             <Button
                                 onClick={() => setIsApproveModalOpen(true)}
                                 className="bg-green-600 hover:bg-green-700 font-bold"
                             >
                                 <CheckCircle className="me-2 size-4" />
-                                الموافقة على الفكرة
+                                {idea.status === 'rejected' ? 'تغيير لموافقة' : 'الموافقة على الفكرة'}
                             </Button>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-3">

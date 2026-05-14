@@ -80,11 +80,11 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'approved':
-                return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">تمت الموافقة</Badge>;
+                return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 font-bold">تمت الموافقة</Badge>;
             case 'rejected':
-                return <Badge variant="destructive">مرفوضة</Badge>;
+                return <Badge variant="destructive" className="font-bold">مرفوضة</Badge>;
             default:
-                return <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100">قيد الانتظار</Badge>;
+                return <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 font-bold">قيد الانتظار</Badge>;
         }
     };
 
@@ -113,8 +113,8 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                     onClick={() => setStatus(tab.id)}
                                     className={cn(
                                         "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all",
-                                        isActive 
-                                            ? "bg-primary text-primary-foreground shadow-sm" 
+                                        isActive
+                                            ? "bg-primary text-primary-foreground shadow-sm"
                                             : "bg-muted/50 text-muted-foreground hover:bg-muted"
                                     )}
                                 >
@@ -146,9 +146,9 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead className="min-w-[200px] font-bold">الفكرة وصاحبها</TableHead>
-                                            <TableHead className="min-w-[100px] font-bold">التصنيف</TableHead>
-                                            <TableHead className="min-w-[120px] font-bold">تاريخ التقديم</TableHead>
+                                            <TableHead className="min-w-50 font-bold">الفكرة وصاحبها</TableHead>
+                                            <TableHead className="min-w-25 font-bold">التصنيف</TableHead>
+                                            <TableHead className="min-w-30 font-bold">تاريخ التقديم</TableHead>
                                             <TableHead className="min-w-[100px] font-bold">الحالة</TableHead>
                                             <TableHead className="text-end min-w-[100px] font-bold">الإجراءات</TableHead>
                                         </TableRow>
@@ -199,6 +199,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                                     <TableCell className="text-end">
                                                         <Link
                                                             href={admin.ideas.show(idea.id).url}
+                                                            data={filters}
                                                             className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary hover:bg-primary/20 transition-colors"
                                                         >
                                                             <Eye className="me-2 h-4 w-4" />

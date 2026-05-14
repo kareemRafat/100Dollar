@@ -52,9 +52,9 @@ class Idea extends Model
         ];
     }
 
-    public function getDateAttribute(): string
+    public function getDateAttribute(): ?string
     {
-        return $this->created_at->format('Y-m-d');
+        return $this->created_at?->format('Y-m-d');
     }
 
     public function getPdfFileAttribute(): ?string
