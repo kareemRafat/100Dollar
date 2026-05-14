@@ -1,4 +1,5 @@
 import { Head, useForm, Link } from '@inertiajs/react';
+import { useLang } from '@erag/lang-sync-inertia/react';
 import {
     CheckCircle,
     XCircle,
@@ -64,6 +65,7 @@ const daysOfWeek = [
 ];
 
 export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
+    const { __ } = useLang();
     const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
     const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
     const [showPdfPreview, setShowPdfPreview] = useState(false);
@@ -150,9 +152,9 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
 
                 <div className="grid gap-6 lg:grid-cols-3">
                     <div className="lg:col-span-2 space-y-6">
-                        <Card className="overflow-hidden">
+                        <Card className="overflow-hidden py-0 pb-5">
                             <CardHeader className="bg-muted/30 border-b">
-                                <CardTitle className="flex items-center gap-2 font-bold text-lg">
+                                <CardTitle className="flex items-center gap-2 font-bold text-lg py-4">
                                     <FileText className="size-5 text-primary" />
                                     وصف الفكرة
                                 </CardTitle>
@@ -175,7 +177,9 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                                 <CardContent>
                                     <div className="flex flex-wrap gap-2">
                                         {Array.isArray(idea.target_audience) && idea.target_audience.length > 0 ? idea.target_audience.map((item, index) => (
-                                            <Badge key={index} variant="secondary" className="font-semibold px-3 py-1">{item}</Badge>
+                                            <Badge key={index} variant="secondary" className="font-bold px-3 py-1">
+                                                {__(`messages.submit_idea.audiences.${item}`)}
+                                            </Badge>
                                         )) : <span className="text-muted-foreground italic text-sm">غير محدد</span>}
                                     </div>
                                 </CardContent>
@@ -191,7 +195,9 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                                 <CardContent>
                                     <div className="flex flex-wrap gap-2">
                                         {Array.isArray(idea.marketing_channel) && idea.marketing_channel.length > 0 ? idea.marketing_channel.map((item, index) => (
-                                            <Badge key={index} variant="secondary" className="font-semibold px-3 py-1">{item}</Badge>
+                                            <Badge key={index} variant="secondary" className="font-bold px-3 py-1">
+                                                {__(`messages.submit_idea.channels.${item}`)}
+                                            </Badge>
                                         )) : <span className="text-muted-foreground italic text-sm">غير محدد</span>}
                                     </div>
                                 </CardContent>
@@ -274,8 +280,8 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                     </div>
 
                     <div className="space-y-6">
-                        <Card>
-                            <CardHeader className="border-b bg-muted/10">
+                        <Card className='py-0 pb-5'>
+                            <CardHeader className="border-b bg-muted/10 py-4">
                                 <CardTitle className="font-bold text-lg">معلومات إضافية</CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-5 pt-6">
@@ -315,7 +321,9 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                                     </div>
                                     <div>
                                         <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-0.5">مدة التنفيذ</p>
-                                        <p className="font-bold text-foreground">{idea.implementation_time || 'غير محدد'}</p>
+                                        <p className="font-bold text-foreground">
+                                            {idea.implementation_time ? __(`messages.submit_idea.times.${idea.implementation_time}`) : 'غير محدد'}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -331,7 +339,7 @@ export default function IdeaShowPage({ idea, filters }: IdeaShowProps) {
                             </CardContent>
                         </Card>
 
-                        <Card className="overflow-hidden">
+                        <Card className="overflow-hidden py-0 pb-5">
                             <CardHeader className="border-b bg-muted/10 px-6 py-4">
                                 <CardTitle className="font-bold text-lg flex items-center gap-2">
                                     <ImageIcon className="size-5 text-primary" />

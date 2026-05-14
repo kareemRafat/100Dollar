@@ -15,6 +15,11 @@ class SetRequestLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->is('admin') || $request->is('admin/*')) {
+            app()->setLocale('ar');
+            return $next($request);
+        }
+
         $locale = $request->segment(1);
 
         if (! in_array($locale, ['en', 'ar'])) {
