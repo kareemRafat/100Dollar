@@ -192,6 +192,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
+                                        <TableHead className="w-12 text-center">#</TableHead>
                                         <TableHead>الراعي</TableHead>
                                         <TableHead>الفائز</TableHead>
                                         <TableHead>الفكرة</TableHead>
@@ -207,7 +208,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                     {prizes.data.length === 0 ? (
                                         <TableRow>
                                             <TableCell
-                                                colSpan={7}
+                                                colSpan={8}
                                                 className="h-48 text-center text-muted-foreground"
                                             >
                                                 لا يوجد سجلات جوائز تطابق
@@ -215,8 +216,11 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        prizes.data.map((prize) => (
+                                        prizes.data.map((prize, index) => (
                                             <TableRow key={prize.id}>
+                                                <TableCell className="text-center font-bold text-muted-foreground">
+                                                    {(prizes.current_page - 1) * 10 + index + 1}
+                                                </TableCell>
                                                 <TableCell className="font-semibold">
                                                     {prize.sponsor?.name || '-'}
                                                 </TableCell>

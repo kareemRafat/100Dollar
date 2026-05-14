@@ -143,6 +143,7 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                             <Table>
                                 <TableHeader>
                                     <TableRow>
+                                        <TableHead className="w-12 text-center">#</TableHead>
                                         <TableHead>الشركة</TableHead>
                                         <TableHead>البريد الإلكتروني</TableHead>
                                         <TableHead>الدولة</TableHead>
@@ -154,13 +155,16 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                 <TableBody>
                                     {requests.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={6} className="h-48 text-center text-muted-foreground">
+                                            <TableCell colSpan={7} className="h-48 text-center text-muted-foreground">
                                                 لا يوجد طلبات رعاية تطابق المعايير.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        requests.data.map((request) => (
+                                        requests.data.map((request, index) => (
                                             <TableRow key={request.id}>
+                                                <TableCell className="text-center font-bold text-muted-foreground">
+                                                    {(requests.current_page - 1) * 10 + index + 1}
+                                                </TableCell>
                                                 <TableCell className="font-medium">{request.company_name}</TableCell>
                                                 <TableCell>{request.email}</TableCell>
                                                 <TableCell>{request.country?.name_ar || '-'}</TableCell>

@@ -145,6 +145,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
+                                            <TableHead className="w-12 font-bold text-center">#</TableHead>
                                             <TableHead className="min-w-50 font-bold">الفكرة وصاحبها</TableHead>
                                             <TableHead className="min-w-25 font-bold">التصنيف</TableHead>
                                             <TableHead className="min-w-30 font-bold">تاريخ التقديم</TableHead>
@@ -155,7 +156,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                     <TableBody>
                                         {ideas.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={5} className="h-72 text-center">
+                                                <TableCell colSpan={6} className="h-72 text-center">
                                                     <div className="flex flex-col items-center justify-center space-y-4">
                                                         <div className="rounded-full bg-muted p-4">
                                                             <Lightbulb className="h-10 w-10 text-muted-foreground" />
@@ -170,8 +171,11 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                                 </TableCell>
                                             </TableRow>
                                         ) : (
-                                            ideas.data.map((idea) => (
+                                            ideas.data.map((idea, index) => (
                                                 <TableRow key={idea.id}>
+                                                    <TableCell className="text-center font-bold text-muted-foreground">
+                                                        {(ideas.current_page - 1) * 10 + index + 1}
+                                                    </TableCell>
                                                     <TableCell className="font-bold">
                                                         <div className="flex flex-col gap-1">
                                                             <span className="text-sm md:text-base">{idea.title}</span>
