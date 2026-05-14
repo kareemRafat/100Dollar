@@ -16,7 +16,7 @@ const COLORS = [
 
 export function CountryDistribution({ data }: { data: CountryData[] }) {
     return (
-        <Card className="lg:col-span-3">
+        <Card className="h-full">
             <CardHeader>
                 <CardTitle className="font-bold">توزيع الأفكار حسب الدولة</CardTitle>
             </CardHeader>

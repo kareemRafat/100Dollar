@@ -14,7 +14,7 @@ interface Idea {
 
 export function TopIdeas({ ideas }: { ideas: Idea[] }) {
     return (
-        <Card className="lg:col-span-4">
+        <Card className="h-full">
             <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle className="font-bold">أفضل 5 أفكار (بالأصوات)</CardTitle>
                 <Trophy className="size-5 text-amber-500" />

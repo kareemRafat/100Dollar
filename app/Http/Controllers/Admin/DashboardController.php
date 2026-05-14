@@ -17,66 +17,55 @@ class DashboardController extends Controller
         $days = 30;
         $startDate = now()->subDays($days);
 
-        // Basic Stats
-        $stats = [
-            'ideas_count' => Idea::count(),
-            'votes_count' => Vote::count(),
-            'users_count' => User::count(),
-            'sponsors_count' => Sponsor::count(),
-            'pending_ideas_count' => Idea::where('status', 'pending')->count(),
-        ];
-
-        // Ideas Trend (Daily)
-        $ideasTrend = Idea::query()
-            ->toBase()
-            ->selectRaw('DATE(created_at) as day, count(*) as count')
-            ->where('created_at', '>=', $startDate)
-            ->groupBy('day')
-            ->orderBy('day')
-            ->get();
-
-        // Votes Trend (Daily)
-        $votesTrend = Vote::query()
-            ->toBase()
-            ->selectRaw('DATE(created_at) as day, count(*) as count')
-            ->where('created_at', '>=', $startDate)
-            ->groupBy('day')
-            ->orderBy('day')
-            ->get();
-
-        // Weekly New Users (Last 12 weeks)
-        $usersTrend = User::query()
-            ->toBase()
-            ->selectRaw('YEARWEEK(created_at, 1) as week, count(*) as count')
-            ->where('created_at', '>=', now()->subWeeks(12))
-            ->groupBy('week')
-            ->orderBy('week')
-            ->get();
-
-        // Top 5 Most Voted Ideas (Proxy for shared until tracking added)
-        $topIdeas = Idea::with(['user.media', 'country', 'media'])
-            ->orderBy('votes_count', 'desc')
-            ->limit(5)
-            ->get();
-
-        // Idea Distribution by Country
-        $countryDistribution = Idea::query()
-            ->toBase()
-            ->join('countries', 'ideas.country_id', '=', 'countries.id')
-            ->selectRaw('countries.name_ar as country, count(*) as count')
-            ->groupBy('country')
-            ->orderBy('count', 'desc')
-            ->get();
-
         return Inertia::render('admin/pages/dashboard/index', [
-            'stats' => $stats,
-            'trends' => [
-                'ideas' => $ideasTrend,
-                'votes' => $votesTrend,
-                'users' => $usersTrend,
+            // Instant: Load immediately
+            'stats' => [
+                'ideas_count' => Idea::count(),
+                'votes_count' => Vote::count(),
+                'users_count' => User::count(),
+                'sponsors_count' => Sponsor::count(),
+                'pending_ideas_count' => Idea::where('status', 'pending')->count(),
             ],
-            'top_ideas' => $topIdeas,
-            'country_distribution' => $countryDistribution,
+
+            // Deferred: Load after the page renders or when visible
+            'trends' => Inertia::optional(fn () => [
+                'ideas' => Idea::query()
+                    ->toBase()
+                    ->selectRaw('DATE(created_at) as day, count(*) as count')
+                    ->where('created_at', '>=', $startDate)
+                    ->groupBy('day')
+                    ->orderBy('day')
+                    ->get(),
+
+                'votes' => Vote::query()
+                    ->toBase()
+                    ->selectRaw('DATE(created_at) as day, count(*) as count')
+                    ->where('created_at', '>=', $startDate)
+                    ->groupBy('day')
+                    ->orderBy('day')
+                    ->get(),
+
+                'users' => User::query()
+                    ->toBase()
+                    ->selectRaw('YEARWEEK(created_at, 1) as week, count(*) as count')
+                    ->where('created_at', '>=', now()->subWeeks(12))
+                    ->groupBy('week')
+                    ->orderBy('week')
+                    ->get(),
+            ]),
+
+            'top_ideas' => Inertia::optional(fn () => Idea::with(['user.media', 'country', 'media'])
+                ->orderBy('votes_count', 'desc')
+                ->limit(5)
+                ->get()),
+
+            'country_distribution' => Inertia::optional(fn () => Idea::query()
+                ->toBase()
+                ->join('countries', 'ideas.country_id', '=', 'countries.id')
+                ->selectRaw('countries.name_ar as country, count(*) as count')
+                ->groupBy('country')
+                ->orderBy('count', 'desc')
+                ->get()),
         ]);
     }
 }

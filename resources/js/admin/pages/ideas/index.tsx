@@ -3,7 +3,6 @@ import { Eye, Search, Lightbulb, User as UserIcon, Calendar, CheckCircle, XCircl
 import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
@@ -149,8 +148,8 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                             <TableHead className="min-w-50 font-bold">الفكرة وصاحبها</TableHead>
                                             <TableHead className="min-w-25 font-bold">التصنيف</TableHead>
                                             <TableHead className="min-w-30 font-bold">تاريخ التقديم</TableHead>
-                                            <TableHead className="min-w-[100px] font-bold">الحالة</TableHead>
-                                            <TableHead className="text-end min-w-[100px] font-bold">الإجراءات</TableHead>
+                                            <TableHead className="min-w-25 font-bold">الحالة</TableHead>
+                                            <TableHead className="text-end min-w-25 font-bold">الإجراءات</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -183,7 +182,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge variant="outline" className="font-semibold">
+                                                        <Badge variant="outline" className="font-bold">
                                                             {typeof idea.category === 'object' ? idea.category?.name_ar : idea.category}
                                                         </Badge>
                                                     </TableCell>
