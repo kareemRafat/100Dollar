@@ -90,7 +90,7 @@
     --deep-navy: #1a1a2e;
 }
 
-.dark .theme-gold {
+.dark.theme-gold {
     --background: #1b1b2f;
     --foreground: #e2e2e6;
     --card: #24243e;

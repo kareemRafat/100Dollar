@@ -44,7 +44,7 @@ type Props = {
 
 export function TopNavBar({ activeRoute }: Props) {
     const { auth, locale } = usePage().props;
-    const { appearance, updateAppearance } = useAppearance();
+    const { appearance, updateAppearance } = useAppearance('app');
     const { __ } = useLang();
 
     const navItems: NavItem[] = [

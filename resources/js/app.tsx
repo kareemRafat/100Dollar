@@ -8,7 +8,7 @@ import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
 import { Toaster as AdminToaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import { initializeTheme } from '@/hooks/use-appearance';
+import { initializeTheme, applyTheme, useAppearance } from '@/hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -62,8 +62,13 @@ createInertiaApp({
 
             if (isAdmin) {
                 document.documentElement.classList.remove('theme-gold');
+                // Use localStorage directly or a helper since we are outside React here
+                const adminAppearance = localStorage.getItem('appearance_admin') || 'system';
+                applyTheme(adminAppearance as any);
             } else {
                 document.documentElement.classList.add('theme-gold');
+                const appAppearance = localStorage.getItem('appearance_app') || 'system';
+                applyTheme(appAppearance as any);
             }
         });
 

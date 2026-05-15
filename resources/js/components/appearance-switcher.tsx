@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useAppearance } from '@/hooks/use-appearance';
 
 export default function AppearanceSwitcher() {
-    const { appearance, updateAppearance } = useAppearance();
+    const { appearance, updateAppearance } = useAppearance('app');
 
     return (
         <Button
