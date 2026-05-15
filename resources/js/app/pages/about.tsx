@@ -120,7 +120,7 @@ export default function About() {
             </section>
 
             <section className="border-outline-variant/10 bg-primary-container/5 border-y px-8 py-10">
-                <div className="mx-auto grid grid-cols-2 gap-8 md:grid-cols-4">
+                <div className="mx-auto max-w-7xl grid grid-cols-2 gap-8 md:grid-cols-4">
                     <div className="text-center">
                         <p className="mb-1 text-2xl font-black text-primary md:text-3xl">
                             1,500+

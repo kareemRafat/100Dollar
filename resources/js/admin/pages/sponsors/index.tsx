@@ -37,7 +37,9 @@ import admin from '@/routes/admin';
 import type { BreadcrumbItem, Sponsor } from '@/types';
 
 interface SponsorsProps {
-    sponsors: Sponsor[];
+    sponsors: {
+        data: Sponsor[];
+    };
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -62,6 +64,7 @@ const DAYS_OF_WEEK = [
 ];
 
 export default function SponsorsPage({ sponsors }: SponsorsProps) {
+    const sponsorsData = sponsors.data;
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -228,14 +231,14 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {sponsors.length === 0 ? (
+                                    {sponsorsData.length === 0 ? (
                                         <TableRow>
                                             <TableCell colSpan={8} className="h-48 text-center text-muted-foreground">
                                                 لا يوجد رعاة مضافين حالياً.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        sponsors.map((sponsor) => (
+                                        sponsorsData.map((sponsor) => (
                                             <TableRow key={sponsor.id}>
                                                 <TableCell>
                                                     <Avatar className="h-8 w-8">

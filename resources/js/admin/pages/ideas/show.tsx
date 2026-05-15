@@ -244,10 +244,10 @@ export default function IdeaShowPage({ idea, filters, comments }: IdeaShowProps)
                         </div>
 
                         {idea.pdf_file && (
-                            <Card className="overflow-hidden border-primary/20 shadow-sm">
-                                <CardHeader className="bg-muted/50 border-b px-6 py-4">
+                            <Card className="overflow-hidden py-0 pb-5">
+                                <CardHeader className="bg-muted/50 border-b">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                        <CardTitle className="flex items-center gap-2 text-lg font-bold">
+                                        <CardTitle className="flex items-center gap-2 font-bold text-lg py-4">
                                             <FileText className="size-5 text-primary" />
                                             الملف التوضيحي المرفق
                                         </CardTitle>
@@ -317,9 +317,10 @@ export default function IdeaShowPage({ idea, filters, comments }: IdeaShowProps)
                             </Card>
                         )}
 
-                        <Card>
-                            <CardHeader className="flex flex-row items-center justify-between border-b py-4">
-                                <CardTitle className="flex items-center gap-2 font-bold text-lg">
+
+                        <Card className='overflow-hidden py-0 pb-5'>
+                            <CardHeader className="flex flex-row items-center justify-between border-b">
+                                <CardTitle className="flex items-center gap-2 font-bold text-lg py-4">
                                     <MessageSquare className="size-5 text-primary" />
                                     التعليقات
                                 </CardTitle>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\UserResource;
 use App\Models\Country;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -44,7 +45,7 @@ class UserController extends Controller
             ->withQueryString();
 
         return Inertia::render('admin/pages/users/index', [
-            'users' => $users,
+            'users' => UserResource::collection($users),
             'countries' => Country::all(),
             'filters' => $request->only(['search', 'role', 'status', 'country_id']),
         ]);

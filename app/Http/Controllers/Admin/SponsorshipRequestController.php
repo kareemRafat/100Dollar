@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSponsorshipRequestStatusRequest;
+use App\Http\Resources\Admin\SponsorshipRequestResource;
 use App\Models\SponsorshipRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class SponsorshipRequestController extends Controller
             ->withQueryString();
 
         return Inertia::render('admin/pages/sponsorship-requests/index', [
-            'requests' => $requests,
+            'requests' => SponsorshipRequestResource::collection($requests),
             'filters' => $request->only(['status']),
         ]);
     }

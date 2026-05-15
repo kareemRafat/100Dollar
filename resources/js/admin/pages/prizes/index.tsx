@@ -219,7 +219,10 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                         prizes.data.map((prize, index) => (
                                             <TableRow key={prize.id}>
                                                 <TableCell className="text-center font-bold text-muted-foreground">
-                                                    {(prizes.meta.current_page - 1) * 10 + index + 1}
+                                                    {(prizes.meta.current_page - 1) *
+                                                        prizes.meta.per_page +
+                                                        index +
+                                                        1}
                                                 </TableCell>
                                                 <TableCell className="font-semibold">
                                                     {prize.sponsor?.name || '-'}
@@ -280,7 +283,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             </Table>
                         </div>
                         <div className="mt-6">
-                            <Pagination links={prizes.links as any} />
+                            <Pagination links={prizes.meta.links} />
                         </div>
                     </CardContent>
                 </Card>

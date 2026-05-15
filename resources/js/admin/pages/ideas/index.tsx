@@ -16,20 +16,10 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
-import type { BreadcrumbItem, Idea } from '@/types';
+import type { BreadcrumbItem, Idea, Paginated } from '@/types';
 
 interface IdeasProps {
-    ideas: {
-        data: Idea[];
-        links: {
-            url: string | null;
-            label: string;
-            active: boolean;
-        }[];
-        current_page: number;
-        last_page: number;
-        total: number;
-    };
+    ideas: Paginated<Idea>;
     filters: {
         status?: string;
         search?: string;
@@ -175,7 +165,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                             ideas.data.map((idea, index) => (
                                                 <TableRow key={idea.id}>
                                                     <TableCell className="text-center font-bold text-muted-foreground">
-                                                        {(ideas.current_page - 1) * 10 + index + 1}
+                                                        {(ideas.meta.current_page - 1) * ideas.meta.per_page + index + 1}
                                                     </TableCell>
                                                     <TableCell className="font-bold">
                                                         <div className="flex flex-col gap-1">
@@ -218,7 +208,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                 </Table>
                             </div>
                             <div className="mt-6">
-                                <Pagination links={ideas.links} />
+                                <Pagination links={ideas.meta.links} />
                             </div>
                         </CardContent>
                     </Card>

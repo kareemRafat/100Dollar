@@ -36,19 +36,10 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import admin from '@/routes/admin';
-import type { BreadcrumbItem, Country, User } from '@/types';
+import type { BreadcrumbItem, Country, Paginated, User } from '@/types';
 
 interface UsersProps {
-    users: {
-        data: User[];
-        links: {
-            url: string | null;
-            label: string;
-            active: boolean;
-        }[];
-        current_page: number;
-        last_page: number;
-    };
+    users: Paginated<User>;
     countries: Country[];
     filters: {
         search?: string;
@@ -445,7 +436,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                             </Table>
                         </div>
                         <div className="p-4 border-t sm:p-0 sm:border-0 mt-6">
-                            <Pagination links={users.links} />
+                            <Pagination links={users.meta.links} />
                         </div>
                     </CardContent>
                 </Card>

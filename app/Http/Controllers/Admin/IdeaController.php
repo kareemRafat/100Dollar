@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateIdeaStatusRequest;
+use App\Http\Resources\Admin\IdeaResource;
 use App\Models\Idea;
 use App\Notifications\IdeaRejectedNotification;
 use Illuminate\Http\RedirectResponse;
@@ -36,7 +37,7 @@ class IdeaController extends Controller
             ->withQueryString();
 
         return Inertia::render('admin/pages/ideas/index', [
-            'ideas' => $ideas,
+            'ideas' => IdeaResource::collection($ideas),
             'filters' => $request->only(['status', 'search', 'page']),
         ]);
     }

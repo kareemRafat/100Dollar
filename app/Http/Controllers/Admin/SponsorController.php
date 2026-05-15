@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreSponsorRequest;
 use App\Http\Requests\Admin\UpdateSponsorRequest;
+use App\Http\Resources\Admin\SponsorResource;
 use App\Models\Sponsor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class SponsorController extends Controller
             ->get();
 
         return Inertia::render('admin/pages/sponsors/index', [
-            'sponsors' => $sponsors,
+            'sponsors' => SponsorResource::collection($sponsors),
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Admin\PrizeRecordResource;
 use App\Models\PrizeRecord;
 use App\Models\Sponsor;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +34,7 @@ class PrizeRecordController extends Controller
             ->withQueryString();
 
         return Inertia::render('admin/pages/prizes/index', [
-            'prizes' => $prizes,
+            'prizes' => PrizeRecordResource::collection($prizes),
             'sponsors' => Sponsor::with('media')->get(),
             'filters' => $request->only(['status', 'sponsor_id']),
         ]);
