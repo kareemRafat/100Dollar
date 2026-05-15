@@ -441,6 +441,7 @@ return [
         'filter_pending' => 'Pending',
         'filter_approved' => 'Approved',
         'filter_winner' => 'Winner',
+        'filter_rejected' => 'Rejected',
         'final_votes' => 'Final Votes',
         'current_votes' => 'Current Votes',
         'funded_success' => 'Project funded successfully',
@@ -719,5 +720,25 @@ return [
         'winner_announced_mail_action' => 'View Your Idea',
         'winner_announced_mail_line3' => 'Our team will contact you soon to arrange the prize delivery.',
         'winner_announced_mail_line4' => 'Thank you for participating in 100Dollar!',
+
+        'idea_approved_title' => 'Your Idea has been Approved',
+        'idea_approved_body' => 'Your idea ":title" has been approved and is now live for voting.',
+        'idea_approved_mail_subject' => 'Good News: Your Idea is Approved!',
+        'idea_approved_mail_greeting' => 'Hello :name,',
+        'idea_approved_mail_line1' => 'We are pleased to inform you that your idea ":title" has been approved and published on our platform.',
+        'idea_approved_mail_action' => 'View and Share Your Idea',
+        'idea_approved_mail_line2' => 'You can now start gathering votes to increase your chances of winning!',
+
+        'idea_rejected_title' => 'Update Regarding Your Idea',
+        'idea_rejected_body' => 'Unfortunately, your idea ":title" was not approved. You can review the reason and edit it.',
+        'idea_rejected_mail_subject' => 'Regarding Your Idea: :title',
+        'idea_rejected_mail_greeting' => 'Hello :name,',
+        'idea_rejected_mail_line1' => 'We regret to inform you that your idea ":title" has been rejected for the following reason:',
+        'idea_rejected_mail_line2' => 'You can edit your idea and resubmit it or submit a new idea.',
+        'idea_rejected_mail_action' => 'View Idea',
+        'idea_rejected_mail_line3' => 'Thank you for using our platform!',
+
+        'new_comment_title' => 'New Comment',
+        'new_comment_body' => ':user commented on your idea ":title"',
     ],
 ];

@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Idea;
+use App\Notifications\Channels\CustomDbChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -24,7 +25,7 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [CustomDbChannel::class, 'mail'];
     }
 
     /**
@@ -40,6 +41,18 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
             ->action(__('messages.notifications.winner_announced_mail_action'), url('/ideas/'.$this->idea->id))
             ->line(__('messages.notifications.winner_announced_mail_line3'))
             ->line(__('messages.notifications.winner_announced_mail_line4'));
+    }
+
+    public function toCustomDb(object $notifiable): array
+    {
+        return [
+            'title' => __('messages.notifications.winner_announced_title'),
+            'body' => __('messages.notifications.winner_announced_body', ['title' => $this->idea->title]),
+            'data' => [
+                'idea_id' => $this->idea->id,
+                'amount' => 100.00,
+            ],
+        ];
     }
 
     /**

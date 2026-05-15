@@ -439,6 +439,7 @@ return [
         'filter_pending' => 'قيد الانتظار',
         'filter_approved' => 'مُعتمدة',
         'filter_winner' => 'فائزة',
+        'filter_rejected' => 'مرفوضة',
         'final_votes' => 'الأصوات النهائية',
         'current_votes' => 'الأصوات الحالية',
         'funded_success' => 'تم تمويل المشروع بنجاح',
@@ -717,5 +718,25 @@ return [
         'winner_announced_mail_action' => 'عرض فكرتك',
         'winner_announced_mail_line3' => 'سيتواصل معك فريقنا قريباً لترتيب تسليم الجائزة.',
         'winner_announced_mail_line4' => 'شكراً لمشاركتك في أفكار بـ 100 دولار!',
+
+        'idea_approved_title' => 'تمت الموافقة على فكرتك',
+        'idea_approved_body' => 'تمت الموافقة على فكرتك ":title" وهي الآن متاحة للتصويت.',
+        'idea_approved_mail_subject' => 'خبر سعيد: تمت الموافقة على فكرتك!',
+        'idea_approved_mail_greeting' => 'مرحباً :name،',
+        'idea_approved_mail_line1' => 'يسعدنا إبلاغك بأنه تمت الموافقة على فكرتك ":title" وهي الآن منشورة على منصتنا.',
+        'idea_approved_mail_action' => 'عرض الفكرة ومشاركتها',
+        'idea_approved_mail_line2' => 'يمكنك الآن البدء في جمع الأصوات لزيادة فرصك في الربح!',
+
+        'idea_rejected_title' => 'تحديث بخصوص فكرتك',
+        'idea_rejected_body' => 'للأسف، لم تتم الموافقة على فكرتك ":title". يمكنك مراجعة السبب والتعديل.',
+        'idea_rejected_mail_subject' => 'بخصوص فكرتك: :title',
+        'idea_rejected_mail_greeting' => 'مرحباً :name،',
+        'idea_rejected_mail_line1' => 'نعتذر منك، لقد تم رفض فكرتك ":title" للأسباب التالية:',
+        'idea_rejected_mail_line2' => 'يمكنك تعديل الفكرة وإعادة إرسالها أو إرسال فكرة جديدة.',
+        'idea_rejected_mail_action' => 'عرض الفكرة',
+        'idea_rejected_mail_line3' => 'شكراً لاستخدامك منصتنا!',
+
+        'new_comment_title' => 'تعليق جديد',
+        'new_comment_body' => 'قام :user بالتعليق على فكرة ":title"',
     ],
 ];

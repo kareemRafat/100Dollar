@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Idea;
+use App\Notifications\Channels\CustomDbChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -19,28 +20,39 @@ class IdeaRejectedNotification extends Notification implements ShouldQueue
 
     public function via(object $notifiable): array
     {
-        return ['database', 'mail'];
+        return [CustomDbChannel::class, 'mail'];
     }
 
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('بخصوص فكرتك: '.$this->idea->title)
-            ->greeting('مرحباً '.$notifiable->name)
-            ->line('نعتذر منك، لقد تم رفض فكرتك "'.$this->idea->title.'" للأسباب التالية:')
+            ->subject(__('messages.notifications.idea_rejected_mail_subject', ['title' => $this->idea->title]))
+            ->greeting(__('messages.notifications.idea_rejected_mail_greeting', ['name' => $notifiable->name]))
+            ->line(__('messages.notifications.idea_rejected_mail_line1', ['title' => $this->idea->title]))
             ->line($this->reason)
-            ->line('يمكنك تعديل الفكرة وإعادة إرسالها أو إرسال فكرة جديدة.')
-            ->action('عرض الفكرة', url('/ideas/'.$this->idea->id))
-            ->line('شكراً لاستخدامك منصتنا!');
+            ->line(__('messages.notifications.idea_rejected_mail_line2'))
+            ->action(__('messages.notifications.idea_rejected_mail_action'), url('/ideas/'.$this->idea->id))
+            ->line(__('messages.notifications.idea_rejected_mail_line3'));
+    }
+
+    public function toCustomDb(object $notifiable): array
+    {
+        return [
+            'title' => __('messages.notifications.idea_rejected_title'),
+            'body' => __('messages.notifications.idea_rejected_body', ['title' => $this->idea->title]),
+            'data' => [
+                'idea_id' => $this->idea->id,
+                'reason' => $this->reason,
+            ],
+        ];
     }
 
     public function toArray(object $notifiable): array
     {
         return [
             'idea_id' => $this->idea->id,
-            'idea_title' => $this->idea->title,
+            'title' => $this->idea->title,
             'reason' => $this->reason,
-            'message' => 'تم رفض فكرتك: '.$this->idea->title,
         ];
     }
 }

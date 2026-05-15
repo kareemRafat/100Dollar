@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Events\IdeaSubmitted;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\CommentResource;
 use App\Http\Resources\App\IdeaResource;
@@ -138,9 +139,7 @@ class IdeaController extends Controller
             return $idea;
         });
 
-        // TODO: Send internal admin notification
-        // $adminUsers = User::where('role', 'admin')->get();
-        // Notification::send($adminUsers, new NewIdeaSubmitted($idea));
+        event(new IdeaSubmitted($idea));
 
         return redirect()->route('app.ideas.index')
             ->with('success', __('messages.idea_submitted_successfully'));

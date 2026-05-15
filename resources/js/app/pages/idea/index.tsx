@@ -226,6 +226,17 @@ export default function MyIdeas({
                             >
                                 {__('messages.my_ideas.filter_winner')}
                             </Button>
+                            <Button
+                                className="h-10 rounded-full px-6 text-xs font-black"
+                                variant={
+                                    filters.status === 'rejected'
+                                        ? 'default'
+                                        : 'secondary'
+                                }
+                                onClick={() => handleFilter('rejected')}
+                            >
+                                {__('messages.my_ideas.filter_rejected')}
+                            </Button>
                         </div>
                     </div>
 

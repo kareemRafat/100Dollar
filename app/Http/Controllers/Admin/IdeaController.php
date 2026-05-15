@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\IdeaApproved;
+use App\Events\IdeaRejected;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateIdeaStatusRequest;
 use App\Http\Resources\Admin\IdeaResource;
 use App\Models\Idea;
-use App\Notifications\IdeaRejectedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -70,6 +71,8 @@ class IdeaController extends Controller
                 'rejection_reason' => null,
             ]);
 
+            event(new IdeaApproved($idea));
+
             return back()->with('status', 'idea-approved');
         }
 
@@ -81,7 +84,7 @@ class IdeaController extends Controller
                 'submission_day' => 0,
             ]);
 
-            $idea->user->notify(new IdeaRejectedNotification($idea, $validated['rejection_reason']));
+            event(new IdeaRejected($idea, $validated['rejection_reason']));
 
             return back()->with('status', 'idea-rejected');
         }

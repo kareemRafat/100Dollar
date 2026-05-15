@@ -2,11 +2,10 @@
 
 namespace App\Actions\Admin;
 
+use App\Events\WinnerAnnounced;
 use App\Models\Idea;
 use App\Models\PrizeRecord;
-use App\Notifications\WinnerAnnouncedNotification;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 
 class ConfirmWinner
 {
@@ -34,20 +33,8 @@ class ConfirmWinner
                 'status' => 'pending',
             ]);
 
-            // 3. Trigger Notification
-            $idea->user->notify(new WinnerAnnouncedNotification($idea));
-
-            // 4. Create internal notification record
-            \App\Models\Notification::create([
-                'user_id' => $idea->user_id,
-                'type' => 'winner_announced',
-                'title' => __('messages.notifications.winner_announced_title'),
-                'body' => __('messages.notifications.winner_announced_body', ['title' => $idea->title]),
-                'data' => [
-                    'idea_id' => $idea->id,
-                    'amount' => 100.00,
-                ],
-            ]);
+            // 3. Trigger Event
+            event(new WinnerAnnounced($idea));
         });
     }
 }

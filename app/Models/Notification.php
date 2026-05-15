@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -19,7 +20,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class Notification extends Model
 {
-    use HasFactory;
+    use HasFactory, MassPrunable;
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): \Illuminate\Database\Eloquent\Builder
+    {
+        return static::where('created_at', '<=', now()->subDays(30))
+            ->where('is_read', true);
+    }
 
     protected function casts(): array
     {

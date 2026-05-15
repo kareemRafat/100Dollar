@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Events\CommentCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Idea;
@@ -19,10 +20,12 @@ class CommentController extends Controller
             'body' => 'required|string|max:1000',
         ]);
 
-        $idea->comments()->create([
+        $comment = $idea->comments()->create([
             'user_id' => auth()->id(),
             'body' => $validated['body'],
         ]);
+
+        event(new CommentCreated($comment));
 
         return back();
     }
