@@ -35,10 +35,10 @@ export function TopIdeas({ ideas }: { ideas: Idea[] }) {
                                 <TableCell className="font-medium">
                                     <div className="flex flex-col">
                                         <span>{idea.title}</span>
-                                        <span className="text-xs text-muted-foreground">{idea.country.name_ar}</span>
+                                        <span className="text-xs text-muted-foreground">{idea.country?.name_ar || 'غير محدد'}</span>
                                     </div>
                                 </TableCell>
-                                <TableCell>{idea.user.name}</TableCell>
+                                <TableCell>{idea.user?.name || 'مستخدم غير معروف'}</TableCell>
                                 <TableCell className="text-center font-bold text-primary">{idea.votes_count}</TableCell>
                                 <TableCell className="text-left">
                                     <Link 

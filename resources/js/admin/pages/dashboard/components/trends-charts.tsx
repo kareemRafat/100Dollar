@@ -21,7 +21,7 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                     <CardTitle className="text-base font-bold">نشاط الأفكار (آخر 30 يوم)</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                         <AreaChart data={trends.ideas} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorIdeas" x1="0" y1="0" x2="0" y2="1">
@@ -35,7 +35,11 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 fontSize={10} 
                                 tickLine={false} 
                                 axisLine={false}
-                                tickFormatter={(value) => value ? value.split('-').slice(1).join('/') : ''}
+                                tickFormatter={(value) => {
+                                    if (typeof value !== 'string') return '';
+                                    const parts = value.split('-');
+                                    return parts.length >= 2 ? parts.slice(1).join('/') : value;
+                                }}
                             />
                             <YAxis fontSize={10} tickLine={false} axisLine={false} />
                             <Tooltip 
@@ -61,7 +65,7 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                     <CardTitle className="text-base font-bold">نشاط التصويت (آخر 30 يوم)</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                         <AreaChart data={trends.votes} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorVotes" x1="0" y1="0" x2="0" y2="1">
@@ -75,7 +79,11 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 fontSize={10} 
                                 tickLine={false} 
                                 axisLine={false}
-                                tickFormatter={(value) => value ? value.split('-').slice(1).join('/') : ''}
+                                tickFormatter={(value) => {
+                                    if (typeof value !== 'string') return '';
+                                    const parts = value.split('-');
+                                    return parts.length >= 2 ? parts.slice(1).join('/') : value;
+                                }}
                             />
                             <YAxis fontSize={10} tickLine={false} axisLine={false} />
                             <Tooltip 
@@ -101,7 +109,7 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                     <CardTitle className="text-base font-bold">نمو المستخدمين (آخر 12 أسبوع)</CardTitle>
                 </CardHeader>
                 <CardContent className="h-[300px]">
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
                         <BarChart data={trends.users} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-border)" />
                             <XAxis 
@@ -109,7 +117,11 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 fontSize={10} 
                                 tickLine={false} 
                                 axisLine={false}
-                                tickFormatter={(value) => `أسبوع ${value.toString().slice(-2)}`}
+                                tickFormatter={(value) => {
+                                    if (value === null || value === undefined) return '';
+                                    const str = value.toString();
+                                    return `أسبوع ${str.slice(-2)}`;
+                                }}
                             />
                             <YAxis fontSize={10} tickLine={false} axisLine={false} />
                             <Tooltip 
