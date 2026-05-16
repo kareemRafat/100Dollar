@@ -425,6 +425,10 @@ return [
         'save_changes' => 'Save all changes',
         'mark_all_read' => 'Mark all as read',
         'mark_all_read_success' => 'All notifications marked as read',
+        'preferred_language' => 'Preferred Language',
+        'choose_language' => 'Choose your preferred language',
+        'arabic' => 'Arabic',
+        'english' => 'English',
     ],
 
     'my_ideas' => [
@@ -740,5 +744,10 @@ return [
 
         'new_comment_title' => 'New Comment',
         'new_comment_body' => ':user commented on your idea ":title"',
+
+        'whoops' => 'Whoops!',
+        'hello' => 'Hello!',
+        'regards' => 'Regards,',
+        'subcopy' => "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:",
     ],
 ];

@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { useForm, usePage } from '@inertiajs/react';
-import { Camera, Loader2, User as UserIcon, AlertCircle } from 'lucide-react';
+import { Camera, Loader2, User as UserIcon, AlertCircle, Languages } from 'lucide-react';
 import React, { memo  } from 'react';
 import type {SubmitEvent} from 'react';
 import { update as updateProfile } from '@/actions/App/Http/Controllers/App/ProfileController';
@@ -9,6 +9,13 @@ import { toast } from '@/app/components/ui/toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
 type Props = {
@@ -18,6 +25,7 @@ type Props = {
         phone?: string;
         bio?: string;
         avatar?: string;
+        locale: string;
     };
 };
 
@@ -34,6 +42,7 @@ function ProfileInformationForm({ user }: Props) {
         phone: user.phone || '',
         bio: user.bio || '',
         avatar: null as File | null,
+        locale: user.locale || 'ar',
     });
 
     const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -139,22 +148,48 @@ function ProfileInformationForm({ user }: Props) {
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="phone" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
-                                {__('messages.profile.phone')}
-                            </Label>
-                            <Input
-                                id="phone"
-                                className={cn(
-                                    "h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary",
-                                    "text-left"
-                                )}
-                                dir="ltr"
-                                type="tel"
-                                value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
-                                placeholder="+966 50 123 4567"
-                            />
+                        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                            <div className="space-y-2">
+                                <Label htmlFor="phone" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
+                                    {__('messages.profile.phone')}
+                                </Label>
+                                <Input
+                                    id="phone"
+                                    className={cn(
+                                        "h-11 rounded-xl bg-surface-container-low border-none focus-visible:ring-1 focus-visible:ring-primary",
+                                        isRtl ? "text-right" : "text-left"
+                                    )}
+                                    dir={isRtl ? "rtl" : "ltr"}
+                                    type="tel"
+                                    value={data.phone}
+                                    onChange={(e) => setData('phone', e.target.value)}
+                                    placeholder="+966 50 123 4567"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="locale" className={cn("px-1 text-[11px] font-black uppercase tracking-wider text-on-surface-variant block", isRtl ? "text-right" : "text-left")}>
+                                    {__('messages.profile.preferred_language')}
+                                </Label>
+                                <Select value={data.locale} onValueChange={(value) => setData('locale', value)}>
+                                    <SelectTrigger id="locale" className="h-11 rounded-xl border-none bg-surface-container-low focus:ring-1 focus:ring-primary">
+                                        <SelectValue placeholder={__('messages.profile.choose_language')} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="ar">
+                                            <div className="flex items-center gap-2">
+                                                <span>🇸🇦</span>
+                                                <span>{__('messages.profile.arabic')}</span>
+                                            </div>
+                                        </SelectItem>
+                                        <SelectItem value="en">
+                                            <div className="flex items-center gap-2">
+                                                <span>🇺🇸</span>
+                                                <span>{__('messages.profile.english')}</span>
+                                            </div>
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
 
                         <div className="space-y-2">
@@ -205,6 +240,7 @@ function ProfileInformationForm({ user }: Props) {
                                             phone: user.phone || '',
                                             bio: user.bio || '',
                                             avatar: null,
+                                            locale: user.locale || 'ar',
                                         });
                                         setAvatarPreview(null);
                                     }}

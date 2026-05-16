@@ -12,6 +12,7 @@ class HandleIdeaRejected
      */
     public function handle(IdeaRejected $event): void
     {
-        $event->idea->user->notify(new IdeaRejectedNotification($event->idea, $event->reason));
+        $user = $event->idea->user;
+        $user->notify((new IdeaRejectedNotification($event->idea, $event->reason))->locale($user->preferredLocale()));
     }
 }

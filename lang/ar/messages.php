@@ -423,6 +423,10 @@ return [
         'save_changes' => 'حفظ جميع التغييرات',
         'mark_all_read' => 'تحديد الكل كمقروء',
         'mark_all_read_success' => 'تم تحديد جميع التنبيهات كمقروءة',
+        'preferred_language' => 'اللغة المفضلة',
+        'choose_language' => 'اختر لغتك المفضلة',
+        'arabic' => 'العربية',
+        'english' => 'الإنجليزية',
     ],
 
     'my_ideas' => [
@@ -738,5 +742,10 @@ return [
 
         'new_comment_title' => 'تعليق جديد',
         'new_comment_body' => 'قام :user بالتعليق على فكرة ":title"',
+
+        'whoops' => 'عذراً!',
+        'hello' => 'مرحباً!',
+        'regards' => 'مع أطيب التحيات،',
+        'subcopy' => 'إذا كنت تواجه مشكلة في النقر على زر ":actionText"، فقم بنسخ الرابط أدناه ولصقه في متصفح الويب الخاص بك:',
     ],
 ];

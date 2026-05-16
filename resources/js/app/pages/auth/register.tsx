@@ -114,8 +114,8 @@ export default function Register({ canLogin, countries }: Props) {
                         onChange={(e) => setData('phone', e.target.value)}
                         required
                         placeholder={__('messages.register.phone_placeholder')}
-                        className="h-10 text-start text-sm"
-                        dir="ltr"
+                        className="h-10 text-sm"
+                        dir={locale === 'ar' ? 'rtl' : 'ltr'}
                     />
                     <InputError message={errors.phone} />
                 </div>

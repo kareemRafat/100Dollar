@@ -26,12 +26,28 @@ width: 100% !important;
 }
 
 {{-- RTL Support --}}
-[dir="rtl"] .button {
-    text-align: center;
+[dir="rtl"] body, [dir="rtl"] .wrapper, [dir="rtl"] .body, [dir="rtl"] .inner-body, [dir="rtl"] .content-cell {
+    text-align: right !important;
+    direction: rtl !important;
 }
 
-[dir="rtl"] .body, [dir="rtl"] .inner-body, [dir="rtl"] .content-cell {
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] p, [dir="rtl"] li, [dir="rtl"] span, [dir="rtl"] a {
     text-align: right !important;
+    direction: rtl !important;
+}
+
+[dir="rtl"] .button {
+    text-align: center !important;
+}
+
+[dir="rtl"] .panel {
+    border-left: none !important;
+    border-right: #18181b solid 4px !important;
+    text-align: right !important;
+}
+
+[dir="rtl"] .header a, [dir="rtl"] .footer p {
+    text-align: center !important;
 }
 </style>
 {!! $head ?? '' !!}

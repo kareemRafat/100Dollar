@@ -16,8 +16,8 @@ class HandleIdeaSubmitted
     {
         $admins = User::where('role', 'admin')->get();
 
-        if ($admins->isNotEmpty()) {
-            Notification::send($admins, new AdminNewIdeaNotification($event->idea));
+        foreach ($admins as $admin) {
+            $admin->notify((new AdminNewIdeaNotification($event->idea))->locale($admin->preferredLocale()));
         }
     }
 }

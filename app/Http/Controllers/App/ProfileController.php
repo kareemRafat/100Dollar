@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 use Laravel\Fortify\Features;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ProfileController extends Controller
 {
@@ -155,7 +156,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $user = $request->user();
 
@@ -165,6 +166,7 @@ class ProfileController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'bio' => ['nullable', 'string', 'max:500'],
             'avatar' => ['nullable', 'image', 'max:2048'], // 2MB
+            'locale' => ['required', 'string', 'in:ar,en'],
         ]);
 
         $user->fill([
@@ -172,12 +174,14 @@ class ProfileController extends Controller
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'bio' => $validated['bio'],
+            'locale' => $validated['locale'],
         ]);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
+        $oldLocale = $user->getOriginal('locale');
         $user->save();
 
         if ($request->hasFile('avatar')) {
@@ -193,6 +197,12 @@ class ProfileController extends Controller
                 'collection_name' => 'avatar',
                 'disk' => 'public',
             ]);
+        }
+
+        if ($oldLocale !== $user->locale) {
+            $url = LaravelLocalization::getLocalizedURL($user->locale, route('app.profile'));
+
+            return Inertia::location($url);
         }
 
         return back()->with('status', 'profile-updated');

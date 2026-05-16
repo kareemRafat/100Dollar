@@ -33,8 +33,10 @@ class NotifyIdeaFollowersJob implements ShouldQueue
             ->with('user')
             ->when($this->excludeUserId, fn($q) => $q->where('user_id', '!=', $this->excludeUserId))
             ->chunkById(500, function ($follows) {
-                $users = $follows->pluck('user');
-                Notification::send($users, new $this->notificationClass(...$this->params));
+                foreach ($follows as $follow) {
+                    $user = $follow->user;
+                    $user->notify((new $this->notificationClass(...$this->params))->locale($user->preferredLocale()));
+                }
             });
     }
 }

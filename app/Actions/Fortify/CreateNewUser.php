@@ -33,6 +33,7 @@ class CreateNewUser implements CreatesNewUsers
             'country_id' => $input['country_id'],
             'nationality' => $input['nationality'],
             'role' => 'user',
+            'locale' => app()->getLocale(),
         ]);
     }
 }

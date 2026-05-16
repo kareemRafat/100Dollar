@@ -12,6 +12,7 @@ class HandleWinnerAnnounced
      */
     public function handle(WinnerAnnounced $event): void
     {
-        $event->idea->user->notify(new WinnerAnnouncedNotification($event->idea));
+        $user = $event->idea->user;
+        $user->notify((new WinnerAnnouncedNotification($event->idea))->locale($user->preferredLocale()));
     }
 }

@@ -31,8 +31,10 @@ class NotifyUserFollowersJob implements ShouldQueue
         $this->user->followers()
             ->with('follower')
             ->chunkById(500, function ($follows) {
-                $users = $follows->pluck('follower');
-                Notification::send($users, new $this->notificationClass(...$this->params));
+                foreach ($follows as $follow) {
+                    $follower = $follow->follower;
+                    $follower->notify((new $this->notificationClass(...$this->params))->locale($follower->preferredLocale()));
+                }
             });
     }
 }
