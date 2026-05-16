@@ -3,6 +3,7 @@ import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
 import AppLogo from '@/admin/components/app-logo';
 import AppLogoIcon from '@/admin/components/app-logo-icon';
 import { Breadcrumbs } from '@/admin/components/breadcrumbs';
+import { NotificationBell } from '@/admin/components/notification-bell';
 import { UserMenuContent } from '@/admin/components/user-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -185,6 +186,9 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                             >
                                 <Search className="!size-5 opacity-80 group-hover:opacity-100" />
                             </Button>
+
+                            <NotificationBell />
+
                             <div className="ml-1 hidden gap-1 lg:flex">
                                 {rightNavItems.map((item) => (
                                     <Tooltip key={item.title}>

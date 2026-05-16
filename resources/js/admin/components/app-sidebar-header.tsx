@@ -1,5 +1,5 @@
 import { Breadcrumbs } from '@/admin/components/breadcrumbs';
-import LanguageSwitcher from '@/components/language-switcher';
+import { NotificationBell } from '@/admin/components/notification-bell';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';
 
@@ -13,6 +13,10 @@ export function AppSidebarHeader({
             <div className="flex items-center gap-2">
                 <SidebarTrigger className="-ms-1" />
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
+            </div>
+            
+            <div className="flex items-center gap-2">
+                <NotificationBell />
             </div>
         </header>
     );

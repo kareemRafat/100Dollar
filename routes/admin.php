@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Auth\TwoFactorController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IdeaController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\PrizeRecordController;
 use App\Http\Controllers\Admin\Settings\ProfileController;
 use App\Http\Controllers\Admin\Settings\SecurityController;
@@ -91,9 +92,14 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::get('prizes', [PrizeRecordController::class, 'index'])->name('admin.prizes.index');
     Route::patch('prizes/{prizeRecord}/status', [PrizeRecordController::class, 'updateStatus'])->name('admin.prizes.update-status');
 
-    // Winners
+    // winners
     Route::get('winners', [WinnerController::class, 'index'])->name('admin.winners.index');
     Route::post('winners/{idea}/confirm', [WinnerController::class, 'confirm'])->name('admin.winners.confirm');
+
+    // Notifications
+    Route::get('notifications', [NotificationController::class, 'index'])->name('admin.notifications.index');
+    Route::patch('notifications/read', [NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+    Route::patch('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('admin.notifications.read-all');
 
     Route::get('confirm-password', function () {
         return Inertia::render('admin/pages/auth/confirm-password');

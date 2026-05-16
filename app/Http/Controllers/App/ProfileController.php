@@ -62,24 +62,42 @@ class ProfileController extends Controller
             $query = Vote::where('voter_email', $user->email)
                 ->whereNotNull('otp_verified_at')
                 ->whereHas('idea')
-                ->with(['idea.user.media', 'idea.category', 'idea.country'])
+                ->with(['idea.user', 'idea.category', 'idea.country'])
                 ->latest();
 
-            $props['votedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($vote) => $vote->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($vote) => $vote->idea));
+            $props['votedIdeas'] = $request->inertia()
+                ? $query->paginate(10)->through(function ($vote) {
+                    $vote->idea->user?->setAppends([]);
+                    return $vote->idea->setAppends(['date']);
+                })
+                : Inertia::defer(fn () => $query->paginate(10)->through(function ($vote) {
+                    $vote->idea->user?->setAppends([]);
+                    return $vote->idea->setAppends(['date']);
+                }));
         } elseif ($activeSection === 'followed-ideas') {
             $query = $user->followedIdeas()
                 ->whereHas('idea')
-                ->with(['idea.user.media', 'idea.category', 'idea.country'])
+                ->with(['idea.user', 'idea.category', 'idea.country'])
                 ->latest();
 
-            $props['followedIdeas'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->idea) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->idea));
+            $props['followedIdeas'] = $request->inertia()
+                ? $query->paginate(10)->through(function ($follow) {
+                    $follow->idea->user?->setAppends([]);
+                    return $follow->idea->setAppends(['date']);
+                })
+                : Inertia::defer(fn () => $query->paginate(10)->through(function ($follow) {
+                    $follow->idea->user?->setAppends([]);
+                    return $follow->idea->setAppends(['date']);
+                }));
         } elseif ($activeSection === 'followed-people') {
             $query = $user->following()
                 ->whereHas('following')
-                ->with('following.media')
+                ->with('following')
                 ->latest();
 
-            $props['followedPeople'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->following) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->following));
+            $props['followedPeople'] = $request->inertia()
+                ? $query->paginate(10)->through(fn ($follow) => $follow->following->setAppends([]))
+                : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->following->setAppends([])));
         }
 
         return Inertia::render('app/pages/profile', $props);

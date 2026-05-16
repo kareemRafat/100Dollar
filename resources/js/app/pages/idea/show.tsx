@@ -1,9 +1,9 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
-import { 
-    Bell, 
-    UserPlus, 
-    Check, 
+import {
+    Bell,
+    UserPlus,
+    Check,
     Image as ImageIcon,
     Lightbulb,
     Megaphone,
@@ -216,6 +216,15 @@ export default function IdeaShow({
             </Head>
 
             <main className="pb-24">
+                <div className="mx-auto max-w-7xl px-6 pt-6">
+                    <button
+                        onClick={handleBack}
+                        className="inline-flex items-center gap-2 text-xs font-black tracking-widest text-on-surface-variant uppercase transition-colors hover:text-primary"
+                    >
+                        <ArrowLeft className="size-4 rtl:rotate-180" />
+                        {__('messages.ui.back')}
+                    </button>
+                </div>
                 <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
@@ -290,8 +299,8 @@ export default function IdeaShow({
                                 <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-primary transition-colors hover:bg-primary/10">
                                     <CategoryIcon className="size-4" />
                                     <span className="text-xs font-bold tracking-wider uppercase">
-                                        {typeof idea.category === 'object' 
-                                            ? (usePage().props.locale === 'ar' ? idea.category.name_ar : idea.category.name_en) 
+                                        {typeof idea.category === 'object'
+                                            ? (usePage().props.locale === 'ar' ? idea.category.name_ar : idea.category.name_en)
                                             : idea.category}
                                     </span>
                                 </div>
