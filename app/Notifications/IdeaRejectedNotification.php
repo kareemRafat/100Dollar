@@ -46,13 +46,4 @@ class IdeaRejectedNotification extends Notification implements ShouldQueue
             ],
         ];
     }
-
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'idea_id' => $this->idea->id,
-            'title' => $this->idea->title,
-            'reason' => $this->reason,
-        ];
-    }
 }

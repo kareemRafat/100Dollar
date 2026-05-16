@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\WinnerAnnounced;
 use App\Notifications\WinnerAnnouncedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class HandleWinnerAnnounced
 {

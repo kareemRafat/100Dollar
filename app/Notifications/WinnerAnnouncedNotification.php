@@ -54,18 +54,4 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
             ],
         ];
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'idea_id' => $this->idea->id,
-            'title' => $this->idea->title,
-            'amount' => 100.00,
-        ];
-    }
 }

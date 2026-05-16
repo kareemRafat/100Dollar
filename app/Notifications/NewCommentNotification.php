@@ -34,13 +34,4 @@ class NewCommentNotification extends Notification implements ShouldQueue
             ],
         ];
     }
-
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'idea_id' => $this->comment->idea_id,
-            'comment_id' => $this->comment->id,
-            'user_id' => $this->comment->user_id,
-        ];
-    }
 }

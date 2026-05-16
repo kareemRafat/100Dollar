@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import React from 'react';
+import type {SubmitEvent} from 'react';
 import SocialLinksController from '@/actions/App/Http/Controllers/Admin/SocialLinksController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -24,7 +24,7 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
         social_instagram: settings.social_instagram ?? '',
     });
 
-    const submit = (e: React.FormEvent) => {
+    const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         patch(SocialLinksController.update.url());
     };

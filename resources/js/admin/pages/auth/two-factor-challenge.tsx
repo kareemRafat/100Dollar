@@ -11,7 +11,6 @@ import {
     InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
-import { cn } from '@/lib/utils';
 import { store } from '@/routes/admin/two-factor';
 
 export default function TwoFactorChallenge() {

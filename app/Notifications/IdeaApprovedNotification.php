@@ -13,11 +13,20 @@ class IdeaApprovedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct(public Idea $idea) {}
+    public function __construct(
+        public Idea $idea,
+        public bool $onlyDb = false
+    ) {}
 
     public function via(object $notifiable): array
     {
-        return [CustomDbChannel::class, 'mail'];
+        $channels = [CustomDbChannel::class];
+
+        if (! $this->onlyDb) {
+            $channels[] = 'mail';
+        }
+
+        return $channels;
     }
 
     public function toMail(object $notifiable): MailMessage
@@ -38,14 +47,6 @@ class IdeaApprovedNotification extends Notification implements ShouldQueue
             'data' => [
                 'idea_id' => $this->idea->id,
             ],
-        ];
-    }
-
-    public function toArray(object $notifiable): array
-    {
-        return [
-            'idea_id' => $this->idea->id,
-            'title' => $this->idea->title,
         ];
     }
 }

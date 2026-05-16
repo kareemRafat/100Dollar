@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\IdeaRejected;
 use App\Notifications\IdeaRejectedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class HandleIdeaRejected
 {
