@@ -17,6 +17,7 @@ class SetRequestLocale
     {
         if ($request->is('admin') || $request->is('admin/*')) {
             app()->setLocale('ar');
+
             return $next($request);
         }
 

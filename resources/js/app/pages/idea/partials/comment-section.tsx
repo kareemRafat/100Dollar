@@ -58,7 +58,9 @@ export const CommentSection = ({ idea, comments, auth, commentsTopRef }: Comment
 
     const toggleLike = (comment: Comment) => {
         if (!auth.user || comment.is_deleted) {
-            if (!auth.user) router.visit(`/login?redirect=${window.location.pathname}`);
+            if (!auth.user) {
+router.visit(`/login?redirect=${window.location.pathname}`);
+}
 
             return;
         }

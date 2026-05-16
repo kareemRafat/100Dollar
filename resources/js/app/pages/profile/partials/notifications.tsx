@@ -2,9 +2,10 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { router, usePage } from '@inertiajs/react';
 import { Bell, Clock, CheckCheck } from 'lucide-react';
 import { memo } from 'react';
+import { markAsRead, markAllAsRead } from '@/actions/App/Http/Controllers/App/NotificationController';
 import { toast } from '@/app/components/ui/toast';
 import { Pagination } from '@/components/ui/pagination';
-import { read, readAll } from '@/routes/app/profile/notifications';
+import { show } from '@/routes/app/ideas';
 
 type Notification = {
     id: number;
@@ -39,13 +40,13 @@ function Notifications({ notifications }: Props) {
     const total = meta?.total || (notifications as any)?.total || items.length;
 
     const handleMarkAsRead = (id: number, isRead: boolean = true) => {
-        router.patch(read().url, { id, is_read: isRead }, {
+        router.patch(markAsRead.url(), { id, is_read: isRead }, {
             preserveScroll: true,
         });
     };
 
     const handleMarkAllAsRead = () => {
-        router.patch(readAll().url, {}, {
+        router.patch(markAllAsRead.url(), {}, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success(__('messages.profile.notifications'), __('messages.profile.mark_all_read_success'));
@@ -59,10 +60,10 @@ function Notifications({ notifications }: Props) {
 
         if (isIdeaNotification) {
             // Mark as read and then redirect to avoid race conditions
-            router.patch(read().url, { id: notification.id, is_read: true }, {
+            router.patch(markAsRead.url(), { id: notification.id, is_read: true }, {
                 preserveScroll: true,
                 onFinish: () => {
-                    router.visit(`/ideas/${ideaId}`);
+                    router.visit(show(ideaId).url);
                 }
             });
         } else if (!notification.is_read) {

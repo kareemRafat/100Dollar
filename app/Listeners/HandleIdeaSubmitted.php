@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\IdeaSubmitted;
 use App\Models\User;
 use App\Notifications\AdminNewIdeaNotification;
-use Illuminate\Support\Facades\Notification;
 
 class HandleIdeaSubmitted
 {

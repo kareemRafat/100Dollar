@@ -23,7 +23,7 @@ class AdminNewIdeaNotification extends Notification implements ShouldQueue
     {
         return [
             'title' => 'فكرة جديدة قيد الانتظار',
-            'body' => 'تم تقديم فكرة جديدة بعنوان: ' . $this->idea->title,
+            'body' => 'تم تقديم فكرة جديدة بعنوان: '.$this->idea->title,
             'data' => [
                 'idea_id' => $this->idea->id,
             ],

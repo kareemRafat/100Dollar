@@ -72,6 +72,7 @@ const mediaQuery = (): MediaQueryList | null => {
 const handleSystemThemeChange = (): void => {
     const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
     const appearance = isAdmin ? currentAdminAppearance : currentAppAppearance;
+
     if (appearance === 'system') {
         applyTheme('system');
     }
@@ -84,9 +85,11 @@ export function initializeTheme(): void {
 
     ['app', 'admin'].forEach((scope) => {
         const key = `appearance_${scope}`;
+
         if (!localStorage.getItem(key)) {
             // Check if old key exists and migrate it
             const old = localStorage.getItem('appearance');
+
             if (old) {
                 localStorage.setItem(key, old);
             } else {
@@ -132,6 +135,7 @@ export function useAppearance(scope: 'app' | 'admin' = 'app'): UseAppearanceRetu
 
         // Only apply if it's the current scope
         const isAdmin = window.location.pathname.startsWith('/admin');
+
         if ((isAdmin && scope === 'admin') || (!isAdmin && scope === 'app')) {
             applyTheme(mode);
         }

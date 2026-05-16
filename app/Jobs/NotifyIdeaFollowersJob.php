@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Notification;
 
 class NotifyIdeaFollowersJob implements ShouldQueue
 {
@@ -31,7 +30,7 @@ class NotifyIdeaFollowersJob implements ShouldQueue
     {
         $this->idea->follows()
             ->with('user')
-            ->when($this->excludeUserId, fn($q) => $q->where('user_id', '!=', $this->excludeUserId))
+            ->when($this->excludeUserId, fn ($q) => $q->where('user_id', '!=', $this->excludeUserId))
             ->chunkById(500, function ($follows) {
                 foreach ($follows as $follow) {
                     $user = $follow->user;

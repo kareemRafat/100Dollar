@@ -5,6 +5,7 @@ use App\Http\Controllers\App\CommentController;
 use App\Http\Controllers\App\ContactController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\IdeaController;
+use App\Http\Controllers\App\NotificationController;
 use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProfileController;
 use App\Http\Controllers\App\SponsorController;
@@ -33,9 +34,11 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::get('/profile/voted-ideas', [ProfileController::class, 'edit'])->name('app.profile.voted-ideas');
     Route::get('/profile/followed-ideas', [ProfileController::class, 'edit'])->name('app.profile.followed-ideas');
     Route::get('/profile/followed-people', [ProfileController::class, 'edit'])->name('app.profile.followed-people');
-    Route::get('/profile/notifications', [ProfileController::class, 'edit'])->name('app.profile.notifications');
-    Route::patch('/profile/notifications/read', [ProfileController::class, 'markNotificationAsRead'])->name('app.profile.notifications.read');
-    Route::patch('/profile/notifications/read-all', [ProfileController::class, 'markAllNotificationsAsRead'])->name('app.profile.notifications.read-all');
+
+    // Notifications
+    Route::get('/profile/notifications', [NotificationController::class, 'index'])->name('app.profile.notifications');
+    Route::patch('/profile/notifications/read', [NotificationController::class, 'markAsRead'])->name('app.profile.notifications.read');
+    Route::patch('/profile/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('app.profile.notifications.read-all');
 
     Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('app.profile.password.update');

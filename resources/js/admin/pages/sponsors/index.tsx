@@ -94,6 +94,7 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
 
     const handleCreateLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             createForm.setData('logo', file);
             setCreateLogoPreview(URL.createObjectURL(file));
@@ -105,6 +106,7 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
 
     const handleEditLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             editForm.setData('logo', file);
             setEditLogoPreview(URL.createObjectURL(file));

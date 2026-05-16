@@ -715,6 +715,10 @@ return [
     ],
 
     'notifications' => [
+        'title' => 'Notifications',
+        'mark_all_read' => 'Mark all as read',
+        'empty' => 'No notifications yet',
+        'view_all' => 'View all notifications',
         'winner_announced_title' => 'Congratulations! You are the winner!',
         'winner_announced_body' => 'Your idea ":title" has been selected as the winner of the day!',
         'winner_announced_mail_subject' => 'Congratulations! You are the winner!',

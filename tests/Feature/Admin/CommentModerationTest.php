@@ -3,6 +3,7 @@
 use App\Models\Comment;
 use App\Models\Idea;
 use App\Models\User;
+
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
@@ -53,6 +54,6 @@ test('admins see original text for deleted comments', function () {
         ->assertInertia(fn ($page) => $page
             ->has('comments', 1)
             ->where('comments.0.body', 'Original bad comment')
-            ->where('comments.0.deleted_at', fn ($val) => !is_null($val))
+            ->where('comments.0.deleted_at', fn ($val) => ! is_null($val))
         );
 });

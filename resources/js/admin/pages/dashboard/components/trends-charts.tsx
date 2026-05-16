@@ -36,8 +36,12 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 tickLine={false} 
                                 axisLine={false}
                                 tickFormatter={(value) => {
-                                    if (typeof value !== 'string') return '';
+                                    if (typeof value !== 'string') {
+return '';
+}
+
                                     const parts = value.split('-');
+
                                     return parts.length >= 2 ? parts.slice(1).join('/') : value;
                                 }}
                             />
@@ -80,8 +84,12 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 tickLine={false} 
                                 axisLine={false}
                                 tickFormatter={(value) => {
-                                    if (typeof value !== 'string') return '';
+                                    if (typeof value !== 'string') {
+return '';
+}
+
                                     const parts = value.split('-');
+
                                     return parts.length >= 2 ? parts.slice(1).join('/') : value;
                                 }}
                             />
@@ -118,8 +126,12 @@ export function TrendsCharts({ trends }: { trends: Trends }) {
                                 tickLine={false} 
                                 axisLine={false}
                                 tickFormatter={(value) => {
-                                    if (value === null || value === undefined) return '';
+                                    if (value === null || value === undefined) {
+return '';
+}
+
                                     const str = value.toString();
+
                                     return `أسبوع ${str.slice(-2)}`;
                                 }}
                             />

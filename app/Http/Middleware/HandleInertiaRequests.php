@@ -56,6 +56,8 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'auth' => [
                 'user' => $user ? $user->load('media') : null,
+                'unread_notifications_count' => $user ? $user->customNotifications()->where('is_read', false)->count() : 0,
+                'notifications_dropdown' => $user ? $user->customNotifications()->latest()->limit(10)->get() : [],
             ],
             'vote_block' => [
                 'is_blocked' => $isBlocked,

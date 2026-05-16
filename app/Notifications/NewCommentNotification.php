@@ -6,7 +6,6 @@ use App\Models\Comment;
 use App\Notifications\Channels\CustomDbChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class NewCommentNotification extends Notification implements ShouldQueue
@@ -26,7 +25,7 @@ class NewCommentNotification extends Notification implements ShouldQueue
             'title' => __('messages.notifications.new_comment_title'),
             'body' => __('messages.notifications.new_comment_body', [
                 'user' => $this->comment->user->name,
-                'title' => $this->comment->idea->title
+                'title' => $this->comment->idea->title,
             ]),
             'data' => [
                 'idea_id' => $this->comment->idea_id,

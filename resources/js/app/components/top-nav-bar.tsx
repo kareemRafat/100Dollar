@@ -1,7 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import {
-    Bell,
     LogOut,
     Moon,
     Sun,
@@ -10,6 +9,7 @@ import {
     Menu,
 } from 'lucide-react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { NotificationBell } from '@/app/components/notification-bell';
 import { Button } from '@/app/components/ui/button';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -334,13 +334,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                 </Button>
                             )}
 
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="size-9 rounded-full text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant dark:hover:bg-white/5"
-                            >
-                                <Bell className="size-4.5" />
-                            </Button>
+                            <NotificationBell />
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>

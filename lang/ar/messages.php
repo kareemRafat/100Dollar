@@ -713,6 +713,10 @@ return [
     ],
 
     'notifications' => [
+        'title' => 'التنبيهات',
+        'mark_all_read' => 'تحديد الكل كمقروء',
+        'empty' => 'لا توجد تنبيهات بعد',
+        'view_all' => 'عرض جميع التنبيهات',
         'winner_announced_title' => 'تهانينا! أنت الفائز!',
         'winner_announced_body' => 'لقد تم اختيار فكرتك ":title" كفائزة لهذا اليوم!',
         'winner_announced_mail_subject' => 'تهانينا! أنت الفائز!',

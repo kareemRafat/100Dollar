@@ -7,7 +7,6 @@ use App\Concerns\ProfileValidationRules;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\TwoFactorAuthenticationRequest;
 use App\Http\Resources\App\UserResource;
-use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserFollow;
 use App\Models\Vote;
@@ -81,49 +80,9 @@ class ProfileController extends Controller
                 ->latest();
 
             $props['followedPeople'] = $request->inertia() ? $query->paginate(10)->through(fn ($follow) => $follow->following) : Inertia::defer(fn () => $query->paginate(10)->through(fn ($follow) => $follow->following));
-        } elseif ($activeSection === 'notifications') {
-            $query = $user->customNotifications()
-                ->latest();
-
-            $props['notifications'] = $request->inertia() ? $query->paginate(10) : Inertia::defer(fn () => $query->paginate(10));
         }
 
         return Inertia::render('app/pages/profile', $props);
-    }
-
-    /**
-     * Mark a notification as read or unread.
-     */
-    public function markNotificationAsRead(Request $request): RedirectResponse
-    {
-        $notificationId = $request->input('id');
-        $status = $request->boolean('is_read', true);
-
-        $notification = Notification::where('user_id', auth()->id())
-            ->where('id', $notificationId)
-            ->firstOrFail();
-
-        $notification->update([
-            'is_read' => $status,
-            'read_at' => $status ? now() : null,
-        ]);
-
-        return back();
-    }
-
-    /**
-     * Mark all notifications as read for the current user.
-     */
-    public function markAllNotificationsAsRead(): RedirectResponse
-    {
-        Notification::where('user_id', auth()->id())
-            ->where('is_read', false)
-            ->update([
-                'is_read' => true,
-                'read_at' => now(),
-            ]);
-
-        return back();
     }
 
     /**
