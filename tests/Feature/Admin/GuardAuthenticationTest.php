@@ -1,8 +1,10 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 test('admins can authenticate through the admin guard login flow', function () {
+    $this->withoutMiddleware(PreventRequestForgery::class);
     $admin = User::factory()->admin()->create();
 
     $response = $this->post(route('admin.login.store'), [
@@ -37,4 +39,12 @@ test('admin logout clears only the admin guard session', function () {
     $response->assertRedirect(route('admin.login'));
     $this->assertAuthenticatedAs($appUser, 'web');
     $this->assertGuest('admin');
+});
+
+test('authenticated app users may still access admin guest login routes', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user, 'web')
+        ->get(route('admin.login'))
+        ->assertOk();
 });

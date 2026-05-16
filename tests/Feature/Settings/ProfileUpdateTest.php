@@ -21,7 +21,7 @@ test('profile information can be updated', function () {
             'name' => 'Test User',
             'email' => 'test@example.com',
             'phone' => '+201234567890',
-            'country' => 'Egypt',
+            'country_id' => $user->country_id,
             'nationality' => 'Egyptian',
         ]);
 
@@ -45,7 +45,7 @@ test('email verification status is unchanged when the email address is unchanged
             'name' => 'Test User',
             'email' => $user->email,
             'phone' => '+201234567890',
-            'country' => 'Egypt',
+            'country_id' => $user->country_id,
             'nationality' => 'Egyptian',
         ]);
 

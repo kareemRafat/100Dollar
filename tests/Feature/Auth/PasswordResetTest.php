@@ -3,6 +3,7 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Route;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -17,10 +18,11 @@ test('reset password link screen can be rendered', function () {
         ->assertInertia(fn (Assert $page) => $page->component('app/pages/auth/forgot-password'));
 });
 
-test('admin reset password link screen can be rendered', function () {
-    $this->get(route('admin.password.request'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page->component('admin/pages/auth/forgot-password'));
+test('admin password reset routes are not registered', function () {
+    expect(Route::has('admin.password.request'))->toBeFalse();
+    expect(Route::has('admin.password.email'))->toBeFalse();
+    expect(Route::has('admin.password.reset'))->toBeFalse();
+    expect(Route::has('admin.password.update'))->toBeFalse();
 });
 
 test('reset password link can be requested', function () {
@@ -81,64 +83,16 @@ test('password can be reset with valid token', function () {
     });
 });
 
-test('admin password reset redirects back to the admin login screen', function () {
+test('admin emails do not receive app password reset links', function () {
     Notification::fake();
 
     $admin = User::factory()->admin()->create();
 
-    $this->post(route('admin.password.email'), [
+    $response = $this->post(route('password.email'), [
         'email' => $admin->email,
-    ]);
-
-    Notification::assertSentTo($admin, ResetPassword::class, function ($notification) use ($admin) {
-        $response = $this->post(route('admin.password.update'), [
-            'token' => $notification->token,
-            'email' => $admin->email,
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect(route('admin.login'));
-
-        return true;
-    });
-});
-
-test('admin password reset screen can be rendered from the admin route', function () {
-    Notification::fake();
-
-    $admin = User::factory()->admin()->create();
-
-    $this->post(route('admin.password.email'), [
-        'email' => $admin->email,
-    ]);
-
-    Notification::assertSentTo($admin, ResetPassword::class, function ($notification) use ($admin) {
-        $response = $this->get(route('admin.password.reset', [
-            'token' => $notification->token,
-            'email' => $admin->email,
-        ]));
-
-        $response->assertOk()
-            ->assertInertia(fn (Assert $page) => $page->component('admin/pages/auth/reset-password'));
-
-        return true;
-    });
-});
-
-test('non admin emails do not receive admin password reset links', function () {
-    Notification::fake();
-
-    $user = User::factory()->create();
-
-    $response = $this->post(route('admin.password.email'), [
-        'email' => $user->email,
     ]);
 
     $response->assertSessionHasNoErrors();
-
     Notification::assertNothingSent();
 });
 

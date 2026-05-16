@@ -27,7 +27,13 @@ class AppLoginResponse implements LoginResponseContract
             );
         }
 
-        $route = $request->user()?->hasVerifiedEmail()
+        $user = $request->user();
+
+        if ($user && $user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        $route = $user?->hasVerifiedEmail()
             ? route('app.home')
             : route('verification.notice');
 

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Features;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -26,31 +25,26 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $admin = User::query()
-            ->where('email', $credentials['email'])
+        $admin = User::where('email', $credentials['email'])
             ->where('role', 'admin')
             ->where('is_active', true)
             ->first();
 
-        if (! $admin instanceof User || ! Hash::check($credentials['password'], $admin->password)) {
+        if (! $admin || ! Hash::check($credentials['password'], $admin->password)) {
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
 
-        if (
-            Features::enabled(Features::twoFactorAuthentication())
-            && $this->requiresTwoFactorChallenge($admin)
-        ) {
-            $request->session()->put([
-                'admin_login.id' => $admin->getKey(),
-                'admin_login.remember' => $request->boolean('remember'),
-            ]);
+        if ($this->requiresTwoFactorChallenge($admin)) {
+            $request->session()->put('admin_login.id', $admin->id);
+            $request->session()->put('admin_login.remember', $request->boolean('remember'));
 
             return redirect()->route('admin.two-factor.login');
         }
 
         Auth::guard('admin')->login($admin, $request->boolean('remember'));
+
         $request->session()->regenerate();
 
         return redirect()->intended(route('admin.dashboard'));
@@ -75,18 +69,19 @@ class AuthenticatedSessionController extends Controller
 
     private function requiresTwoFactorChallenge(User $admin): bool
     {
-        if (empty($admin->two_factor_secret)) {
+        if (! Features::enabled(Features::twoFactorAuthentication())) {
             return false;
         }
 
-        if (! in_array(TwoFactorAuthenticatable::class, class_uses_recursive($admin), true)) {
+        if (! $admin->two_factor_secret) {
             return false;
         }
 
-        if (! Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm')) {
-            return true;
+        if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm') &&
+            is_null($admin->two_factor_confirmed_at)) {
+            return false;
         }
 
-        return $admin->two_factor_confirmed_at !== null;
+        return true;
     }
 }

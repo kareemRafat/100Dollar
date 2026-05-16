@@ -13,6 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Inertia\ExceptionResponse;
 use Inertia\Inertia;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,23 +65,19 @@ class AppServiceProvider extends ServiceProvider
         );
 
         ResetPassword::createUrlUsing(function (object $user, string $token): string {
-            $route = ($user->role ?? null) === 'admin'
-                ? 'admin.password.reset'
-                : 'password.reset';
+            $locale = method_exists($user, 'preferredLocale')
+                ? $user->preferredLocale()
+                : app()->getLocale();
 
-            return route($route, [
+            return LaravelLocalization::getLocalizedURL($locale, route('password.reset', [
                 'token' => $token,
                 'email' => $user->getEmailForPasswordReset(),
-            ]);
+            ], absolute: false));
         });
 
         VerifyEmail::createUrlUsing(function (object $user): string {
-            $route = ($user->role ?? null) === 'admin'
-                ? 'admin.verification.verify'
-                : 'verification.verify';
-
             return URL::temporarySignedRoute(
-                $route,
+                'verification.verify',
                 now()->addMinutes(config('auth.verification.expire', 60)),
                 [
                     'id' => $user->getKey(),

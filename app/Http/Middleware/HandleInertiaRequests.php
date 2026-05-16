@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Inertia\Middleware;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -38,7 +39,8 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = $request->user();
+        $isAdminRequest = $request->is('admin') || $request->is('admin/*');
+        $user = $isAdminRequest ? Auth::guard('admin')->user() : Auth::user();
 
         $sendKey = $user ? "vote-send:user:{$user->id}" : "vote-send:ip:{$request->ip()}";
         $globalKey = "vote-global:ip:{$request->ip()}";

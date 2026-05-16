@@ -30,6 +30,18 @@ test('users can authenticate using the app login screen', function () {
     $response->assertRedirect(localizedUrl(route('app.home', absolute: false)));
 });
 
+test('admins cannot authenticate through the app login screen', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->from(localizedUrl(route('login', absolute: false)))->post(route('login.store'), [
+        'email' => $admin->email,
+        'password' => 'password',
+        '_locale' => app()->getLocale(),
+    ])->assertRedirect(localizedUrl(route('login', absolute: false)));
+
+    $this->assertGuest('web');
+});
+
 test('users with two factor enabled are redirected to two factor challenge', function () {
     $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -36,7 +37,9 @@ return new class extends Migration
             $table->index('is_winner');
             $table->index('votes_count');
             $table->index(['status', 'submission_day', 'week_number', 'year', 'votes_count'], 'ideas_directory_optimized_index');
-            $table->fullText(['title', 'description'], 'ideas_search_fulltext');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->fullText(['title', 'description'], 'ideas_search_fulltext');
+            }
         });
     }
 

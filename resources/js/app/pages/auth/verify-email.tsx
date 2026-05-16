@@ -16,7 +16,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
 
             <div className="space-y-6 text-start">
                 <header className="mb-10">
-                    <h2 className="font-headline mb-2 text-2xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                    <h2 className="mb-2 font-headline text-2xl font-extrabold tracking-tight text-on-surface dark:text-white">
                         {__('messages.verify_email.hero_title')}
                     </h2>
                     <p className="text-on-surface-variant">
@@ -30,13 +30,22 @@ export default function VerifyEmail({ status }: { status?: string }) {
                     </div>
                 )}
 
-                <Form {...send.form()} className="space-y-4">
+                <Form action={send()} className="space-y-4">
                     {({ processing }) => (
                         <>
-                            <input type="hidden" name="_locale" value={locale as string} />
+                            <input
+                                type="hidden"
+                                name="_locale"
+                                value={locale as string}
+                            />
 
-                            <Button className="h-12 w-full text-lg font-bold" disabled={processing}>
-                                <span>{__('messages.verify_email.resend_button')}</span>
+                            <Button
+                                className="h-12 w-full text-lg font-bold"
+                                disabled={processing}
+                            >
+                                <span>
+                                    {__('messages.verify_email.resend_button')}
+                                </span>
                                 {processing ? (
                                     <Spinner className="size-4" />
                                 ) : (

@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Admin\Auth\EmailVerificationController;
 use App\Http\Controllers\Admin\Auth\TwoFactorController;
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -46,19 +45,15 @@ Route::middleware('guest:admin')->group(function () {
 Route::middleware(['auth:admin', 'role:admin'])->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
 
-    Route::get('email/verify', [EmailVerificationController::class, 'notice'])
-        ->name('admin.verification.notice');
+    Route::get('confirm-password', function () {
+        return Inertia::render('admin/pages/auth/confirm-password');
+    })->name('admin.password.confirm');
 
-    Route::post('email/verification-notification', [EmailVerificationController::class, 'send'])
-        ->middleware('throttle:6,1')
-        ->name('admin.verification.send');
-
-    Route::get('email/verify/{id}/{hash}', [EmailVerificationController::class, 'verify'])
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('admin.verification.verify');
+    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])
+        ->name('admin.password.confirm.store');
 });
 
-Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
+Route::middleware(['auth:admin', 'role:admin'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
 
     // Ideas
@@ -100,13 +95,6 @@ Route::middleware(['auth:admin', 'verified', 'role:admin'])->group(function () {
     Route::get('notifications', [NotificationController::class, 'index'])->name('admin.notifications.index');
     Route::patch('notifications/read', [NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
     Route::patch('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('admin.notifications.read-all');
-
-    Route::get('confirm-password', function () {
-        return Inertia::render('admin/pages/auth/confirm-password');
-    })->name('admin.password.confirm');
-
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store'])
-        ->name('admin.password.confirm.store');
 
     if (Features::canManageTwoFactorAuthentication()) {
         Route::post('user/two-factor-authentication', [TwoFactorController::class, 'enable'])

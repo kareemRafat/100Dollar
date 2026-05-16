@@ -50,7 +50,7 @@ test('admins can fetch two factor setup data before confirmation', function () {
     ]);
 
     $this->actingAs($admin, 'admin')
-        ->withSession(['auth.password_confirmed_at' => time()])
+        ->withSession(['admin.auth.password_confirmed_at' => time()])
         ->get(route('admin.two-factor.secret-key'))
         ->assertOk()
         ->assertJson([
@@ -58,7 +58,7 @@ test('admins can fetch two factor setup data before confirmation', function () {
         ]);
 
     $this->actingAs($admin, 'admin')
-        ->withSession(['auth.password_confirmed_at' => time()])
+        ->withSession(['admin.auth.password_confirmed_at' => time()])
         ->get(route('admin.two-factor.qr-code'))
         ->assertOk()
         ->assertJsonStructure([

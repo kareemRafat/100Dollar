@@ -19,7 +19,7 @@ class ConfirmablePasswordController extends Controller
             'password' => ['required', 'string', 'current_password:admin'],
         ]);
 
-        $request->session()->put('auth.password_confirmed_at', Date::now()->unix());
+        $request->session()->put('admin.auth.password_confirmed_at', Date::now()->unix());
 
         if ($request->wantsJson()) {
             return new JsonResponse('', 201);

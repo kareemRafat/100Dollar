@@ -16,16 +16,13 @@ type Props = {
     canRegister: boolean;
 };
 
-export default function Login({
-    status,
-    canRegister,
-}: Props) {
+export default function Login({ status, canRegister }: Props) {
     return (
         <>
             <Head title="تسجيل الدخول" />
 
             <Form
-                {...store.form()}
+                action={store()}
                 resetOnSuccess={['password']}
                 className="flex flex-col gap-6"
             >
@@ -49,7 +46,9 @@ export default function Login({
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">كلمة المرور</Label>
+                                    <Label htmlFor="password">
+                                        كلمة المرور
+                                    </Label>
                                 </div>
                                 <PasswordInput
                                     id="password"

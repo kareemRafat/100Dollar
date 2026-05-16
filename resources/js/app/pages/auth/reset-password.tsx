@@ -27,7 +27,7 @@ export default function ResetPassword({ token, email }: Props) {
     const strength = [hasMinLength, hasSpecialChar, hasNumber].filter(
         Boolean,
     ).length;
-    
+
     const strengthLabel =
         strength === 3
             ? __('messages.reset_password.strength_strong')
@@ -48,32 +48,34 @@ export default function ResetPassword({ token, email }: Props) {
             <Head title={__('messages.reset_password.hero_title')} />
 
             <header className="mb-12 text-start">
-                <h1 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                <h1 className="mb-2 font-headline text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
                     {__('messages.reset_password.hero_title')}
                 </h1>
-                <p className="text-on-surface-variant text-lg">
+                <p className="text-lg text-on-surface-variant">
                     {__('messages.reset_password.subtitle')}
                 </p>
             </header>
 
             <Form
-                {...update.form()}
+                action={update()}
                 resetOnSuccess={['password', 'password_confirmation']}
                 className="space-y-8"
             >
                 {({ processing, errors }) => (
                     <>
                         <div className="space-y-2">
-                            <Label htmlFor="new_password">{__('messages.reset_password.new_password_label')}</Label>
+                            <Label htmlFor="new_password">
+                                {__(
+                                    'messages.reset_password.new_password_label',
+                                )}
+                            </Label>
                             <PasswordInput
                                 id="new_password"
                                 name="password"
                                 required
                                 placeholder="••••••••"
                                 value={newPassword}
-                                onChange={(e) =>
-                                    setNewPassword(e.target.value)
-                                }
+                                onChange={(e) => setNewPassword(e.target.value)}
                                 autoFocus
                                 className="h-12 text-start"
                             />
@@ -83,7 +85,9 @@ export default function ResetPassword({ token, email }: Props) {
                         <div className="space-y-3 px-1">
                             <div className="flex items-center justify-between text-xs font-medium">
                                 <span className="text-on-surface-variant">
-                                    {__('messages.reset_password.strength_label')}
+                                    {__(
+                                        'messages.reset_password.strength_label',
+                                    )}
                                 </span>
                                 {strengthLabel && (
                                     <span
@@ -93,7 +97,7 @@ export default function ResetPassword({ token, email }: Props) {
                                     </span>
                                 )}
                             </div>
-                            <div className="bg-outline-variant/20 flex h-1.5 w-full gap-1 overflow-hidden rounded-full">
+                            <div className="flex h-1.5 w-full gap-1 overflow-hidden rounded-full bg-outline-variant/20">
                                 {[1, 2, 3, 4].map((i) => (
                                     <div
                                         key={i}
@@ -101,7 +105,10 @@ export default function ResetPassword({ token, email }: Props) {
                                     />
                                 ))}
                             </div>
-                            <ul className="text-on-surface-variant flex flex-wrap gap-x-4 gap-y-1 text-[11px] justify-start" dir="auto">
+                            <ul
+                                className="flex flex-wrap justify-start gap-x-4 gap-y-1 text-[11px] text-on-surface-variant"
+                                dir="auto"
+                            >
                                 <li className="flex items-center gap-1">
                                     <span
                                         className={`material-symbols-outlined text-[14px] ${hasMinLength ? 'text-primary' : 'text-outline-variant'}`}
@@ -118,7 +125,9 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    {__('messages.reset_password.requirement_min_length')}
+                                    {__(
+                                        'messages.reset_password.requirement_min_length',
+                                    )}
                                 </li>
                                 <li className="flex items-center gap-1">
                                     <span
@@ -136,7 +145,9 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    {__('messages.reset_password.requirement_special_char')}
+                                    {__(
+                                        'messages.reset_password.requirement_special_char',
+                                    )}
                                 </li>
                                 <li className="flex items-center gap-1">
                                     <span
@@ -154,13 +165,19 @@ export default function ResetPassword({ token, email }: Props) {
                                             ? 'check_circle'
                                             : 'radio_button_unchecked'}
                                     </span>
-                                    {__('messages.reset_password.requirement_numbers')}
+                                    {__(
+                                        'messages.reset_password.requirement_numbers',
+                                    )}
                                 </li>
                             </ul>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="confirm_password">{__('messages.reset_password.confirm_password_label')}</Label>
+                            <Label htmlFor="confirm_password">
+                                {__(
+                                    'messages.reset_password.confirm_password_label',
+                                )}
+                            </Label>
                             <Input
                                 id="confirm_password"
                                 name="password_confirmation"
@@ -169,10 +186,16 @@ export default function ResetPassword({ token, email }: Props) {
                                 placeholder="••••••••"
                                 className="h-12 text-start"
                             />
-                            <InputError message={errors.password_confirmation} />
+                            <InputError
+                                message={errors.password_confirmation}
+                            />
                         </div>
 
-                        <input type="hidden" name="_locale" value={locale as string} />
+                        <input
+                            type="hidden"
+                            name="_locale"
+                            value={locale as string}
+                        />
                         <input type="hidden" name="token" value={token} />
                         <input type="hidden" name="email" value={email} />
 
@@ -181,7 +204,9 @@ export default function ResetPassword({ token, email }: Props) {
                             type="submit"
                             disabled={processing}
                         >
-                            <span>{__('messages.reset_password.update_button')}</span>
+                            <span>
+                                {__('messages.reset_password.update_button')}
+                            </span>
                             {processing && <Spinner className="size-5" />}
                         </Button>
 
@@ -200,8 +225,11 @@ export default function ResetPassword({ token, email }: Props) {
                 )}
             </Form>
 
-            <footer className="text-on-surface-variant mt-16 text-center text-[10px] opacity-60">
-                <span>© {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}</span>
+            <footer className="mt-16 text-center text-[10px] text-on-surface-variant opacity-60">
+                <span>
+                    © {new Date().getFullYear()} {__('messages.ideas_100')}.{' '}
+                    {__('messages.footer.rights_reserved')}
+                </span>
             </footer>
         </AuthLayout>
     );

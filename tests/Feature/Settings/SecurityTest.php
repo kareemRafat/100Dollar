@@ -16,7 +16,7 @@ test('security page is displayed', function () {
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user, 'admin')
-        ->withSession(['auth.password_confirmed_at' => time()])
+        ->withSession(['admin.auth.password_confirmed_at' => time()])
         ->get(route('admin.settings.security.edit'))
         ->assertInertia(fn (Assert $page) => $page
             ->component('admin/pages/settings/security')
@@ -41,9 +41,7 @@ test('security page requires password confirmation when enabled', function () {
     $response->assertRedirect(route('admin.password.confirm'));
 });
 
-test('security page does not require password confirmation when disabled', function () {
-    $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
-
+test('security page requires password confirmation even when two factor confirm password is disabled', function () {
     $user = User::factory()->admin()->create();
 
     Features::twoFactorAuthentication([
@@ -51,22 +49,29 @@ test('security page does not require password confirmation when disabled', funct
         'confirmPassword' => false,
     ]);
 
-    $this->actingAs($user, 'admin')
+    $response = $this->actingAs($user, 'admin')
         ->get(route('admin.settings.security.edit'))
-        ->assertOk()
-        ->assertInertia(fn (Assert $page) => $page
-            ->component('admin/pages/settings/security'),
-        );
+        ->assertRedirect(route('admin.password.confirm'));
 });
 
 test('security page renders without two factor when feature is disabled', function () {
-    $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
+    config(['fortify.features' => []]);
 
+    $user = User::factory()->admin()->create();
+
+    $response = $this->actingAs($user, 'admin')
+        ->get(route('admin.settings.security.edit'));
+
+    $response->assertRedirect(route('admin.password.confirm'));
+});
+
+test('security page renders without two factor after password confirmation when feature is disabled', function () {
     config(['fortify.features' => []]);
 
     $user = User::factory()->admin()->create();
 
     $this->actingAs($user, 'admin')
+        ->withSession(['admin.auth.password_confirmed_at' => time()])
         ->get(route('admin.settings.security.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page

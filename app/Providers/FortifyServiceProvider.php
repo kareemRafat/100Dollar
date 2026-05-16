@@ -26,7 +26,6 @@ use Laravel\Fortify\Contracts\PasswordResetResponse as PasswordResetResponseCont
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
-use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -70,52 +69,15 @@ class FortifyServiceProvider extends ServiceProvider
      */
     private function configureViews(): void
     {
-        Fortify::loginView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/login',
-            [
-                'canResetPassword' => Features::enabled(Features::resetPasswords()),
-                'canRegister' => Features::enabled(Features::registration()),
-                'status' => $request->session()->get('status'),
-            ],
-        ));
-
-        Fortify::resetPasswordView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/reset-password',
-            [
+        Fortify::resetPasswordView(function (Request $request) {
+            return Inertia::render('app/pages/auth/reset-password', [
                 'email' => $request->email,
                 'token' => $request->route('token'),
-            ],
-        ));
+            ]);
+        });
 
-        Fortify::requestPasswordResetLinkView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/forgot-password',
-            [
-                'status' => $request->session()->get('status'),
-            ],
-        ));
-
-        Fortify::verifyEmailView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/verify-email',
-            [
-                'status' => $request->session()->get('status'),
-            ],
-        ));
-
-        Fortify::registerView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/register',
-            [
-                'canLogin' => true,
-                'countries' => __('messages.countries'),
-            ],
-        ));
-
-        Fortify::twoFactorChallengeView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/two-factor-challenge',
-        ));
-
-        Fortify::confirmPasswordView(fn (Request $request) => Inertia::render(
-            'app/pages/auth/confirm-password',
-        ));
+        Fortify::twoFactorChallengeView(fn () => Inertia::render('app/pages/auth/two-factor-challenge'));
+        Fortify::confirmPasswordView(fn () => Inertia::render('app/pages/auth/confirm-password'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Auth\AuthContext;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class RequirePasswordConfirmation
     public function handle(Request $request, Closure $next, ?string $redirectToRoute = null): Response
     {
         if ($this->shouldConfirmPassword($request)) {
-            if ($request->expectsJson()) {
+            if ($request->wantsJson() && ! $request->hasHeader('X-Inertia')) {
                 return response()->json([
                     'message' => 'Password confirmation required.',
                 ], 423);
@@ -22,7 +23,7 @@ class RequirePasswordConfirmation
 
             $route = $redirectToRoute ?: ($request->routeIs('admin.*') ? 'admin.password.confirm' : 'password.confirm');
 
-            return redirect()->guest(route($route));
+            return redirect()->guest(AuthContext::routeUrl($request, $route));
         }
 
         return $next($request);
@@ -33,7 +34,8 @@ class RequirePasswordConfirmation
      */
     protected function shouldConfirmPassword(Request $request): bool
     {
-        $confirmedAt = $request->session()->get('auth.password_confirmed_at', 0);
+        $key = AuthContext::isAdmin($request) ? 'admin.auth.password_confirmed_at' : 'auth.password_confirmed_at';
+        $confirmedAt = $request->session()->get($key, 0);
 
         return (time() - $confirmedAt) > config('auth.password_timeout', 10800);
     }

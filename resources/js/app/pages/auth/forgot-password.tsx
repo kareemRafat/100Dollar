@@ -24,7 +24,7 @@ export default function ForgotPassword({ status }: Props) {
 
             <header className="mb-10 text-start">
                 <Link
-                    className="group text-on-surface-variant mb-4 inline-flex items-center gap-2 transition-colors duration-200 hover:text-primary"
+                    className="group mb-4 inline-flex items-center gap-2 text-on-surface-variant transition-colors duration-200 hover:text-primary"
                     href={login.url()}
                 >
                     <span className="material-symbols-outlined text-sm rtl:rotate-180">
@@ -34,7 +34,7 @@ export default function ForgotPassword({ status }: Props) {
                         {__('messages.forgot_password.back_to_login')}
                     </span>
                 </Link>
-                <h1 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                <h1 className="mb-2 font-headline text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
                     {__('messages.forgot_password.hero_title')}
                 </h1>
                 <p className="text-on-surface-variant">
@@ -48,13 +48,19 @@ export default function ForgotPassword({ status }: Props) {
                 </div>
             )}
 
-            <Form {...email.form()} className="space-y-6">
+            <Form action={email()} className="space-y-6">
                 {({ processing, errors }) => (
                     <>
-                        <input type="hidden" name="_locale" value={locale as string} />
+                        <input
+                            type="hidden"
+                            name="_locale"
+                            value={locale as string}
+                        />
 
                         <div className="space-y-2">
-                            <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>
+                            <Label htmlFor="email" className="block w-full">
+                                {__('messages.login.email_label')}
+                            </Label>
                             <Input
                                 id="email"
                                 name="email"
@@ -68,15 +74,17 @@ export default function ForgotPassword({ status }: Props) {
                         </div>
 
                         <Button
-                            className="h-12 w-full text-lg font-bold group"
+                            className="group h-12 w-full text-lg font-bold"
                             type="submit"
                             disabled={processing}
                         >
-                            <span>{__('messages.forgot_password.send_link')}</span>
+                            <span>
+                                {__('messages.forgot_password.send_link')}
+                            </span>
                             {processing ? (
                                 <Spinner className="size-5" />
                             ) : (
-                                <span className="material-symbols-outlined text-xl transition-transform rtl:rotate-180 group-hover:-translate-x-1 ltr:group-hover:translate-x-1">
+                                <span className="material-symbols-outlined text-xl transition-transform group-hover:-translate-x-1 ltr:group-hover:translate-x-1 rtl:rotate-180">
                                     send
                                 </span>
                             )}
@@ -86,7 +94,7 @@ export default function ForgotPassword({ status }: Props) {
             </Form>
 
             <div className="mt-12 text-center">
-                <p className="text-on-surface-variant text-sm">
+                <p className="text-sm text-on-surface-variant">
                     {__('messages.forgot_password.problem_contact_support')}{' '}
                     <Link
                         className="font-bold text-primary underline decoration-2 underline-offset-4 hover:underline"

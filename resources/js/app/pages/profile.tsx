@@ -16,9 +16,15 @@ import { SideNav } from '@/app/components/side-nav';
 import profile from '@/routes/app/profile';
 
 // Lazy load tab components
-const PersonalInfoForm = lazy(() => import('./profile/partials/profile-information-form'));
-const SecurityAndProtection = lazy(() => import('./profile/partials/security-protection'));
-const PasswordUpdateForm = lazy(() => import('./profile/partials/update-password-form'));
+const PersonalInfoForm = lazy(
+    () => import('./profile/partials/profile-information-form'),
+);
+const SecurityAndProtection = lazy(
+    () => import('./profile/partials/security-protection'),
+);
+const PasswordUpdateForm = lazy(
+    () => import('./profile/partials/update-password-form'),
+);
 const VotedIdeas = lazy(() => import('./profile/partials/voted-ideas'));
 const FollowedIdeas = lazy(() => import('./profile/partials/followed-ideas'));
 const FollowedPeople = lazy(() => import('./profile/partials/followed-people'));
@@ -38,6 +44,7 @@ type Props = {
         phone?: string;
         bio?: string;
         avatar?: string;
+        locale: string;
     };
     canManageTwoFactor?: boolean;
     twoFactorEnabled?: boolean;
@@ -72,114 +79,135 @@ export default function Profile({
     const { locale } = pageProps;
     const { __ } = useLang();
     const isRtl = locale === 'ar';
+    const localizedPath = (path: string) => `/${locale}${path}`;
 
     // Determine active section from URL
-    const activeSection = url.includes(profile.security.url())
+    const activeSection = url.includes(localizedPath(profile.security.url()))
         ? 'security'
-        : url.includes(profile.votedIdeas.url())
+        : url.includes(localizedPath(profile.votedIdeas.url()))
           ? 'voted-ideas'
-          : url.includes(profile.followedIdeas.url())
+          : url.includes(localizedPath(profile.followedIdeas.url()))
             ? 'followed-ideas'
-            : url.includes(profile.followedPeople.url())
+            : url.includes(localizedPath(profile.followedPeople.url()))
               ? 'followed-people'
-              : url.includes(profile.notifications.url())
+              : url.includes(localizedPath(profile.notifications.url()))
                 ? 'notifications'
                 : 'personal-info';
 
-    const sideNavItems = useMemo(() => [
-        {
-            id: 'personal-info',
-            label: __('messages.profile.personal_info'),
-            icon: UserIcon,
-            href: profile.personalInfo.url(),
-            only: ['user'],
-        },
-        {
-            id: 'voted-ideas',
-            label: __('messages.profile.voted_ideas'),
-            icon: VoteIcon,
-            href: profile.votedIdeas.url(),
-            only: ['votedIdeas'],
-        },
-        {
-            id: 'followed-ideas',
-            label: __('messages.profile.followed_ideas'),
-            icon: Heart,
-            href: profile.followedIdeas.url(),
-            only: ['followedIdeas'],
-        },
-        {
-            id: 'followed-people',
-            label: __('messages.profile.followed_people'),
-            icon: Users,
-            href: profile.followedPeople.url(),
-            only: ['followedPeople'],
-        },
-        {
-            id: 'notifications',
-            label: __('messages.profile.notifications'),
-            icon: Bell,
-            href: profile.notifications.url(),
-            only: ['notifications'],
-        },
-        {
-            id: 'security',
-            label: __('messages.profile.security_protection'),
-            icon: Lock,
-            href: profile.security.url(),
-            only: ['canManageTwoFactor', 'twoFactorEnabled', 'requiresConfirmation'],
-        },
-    ], [__]);
+    const sideNavItems = useMemo(
+        () => [
+            {
+                id: 'personal-info',
+                label: __('messages.profile.personal_info'),
+                icon: UserIcon,
+                href: localizedPath(profile.personalInfo.url()),
+                only: ['user'],
+            },
+            {
+                id: 'voted-ideas',
+                label: __('messages.profile.voted_ideas'),
+                icon: VoteIcon,
+                href: localizedPath(profile.votedIdeas.url()),
+                only: ['votedIdeas'],
+            },
+            {
+                id: 'followed-ideas',
+                label: __('messages.profile.followed_ideas'),
+                icon: Heart,
+                href: localizedPath(profile.followedIdeas.url()),
+                only: ['followedIdeas'],
+            },
+            {
+                id: 'followed-people',
+                label: __('messages.profile.followed_people'),
+                icon: Users,
+                href: localizedPath(profile.followedPeople.url()),
+                only: ['followedPeople'],
+            },
+            {
+                id: 'notifications',
+                label: __('messages.profile.notifications'),
+                icon: Bell,
+                href: localizedPath(profile.notifications.url()),
+                only: ['notifications'],
+            },
+            {
+                id: 'security',
+                label: __('messages.profile.security_protection'),
+                icon: Lock,
+                href: localizedPath(profile.security.url()),
+                only: [
+                    'canManageTwoFactor',
+                    'twoFactorEnabled',
+                    'requiresConfirmation',
+                ],
+            },
+        ],
+        [__, locale],
+    );
 
-    const mobileNavItems = useMemo(() => [
-        {
-            id: 'personal-info',
-            label: __('messages.profile.personal_tab'),
-            icon: UserIcon,
-            href: profile.personalInfo.url(),
-            only: ['user'],
-        },
-        {
-            id: 'voted-ideas',
-            label: __('messages.profile.voted_ideas'),
-            icon: VoteIcon,
-            href: profile.votedIdeas.url(),
-            only: ['votedIdeas'],
-        },
-        {
-            id: 'followed-ideas',
-            label: __('messages.profile.followed_ideas'),
-            icon: Heart,
-            href: profile.followedIdeas.url(),
-            only: ['followedIdeas'],
-        },
-        {
-            id: 'followed-people',
-            label: __('messages.profile.followed_people'),
-            icon: Users,
-            href: profile.followedPeople.url(),
-            only: ['followedPeople'],
-        },
-        {
-            id: 'notifications',
-            label: __('messages.profile.notifications'),
-            icon: Bell,
-            href: profile.notifications.url(),
-            only: ['notifications'],
-        },
-        {
-            id: 'security',
-            label: __('messages.profile.security_protection_tab'),
-            icon: Lock,
-            href: profile.security.url(),
-            only: ['canManageTwoFactor', 'twoFactorEnabled', 'requiresConfirmation'],
-        },
-    ], [__]);
+    const mobileNavItems = useMemo(
+        () => [
+            {
+                id: 'personal-info',
+                label: __('messages.profile.personal_tab'),
+                icon: UserIcon,
+                href: localizedPath(profile.personalInfo.url()),
+                only: ['user'],
+            },
+            {
+                id: 'voted-ideas',
+                label: __('messages.profile.voted_ideas'),
+                icon: VoteIcon,
+                href: localizedPath(profile.votedIdeas.url()),
+                only: ['votedIdeas'],
+            },
+            {
+                id: 'followed-ideas',
+                label: __('messages.profile.followed_ideas'),
+                icon: Heart,
+                href: localizedPath(profile.followedIdeas.url()),
+                only: ['followedIdeas'],
+            },
+            {
+                id: 'followed-people',
+                label: __('messages.profile.followed_people'),
+                icon: Users,
+                href: localizedPath(profile.followedPeople.url()),
+                only: ['followedPeople'],
+            },
+            {
+                id: 'notifications',
+                label: __('messages.profile.notifications'),
+                icon: Bell,
+                href: localizedPath(profile.notifications.url()),
+                only: ['notifications'],
+            },
+            {
+                id: 'security',
+                label: __('messages.profile.security_protection_tab'),
+                icon: Lock,
+                href: localizedPath(profile.security.url()),
+                only: [
+                    'canManageTwoFactor',
+                    'twoFactorEnabled',
+                    'requiresConfirmation',
+                ],
+            },
+        ],
+        [__, locale],
+    );
 
     const handleItemClick = (id: string) => {
         const item = sideNavItems.find((i) => i.id === id);
 
         if (item) {
+            if (item.id === 'security') {
+                window.location.href = item.href;
+
+                return;
+            }
+
             router.visit(item.href, {
                 preserveScroll: true,
                 preserveState: true,
@@ -227,23 +255,41 @@ export default function Profile({
                                 <PersonalInfoForm user={user} />
                             )}
                             {activeSection === 'voted-ideas' && (
-                                <Deferred data="votedIdeas" fallback={<TabSkeleton />}>
+                                <Deferred
+                                    data="votedIdeas"
+                                    fallback={<TabSkeleton />}
+                                >
                                     <VotedIdeas ideas={votedIdeas as any} />
                                 </Deferred>
                             )}
                             {activeSection === 'followed-ideas' && (
-                                <Deferred data="followedIdeas" fallback={<TabSkeleton />}>
-                                    <FollowedIdeas ideas={followedIdeas as any} />
+                                <Deferred
+                                    data="followedIdeas"
+                                    fallback={<TabSkeleton />}
+                                >
+                                    <FollowedIdeas
+                                        ideas={followedIdeas as any}
+                                    />
                                 </Deferred>
                             )}
                             {activeSection === 'followed-people' && (
-                                <Deferred data="followedPeople" fallback={<TabSkeleton />}>
-                                    <FollowedPeople people={followedPeople as any} />
+                                <Deferred
+                                    data="followedPeople"
+                                    fallback={<TabSkeleton />}
+                                >
+                                    <FollowedPeople
+                                        people={followedPeople as any}
+                                    />
                                 </Deferred>
                             )}
                             {activeSection === 'notifications' && (
-                                <Deferred data="notifications" fallback={<TabSkeleton />}>
-                                    <Notifications notifications={notifications as any} />
+                                <Deferred
+                                    data="notifications"
+                                    fallback={<TabSkeleton />}
+                                >
+                                    <Notifications
+                                        notifications={notifications as any}
+                                    />
                                 </Deferred>
                             )}
                             {activeSection === 'security' && (
@@ -253,7 +299,9 @@ export default function Profile({
                                     <SecurityAndProtection
                                         canManageTwoFactor={canManageTwoFactor}
                                         twoFactorEnabled={twoFactorEnabled}
-                                        requiresConfirmation={requiresConfirmation}
+                                        requiresConfirmation={
+                                            requiresConfirmation
+                                        }
                                     />
                                 </div>
                             )}
@@ -270,5 +318,3 @@ export default function Profile({
         </div>
     );
 }
-
-

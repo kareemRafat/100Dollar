@@ -17,7 +17,7 @@ import {
     Leaf,
     GraduationCap,
     Heart,
-    MoreHorizontal
+    MoreHorizontal,
 } from 'lucide-react';
 import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
@@ -58,12 +58,12 @@ interface Props {
 
 const categoryIcons: Record<string, any> = {
     'shopping-bag': ShoppingBag,
-    'home': Home,
-    'palette': Palette,
-    'cpu': Cpu,
-    'leaf': Leaf,
+    home: Home,
+    palette: Palette,
+    cpu: Cpu,
+    leaf: Leaf,
     'graduation-cap': GraduationCap,
-    'heart': Heart,
+    heart: Heart,
     'more-horizontal': MoreHorizontal,
 };
 
@@ -81,7 +81,9 @@ export default function IdeaShow({
 
     const isOwner = auth.user?.id === idea.user_id;
 
-    const CategoryIcon = idea.category_icon ? (categoryIcons[idea.category_icon] || MoreHorizontal) : Lightbulb;
+    const CategoryIcon = idea.category_icon
+        ? categoryIcons[idea.category_icon] || MoreHorizontal
+        : Lightbulb;
 
     const {
         votesCount,
@@ -195,7 +197,10 @@ export default function IdeaShow({
                 {idea.image && (
                     <>
                         <meta property="og:image" content={idea.image} />
-                        <meta property="og:image:secure_url" content={idea.image} />
+                        <meta
+                            property="og:image:secure_url"
+                            content={idea.image}
+                        />
                         <meta property="og:image:type" content="image/jpeg" />
                         <meta property="og:image:width" content="1200" />
                         <meta property="og:image:height" content="630" />
@@ -216,15 +221,6 @@ export default function IdeaShow({
             </Head>
 
             <main className="pb-24">
-                <div className="mx-auto max-w-7xl px-6 pt-6">
-                    <button
-                        onClick={handleBack}
-                        className="inline-flex items-center gap-2 text-xs font-black tracking-widest text-on-surface-variant uppercase transition-colors hover:text-primary"
-                    >
-                        <ArrowLeft className="size-4 rtl:rotate-180" />
-                        {__('messages.ui.back')}
-                    </button>
-                </div>
                 <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
@@ -300,7 +296,9 @@ export default function IdeaShow({
                                     <CategoryIcon className="size-4" />
                                     <span className="text-xs font-bold tracking-wider uppercase">
                                         {typeof idea.category === 'object'
-                                            ? (usePage().props.locale === 'ar' ? idea.category.name_ar : idea.category.name_en)
+                                            ? usePage().props.locale === 'ar'
+                                                ? idea.category.name_ar
+                                                : idea.category.name_en
                                             : idea.category}
                                     </span>
                                 </div>
@@ -395,7 +393,8 @@ export default function IdeaShow({
                             </div>
                             <h3 className="mb-6 flex items-center gap-3 font-headline text-xl font-bold text-on-surface">
                                 <Receipt className="size-6 text-primary" />
-                                {__('messages.home.prize_label')} ({__('messages.home.one_hundred_dollars')}){' '}
+                                {__('messages.home.prize_label')} (
+                                {__('messages.home.one_hundred_dollars')}){' '}
                                 {__('messages.idea_detail.prize_covers')}
                             </h3>
                             <div className="mb-8 space-y-4">
@@ -406,7 +405,9 @@ export default function IdeaShow({
                                         )}
                                     </span>
                                     <span className="font-bold text-primary">
-                                        {__('messages.home.one_hundred_dollars')}
+                                        {__(
+                                            'messages.home.one_hundred_dollars',
+                                        )}
                                     </span>
                                 </div>
                             </div>
@@ -449,17 +450,17 @@ export default function IdeaShow({
 
             {/* Image Modal */}
             <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
-                <DialogContent className="max-w-[95vw] sm:max-w-[90vw] md:max-w-[85vw] border-none bg-transparent p-0 shadow-none outline-none">
+                <DialogContent className="max-w-[95vw] border-none bg-transparent p-0 shadow-none outline-none sm:max-w-[90vw] md:max-w-[85vw]">
                     <DialogHeader className="hidden">
                         <DialogTitle>{idea.title}</DialogTitle>
                     </DialogHeader>
-                    <div className="relative group">
-                        <div className="overflow-hidden rounded-2xl bg-surface-container-low/50 backdrop-blur-sm flex justify-center items-center">
+                    <div className="group relative">
+                        <div className="flex items-center justify-center overflow-hidden rounded-2xl bg-surface-container-low/50 backdrop-blur-sm">
                             {idea.image && (
                                 <img
                                     src={idea.image}
                                     alt={idea.title}
-                                    className="block h-auto w-auto max-w-full max-h-[90vh] object-contain cursor-zoom-out"
+                                    className="block h-auto max-h-[90vh] w-auto max-w-full cursor-zoom-out object-contain"
                                     onClick={() => setIsImageModalOpen(false)}
                                 />
                             )}
@@ -482,7 +483,6 @@ export default function IdeaShow({
         </>
     );
 }
-
 
 function CommentSkeleton() {
     return (

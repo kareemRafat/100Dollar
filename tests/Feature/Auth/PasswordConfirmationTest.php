@@ -30,7 +30,7 @@ test('admin confirm password screen can be rendered', function () {
 test('password confirmation requires authentication', function () {
     $response = $this->get(route('password.confirm'));
 
-    $response->assertRedirect(route('login'));
+    $response->assertRedirect(localizedUrl(route('login', absolute: false)));
 });
 
 test('admin password can be confirmed through the admin guard flow', function () {
@@ -43,5 +43,5 @@ test('admin password can be confirmed through the admin guard flow', function ()
         ]);
 
     $response->assertRedirect(route('admin.settings.security.edit'));
-    expect(session('auth.password_confirmed_at'))->not->toBeNull();
+    expect(session('admin.auth.password_confirmed_at'))->not->toBeNull();
 });

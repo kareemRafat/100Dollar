@@ -6,6 +6,7 @@ use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\RequirePasswordConfirmation;
 use App\Http\Middleware\SetRequestLocale;
+use App\Support\Auth\AuthContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -49,11 +50,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeViewPath' => LaravelLocalizationViewPath::class,
             'password.confirm' => RequirePasswordConfirmation::class,
         ]);
-        $middleware->redirectGuestsTo(function (Request $request): string {
-            return $request->is('admin') || $request->is('admin/*')
-                ? route('admin.login')
-                : route('login');
-        });
+        $middleware->redirectGuestsTo(fn (Request $request) => AuthContext::loginUrl($request));
+        $middleware->redirectUsersTo(fn (Request $request): string => AuthContext::authenticatedUrl($request));
         $middleware->appendToGroup('web', [
             SetRequestLocale::class,
             HandleAppearance::class,

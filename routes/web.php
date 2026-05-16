@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\App\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\App\Auth\PasswordResetLinkController;
 use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,9 @@ Route::group([
                     'status' => $request->session()->get('status'),
                 ]);
             })->name('password.request');
+
+            Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+                ->name('password.email');
 
             Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
