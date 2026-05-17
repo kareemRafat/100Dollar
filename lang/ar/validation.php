@@ -209,6 +209,16 @@ return [
         'company_name' => 'اسم الشركة',
         'website' => 'موقع الشركة الإلكتروني',
         'logo' => 'شعار الشركة',
+        'day_of_week' => 'يوم الأسبوع',
+        'contract_start' => 'تاريخ بدء العقد',
+        'contract_end' => 'تاريخ انتهاء العقد',
+        'is_active' => 'الحالة',
+        'submission_day' => 'يوم النشر',
+        'rejection_reason' => 'سبب الرفض',
+        'status' => 'الحالة',
+        'role' => 'الدور',
+        'country_id' => 'الدولة',
+        'delivered_at' => 'تاريخ التسليم',
     ],
 
 ];

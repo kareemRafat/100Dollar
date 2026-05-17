@@ -151,7 +151,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                 onValueChange={setSponsorFilter}
                             >
                                 <SelectTrigger className="w-48">
-                                    <SelectValue placeholder="تصفية حسب الراعي" />
+                                    <SelectValue placeholder="كل الرعاة" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">
@@ -173,7 +173,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                 onValueChange={setStatusFilter}
                             >
                                 <SelectTrigger className="w-40">
-                                    <SelectValue placeholder="تصفية حسب الحالة" />
+                                    <SelectValue placeholder="الكل" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>

@@ -307,6 +307,7 @@ export default function SponsorsPage({ sponsors }: SponsorsProps) {
                                 <Label htmlFor="name">الاسم</Label>
                                 <Input
                                     id="name"
+                                    placeholder="أدخل اسم الراعي"
                                     value={createForm.data.name}
                                     onChange={(e) => createForm.setData('name', e.target.value)}
                                 />

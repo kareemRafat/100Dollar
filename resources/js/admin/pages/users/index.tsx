@@ -613,6 +613,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <Label htmlFor="edit-name">الاسم</Label>
                                 <Input
                                     id="edit-name"
+                                    placeholder="أدخل الاسم الكامل"
                                     value={editForm.data.name}
                                     onChange={(e) =>
                                         editForm.setData('name', e.target.value)
@@ -631,6 +632,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <Input
                                     id="edit-email"
                                     type="email"
+                                    placeholder="example@domain.com"
                                     value={editForm.data.email}
                                     onChange={(e) =>
                                         editForm.setData(
@@ -652,6 +654,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <Input
                                     id="edit-password"
                                     type="password"
+                                    placeholder="••••••••"
                                     value={editForm.data.password}
                                     onChange={(e) =>
                                         editForm.setData(

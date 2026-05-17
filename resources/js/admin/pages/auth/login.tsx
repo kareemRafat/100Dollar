@@ -2,13 +2,11 @@ import { Form, Head } from '@inertiajs/react';
 import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import InputError from '@/components/input-error';
 import PasswordInput from '@/components/password-input';
-import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { login } from '@/routes/admin';
 import { store } from '@/routes/admin/login';
 
 type Props = {
@@ -39,7 +37,7 @@ export default function Login({ status, canRegister }: Props) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder="أدخل البريد الإلكتروني"
                                 />
                                 <InputError message={errors.email} />
                             </div>
@@ -81,15 +79,6 @@ export default function Login({ status, canRegister }: Props) {
                                 تسجيل الدخول
                             </Button>
                         </div>
-
-                        {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
-                                ليس لديك حساب؟{' '}
-                                <TextLink href={login()} tabIndex={5}>
-                                    إنشاء حساب
-                                </TextLink>
-                            </div>
-                        )}
                     </>
                 )}
             </Form>
