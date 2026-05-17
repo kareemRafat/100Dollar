@@ -17,6 +17,12 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return $this->profileRules($this->user()->id);
+        return [
+            'name' => $this->nameRules(),
+            'email' => $this->emailRules($this->user()->id),
+            'phone' => ['sometimes', 'string', 'max:20'],
+            'country_id' => ['sometimes', 'exists:countries,id'],
+            'nationality' => ['sometimes', 'string', 'max:100'],
+        ];
     }
 }

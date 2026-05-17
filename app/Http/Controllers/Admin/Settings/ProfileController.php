@@ -17,7 +17,9 @@ class ProfileController extends Controller
      */
     public function edit(): Response
     {
-        return Inertia::render('admin/pages/settings/profile');
+        return Inertia::render('admin/pages/settings/profile', [
+            'countries' => \App\Models\Country::all(['id', 'name_en', 'name_ar', 'code']),
+        ]);
     }
 
     /**

@@ -1,18 +1,19 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
+import { contact } from '@/routes/app';
 
 export default function Privacy() {
     const { __ } = useLang();
 
     return (
         <>
-            <Head title={__('messages.ui.privacy_policy')} />
+            <Head title={__('messages.privacy.title')} />
 
             <section className="relative flex h-[250px] items-center justify-center overflow-hidden bg-deep-navy md:h-[300px]">
                 <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 to-deep-navy" />
                 <div className="relative z-10 text-center">
                     <h1 className="mb-4 font-headline text-3xl font-extrabold text-white md:text-5xl">
-                        {__('messages.ui.privacy_policy')}
+                        {__('messages.privacy.title')}
                     </h1>
                     <div className="mx-auto h-1.5 w-24 rounded-full bg-primary" />
                 </div>
@@ -21,64 +22,64 @@ export default function Privacy() {
             <section className="mx-auto max-w-4xl px-8 py-16">
                 <div className="prose prose-slate dark:prose-invert max-w-none">
                     <div className="mb-10 rounded-2xl border border-primary/10 bg-primary/5 p-6 text-sm text-on-surface-variant">
-                        {__('messages.privacy.last_updated')}: ٢٤ مارس ٢٠٢٤
+                        {__('messages.privacy.last_updated')}
                     </div>
 
                     <div className="space-y-12 text-on-surface dark:text-slate-300">
                         <div>
                             <h2 className="mb-4 text-2xl font-black text-secondary dark:text-white">
-                                {__('messages.privacy.section1_title')}
+                                {__('messages.privacy.collection_title')}
                             </h2>
                             <p className="leading-relaxed">
-                                {__('messages.privacy.section1_content')}
+                                {__('messages.privacy.collection_content')}
                             </p>
                         </div>
 
                         <div>
                             <h2 className="mb-4 text-2xl font-black text-secondary dark:text-white">
-                                {__('messages.privacy.section2_title')}
+                                {__('messages.privacy.usage_title')}
                             </h2>
                             <p className="leading-relaxed">
-                                {__('messages.privacy.section2_content')}
+                                {__('messages.privacy.usage_content')}
                             </p>
                             <ul className="mt-4 list-disc space-y-2 ps-6">
-                                <li>{__('messages.privacy.data_item1')}</li>
-                                <li>{__('messages.privacy.data_item2')}</li>
-                                <li>{__('messages.privacy.data_item3')}</li>
+                                <li>{__('messages.privacy.usage_item1')}</li>
+                                <li>{__('messages.privacy.usage_item2')}</li>
+                                <li>{__('messages.privacy.usage_item3')}</li>
                             </ul>
                         </div>
 
                         <div>
                             <h2 className="mb-4 text-2xl font-black text-secondary dark:text-white">
-                                {__('messages.privacy.section3_title')}
+                                {__('messages.privacy.protection_title')}
                             </h2>
                             <p className="leading-relaxed">
-                                {__('messages.privacy.section3_content')}
+                                {__('messages.privacy.protection_content')}
                             </p>
                         </div>
 
                         <div>
                             <h2 className="mb-4 text-2xl font-black text-secondary dark:text-white">
-                                {__('messages.privacy.section4_title')}
+                                {__('messages.privacy.sharing_title')}
                             </h2>
                             <p className="leading-relaxed">
-                                {__('messages.privacy.section4_content')}
+                                {__('messages.privacy.sharing_content')}
                             </p>
                         </div>
 
                         <div className="rounded-2xl border border-outline-variant/10 bg-surface-container-low p-8 text-center">
                             <h3 className="mb-4 text-xl font-bold text-on-surface dark:text-white">
-                                {__('messages.privacy.questions_title')}
+                                {__('messages.privacy.contact_title')}
                             </h3>
                             <p className="mb-6 text-on-surface-variant">
-                                {__('messages.privacy.questions_desc')}
+                                {__('messages.privacy.contact_desc')}
                             </p>
-                            <a
-                                href="mailto:privacy@afkar100.com"
+                            <Link
+                                href={contact.url()}
                                 className="inline-block font-bold text-primary hover:underline"
                             >
-                                privacy@afkar100.com
-                            </a>
+                                {__('messages.nav.contact')}
+                            </Link>
                         </div>
                     </div>
                 </div>
