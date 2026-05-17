@@ -27,12 +27,18 @@ class IdeaRejectedNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(__('messages.notifications.idea_rejected_mail_subject', ['title' => $this->idea->title]))
-            ->greeting(__('messages.notifications.idea_rejected_mail_greeting', ['name' => $notifiable->name]))
-            ->line(__('messages.notifications.idea_rejected_mail_line1', ['title' => $this->idea->title]))
-            ->line($this->reason)
-            ->line(__('messages.notifications.idea_rejected_mail_line2'))
-            ->action(__('messages.notifications.idea_rejected_mail_action'), url('/ideas/'.$this->idea->id))
-            ->line(__('messages.notifications.idea_rejected_mail_line3'));
+            ->view(['mail.notification', 'mail.notification-text'], [
+                'subject' => __('messages.notifications.idea_rejected_mail_subject', ['title' => $this->idea->title]),
+                'greeting' => __('messages.notifications.idea_rejected_mail_greeting', ['name' => $notifiable->name]),
+                'lines' => [
+                    __('messages.notifications.idea_rejected_mail_line1', ['title' => $this->idea->title]),
+                    $this->reason,
+                    __('messages.notifications.idea_rejected_mail_line2'),
+                    __('messages.notifications.idea_rejected_mail_line3'),
+                ],
+                'actionText' => __('messages.notifications.idea_rejected_mail_action'),
+                'actionUrl' => route('app.ideas.show', $this->idea),
+            ]);
     }
 
     public function toCustomDb(object $notifiable): array

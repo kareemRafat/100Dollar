@@ -98,9 +98,4 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     {
         return $this->hasMany(Notification::class);
     }
-
-    public function sendEmailVerificationNotification($token = null)
-    {
-        $this->notify((new VerifyEmail)->onQueue('emails'));
-    }
 }

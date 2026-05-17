@@ -37,7 +37,13 @@ class BaseNotificationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.notification',
+            view: 'mail.notification',
+            text: 'mail.notification-text',
+            with: [
+                'subject' => config('app.name'),
+                'greeting' => __('messages.notifications.hello'),
+                'lines' => [__('messages.mail.brand_summary')],
+            ],
         );
     }
 

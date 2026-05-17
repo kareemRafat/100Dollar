@@ -33,10 +33,16 @@ class IdeaApprovedNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(__('messages.notifications.idea_approved_mail_subject'))
-            ->greeting(__('messages.notifications.idea_approved_mail_greeting', ['name' => $notifiable->name]))
-            ->line(__('messages.notifications.idea_approved_mail_line1', ['title' => $this->idea->title]))
-            ->action(__('messages.notifications.idea_approved_mail_action'), url('/ideas/'.$this->idea->id))
-            ->line(__('messages.notifications.idea_approved_mail_line2'));
+            ->view(['mail.notification', 'mail.notification-text'], [
+                'subject' => __('messages.notifications.idea_approved_mail_subject'),
+                'greeting' => __('messages.notifications.idea_approved_mail_greeting', ['name' => $notifiable->name]),
+                'lines' => [
+                    __('messages.notifications.idea_approved_mail_line1', ['title' => $this->idea->title]),
+                    __('messages.notifications.idea_approved_mail_line2'),
+                ],
+                'actionText' => __('messages.notifications.idea_approved_mail_action'),
+                'actionUrl' => route('app.ideas.show', $this->idea),
+            ]);
     }
 
     public function toCustomDb(object $notifiable): array

@@ -634,6 +634,28 @@ return [
         'rights_reserved' => 'All rights reserved.',
     ],
 
+    'mail' => [
+        'brand_badge' => 'Afkar100',
+        'brand_summary' => 'A unified message from Afkar100 to keep you updated on your account, ideas, and important actions.',
+        'otp_subject' => 'Your verification code',
+        'otp_greeting' => 'Hello,',
+        'otp_line1' => 'Use the verification code below to complete your vote securely.',
+        'otp_line2' => 'This code will remain valid for 10 minutes.',
+        'otp_line3' => 'If you did not request this code, you can safely ignore this message.',
+        'otp_panel_label' => 'Verification code',
+        'reset_password_subject' => 'Reset your password',
+        'reset_password_greeting' => 'Hello :name,',
+        'reset_password_line1' => 'We received a request to reset the password for your Afkar100 account.',
+        'reset_password_line2' => 'This reset link will expire in :minutes minutes.',
+        'reset_password_line3' => 'If you did not request a password reset, no further action is required.',
+        'reset_password_action' => 'Reset Password',
+        'verify_email_subject' => 'Verify your email address',
+        'verify_email_greeting' => 'Hello :name,',
+        'verify_email_line1' => 'Please confirm your email address to complete your Afkar100 account setup.',
+        'verify_email_line2' => 'Once verified, you will be able to access all user features securely.',
+        'verify_email_action' => 'Verify Email Address',
+    ],
+
     'admin_settings' => [
         'title' => 'Settings',
         'description' => 'Manage your profile and account settings',

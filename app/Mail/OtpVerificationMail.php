@@ -35,7 +35,7 @@ class OtpVerificationMail extends Mailable implements ShouldQueue
         }
 
         return new Envelope(
-            subject: __('Verification Code'),
+            subject: __('messages.mail.otp_subject'),
         );
     }
 
@@ -45,7 +45,21 @@ class OtpVerificationMail extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.otp',
+            view: 'mail.notification',
+            text: 'mail.notification-text',
+            with: [
+                'subject' => __('messages.mail.otp_subject'),
+                'greeting' => __('messages.mail.otp_greeting'),
+                'lines' => [
+                    __('messages.mail.otp_line1'),
+                    __('messages.mail.otp_line2'),
+                    __('messages.mail.otp_line3'),
+                ],
+                'panelLabel' => __('messages.mail.otp_panel_label'),
+                'panelValue' => $this->otp,
+                'salutation' => __('messages.notifications.regards')."\n".config('app.name'),
+                'preheader' => __('messages.mail.otp_line1'),
+            ],
         );
     }
 

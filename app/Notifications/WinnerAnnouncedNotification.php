@@ -35,12 +35,18 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->subject(__('messages.notifications.winner_announced_mail_subject'))
-            ->greeting(__('messages.notifications.winner_announced_mail_greeting', ['name' => $notifiable->name]))
-            ->line(__('messages.notifications.winner_announced_mail_line1', ['title' => $this->idea->title]))
-            ->line(__('messages.notifications.winner_announced_mail_line2'))
-            ->action(__('messages.notifications.winner_announced_mail_action'), url('/ideas/'.$this->idea->id))
-            ->line(__('messages.notifications.winner_announced_mail_line3'))
-            ->line(__('messages.notifications.winner_announced_mail_line4'));
+            ->view(['mail.notification', 'mail.notification-text'], [
+                'subject' => __('messages.notifications.winner_announced_mail_subject'),
+                'greeting' => __('messages.notifications.winner_announced_mail_greeting', ['name' => $notifiable->name]),
+                'lines' => [
+                    __('messages.notifications.winner_announced_mail_line1', ['title' => $this->idea->title]),
+                    __('messages.notifications.winner_announced_mail_line2'),
+                    __('messages.notifications.winner_announced_mail_line3'),
+                    __('messages.notifications.winner_announced_mail_line4'),
+                ],
+                'actionText' => __('messages.notifications.winner_announced_mail_action'),
+                'actionUrl' => route('app.ideas.show', $this->idea),
+            ]);
     }
 
     public function toCustomDb(object $notifiable): array
