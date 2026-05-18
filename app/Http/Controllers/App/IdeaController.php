@@ -197,6 +197,11 @@ class IdeaController extends Controller
         }
 
         $user = auth()->user();
+
+        if ($user->id === $idea->user_id) {
+            return back();
+        }
+
         $follow = $user->followedIdeas()->where('idea_id', $idea->id)->first();
 
         if ($follow) {

@@ -239,46 +239,48 @@ export default function IdeaShow({
                         <OwnerCard idea={idea} />
 
                         {/* Follow Actions */}
-                        <div className="grid grid-cols-2 gap-3">
-                            <button
-                                onClick={toggleFollowIdea}
-                                className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                            >
-                                <div
-                                    className={`rounded-lg p-2 transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
+                        {!isOwner && (
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    onClick={toggleFollowIdea}
+                                    className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                                 >
-                                    {isFollowingIdea ? (
-                                        <Check className="h-5 w-5" />
-                                    ) : (
-                                        <Bell className="h-5 w-5" />
-                                    )}
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
-                                    {isFollowingIdea
-                                        ? __('messages.archive.following')
-                                        : __('messages.archive.follow_idea')}
-                                </span>
-                            </button>
-                            <button
-                                onClick={toggleFollowOwner}
-                                className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                            >
-                                <div
-                                    className={`rounded-lg p-2 transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
+                                    <div
+                                        className={`rounded-lg p-2 transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
+                                    >
+                                        {isFollowingIdea ? (
+                                            <Check className="h-5 w-5" />
+                                        ) : (
+                                            <Bell className="h-5 w-5" />
+                                        )}
+                                    </div>
+                                    <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
+                                        {isFollowingIdea
+                                            ? __('messages.archive.following')
+                                            : __('messages.archive.follow_idea')}
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={toggleFollowOwner}
+                                    className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
                                 >
-                                    {isFollowingOwner ? (
-                                        <Check className="h-5 w-5" />
-                                    ) : (
-                                        <UserPlus className="h-5 w-5" />
-                                    )}
-                                </div>
-                                <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
-                                    {isFollowingOwner
-                                        ? __('messages.archive.following')
-                                        : __('messages.archive.follow_owner')}
-                                </span>
-                            </button>
-                        </div>
+                                    <div
+                                        className={`rounded-lg p-2 transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
+                                    >
+                                        {isFollowingOwner ? (
+                                            <Check className="h-5 w-5" />
+                                        ) : (
+                                            <UserPlus className="h-5 w-5" />
+                                        )}
+                                    </div>
+                                    <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
+                                        {isFollowingOwner
+                                            ? __('messages.archive.following')
+                                            : __('messages.archive.follow_owner')}
+                                    </span>
+                                </button>
+                            </div>
+                        )}
 
                         <SocialShare idea={idea} />
                     </aside>
