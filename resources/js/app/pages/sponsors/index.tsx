@@ -113,28 +113,47 @@ export default function SponsorsIndex({ sponsors, today }: Props) {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {fullWeekSponsors.map((item) => (
-                        <SponsorCard key={item.day} item={item} />
-                    ))}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-4">
+                    {/* First Module: Tall + 2 Small */}
+                    <div className="lg:row-span-2">
+                        <SponsorCard item={fullWeekSponsors[0]} isTall />
+                    </div>
+                    <div className="lg:row-span-1 lg:col-start-2">
+                        <SponsorCard item={fullWeekSponsors[1]} />
+                    </div>
+                    <div className="lg:row-span-1 lg:col-start-2 lg:row-start-2">
+                        <SponsorCard item={fullWeekSponsors[2]} />
+                    </div>
 
-                    {/* The 8th slot CTA */}
-                    <div className="group relative flex flex-col items-center justify-center overflow-hidden rounded-[2rem] border-2 border-dashed border-primary/20 bg-primary/5 p-8 text-center transition-all duration-500 hover:border-primary/50 hover:bg-primary/10">
-                        <div className="absolute -right-12 -top-12 h-32 w-32 rounded-full bg-primary/5 blur-3xl transition-all group-hover:bg-primary/10" />
-                        <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-primary/5 blur-3xl transition-all group-hover:bg-primary/10" />
+                    {/* Second Module: Tall + 2 Small */}
+                    <div className="lg:row-span-2 lg:row-start-1 lg:col-start-3">
+                        <SponsorCard item={fullWeekSponsors[3]} isTall />
+                    </div>
+                    <div className="lg:row-span-1 lg:row-start-3 lg:col-start-1">
+                        <SponsorCard item={fullWeekSponsors[4]} />
+                    </div>
+                    <div className="lg:row-span-1 lg:row-start-4 lg:col-start-1">
+                        <SponsorCard item={fullWeekSponsors[5]} />
+                    </div>
 
-                        <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/10 text-primary transition-transform duration-500 group-hover:scale-110">
-                            <span className="material-symbols-outlined text-5xl">rocket_launch</span>
+                    {/* Final Module: 2 Tall (Friday + CTA) */}
+                    <div className="lg:row-span-2 lg:row-start-3 lg:col-start-2">
+                        <SponsorCard item={fullWeekSponsors[6]} isTall />
+                    </div>
+
+                    <div className="group relative lg:row-span-2 lg:row-start-3 lg:col-start-3 flex flex-col items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-primary/20 bg-primary/5 p-6 text-center transition-all duration-500 hover:border-primary/40">
+                        <div className="relative mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                            <span className="material-symbols-outlined text-3xl">rocket_launch</span>
                         </div>
 
-                        <h3 className="relative mb-3 font-headline text-xl font-black text-on-surface dark:text-white">
+                        <h3 className="relative mb-1 font-headline text-base font-black text-on-surface dark:text-white">
                             {__('messages.sponsors.your_brand_here')}
                         </h3>
-                        <p className="relative mb-6 text-sm text-on-surface-variant dark:text-slate-400">
+                        <p className="relative mb-6 text-[10px] text-on-surface-variant/70 dark:text-slate-400 px-2">
                             {__('messages.sponsors.cta_description')}
                         </p>
 
-                        <Button asChild className="relative w-full rounded-xl font-black shadow-lg shadow-primary/20">
+                        <Button asChild size="sm" className="relative h-9 px-6 rounded-lg font-black text-xs">
                             <Link href="/sponsors/apply">
                                 {__('messages.sponsors.contact_us_now')}
                             </Link>
@@ -191,41 +210,40 @@ export default function SponsorsIndex({ sponsors, today }: Props) {
     );
 }
 
-function SponsorCard({ item }: { item: { day: string; isToday: boolean; data: any } }) {
+function SponsorCard({ item, isTall = false }: { item: { day: string; isToday: boolean; data: any }; isTall?: boolean }) {
     const { __ } = useLang();
     const { data, isToday, day } = item;
 
     if (!data) {
         return (
             <div
-                className="group relative flex flex-col justify-between overflow-hidden rounded-[1.5rem] border border-outline-variant/30 bg-surface-container-low p-6 transition-all duration-500 hover:border-primary/30 hover:shadow-lg dark:bg-surface-container-high"
+                className={cn(
+                    "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-outline-variant/20 bg-surface-container-low p-4 transition-all duration-500 hover:border-primary/30 dark:bg-surface-container-high",
+                    isTall ? "h-full min-h-[280px]" : "h-full aspect-square md:aspect-auto"
+                )}
             >
-                <div>
-                    <div className="mb-6 flex items-center justify-between">
-                        <span className="rounded-lg bg-surface-container-high px-3 py-1 text-[10px] font-black tracking-widest text-on-surface-variant uppercase dark:bg-surface-container-highest dark:text-slate-400">
-                            {__(`messages.sponsors.days.${day}`)}
-                        </span>
-                    </div>
-
-                    <div className="mb-6 flex aspect-square w-full items-center justify-center rounded-2xl bg-surface-container-high transition-all duration-500 group-hover:bg-primary/5 dark:bg-surface-container-highest">
-                        <span className="material-symbols-outlined text-4xl text-outline-variant/40 transition-colors group-hover:text-primary/40">
-                            add_circle
-                        </span>
-                    </div>
-
-                    <h3 className="mb-1 font-headline text-lg font-black text-on-surface dark:text-white">
-                        {__('messages.sponsors.available_for_sponsorship')}
-                    </h3>
-                    <p className="text-[11px] text-on-surface-variant dark:text-slate-400">
-                        {__('messages.sponsors.be_the_one')}
-                    </p>
+                <div className="mb-4 flex items-center justify-between">
+                    <span className="rounded-full bg-surface-container-high px-3.5 py-1 text-[10px] font-black tracking-widest text-on-surface-variant uppercase dark:bg-surface-container-highest dark:text-slate-300 border border-outline-variant/10 shadow-sm">
+                        {__(`messages.sponsors.days.${day}`)}
+                    </span>
+                    <span className="text-[10px] font-black text-primary/30">$100</span>
                 </div>
 
-                <Button asChild variant="outline" size="sm" className="mt-6 h-10 rounded-lg font-black transition-all hover:bg-primary hover:text-white hover:border-primary">
-                    <Link href="/sponsors/apply">
-                        {__('messages.nav.contact')}
-                    </Link>
-                </Button>
+                <div className={cn(
+                    "flex w-full items-center justify-center rounded-xl bg-surface-container-high/50 transition-all duration-500 group-hover:bg-primary/5 dark:bg-surface-container-highest/30",
+                    isTall ? "flex-1 mb-4" : "aspect-video mb-4"
+                )}>
+                    <span className="material-symbols-outlined text-3xl text-outline-variant/30">add_circle</span>
+                </div>
+
+                <div className="text-center md:text-start">
+                    <h3 className="mb-0.5 font-headline text-sm font-black text-on-surface dark:text-white">
+                        {__('messages.sponsors.available_for_sponsorship')}
+                    </h3>
+                    <Button asChild variant="link" size="sm" className="h-auto p-0 text-[10px] font-bold text-primary">
+                        <Link href="/sponsors/apply">{__('messages.nav.contact')}</Link>
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -233,72 +251,65 @@ function SponsorCard({ item }: { item: { day: string; isToday: boolean; data: an
     return (
         <div
             className={cn(
-                'group relative flex flex-col justify-between overflow-hidden rounded-[1.5rem] border bg-surface-container-lowest p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-md dark:bg-surface-container-low',
+                'group relative flex flex-col justify-between overflow-hidden rounded-2xl border bg-surface-container-lowest transition-all duration-500 hover:-translate-y-1 hover:shadow-xl dark:bg-surface-container-low',
                 isToday
-                    ? 'border-primary shadow-lg ring-4 ring-primary/5 z-10'
-                    : 'border-outline-variant/20 shadow-sm hover:border-primary/30'
+                    ? 'border-primary shadow-md ring-2 ring-primary/5 z-10'
+                    : 'border-outline-variant/10 shadow-sm hover:border-primary/20',
+                isTall ? "h-full min-h-[280px]" : "h-full aspect-square md:aspect-auto"
             )}
         >
-            {isToday && (
-                <div className="absolute top-0 inset-0 w-full">
-                    <div className="h-1 w-full bg-primary" />
-                </div>
-            )}
+            {/* The Logo as Background Cover */}
+            <div className="absolute inset-0 z-0">
+                <img
+                    alt={`${data.name} Logo`}
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    src={data.logo}
+                />
+                <div className={cn(
+                    "absolute inset-0 transition-opacity duration-500",
+                    isToday
+                        ? "bg-gradient-to-t from-primary/90 via-primary/40 to-transparent opacity-90"
+                        : "bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent opacity-80 group-hover:opacity-70"
+                )} />
+            </div>
 
-            <div>
-                <div className="mb-6 flex items-center justify-between">
+            <div className="relative z-10 flex h-full flex-col justify-between p-4">
+                <div className="flex items-center justify-between">
                     <div className={cn(
-                        "flex items-center gap-2 rounded-lg px-3 py-1",
+                        "flex items-center gap-2 rounded-full px-3.5 py-1.5 shadow-sm transition-transform duration-500 group-hover:scale-105",
                         isToday
-                            ? "bg-primary text-white shadow-sm"
-                            : "bg-primary/5 text-primary border border-primary/10"
+                            ? "bg-white text-primary ring-2 ring-primary/10"
+                            : "bg-slate-900/60 text-white backdrop-blur-xl border border-white/10"
                     )}>
-                        <span className="text-[10px] font-black tracking-widest uppercase">
+                        <span className="text-base font-black tracking-widest uppercase leading-none">
                             {__(`messages.sponsors.days.${day}`)}
                         </span>
                         {isToday && (
                             <span className="relative flex h-1.5 w-1.5">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
                             </span>
                         )}
                     </div>
 
-                    {!isToday && (
-                        <span className="text-[9px] font-bold text-on-surface-variant/40 uppercase tracking-tighter">
-                            {__('messages.sponsors.day_sponsor').replace(':day', '').trim()}
-                        </span>
-                    )}
-                </div>
-
-                <div className="group/logo relative mb-6 flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl border border-outline-variant/5 bg-white p-6 transition-all duration-500 group-hover:p-5 dark:bg-slate-200">
-                    <img
-                        alt={`${data.name} Logo`}
-                        className="h-full w-full object-contain transition-transform duration-500 rounded-lg"
-                        src={data.logo}
-                    />
+                    <div className={cn(
+                        "rounded-full px-3 py-1 text-[10px] font-black backdrop-blur-md border shadow-sm transition-all duration-500",
+                        isToday
+                            ? "bg-white/20 text-white border-white/30"
+                            : "bg-primary/10 text-primary-fixed border-primary/20"
+                    )}>
+                        $100
+                    </div>
                 </div>
 
                 <div className="text-center md:text-start">
-                    <h3 className="mb-0.5 font-headline text-xl font-black text-on-surface dark:text-white">
+                    <h3 className={cn(
+                        "font-headline font-black text-white truncate drop-shadow-sm",
+                        isTall ? "text-xl" : "text-base"
+                    )}>
                         {data.name}
                     </h3>
-                    <div className="flex items-center justify-center gap-1.5 md:justify-start">
-                        <span className="h-1 w-1 rounded-full bg-primary/40" />
-                        <p className="text-[11px] font-bold text-on-surface-variant dark:text-slate-400">
-                            {__('messages.sponsors.certified_partner')}
-                        </p>
-                    </div>
                 </div>
-            </div>
-
-            <div className="mt-6 flex items-center justify-between rounded-xl bg-surface-container-low p-3 dark:bg-surface-container-highest/30">
-                <p className="text-[9px] font-black uppercase tracking-widest text-on-surface-variant/60 dark:text-slate-500">
-                    {__('messages.sponsors.weekly_prize')}
-                </p>
-                <p className="font-headline text-base font-black text-primary">
-                    $100
-                </p>
             </div>
         </div>
     );
