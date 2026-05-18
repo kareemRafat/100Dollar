@@ -11,171 +11,182 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f5;
-            color: #18181b;
-            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f1f2f6;
+            color: #2d3436;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         table { border-collapse: collapse; }
 
         .wrapper {
             width: 100%;
-            background-color: #f4f4f5;
-            padding: 32px 16px;
+            background-color: #f1f2f6;
+            padding: 40px 16px;
         }
 
         .container {
             width: 100%;
-            max-width: 640px;
+            max-width: 600px;
             margin: 0 auto;
         }
 
         .card {
             background-color: #ffffff;
-            border: 1px solid #e4e4e7;
-            border-radius: 24px;
+            border-top: 6px solid #f97316;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 12px 32px rgba(24, 24, 27, 0.08);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .hero {
-            padding: 32px 40px 24px;
-            background: linear-gradient(135deg, #f97316, #ea580c);
-            color: #ffffff;
+        .header-content {
+            padding: 35px 40px 0;
+            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
+            border-top: 2px solid #e2e8f0;
+            margin-top: 8px;
         }
 
-        .hero-badge {
-            display: inline-block;
-            margin-bottom: 12px;
-            padding: 6px 12px;
-            border-radius: 999px;
-            background-color: rgba(255, 255, 255, 0.18);
+        .brand-eyebrow {
+            display: block;
             font-size: 12px;
             font-weight: 700;
-            letter-spacing: 0.08em;
             text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #f97316;
+            margin-bottom: 8px;
         }
 
         .hero-title {
             margin: 0;
-            font-size: 28px;
+            font-size: 22px;
             line-height: 1.3;
-            font-weight: 700;
+            font-weight: 800;
+            color: #2d3436;
         }
 
         .hero-subtitle {
             margin: 12px 0 0;
-            font-size: 15px;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.92);
+            padding: 4px 16px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #64748b;
+            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 3px solid #e2e8f0;
         }
 
         .content {
-            padding: 36px 40px 20px;
+            padding: 24px 40px 35px;
             text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
         }
 
         .greeting {
-            margin: 0 0 20px;
-            font-size: 22px;
+            margin: 0 0 16px;
+            font-size: 16px;
             line-height: 1.5;
             font-weight: 700;
-            color: #111827;
+            color: #2d3436;
         }
 
         .line {
             margin: 0 0 16px;
-            font-size: 15px;
-            line-height: 1.9;
-            color: #3f3f46;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #2d3436;
         }
 
         .panel {
             margin: 24px 0;
-            padding: 20px 24px;
-            border-radius: 18px;
-            background-color: #fff7ed;
-            border: 1px solid #fdba74;
-            text-align: center;
+            padding: 20px;
+            border-radius: 0;
+            background-color: #fffaf0;
+            border: none;
+            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 4px solid #f97316;
+        }
+
+        .panel-rejected {
+            background-color: #fff5f5;
+            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 4px solid #ef4444;
         }
 
         .panel-label {
-            margin: 0 0 8px;
-            font-size: 12px;
+            margin: 0 0 4px;
+            font-size: 13px;
             line-height: 1.4;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            font-weight: 800;
             color: #c2410c;
+        }
+
+        .panel-rejected .panel-label {
+            color: #b91c1c;
         }
 
         .panel-value {
             margin: 0;
-            font-size: 32px;
-            line-height: 1.2;
-            font-weight: 700;
+            font-size: 15px;
+            line-height: 1.6;
             color: #9a3412;
+            font-weight: 700;
+        }
+
+        .panel-rejected .panel-value {
+            color: #991b1b;
+        }
+
+        .otp-panel {
+            text-align: center;
+            background-color: #f8fafc;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .otp-value {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 0.25em;
+            color: #0f172a;
         }
 
         .button-wrap {
-            padding: 12px 0 24px;
-            text-align: center;
+            padding: 16px 0 24px;
+            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
         }
 
         .button {
             display: inline-block;
-            padding: 14px 24px;
-            border-radius: 999px;
+            padding: 12px 32px;
+            border-radius: 4px;
             background-color: #f97316;
             color: #ffffff !important;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             text-decoration: none;
         }
 
         .subcopy {
-            margin-top: 24px;
-            padding-top: 20px;
-            border-top: 1px solid #e4e4e7;
-            font-size: 13px;
-            line-height: 1.8;
-            color: #71717a;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #f1f5f9;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #636e72;
             word-break: break-word;
         }
 
         .footer {
-            padding: 0 40px 36px;
-            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
-        }
-
-        .footer-card {
-            padding: 20px 24px;
-            border-radius: 18px;
-            background-color: #fafafa;
-            border: 1px solid #e4e4e7;
-        }
-
-        .footer-title {
-            margin: 0 0 8px;
-            font-size: 15px;
-            line-height: 1.5;
-            font-weight: 700;
-            color: #18181b;
+            padding: 24px 40px;
+            text-align: center;
         }
 
         .footer-text {
-            margin: 0;
+            margin: 0 0 8px;
             font-size: 13px;
-            line-height: 1.8;
-            color: #71717a;
+            line-height: 1.5;
+            color: #94a3b8;
         }
 
-        @media only screen and (max-width: 640px) {
-            .wrapper { padding: 16px 8px; }
-            .hero, .content, .footer { padding-left: 20px !important; padding-right: 20px !important; }
-            .hero-title { font-size: 24px; }
-            .panel-value { font-size: 28px; }
-            .button { display: block; }
+        @media only screen and (max-width: 600px) {
+            .wrapper { padding: 20px 12px; }
+            .header-content, .content, .footer { padding-left: 20px !important; padding-right: 20px !important; }
+            .hero-title { font-size: 20px; }
+            .button { display: block; width: 100%; box-sizing: border-box; text-align: center; }
         }
     </style>
 </head>
@@ -186,10 +197,15 @@
                 <table role="presentation" class="container" width="100%" cellpadding="0" cellspacing="0">
                     <tr>
                         <td class="card">
-                            <div class="hero">
-                                <div class="hero-badge">{{ __('messages.mail.brand_badge') }}</div>
+                            <div class="header-content">
+                                <span class="brand-eyebrow">{{ __('messages.mail.brand_badge') }}</span>
                                 <h1 class="hero-title">{{ $title ?? config('app.name') }}</h1>
-                                <p class="hero-subtitle">{{ $preheader ?? __('messages.mail.brand_summary') }}</p>
+                                @php
+                                    $summary = $preheader ?? __('messages.mail.brand_summary');
+                                @endphp
+                                @if(!empty($summary))
+                                    <p class="hero-subtitle">{{ $summary }}</p>
+                                @endif
                             </div>
 
                             <div class="content">
@@ -197,11 +213,7 @@
                             </div>
 
                             <div class="footer">
-                                <div class="footer-card">
-                                    <p class="footer-title">{{ config('app.name') }}</p>
-                                    <p class="footer-text">{{ __('messages.mail.brand_summary') }}</p>
-                                    <p class="footer-text">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('messages.footer.rights_reserved') }}</p>
-                                </div>
+                                <p class="footer-text">&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('messages.footer.rights_reserved') }}</p>
                             </div>
                         </td>
                     </tr>

@@ -53,12 +53,11 @@ class OtpVerificationMail extends Mailable implements ShouldQueue
                 'lines' => [
                     __('messages.mail.otp_line1'),
                     __('messages.mail.otp_line2'),
-                    __('messages.mail.otp_line3'),
                 ],
                 'panelLabel' => __('messages.mail.otp_panel_label'),
                 'panelValue' => $this->otp,
+                'panelType' => 'otp-panel',
                 'salutation' => __('messages.notifications.regards')."\n".config('app.name'),
-                'preheader' => __('messages.mail.otp_line1'),
             ],
         );
     }

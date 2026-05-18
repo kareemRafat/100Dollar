@@ -42,7 +42,6 @@ class WinnerAnnouncedNotification extends Notification implements ShouldQueue
                     __('messages.notifications.winner_announced_mail_line1', ['title' => $this->idea->title]),
                     __('messages.notifications.winner_announced_mail_line2'),
                     __('messages.notifications.winner_announced_mail_line3'),
-                    __('messages.notifications.winner_announced_mail_line4'),
                 ],
                 'actionText' => __('messages.notifications.winner_announced_mail_action'),
                 'actionUrl' => route('app.ideas.show', $this->idea),

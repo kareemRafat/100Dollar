@@ -26,16 +26,17 @@ class IdeaRejectedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__('messages.notifications.idea_rejected_mail_subject', ['title' => $this->idea->title]))
+            ->subject(__('messages.notifications.idea_rejected_mail_subject'))
             ->view(['mail.notification', 'mail.notification-text'], [
-                'subject' => __('messages.notifications.idea_rejected_mail_subject', ['title' => $this->idea->title]),
+                'subject' => __('messages.notifications.idea_rejected_mail_subject'),
                 'greeting' => __('messages.notifications.idea_rejected_mail_greeting', ['name' => $notifiable->name]),
                 'lines' => [
                     __('messages.notifications.idea_rejected_mail_line1', ['title' => $this->idea->title]),
-                    $this->reason,
                     __('messages.notifications.idea_rejected_mail_line2'),
-                    __('messages.notifications.idea_rejected_mail_line3'),
                 ],
+                'panelLabel' => __('messages.notifications.idea_rejected_mail_reason_label'),
+                'panelValue' => $this->reason,
+                'panelType' => 'panel-rejected',
                 'actionText' => __('messages.notifications.idea_rejected_mail_action'),
                 'actionUrl' => route('app.ideas.show', $this->idea),
             ]);

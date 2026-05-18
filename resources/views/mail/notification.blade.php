@@ -1,4 +1,4 @@
-<x-mail.layout :title="$subject ?? config('app.name')" :preheader="$preheader ?? ($lines[0] ?? $subject ?? config('app.name'))">
+<x-mail.layout :title="$subject ?? config('app.name')">
     @if (! empty($greeting))
         <p class="greeting">{{ $greeting }}</p>
     @endif
@@ -8,11 +8,11 @@
     @endforeach
 
     @isset($panelValue)
-        <div class="panel">
+        <div class="panel {{ $panelType ?? '' }}">
             @isset($panelLabel)
                 <p class="panel-label">{{ $panelLabel }}</p>
             @endisset
-            <p class="panel-value">{{ $panelValue }}</p>
+            <p class="panel-value {{ ($panelType ?? '') === 'otp-panel' ? 'otp-value' : '' }}">{{ $panelValue }}</p>
         </div>
     @endisset
 
