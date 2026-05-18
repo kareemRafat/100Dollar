@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\VerifyEmailResponse as VerifyEmailResponseContract;
@@ -17,6 +18,8 @@ class AppVerifyEmailResponse implements VerifyEmailResponseContract
         if ($request->wantsJson()) {
             return new JsonResponse('', 204);
         }
+
+        AuthContext::sanitizeIntended($request);
 
         return redirect()->intended(
             LaravelLocalization::getLocalizedURL(

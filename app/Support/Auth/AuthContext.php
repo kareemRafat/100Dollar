@@ -5,6 +5,7 @@ namespace App\Support\Auth;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AuthContext
@@ -66,6 +67,42 @@ class AuthContext
         }
 
         return self::homeRouteName($request);
+    }
+
+    /**
+     * Sanitize the intended URL to ensure users don't cross domain contexts
+     * (e.g., regular users redirected to admin routes).
+     */
+    public static function sanitizeIntended(Request $request): void
+    {
+        $intended = Session::get('url.intended');
+
+        if (! $intended) {
+            return;
+        }
+
+        $path = parse_url($intended, PHP_URL_PATH);
+        $path = $path ? trim($path, '/') : '';
+
+        // Determine if the intended path is for the admin panel
+        $intendedIsAdmin = $path === 'admin' || str_starts_with($path, 'admin/');
+
+        // Determine if the current context is admin (via middleware/request)
+        $currentIsAdmin = self::isAdmin($request);
+
+        // If we are in the App context but the intended URL is Admin, and the user is not an admin, clear it.
+        if (! $currentIsAdmin && $intendedIsAdmin) {
+            $user = $request->user();
+            if (! $user || $user->role !== 'admin') {
+                Session::forget('url.intended');
+            }
+        }
+
+        // Safety check: If we are in Admin context but intended is NOT admin, clear it.
+        // This ensures admins are always kept within the admin panel.
+        if ($currentIsAdmin && ! $intendedIsAdmin) {
+            Session::forget('url.intended');
+        }
     }
 
     /**

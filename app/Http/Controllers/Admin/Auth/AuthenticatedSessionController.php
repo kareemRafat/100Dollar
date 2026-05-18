@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,8 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('admin')->login($admin, $request->boolean('remember'));
 
         $request->session()->regenerate();
+
+        AuthContext::sanitizeIntended($request);
 
         return redirect()->intended(route('admin.dashboard'));
     }

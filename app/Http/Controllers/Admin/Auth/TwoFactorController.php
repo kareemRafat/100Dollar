@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -54,6 +55,8 @@ class TwoFactorController extends Controller
 
         $request->session()->forget('admin_login.id');
         $request->session()->regenerate();
+
+        AuthContext::sanitizeIntended($request);
 
         return redirect()->intended(route('admin.dashboard'));
     }

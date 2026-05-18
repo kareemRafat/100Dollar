@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
@@ -18,12 +19,14 @@ class AppRegisterResponse implements RegisterResponseContract
             return new JsonResponse('', 201);
         }
 
+        AuthContext::sanitizeIntended($request);
+
         $locale = $request->input('_locale') ?: app()->getLocale();
         $route = $request->user()?->hasVerifiedEmail()
             ? route('app.home')
             : route('verification.notice');
 
-        return redirect()->intended(
+        return redirect()->to(
             LaravelLocalization::getLocalizedURL($locale, $route)
         );
     }

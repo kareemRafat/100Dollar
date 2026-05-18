@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,6 +25,8 @@ class ConfirmablePasswordController extends Controller
         if ($request->wantsJson()) {
             return new JsonResponse('', 201);
         }
+
+        AuthContext::sanitizeIntended($request);
 
         return redirect()->intended(route('admin.dashboard'));
     }

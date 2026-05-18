@@ -2,6 +2,7 @@
 
 namespace App\Http\Responses;
 
+use App\Support\Auth\AuthContext;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
@@ -17,6 +18,8 @@ class AppLoginResponse implements LoginResponseContract
         if ($request->wantsJson() && ! $request->hasHeader('X-Inertia')) {
             return new JsonResponse('', 204);
         }
+
+        AuthContext::sanitizeIntended($request);
 
         $locale = $request->input('_locale') ?: app()->getLocale();
         $redirect = $request->input('redirect');
