@@ -39,40 +39,33 @@ export default function Error({ status }: Props) {
 
     return (
         <div
-            className="airy-dots flex min-h-screen items-center justify-center overflow-x-hidden bg-surface text-on-surface antialiased"
+            className="error-page-shell"
             dir={isRtl ? 'rtl' : 'ltr'}
             lang={currentLocale}
         >
             <Head title={`${status} - ${__('messages.ideas_100')}`} />
 
-            <main className="relative z-10 w-full max-w-3xl space-y-12 px-6 py-12 text-center">
-                <div className="space-y-4">
-                    <h1 className="font-headline text-[12rem] leading-none font-black text-[#1A1A2E] select-none md:text-[16rem] dark:text-white/20">
-                        {status}
-                    </h1>
-                    <h2 className="font-headline text-3xl leading-tight font-black text-[#1A1A2E] md:text-5xl dark:text-white">
-                        {content.title}
-                    </h2>
-                    <p className="mx-auto max-w-xl font-body text-lg leading-relaxed text-secondary opacity-80 md:text-xl dark:text-gray-400">
+            <main className="error-page-card">
+                <div className="error-page-copy">
+                    <h1 className="error-page-status">{status}</h1>
+                    <h2 className="error-page-title">{content.title}</h2>
+                    <p className="error-page-description">
                         {content.description}
                     </p>
                 </div>
 
-                <div className="flex flex-col items-center justify-center gap-6 pt-4 sm:flex-row-reverse">
-                    <Button
-                        asChild
-                        className="h-auto w-full rounded-xl bg-primary px-10 py-5 text-lg font-bold text-white shadow-xl transition-all hover:scale-105 active:scale-95 sm:w-auto"
-                    >
+                <div className="error-page-actions">
+                    <Button asChild className="error-page-home-button">
                         <Link href="/">
                             {__('messages.errors.back_to_home')}
                         </Link>
                     </Button>
                     <button
-                        className="group flex items-center gap-2 text-lg font-bold text-[#1A1A2E] transition-colors hover:text-[#B8860B] dark:text-white"
+                        className="error-page-refresh-button"
                         onClick={() => window.location.reload()}
                     >
                         <span>{__('messages.ui.refresh')}</span>
-                        <RefreshCw className="size-5 transition-transform duration-500 group-hover:rotate-180" />
+                        <RefreshCw className="error-page-refresh-icon" />
                     </button>
                 </div>
             </main>

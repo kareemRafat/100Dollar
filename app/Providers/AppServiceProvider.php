@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Inertia\ExceptionResponse;
-use Inertia\Inertia;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,14 +30,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
-
-        Inertia::handleExceptionsUsing(function (ExceptionResponse $response) {
-            if (app()->isProduction() && in_array($response->statusCode(), [403, 404, 500, 503])) {
-                return $response->render('app/pages/errors/error', [
-                    'status' => $response->statusCode(),
-                ])->withSharedData();
-            }
-        });
     }
 
     /**

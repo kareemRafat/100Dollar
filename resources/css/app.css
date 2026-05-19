@@ -118,10 +118,10 @@
 
     --color-deep-navy: var(--deep-navy);
 
-    --color-whatsapp: #25D366;
-    --color-facebook: #1877F2;
-    --color-linkedin: #0077B5;
-    --color-success: #10B981;
+    --color-whatsapp: #25d366;
+    --color-facebook: #1877f2;
+    --color-linkedin: #0077b5;
+    --color-success: #10b981;
 }
 
 :root {
@@ -205,6 +205,205 @@
     }
 }
 
+@layer components {
+    .error-page-shell {
+        position: relative;
+        display: flex;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+        background:
+            radial-gradient(
+                circle at top,
+                rgba(247, 189, 72, 0.2),
+                transparent 32%
+            ),
+            linear-gradient(180deg, #fffaf0 0%, #f7f1e3 48%, #f2ead8 100%);
+        color: #1a1a2e;
+        padding: 3rem 1.5rem;
+        isolation: isolate;
+    }
+
+    .error-page-shell::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+            rgba(184, 134, 11, 0.12) 1px,
+            transparent 1px
+        );
+        background-size: 22px 22px;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .error-page-card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 48rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+
+    .error-page-copy {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .error-page-status {
+        font-family: var(--font-headline);
+        font-size: clamp(7rem, 20vw, 16rem);
+        line-height: 0.9;
+        font-weight: 900;
+        color: rgba(26, 26, 46, 0.14);
+        user-select: none;
+    }
+
+    .error-page-title {
+        font-family: var(--font-headline);
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        line-height: 1.1;
+        font-weight: 900;
+        color: #1a1a2e;
+    }
+
+    .error-page-description {
+        margin-inline: auto;
+        max-width: 36rem;
+        font-family: var(--font-body);
+        font-size: clamp(1rem, 2.5vw, 1.25rem);
+        line-height: 1.8;
+        color: #5d5c74;
+    }
+
+    .error-page-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding-top: 0.25rem;
+    }
+
+    .error-page-home-button {
+        height: auto;
+        width: 100%;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(120, 86, 0, 0.16);
+        background: linear-gradient(135deg, #8f6500 0%, #c79520 100%);
+        padding: 1.25rem 2.5rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #fffdf8;
+        box-shadow: 0 20px 45px -20px rgba(120, 86, 0, 0.45);
+        transition:
+            transform 160ms ease,
+            box-shadow 160ms ease,
+            filter 160ms ease;
+    }
+
+    .error-page-home-button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 24px 50px -22px rgba(120, 86, 0, 0.5);
+        filter: brightness(1.02);
+    }
+
+    .error-page-home-button:active {
+        transform: translateY(0);
+    }
+
+    .error-page-refresh-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        transition: color 160ms ease;
+    }
+
+    .error-page-refresh-button:hover {
+        color: #b8860b;
+    }
+
+    .error-page-refresh-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        transition: transform 500ms ease;
+    }
+
+    .error-page-refresh-button:hover .error-page-refresh-icon {
+        transform: rotate(180deg);
+    }
+
+    .dark .error-page-shell {
+        background:
+            radial-gradient(
+                circle at top,
+                rgba(247, 189, 72, 0.16),
+                transparent 34%
+            ),
+            linear-gradient(180deg, #16162a 0%, #1b1b2f 48%, #202038 100%);
+        color: #f3f0e8;
+    }
+
+    .dark .error-page-shell::before {
+        background-image: radial-gradient(
+            rgba(247, 189, 72, 0.12) 1px,
+            transparent 1px
+        );
+        opacity: 0.5;
+    }
+
+    .dark .error-page-status {
+        color: rgba(255, 255, 255, 0.14);
+    }
+
+    .dark .error-page-title {
+        color: #f7f1e6;
+    }
+
+    .dark .error-page-description {
+        color: #c6c4df;
+    }
+
+    .dark .error-page-home-button {
+        border-color: rgba(247, 189, 72, 0.22);
+        background: linear-gradient(135deg, #f7bd48 0%, #d89c1e 100%);
+        color: #1a1900;
+        box-shadow: 0 22px 48px -24px rgba(0, 0, 0, 0.55);
+    }
+
+    .dark .error-page-home-button:hover {
+        box-shadow: 0 24px 52px -24px rgba(0, 0, 0, 0.65);
+        filter: brightness(1.03);
+    }
+
+    .dark .error-page-refresh-button {
+        color: #f7f1e6;
+    }
+
+    .dark .error-page-refresh-button:hover {
+        color: #f7bd48;
+    }
+
+    @media (min-width: 640px) {
+        .error-page-actions {
+            flex-direction: row-reverse;
+        }
+
+        .error-page-home-button {
+            width: auto;
+        }
+    }
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -224,4 +423,3 @@
         transition: background-color 0.3s ease;
     }
 }
-

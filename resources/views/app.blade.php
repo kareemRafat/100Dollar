@@ -4,7 +4,10 @@
     $locale = $isAdmin ? 'ar' : app()->getLocale();
     $direction = $isAdmin ? 'rtl' : ($locale === 'ar' ? 'rtl' : 'ltr');
 @endphp
-<html dir="{{ $direction }}" lang="{{ $locale }}" @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html dir="{{ $direction }}" lang="{{ $locale }}" @class([
+    'dark' => ($appearance ?? 'system') == 'dark',
+    'theme-gold' => ! $isAdmin,
+])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
