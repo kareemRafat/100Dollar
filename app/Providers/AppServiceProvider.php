@@ -86,18 +86,14 @@ class AppServiceProvider extends ServiceProvider
         });
 
         VerifyEmail::createUrlUsing(function (object $user): string {
-            $locale = method_exists($user, 'preferredLocale')
-                ? $user->preferredLocale()
-                : app()->getLocale();
-
-            return LaravelLocalization::getLocalizedURL($locale, URL::temporarySignedRoute(
+            return URL::temporarySignedRoute(
                 'verification.verify',
                 now()->addMinutes(config('auth.verification.expire', 60)),
                 [
                     'id' => $user->getKey(),
                     'hash' => sha1($user->getEmailForVerification()),
                 ],
-            ));
+            );
         });
 
         VerifyEmail::toMailUsing(function (object $user, string $url): MailMessage {
