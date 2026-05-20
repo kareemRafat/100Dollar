@@ -21,18 +21,12 @@ class AppLoginResponse implements LoginResponseContract
 
         $user = $request->user();
         $locale = $user?->locale ?: ($request->input('_locale') ?: app()->getLocale());
-        $redirect = $request->input('redirect');
+        $redirect = AuthContext::sanitizeAppRedirectPath($request->string('redirect')->toString());
 
         if ($redirect) {
             return redirect()->to(
                 LaravelLocalization::getLocalizedURL($locale, $redirect)
             );
-        }
-
-        if ($user && $user->role === 'admin') {
-            AuthContext::sanitizeIntended($request);
-
-            return redirect()->intended(route('admin.dashboard'));
         }
 
         $fallbackRoute = $user?->hasVerifiedEmail()

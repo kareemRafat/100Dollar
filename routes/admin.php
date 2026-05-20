@@ -38,6 +38,7 @@ Route::middleware('guest:admin')->group(function () {
             ->name('admin.two-factor.login');
 
         Route::post('two-factor-challenge', [TwoFactorController::class, 'store'])
+            ->middleware('throttle:admin-two-factor')
             ->name('admin.two-factor.store');
     }
 });

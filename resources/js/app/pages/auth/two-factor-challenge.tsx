@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { useMemo, useState  } from 'react';
+import { useEffect, useMemo, useState  } from 'react';
 import type {SubmitEvent} from 'react';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
@@ -16,10 +16,15 @@ import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { cn } from '@/lib/utils';
 
 export default function TwoFactorChallenge() {
-    const { locale } = usePage().props;
+    const { locale, flash } = usePage().props as { locale: string; flash?: { message?: string; retry_after?: number | null } };
     const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
+    const [retryAfter, setRetryAfter] = useState<number>(Number(flash?.retry_after ?? 0));
     const isRtl = locale === 'ar';
+    const isBlocked = retryAfter > 0;
+    const waitButtonText = locale === 'ar'
+        ? `حاول مرة أخرى بعد ${retryAfter} ثانية`
+        : `Try again in ${retryAfter} seconds`;
 
     const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
         code: '',
@@ -45,9 +50,33 @@ export default function TwoFactorChallenge() {
         };
     }, [showRecoveryInput, __]);
 
+    useEffect(() => {
+        setRetryAfter(Number(flash?.retry_after ?? 0));
+    }, [flash?.retry_after]);
+
+    useEffect(() => {
+        if (retryAfter <= 0) {
+            return;
+        }
+
+        const timer = window.setInterval(() => {
+            setRetryAfter((current) => (current > 0 ? current - 1 : 0));
+        }, 1000);
+
+        return () => window.clearInterval(timer);
+    }, [retryAfter]);
+
     const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         post('/two-factor-challenge', {
+            onStart: () => {
+                if (!showRecoveryInput) {
+                    reset('code');
+                } else {
+                    reset('recovery_code');
+                }
+            },
             onFinish: () => {
                 if (!showRecoveryInput) {
                     reset('code');
@@ -72,6 +101,12 @@ export default function TwoFactorChallenge() {
                     </p>
                 </div>
 
+                {flash?.message ? (
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200 font-semibold">
+                        {flash.message}
+                    </div>
+                ) : null}
+
                 <form onSubmit={submit} className="space-y-4">
                     {showRecoveryInput ? (
                         <div className="space-y-2">
@@ -83,6 +118,7 @@ export default function TwoFactorChallenge() {
                                 onChange={(e) => setData('recovery_code', e.target.value)}
                                 autoFocus={showRecoveryInput}
                                 required
+                                disabled={processing || isBlocked}
                                 className={cn(isRtl ? "text-right" : "text-left")}
                             />
                             <InputError
@@ -96,7 +132,7 @@ export default function TwoFactorChallenge() {
                                 maxLength={OTP_MAX_LENGTH}
                                 value={data.code}
                                 onChange={(val) => setData('code', val)}
-                                disabled={processing}
+                                disabled={processing || isBlocked}
                                 pattern={REGEXP_ONLY_DIGITS}
                             >
                                 <InputOTPGroup>
@@ -115,13 +151,16 @@ export default function TwoFactorChallenge() {
                         </div>
                     )}
 
-                    <Button type="submit" className="w-full" disabled={processing}>
-                        {__('messages.two_factor_challenge.continue_button')}
+                    <Button type="submit" className="w-full" disabled={processing || isBlocked}>
+                        {isBlocked
+                            ? waitButtonText
+                            : __('messages.two_factor_challenge.continue_button')}
                     </Button>
 
                     <button
                         type="button"
-                        className="w-full text-sm text-primary underline underline-offset-4"
+                        className="w-full text-sm text-primary underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-60"
+                        disabled={processing || isBlocked}
                         onClick={() => {
                             setShowRecoveryInput((current) => ! current);
                             clearErrors();

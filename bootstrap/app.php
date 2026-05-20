@@ -13,6 +13,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Inertia\ExceptionResponse;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRedirectFilter;
@@ -82,6 +83,22 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($response->getStatusCode() === 419) {
                 return back()->with([
                     'message' => 'The page expired, please try again.',
+                ]);
+            }
+
+            if ($response->getStatusCode() === 429) {
+                if (! $request->is('*/two-factor-challenge') && ! $request->is('admin/two-factor-challenge')) {
+                    return $response;
+                }
+
+                $message = $request->is('admin/*')
+                    ? __('messages.auth.throttle_2fa_admin')
+                    : __('messages.auth.throttle_2fa');
+
+                $seconds = max(1, (int) $response->headers->get('Retry-After', 60));
+
+                return back()->with([
+                    'message' => Str::replace(':seconds', (string) $seconds, $message),
                 ]);
             }
 

@@ -571,12 +571,20 @@ return [
         'confirm_button' => 'Confirm',
     ],
 
+    'auth' => [
+        'throttle_2fa' => 'Too many attempts. Please try again in :time seconds.',
+        'throttle_2fa_admin' => 'Too many attempts. Please try again in :time seconds.',
+        'invalid_2fa_code' => 'The provided two factor authentication code was invalid.',
+        'invalid_2fa_recovery_code' => 'The provided two factor recovery code was invalid.',
+    ],
+
     'two_factor_challenge' => [
         'title' => 'Two-factor Authentication',
         'description' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
         'recovery_code_title' => 'Recovery Code',
         'recovery_code_description' => 'Please confirm access to your account by entering one of your emergency recovery codes.',
         'continue_button' => 'Continue',
+        'wait_button' => 'Try again in :seconds seconds',
         'toggle_auth_code' => 'Use an authentication code instead',
         'toggle_recovery_code' => 'Use a recovery code instead',
         'recovery_code_placeholder' => 'Enter recovery code',

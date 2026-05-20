@@ -4,7 +4,9 @@ namespace App\Support\Auth;
 
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Session;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -108,7 +110,7 @@ class AuthContext
     /**
      * Perform a locale-aware redirect to the intended URL or a fallback.
      */
-    public static function redirectIntended(Request $request, string $fallbackRoute, array $params = []): \Illuminate\Http\RedirectResponse
+    public static function redirectIntended(Request $request, string $fallbackRoute, array $params = []): RedirectResponse
     {
         self::sanitizeIntended($request);
 
@@ -127,6 +129,51 @@ class AuthContext
         return redirect()->to(
             LaravelLocalization::getLocalizedURL($locale, route($fallbackRoute, $params))
         );
+    }
+
+    /**
+     * Sanitize an explicit app redirect path so it stays inside the localized app.
+     */
+    public static function sanitizeAppRedirectPath(?string $redirect): ?string
+    {
+        if ($redirect === null || $redirect === '') {
+            return null;
+        }
+
+        $parts = parse_url($redirect);
+
+        if ($parts === false || Arr::hasAny($parts, ['scheme', 'host', 'port', 'user', 'pass'])) {
+            return null;
+        }
+
+        $path = $parts['path'] ?? null;
+
+        if (! is_string($path) || ! str_starts_with($path, '/')) {
+            return null;
+        }
+
+        $segments = array_values(array_filter(explode('/', trim($path, '/')), fn (string $segment): bool => $segment !== ''));
+        $supportedLocales = array_keys(LaravelLocalization::getSupportedLocales());
+
+        if (in_array($segments[0] ?? null, $supportedLocales, true)) {
+            array_shift($segments);
+        }
+
+        if (($segments[0] ?? null) === 'admin') {
+            return null;
+        }
+
+        $sanitized = $path;
+
+        if (isset($parts['query'])) {
+            $sanitized .= '?'.$parts['query'];
+        }
+
+        if (isset($parts['fragment'])) {
+            $sanitized .= '#'.$parts['fragment'];
+        }
+
+        return $sanitized;
     }
 
     /**

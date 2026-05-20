@@ -45,7 +45,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function localizedUrl(string $path): string
+function localizedUrl(string $path, ?string $locale = null): string
 {
-    return LaravelLocalization::getLocalizedURL(app()->getLocale(), $path);
+    return LaravelLocalization::getLocalizedURL($locale ?? app()->getLocale(), $path);
 }

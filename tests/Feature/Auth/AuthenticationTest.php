@@ -17,7 +17,9 @@ test('admin login screen can be rendered', function () {
 });
 
 test('users can authenticate using the app login screen', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create([
+        'locale' => app()->getLocale(),
+    ]);
 
     $response = $this->post(route('login.store'), [
         'email' => $user->email,
@@ -27,7 +29,55 @@ test('users can authenticate using the app login screen', function () {
 
     $this->assertAuthenticatedAs($user, 'web');
     $this->assertGuest('admin');
-    $response->assertRedirect(localizedUrl(route('app.home', absolute: false)));
+    $response->assertRedirect(localizedUrl(route('app.home', absolute: false), app()->getLocale()));
+});
+
+test('users can authenticate to a safe in-app redirect path', function () {
+    $user = User::factory()->create([
+        'locale' => 'ar',
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+        '_locale' => 'ar',
+        'redirect' => '/ideas?filter=recent',
+    ]);
+
+    $this->assertAuthenticatedAs($user, 'web');
+    $response->assertRedirect(localizedUrl('/ideas?filter=recent', 'ar'));
+});
+
+test('users cannot authenticate to an unsafe redirect path', function () {
+    $user = User::factory()->create([
+        'locale' => app()->getLocale(),
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+        '_locale' => app()->getLocale(),
+        'redirect' => 'https://evil.example/phish',
+    ]);
+
+    $this->assertAuthenticatedAs($user, 'web');
+    $response->assertRedirect(localizedUrl(route('app.home', absolute: false), app()->getLocale()));
+});
+
+test('users cannot authenticate to an admin redirect path from the app login screen', function () {
+    $user = User::factory()->create([
+        'locale' => app()->getLocale(),
+    ]);
+
+    $response = $this->post(route('login.store'), [
+        'email' => $user->email,
+        'password' => 'password',
+        '_locale' => app()->getLocale(),
+        'redirect' => '/admin',
+    ]);
+
+    $this->assertAuthenticatedAs($user, 'web');
+    $response->assertRedirect(localizedUrl(route('app.home', absolute: false), app()->getLocale()));
 });
 
 test('admins cannot authenticate through the app login screen', function () {
@@ -53,7 +103,7 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $user = User::factory()->create();
 
     $user->forceFill([
-        'two_factor_secret' => encrypt('test-secret'),
+        'two_factor_secret' => encrypt('JBSWY3DPEHPK3PXP'),
         'two_factor_recovery_codes' => encrypt(json_encode(['code1', 'code2'])),
         'two_factor_confirmed_at' => now(),
     ])->save();

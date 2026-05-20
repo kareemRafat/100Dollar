@@ -44,7 +44,7 @@ class TwoFactorController extends Controller
             $admin->replaceRecoveryCode($recoveryCode);
         } elseif (! $this->hasValidCode($request, $admin)) {
             throw ValidationException::withMessages([
-                'code' => __('The provided two factor authentication code was invalid.'),
+                'code' => 'رمز المصادقة الثنائية الذي أدخلته غير صحيح.',
             ]);
         }
 

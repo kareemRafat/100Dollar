@@ -55,7 +55,8 @@ Route::group([
             Route::get('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'create'])
                 ->name('two-factor.login');
 
-            Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store']);
+            Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store'])
+                ->middleware('throttle:two-factor');
         }
     });
 
