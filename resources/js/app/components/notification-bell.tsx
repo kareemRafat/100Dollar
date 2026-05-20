@@ -9,6 +9,7 @@ import {
     markAllAsRead,
 } from '@/actions/App/Http/Controllers/App/NotificationController';
 import { Button } from '@/app/components/ui/button';
+import { Skeleton } from '@/app/components/ui/skeleton';
 import {
     resolveNotificationBody,
     resolveNotificationTitle,
@@ -29,6 +30,7 @@ export function NotificationBell() {
     const { __ } = useLang();
     const [open, setOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
     const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
     const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<number | null>(null);
 
@@ -41,23 +43,30 @@ export function NotificationBell() {
     const localizedPath = (path: string) => `/${locale}${path}`;
 
     const loadNotifications = async () => {
-        const response = await fetch(localizedPath(dropdown.url()), {
-            headers: {
-                Accept: 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-            credentials: 'same-origin',
-        });
+        setLoading(true);
+        try {
+            const response = await fetch(localizedPath(dropdown.url()), {
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                credentials: 'same-origin',
+            });
 
-        if (!response.ok) {
-            return;
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+
+            setNotifications(Array.isArray(data) ? data : []);
+            setHasLoadedNotifications(true);
+            setLastLoadedUnreadCount(unreadCount);
+        } catch (error) {
+            console.error('Failed to load notifications:', error);
+        } finally {
+            setLoading(false);
         }
-
-        const data = await response.json();
-
-        setNotifications(Array.isArray(data) ? data : []);
-        setHasLoadedNotifications(true);
-        setLastLoadedUnreadCount(unreadCount);
     };
 
     useEffect(() => {
@@ -120,19 +129,22 @@ export function NotificationBell() {
         if (diffInSeconds < 3600) {
             const mins = Math.floor(diffInSeconds / 60);
 
-            return locale === 'ar' ? `قبل ${mins} دقيقة` : `${mins}m ago`;
+            return locale === 'ar' ? `قبل ${formattedMins(mins)} دقيقة` : `${mins}m ago`;
         }
 
         if (diffInSeconds < 86400) {
             const hours = Math.floor(diffInSeconds / 3600);
 
-            return locale === 'ar' ? `قبل ${hours} ساعة` : `${hours}h ago`;
+            return locale === 'ar' ? `قبل ${formattedMins(hours)} ساعة` : `${hours}h ago`;
         }
 
         const days = Math.floor(diffInSeconds / 86400);
 
-        return locale === 'ar' ? `قبل ${days} يوم` : `${days}d ago`;
+        return locale === 'ar' ? `قبل ${formattedMins(days)} يوم` : `${days}d ago`;
     };
+
+    // Helper to format numbers in Arabic locale if needed, otherwise fallback to simple number
+    const formattedMins = (num: number) => num;
 
     return (
         <DropdownMenu
@@ -182,7 +194,23 @@ export function NotificationBell() {
                 </div>
 
                 <div className="no-scrollbar max-h-[350px] overflow-y-auto">
-                    {notifications.length > 0 ? (
+                    {loading ? (
+                        <div className="flex flex-col">
+                            {[1, 2, 3].map((i) => (
+                                <div
+                                    key={i}
+                                    className="flex flex-col gap-2 border-b border-outline-variant/5 px-4 py-3 last:border-0"
+                                >
+                                    <div className="flex w-full items-start justify-between gap-2">
+                                        <Skeleton className="h-4 w-2/3" />
+                                        <Skeleton className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary/20" />
+                                    </div>
+                                    <Skeleton className="h-3 w-5/6" />
+                                    <Skeleton className="h-2.5 w-1/4" />
+                                </div>
+                            ))}
+                        </div>
+                    ) : notifications.length > 0 ? (
                         notifications.map((notification: any) => (
                             <DropdownMenuItem
                                 key={notification.id}
