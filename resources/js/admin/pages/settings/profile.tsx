@@ -1,4 +1,5 @@
 import { useForm, Head, usePage } from '@inertiajs/react';
+import { Loader2 } from 'lucide-react';
 import ProfileController from '@/actions/App/Http/Controllers/Admin/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import Heading from '@/components/heading';
@@ -6,7 +7,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { edit } from '@/routes/admin/settings/profile';
 import {
     Select,
     SelectContent,
@@ -14,7 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Loader2 } from 'lucide-react';
+import { edit } from '@/routes/admin/settings/profile';
 
 interface Country {
     id: number;

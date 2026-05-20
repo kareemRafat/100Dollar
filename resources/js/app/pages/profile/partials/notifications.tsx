@@ -4,6 +4,10 @@ import { Bell, Clock, CheckCheck } from 'lucide-react';
 import { memo } from 'react';
 import { markAsRead, markAllAsRead } from '@/actions/App/Http/Controllers/App/NotificationController';
 import { toast } from '@/app/components/ui/toast';
+import {
+    resolveNotificationBody,
+    resolveNotificationTitle,
+} from '@/app/lib/notifications';
 import { Pagination } from '@/components/ui/pagination';
 import { show } from '@/routes/app/ideas';
 
@@ -29,6 +33,7 @@ function Notifications({ notifications }: Props) {
     const { __ } = useLang();
     const { props: pageProps } = usePage();
     const locale = pageProps.locale as string;
+    const localizedPath = (path: string) => `/${locale}${path}`;
 
     const items = Array.isArray(notifications) ? notifications : (notifications?.data || []);
     const hasUnread = items.some(n => !n.is_read);
@@ -55,16 +60,17 @@ function Notifications({ notifications }: Props) {
     };
 
     const handleNotificationClick = (notification: Notification) => {
-        const ideaId = notification.data?.idea_id;
-        const isIdeaNotification = ideaId && notification.type !== 'new_follower';
+        const targetUrl = notification.data?.url
+            ?? (notification.data?.idea_id
+                ? localizedPath(show(notification.data.idea_id).url)
+                : null);
 
-        if (isIdeaNotification) {
-            // Mark as read and then redirect to avoid race conditions
+        if (targetUrl) {
             router.patch(markAsRead.url(), { id: notification.id, is_read: true }, {
                 preserveScroll: true,
                 onFinish: () => {
-                    router.visit(show(ideaId).url);
-                }
+                    router.visit(targetUrl);
+                },
             });
         } else if (!notification.is_read) {
             handleMarkAsRead(notification.id, true);
@@ -138,7 +144,7 @@ function Notifications({ notifications }: Props) {
                                 <h3 className={`text-sm font-bold ${
                                     notification.is_read ? 'text-secondary dark:text-white/80' : 'text-secondary dark:text-white'
                                 }`}>
-                                    {notification.title}
+                                    {resolveNotificationTitle(notification, __)}
                                 </h3>
                                 <div className="flex items-center me-5 gap-1 text-[10px] text-on-surface-variant/40">
                                     <Clock className="size-3" />
@@ -146,7 +152,7 @@ function Notifications({ notifications }: Props) {
                                 </div>
                             </div>
                             <p className="text-xs text-on-surface-variant/60">
-                                {notification.body}
+                                {resolveNotificationBody(notification, __)}
                             </p>
                         </div>
 

@@ -779,6 +779,8 @@ return [
 
         'new_comment_title' => 'تعليق جديد',
         'new_comment_body' => 'قام :user بالتعليق على فكرة ":title"',
+        'new_follower_title' => 'متابع جديد',
+        'new_follower_body' => 'بدأ :user بمتابعتك',
 
         'whoops' => 'عذراً!',
         'hello' => 'مرحباً!',

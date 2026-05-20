@@ -94,6 +94,7 @@ Route::middleware(['auth:admin', 'role:admin'])->group(function () {
 
     // Notifications
     Route::get('notifications', [NotificationController::class, 'index'])->name('admin.notifications.index');
+    Route::get('notifications/dropdown', [NotificationController::class, 'dropdown'])->name('admin.notifications.dropdown');
     Route::patch('notifications/read', [NotificationController::class, 'markAsRead'])->name('admin.notifications.read');
     Route::patch('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('admin.notifications.read-all');
 

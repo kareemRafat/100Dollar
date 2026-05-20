@@ -1,12 +1,18 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage, router, usePoll } from '@inertiajs/react';
 import { Bell, Inbox } from 'lucide-react';
+import { useEffect } from 'react';
 import { useState } from 'react';
 import {
+    dropdown,
     markAsRead,
     markAllAsRead,
 } from '@/actions/App/Http/Controllers/App/NotificationController';
 import { Button } from '@/app/components/ui/button';
+import {
+    resolveNotificationBody,
+    resolveNotificationTitle,
+} from '@/app/lib/notifications';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -16,12 +22,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { show } from '@/routes/app/ideas';
-import { notifications as notificationsIndex } from '@/routes/app/profile';
+import { notifications as notificationsPage } from '@/routes/app/profile';
 
 export function NotificationBell() {
     const { auth, locale } = usePage().props as any;
     const { __ } = useLang();
     const [open, setOpen] = useState(false);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
+    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<number | null>(null);
 
     // Poll for new notifications every 60 seconds
     usePoll(60000, {
@@ -29,7 +38,33 @@ export function NotificationBell() {
     });
 
     const unreadCount = auth.unread_notifications_count || 0;
-    const notifications = auth.notifications_dropdown || [];
+    const localizedPath = (path: string) => `/${locale}${path}`;
+
+    const loadNotifications = async () => {
+        const response = await fetch(localizedPath(dropdown.url()), {
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        setNotifications(Array.isArray(data) ? data : []);
+        setHasLoadedNotifications(true);
+        setLastLoadedUnreadCount(unreadCount);
+    };
+
+    useEffect(() => {
+        if (open && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+            void loadNotifications();
+        }
+    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
 
     const handleMarkAsRead = (id: number) => {
         router.patch(
@@ -37,6 +72,15 @@ export function NotificationBell() {
             { id, is_read: true },
             {
                 preserveScroll: true,
+                onSuccess: () => {
+                    setNotifications((currentNotifications) =>
+                        currentNotifications.map((notification) =>
+                            notification.id === id
+                                ? { ...notification, is_read: true }
+                                : notification,
+                        ),
+                    );
+                },
             },
         );
     };
@@ -49,6 +93,14 @@ export function NotificationBell() {
             {},
             {
                 preserveScroll: true,
+                onSuccess: () => {
+                    setNotifications((currentNotifications) =>
+                        currentNotifications.map((notification) => ({
+                            ...notification,
+                            is_read: true,
+                        })),
+                    );
+                },
             },
         );
     };
@@ -83,7 +135,16 @@ export function NotificationBell() {
     };
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu
+            open={open}
+            onOpenChange={(nextOpen) => {
+                setOpen(nextOpen);
+
+                if (nextOpen && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+                    void loadNotifications();
+                }
+            }}
+        >
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
@@ -135,11 +196,13 @@ export function NotificationBell() {
                                         handleMarkAsRead(notification.id);
                                     }
 
-                                    // Handle redirection based on data
-                                    if (notification.data?.idea_id) {
-                                        router.visit(
-                                            show(notification.data.idea_id).url,
-                                        );
+                                    const targetUrl = notification.data?.url
+                                        ?? (notification.data?.idea_id
+                                            ? localizedPath(show(notification.data.idea_id).url)
+                                            : null);
+
+                                    if (targetUrl) {
+                                        router.visit(targetUrl);
                                     }
                                 }}
                             >
@@ -152,14 +215,14 @@ export function NotificationBell() {
                                                 : 'text-on-surface dark:text-white',
                                         )}
                                     >
-                                        {notification.title}
+                                        {resolveNotificationTitle(notification, __)}
                                     </span>
                                     {!notification.is_read && (
                                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
                                     )}
                                 </div>
                                 <p className="line-clamp-2 text-[11px] text-on-surface-variant">
-                                    {notification.body}
+                                    {resolveNotificationBody(notification, __)}
                                 </p>
                                 <span className="mt-1 text-[9px] text-on-surface-variant/70">
                                     {formatTime(notification.created_at)}
@@ -180,7 +243,7 @@ export function NotificationBell() {
 
                 <DropdownMenuSeparator className="m-0 bg-outline-variant/10 dark:bg-white/5" />
                 <Link
-                    href={notificationsIndex().url}
+                    href={notificationsPage().url}
                     className="flex w-full items-center justify-center py-2.5 text-xs font-bold text-primary hover:bg-surface-container-high dark:hover:bg-white/5"
                     onClick={() => setOpen(false)}
                 >

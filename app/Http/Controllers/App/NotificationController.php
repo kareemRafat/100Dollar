@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\UserResource;
 use App\Models\Notification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,6 +33,20 @@ class NotificationController extends Controller
             'twoFactorEnabled' => $user->hasEnabledTwoFactorAuthentication(),
             'requiresConfirmation' => Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm'),
         ]);
+    }
+
+    /**
+     * Return the latest notifications for the bell dropdown.
+     */
+    public function dropdown(Request $request): JsonResponse
+    {
+        return response()->json(
+            $request->user()
+                ->customNotifications()
+                ->latest()
+                ->limit(10)
+                ->get()
+        );
     }
 
     /**

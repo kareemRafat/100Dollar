@@ -1,6 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import { Inbox, CheckCheck, Clock, Eye } from 'lucide-react';
 import React from 'react';
+import { toast } from 'sonner';
 import {
     markAsRead,
     markAllAsRead,
@@ -8,7 +9,6 @@ import {
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pagination } from '@/components/ui/pagination';
-import { toast } from 'sonner';
 import {
     Table,
     TableBody,
@@ -65,7 +65,7 @@ export default function NotificationsPage({
     };
 
     const handleNotificationClick = (notification: Notification) => {
-        const url = admin.ideas.show(notification.data?.idea_id).url;
+        const url = notification.data?.url ?? admin.ideas.show(notification.data?.idea_id).url;
         const returnUrl = admin.notifications.index().url;
         const targetUrl = url ? `${url}?returnTo=${encodeURIComponent(returnUrl)}` : null;
 
@@ -76,7 +76,9 @@ export default function NotificationsPage({
                 {
                     preserveScroll: true,
                     onSuccess: () => {
-                        if (targetUrl) router.visit(targetUrl);
+                        if (targetUrl) {
+router.visit(targetUrl);
+}
                     },
                 },
             );

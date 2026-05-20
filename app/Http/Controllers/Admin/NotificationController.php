@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Notification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -24,6 +25,20 @@ class NotificationController extends Controller
         return Inertia::render('admin/pages/notifications/index', [
             'notifications' => $notifications,
         ]);
+    }
+
+    /**
+     * Return the latest notifications for the bell dropdown.
+     */
+    public function dropdown(Request $request): JsonResponse
+    {
+        return response()->json(
+            $request->user()
+                ->customNotifications()
+                ->latest()
+                ->limit(10)
+                ->get()
+        );
     }
 
     /**

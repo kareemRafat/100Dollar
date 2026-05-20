@@ -37,6 +37,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 
     // Notifications
     Route::get('/profile/notifications', [NotificationController::class, 'index'])->name('app.profile.notifications');
+    Route::get('/profile/notifications/dropdown', [NotificationController::class, 'dropdown'])->name('app.profile.notifications.dropdown');
     Route::patch('/profile/notifications/read', [NotificationController::class, 'markAsRead'])->name('app.profile.notifications.read');
     Route::patch('/profile/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('app.profile.notifications.read-all');
 

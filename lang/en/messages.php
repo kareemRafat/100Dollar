@@ -781,6 +781,8 @@ return [
 
         'new_comment_title' => 'New Comment',
         'new_comment_body' => ':user commented on your idea ":title"',
+        'new_follower_title' => 'New Follower',
+        'new_follower_body' => ':user started following you',
 
         'whoops' => 'Whoops!',
         'hello' => 'Hello!',

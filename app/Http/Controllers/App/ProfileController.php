@@ -10,6 +10,7 @@ use App\Http\Resources\App\UserResource;
 use App\Models\User;
 use App\Models\UserFollow;
 use App\Models\Vote;
+use App\Notifications\NewFollowerNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -68,10 +69,12 @@ class ProfileController extends Controller
             $props['votedIdeas'] = $request->inertia()
                 ? $query->paginate(10)->through(function ($vote) {
                     $vote->idea->user?->setAppends([]);
+
                     return $vote->idea->setAppends(['date']);
                 })
                 : Inertia::defer(fn () => $query->paginate(10)->through(function ($vote) {
                     $vote->idea->user?->setAppends([]);
+
                     return $vote->idea->setAppends(['date']);
                 }));
         } elseif ($activeSection === 'followed-ideas') {
@@ -83,10 +86,12 @@ class ProfileController extends Controller
             $props['followedIdeas'] = $request->inertia()
                 ? $query->paginate(10)->through(function ($follow) {
                     $follow->idea->user?->setAppends([]);
+
                     return $follow->idea->setAppends(['date']);
                 })
                 : Inertia::defer(fn () => $query->paginate(10)->through(function ($follow) {
                     $follow->idea->user?->setAppends([]);
+
                     return $follow->idea->setAppends(['date']);
                 }));
         } elseif ($activeSection === 'followed-people') {
@@ -125,6 +130,8 @@ class ProfileController extends Controller
                 'follower_id' => $follower->id,
                 'following_id' => $user->id,
             ]);
+
+            $user->notify((new NewFollowerNotification($follower))->locale($user->preferredLocale()));
         }
 
         return back();

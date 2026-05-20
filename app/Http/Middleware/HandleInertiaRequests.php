@@ -59,7 +59,6 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user ? $user->load('media') : null,
                 'unread_notifications_count' => $user ? $user->customNotifications()->where('is_read', false)->count() : 0,
-                'notifications_dropdown' => $user ? $user->customNotifications()->latest()->limit(10)->get() : [],
             ],
             'flash' => [
                 'message' => $request->session()->get('message'),

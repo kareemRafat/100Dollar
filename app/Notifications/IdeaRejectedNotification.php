@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\Idea;
 use App\Notifications\Channels\CustomDbChannel;
+use App\Notifications\Concerns\BuildsNotificationUrls;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notification;
 
 class IdeaRejectedNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use BuildsNotificationUrls, Queueable;
 
     public function __construct(
         public Idea $idea,
@@ -44,12 +45,18 @@ class IdeaRejectedNotification extends Notification implements ShouldQueue
 
     public function toCustomDb(object $notifiable): array
     {
+        $translationParams = ['title' => $this->idea->title];
+
         return [
             'title' => __('messages.notifications.idea_rejected_title'),
-            'body' => __('messages.notifications.idea_rejected_body', ['title' => $this->idea->title]),
+            'body' => __('messages.notifications.idea_rejected_body', $translationParams),
             'data' => [
                 'idea_id' => $this->idea->id,
                 'reason' => $this->reason,
+                'url' => $this->localizedUrl($notifiable, 'app.ideas.show', [$this->idea]),
+                'title_key' => 'messages.notifications.idea_rejected_title',
+                'body_key' => 'messages.notifications.idea_rejected_body',
+                'translation_params' => $translationParams,
             ],
         ];
     }

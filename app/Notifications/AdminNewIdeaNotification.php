@@ -21,11 +21,15 @@ class AdminNewIdeaNotification extends Notification implements ShouldQueue
 
     public function toCustomDb(object $notifiable): array
     {
+        $translationParams = ['title' => $this->idea->title];
+
         return [
             'title' => 'فكرة جديدة قيد الانتظار',
             'body' => 'تم تقديم فكرة جديدة بعنوان: '.$this->idea->title,
             'data' => [
                 'idea_id' => $this->idea->id,
+                'url' => route('admin.ideas.show', $this->idea, false),
+                'translation_params' => $translationParams,
             ],
         ];
     }

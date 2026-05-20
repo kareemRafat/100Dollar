@@ -1,7 +1,12 @@
 import { Link, usePage, router, usePoll } from '@inertiajs/react';
 import { Bell, Inbox } from 'lucide-react';
+import { useEffect } from 'react';
 import { useState } from 'react';
-import { markAsRead, markAllAsRead } from '@/actions/App/Http/Controllers/Admin/NotificationController';
+import {
+    dropdown,
+    markAsRead,
+    markAllAsRead,
+} from '@/actions/App/Http/Controllers/Admin/NotificationController';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
@@ -16,6 +21,9 @@ import admin from '@/routes/admin';
 export function NotificationBell() {
     const { auth } = usePage().props as any;
     const [open, setOpen] = useState(false);
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
+    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<number | null>(null);
 
     // Poll for new notifications every 60 seconds
     usePoll(60000, {
@@ -23,11 +31,45 @@ export function NotificationBell() {
     });
 
     const unreadCount = auth.unread_notifications_count || 0;
-    const notifications = auth.notifications_dropdown || [];
+
+    const loadNotifications = async () => {
+        const response = await fetch(dropdown.url(), {
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        setNotifications(Array.isArray(data) ? data : []);
+        setHasLoadedNotifications(true);
+        setLastLoadedUnreadCount(unreadCount);
+    };
+
+    useEffect(() => {
+        if (open && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+            void loadNotifications();
+        }
+    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
 
     const handleMarkAsRead = (id: number) => {
         router.patch(markAsRead.url(), { id, is_read: true }, {
             preserveScroll: true,
+            onSuccess: () => {
+                setNotifications((currentNotifications) =>
+                    currentNotifications.map((notification) =>
+                        notification.id === id
+                            ? { ...notification, is_read: true }
+                            : notification,
+                    ),
+                );
+            },
         });
     };
 
@@ -36,6 +78,14 @@ export function NotificationBell() {
         e.stopPropagation();
         router.patch(markAllAsRead.url(), {}, {
             preserveScroll: true,
+            onSuccess: () => {
+                setNotifications((currentNotifications) =>
+                    currentNotifications.map((notification) => ({
+                        ...notification,
+                        is_read: true,
+                    })),
+                );
+            },
         });
     };
 
@@ -45,8 +95,8 @@ export function NotificationBell() {
         const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
         if (diffInSeconds < 60) {
-return 'الآن';
-}
+            return 'الآن';
+        }
 
         if (diffInSeconds < 3600) {
             const mins = Math.floor(diffInSeconds / 60);
@@ -66,7 +116,16 @@ return 'الآن';
     };
 
     return (
-        <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenu
+            open={open}
+            onOpenChange={(nextOpen) => {
+                setOpen(nextOpen);
+
+                if (nextOpen && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+                    void loadNotifications();
+                }
+            }}
+        >
             <DropdownMenuTrigger asChild>
                 <Button
                     variant="ghost"
@@ -88,7 +147,6 @@ return 'الآن';
             <DropdownMenuContent
                 align="end"
                 className="w-80 rounded-xl p-0 shadow-xl border-neutral-200 dark:border-neutral-800 dark:bg-neutral-950"
-                dir="rtl"
             >
                 <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3 dark:border-neutral-800">
                     <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
@@ -115,8 +173,8 @@ return 'الآن';
                                 )}
                                 onSelect={() => {
                                     if (!notification.is_read) {
-handleMarkAsRead(notification.id);
-}
+                                        handleMarkAsRead(notification.id);
+                                    }
                                     
                                     if (notification.data?.idea_id) {
                                         router.visit(admin.ideas.show(notification.data.idea_id).url);
