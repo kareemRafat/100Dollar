@@ -134,13 +134,6 @@ export function TopNavBar({ activeRoute }: Props) {
                                             }
                                         />
                                     </div>
-
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-xs font-bold text-on-surface-variant dark:text-gray-400">
-                                            {__('messages.ui.language')}
-                                        </span>
-                                        <LanguageSwitcher variant="standalone" />
-                                    </div>
                                 </div>
 
                                 <div className="mt-8 flex flex-col gap-3">
@@ -443,8 +436,6 @@ export function TopNavBar({ activeRoute }: Props) {
                                                 }
                                             />
                                         </DropdownMenuItem>
-
-                                        <LanguageSwitcher />
                                     </DropdownMenuGroup>
 
                                     <DropdownMenuSeparator className="bg-outline-variant/10" />

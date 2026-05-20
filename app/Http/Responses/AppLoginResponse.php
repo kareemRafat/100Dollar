@@ -19,9 +19,8 @@ class AppLoginResponse implements LoginResponseContract
             return new JsonResponse('', 204);
         }
 
-        AuthContext::sanitizeIntended($request);
-
-        $locale = $request->input('_locale') ?: app()->getLocale();
+        $user = $request->user();
+        $locale = $user?->locale ?: ($request->input('_locale') ?: app()->getLocale());
         $redirect = $request->input('redirect');
 
         if ($redirect) {
@@ -30,18 +29,16 @@ class AppLoginResponse implements LoginResponseContract
             );
         }
 
-        $user = $request->user();
-
         if ($user && $user->role === 'admin') {
+            AuthContext::sanitizeIntended($request);
+
             return redirect()->intended(route('admin.dashboard'));
         }
 
-        $route = $user?->hasVerifiedEmail()
-            ? route('app.home')
-            : route('verification.notice');
+        $fallbackRoute = $user?->hasVerifiedEmail()
+            ? 'app.home'
+            : 'verification.notice';
 
-        return redirect()->intended(
-            LaravelLocalization::getLocalizedURL($locale, $route)
-        );
+        return AuthContext::redirectIntended($request, $fallbackRoute);
     }
 }

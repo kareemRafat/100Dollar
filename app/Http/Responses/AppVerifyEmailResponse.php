@@ -19,13 +19,6 @@ class AppVerifyEmailResponse implements VerifyEmailResponseContract
             return new JsonResponse('', 204);
         }
 
-        AuthContext::sanitizeIntended($request);
-
-        return redirect()->intended(
-            LaravelLocalization::getLocalizedURL(
-                app()->getLocale(),
-                route('app.home').'?verified=1',
-            )
-        );
+        return AuthContext::redirectIntended($request, 'app.home', ['verified' => 1]);
     }
 }

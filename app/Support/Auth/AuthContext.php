@@ -106,6 +106,30 @@ class AuthContext
     }
 
     /**
+     * Perform a locale-aware redirect to the intended URL or a fallback.
+     */
+    public static function redirectIntended(Request $request, string $fallbackRoute, array $params = []): \Illuminate\Http\RedirectResponse
+    {
+        self::sanitizeIntended($request);
+
+        $user = $request->user();
+        $locale = $user?->locale ?: ($request->input('_locale') ?: app()->getLocale());
+
+        // Pull the intended URL from session
+        $intended = Session::pull('url.intended');
+
+        if ($intended) {
+            return redirect()->to(
+                LaravelLocalization::getLocalizedURL($locale, $intended)
+            );
+        }
+
+        return redirect()->to(
+            LaravelLocalization::getLocalizedURL($locale, route($fallbackRoute, $params))
+        );
+    }
+
+    /**
      * Build the login URL for the current request context.
      */
     public static function loginUrl(Request $request): string

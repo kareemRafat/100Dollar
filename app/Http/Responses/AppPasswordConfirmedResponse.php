@@ -18,13 +18,6 @@ class AppPasswordConfirmedResponse implements PasswordConfirmedResponseContract
             return new JsonResponse('', 201);
         }
 
-        AuthContext::sanitizeIntended($request);
-
-        $fallback = LaravelLocalization::getLocalizedURL(
-            app()->getLocale(),
-            route('app.home'),
-        );
-
-        return redirect()->intended($fallback);
+        return AuthContext::redirectIntended($request, 'app.home');
     }
 }

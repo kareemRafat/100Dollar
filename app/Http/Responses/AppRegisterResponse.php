@@ -19,15 +19,11 @@ class AppRegisterResponse implements RegisterResponseContract
             return new JsonResponse('', 201);
         }
 
-        AuthContext::sanitizeIntended($request);
+        $user = $request->user();
+        $fallbackRoute = $user?->hasVerifiedEmail()
+            ? 'app.home'
+            : 'verification.notice';
 
-        $locale = $request->input('_locale') ?: app()->getLocale();
-        $route = $request->user()?->hasVerifiedEmail()
-            ? route('app.home')
-            : route('verification.notice');
-
-        return redirect()->to(
-            LaravelLocalization::getLocalizedURL($locale, $route)
-        );
+        return AuthContext::redirectIntended($request, $fallbackRoute);
     }
 }

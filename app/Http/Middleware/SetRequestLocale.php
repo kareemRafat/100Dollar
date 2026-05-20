@@ -32,6 +32,13 @@ class SetRequestLocale
         if (in_array($locale, ['en', 'ar'])) {
             app()->setLocale($locale);
             $request->session()->put('locale', $locale);
+
+            // Sync with database if explicitly requested (choice-driven)
+            $user = $request->user();
+            if ($user && $request->has('set_locale') && $user->locale !== $locale && ! $request->is('admin') && ! $request->is('admin/*')) {
+                $user->locale = $locale;
+                $user->save();
+            }
         }
 
         return $next($request);

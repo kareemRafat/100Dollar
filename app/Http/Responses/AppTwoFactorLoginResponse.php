@@ -19,15 +19,11 @@ class AppTwoFactorLoginResponse implements TwoFactorLoginResponseContract
             return new JsonResponse('', 204);
         }
 
-        AuthContext::sanitizeIntended($request);
+        $user = $request->user();
+        $fallbackRoute = $user?->hasVerifiedEmail()
+            ? 'app.home'
+            : 'verification.notice';
 
-        $locale = $request->input('_locale') ?: app()->getLocale();
-        $route = $request->user()?->hasVerifiedEmail()
-            ? route('app.home')
-            : route('verification.notice');
-
-        return redirect()->intended(
-            LaravelLocalization::getLocalizedURL($locale, $route)
-        );
+        return AuthContext::redirectIntended($request, $fallbackRoute);
     }
 }
