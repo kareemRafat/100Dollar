@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -145,7 +146,7 @@ class IdeaController extends Controller
             ->with('success', __('messages.idea_submitted_successfully'));
     }
 
-    public function show(Idea $idea): Response
+    public function show(Request $request, Idea $idea): Response
     {
         if ($idea->status !== 'approved' && auth()->id() !== $idea->user_id) {
             abort(404);
@@ -155,6 +156,19 @@ class IdeaController extends Controller
 
         $idea->load(['user.media', 'sponsor.media', 'country', 'category', 'media']);
         $idea->loadCount(['votes', 'comments']);
+
+        $shareDescription = Str::limit(trim((string) $idea->description), 160, '');
+        $shareUrl = $request->fullUrl();
+        $shareImage = $idea->image;
+        $shareImageType = $idea->media->where('collection_name', 'image')->first()?->mime_type;
+
+        $shareMeta = [
+            'title' => $idea->title,
+            'description' => $shareDescription,
+            'url' => $shareUrl,
+            'image' => $shareImage,
+            'image_type' => $shareImageType,
+        ];
 
         // Find if user/IP already voted for an idea in this competition day
         $votedIdeaId = null;
@@ -171,6 +185,7 @@ class IdeaController extends Controller
 
         return Inertia::render('app/pages/idea/show', [
             'idea' => new IdeaResource($idea),
+            'shareMeta' => $shareMeta,
             'comments' => Inertia::optional(fn () => Inertia::scroll(fn () => CommentResource::collection(
                 $idea->comments()
                     ->withTrashed()
@@ -187,6 +202,8 @@ class IdeaController extends Controller
                 ? (bool) auth()->user()->following()->where('following_id', $idea->user_id)->exists()
                 : false,
             'votedIdeaId' => (int) $votedIdeaId ?: null,
+        ])->withViewData([
+            'shareMeta' => $shareMeta,
         ]);
     }
 

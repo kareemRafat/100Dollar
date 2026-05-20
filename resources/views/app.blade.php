@@ -12,6 +12,34 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noindex, nofollow">
+        @php
+            $shareMeta = $shareMeta ?? null;
+        @endphp
+        @if (is_array($shareMeta))
+            <meta name="description" content="{{ $shareMeta['description'] }}">
+
+            <meta property="og:type" content="article">
+            <meta property="og:site_name" content="{{ config('app.name') }}">
+            <meta property="og:url" content="{{ $shareMeta['url'] }}">
+            <meta property="og:title" content="{{ $shareMeta['title'] }}">
+            <meta property="og:description" content="{{ $shareMeta['description'] }}">
+
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:url" content="{{ $shareMeta['url'] }}">
+            <meta name="twitter:title" content="{{ $shareMeta['title'] }}">
+            <meta name="twitter:description" content="{{ $shareMeta['description'] }}">
+
+            @if (! empty($shareMeta['image']))
+                <meta property="og:image" content="{{ $shareMeta['image'] }}">
+                <meta property="og:image:secure_url" content="{{ $shareMeta['image'] }}">
+                @if (! empty($shareMeta['image_type']))
+                    <meta property="og:image:type" content="{{ $shareMeta['image_type'] }}">
+                @endif
+                <meta property="og:image:width" content="1200">
+                <meta property="og:image:height" content="630">
+                <meta name="twitter:image" content="{{ $shareMeta['image'] }}">
+            @endif
+        @endif
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
         <script>
