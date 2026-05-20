@@ -33,8 +33,15 @@ import { Switch } from '@/components/ui/switch';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { logout, login, register } from '@/routes';
-import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
+import {
+    about as aboutPage,
+    archive as archivePage,
+    contact as contactPage,
+    home as homeIndex,
+    sponsors as sponsorsIndex,
+} from '@/routes/app';
 import { index } from '@/routes/app/ideas';
+import { personalInfo as profilePersonalInfo } from '@/routes/app/profile';
 import type { NavItem } from '@/types';
 
 
@@ -49,10 +56,10 @@ export function TopNavBar({ activeRoute }: Props) {
 
     const navItems: NavItem[] = [
         { title: __('messages.nav.home'), href: homeIndex().url },
-        { title: __('messages.nav.archive'), href: '/archive' },
+        { title: __('messages.nav.archive'), href: archivePage().url },
         { title: __('messages.nav.sponsors'), href: sponsorsIndex().url },
-        { title: __('messages.nav.about'), href: '/about' },
-        { title: __('messages.nav.contact'), href: '/contact' },
+        { title: __('messages.nav.about'), href: aboutPage().url },
+        { title: __('messages.nav.contact'), href: contactPage().url },
     ];
 
     const getInitials = (name: string) => {
@@ -141,7 +148,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                         <div className="flex flex-col gap-4">
                                             <SheetClose asChild>
                                                 <Link
-                                                    href="/profile"
+                                                    href={profilePersonalInfo().url}
                                                     className="flex items-center gap-3 rounded-xl p-2 transition-all hover:bg-surface-container-high dark:hover:bg-white/5"
                                                 >
                                                     <Avatar className="size-10">
@@ -273,7 +280,7 @@ export function TopNavBar({ activeRoute }: Props) {
                 <div className="flex items-center">
                     <Link
                         className="font-headline text-xl font-black tracking-tighter text-secondary transition-all hover:opacity-80 dark:text-white"
-                        href="/"
+                        href={homeIndex().url}
                     >
                         <span className="text-primary">
                             {__('messages.ideas')}
@@ -371,7 +378,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                             asChild
                                             className="cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5 focus:text-primary"
                                         >
-                                            <Link href="/profile" className="w-full flex items-center gap-2.5">
+                                            <Link href={profilePersonalInfo().url} className="w-full flex items-center gap-2.5">
                                                 <UserIcon className="size-3.5" />
                                                 <span>
                                                     {__(

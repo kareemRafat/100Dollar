@@ -48,14 +48,6 @@ return [
         'contact' => 'Contact Us',
     ],
 
-    'auth' => [
-        'login' => 'Login',
-        'register' => 'Register',
-        'logout' => 'Logout',
-        'profile' => 'Profile',
-        'my_ideas' => 'My Ideas',
-    ],
-
     'ui' => [
         'light_mode' => 'Light Mode',
         'dark_mode' => 'Dark Mode',
@@ -572,6 +564,11 @@ return [
     ],
 
     'auth' => [
+        'login' => 'Login',
+        'register' => 'Register',
+        'logout' => 'Logout',
+        'profile' => 'Profile',
+        'my_ideas' => 'My Ideas',
         'throttle_2fa' => 'Too many attempts. Please try again in :time seconds.',
         'throttle_2fa_admin' => 'Too many attempts. Please try again in :time seconds.',
         'invalid_2fa_code' => 'The provided two factor authentication code was invalid.',
