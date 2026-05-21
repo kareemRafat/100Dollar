@@ -35,12 +35,12 @@ export function ArchiveSearch({ defaultValue = '', onSearch }: Props) {
     }, [value, defaultValue]);
 
     return (
-        <div className="relative z-10 mx-auto -mt-16 mb-10 w-full max-w-2xl">
-            <div className="pointer-events-none absolute inset-y-0 end-4 flex items-center">
-                <Search className="size-5 text-outline" />
+        <div className="relative z-20 mx-auto -mt-12 mb-10 w-full max-w-4xl px-4 md:px-0">
+            <div className="pointer-events-none absolute inset-y-0 end-8 flex items-center">
+                <Search className="size-6 text-outline" />
             </div>
             <input
-                className="w-full rounded-xl border border-outline-variant/30 bg-surface-container-lowest py-5 ps-6 pe-12 text-lg shadow-xl transition-all placeholder:text-outline-variant focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary focus:outline-none dark:border-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest"
+                className="w-full rounded-2xl border border-outline-variant/30 bg-surface-container-lowest py-6 ps-8 pe-14 text-xl shadow-lg transition-all placeholder:text-outline-variant focus:border-primary focus:bg-white focus:ring-1 focus:ring-primary focus:outline-none dark:border-primary dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-surface-container-lowest"
                 placeholder={__('messages.archive.search_placeholder')}
                 type="text"
                 value={value}
