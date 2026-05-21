@@ -430,6 +430,7 @@ return [
     ],
 
     'my_ideas' => [
+        'hero_badge' => 'Innovation Portfolio',
         'hero_title' => 'My Ideas',
         'hero_desc' => 'Manage your innovation record and follow the journey of transforming your ideas into tangible reality in the Golden Ledger',
         'stats_total_ideas' => 'Total Ideas',

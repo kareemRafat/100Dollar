@@ -79,7 +79,7 @@ export default function SponsorsIndex({ sponsors, today }: Props) {
                             {__('messages.sponsors.hero_badge')}
                         </span>
                     </div>
-                    <h1 className="mb-6 font-headline text-4xl leading-tight font-black text-white md:text-6xl">
+                    <h1 className="mb-6 font-headline text-4xl leading-tight font-black text-white md:text-5xl">
                         {__('messages.sponsors.hero_title')}
                     </h1>
                     <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-slate-300">
