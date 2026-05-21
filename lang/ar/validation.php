@@ -218,6 +218,10 @@ return [
         'status' => 'الحالة',
         'role' => 'الدور',
         'country_id' => 'الدولة',
+        'category_id' => 'تصنيف الفكرة',
+        'marketing_channel' => 'قناة التسويق',
+        'target_audience' => 'الجمهور المستهدف',
+        'implementation_time' => 'وقت التنفيذ المتوقع',
         'delivered_at' => 'تاريخ التسليم',
     ],
 

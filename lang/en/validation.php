@@ -216,6 +216,11 @@ return [
         'company_name' => 'company name',
         'website' => 'company website',
         'logo' => 'company logo',
+        'category_id' => 'category',
+        'country_id' => 'country',
+        'marketing_channel' => 'marketing channels',
+        'target_audience' => 'target audience',
+        'implementation_time' => 'implementation time',
     ],
 
 ];
