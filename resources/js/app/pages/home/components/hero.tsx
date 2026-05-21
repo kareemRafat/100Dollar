@@ -15,12 +15,13 @@ export default function Hero({ auth }: Props) {
     const submitUrl = !auth.user
         ? login()
         : auth.user.role === 'admin'
-            ? '/admin'
-            : create.url();
+          ? '/admin'
+          : create.url();
 
-    const submitText = auth.user?.role === 'admin'
-        ? __('messages.ui.dashboard')
-        : __('messages.ui.submit_your_idea_now');
+    const submitText =
+        auth.user?.role === 'admin'
+            ? __('messages.ui.dashboard')
+            : __('messages.ui.submit_your_idea_now');
 
     return (
         <section className="airy-dots relative flex flex-col items-center overflow-hidden bg-surface py-20 text-center md:py-32">
@@ -44,12 +45,19 @@ export default function Hero({ auth }: Props) {
                     {__('messages.home.hero_desc')}
                 </p>
                 <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row">
-                    <Button asChild size="lg" className="h-auto px-10 py-5 text-xl font-bold rounded-xl shadow-lg transition-all hover:translate-y-[-2px]">
-                        <Link href={submitUrl}>
-                            {submitText}
-                        </Link>
+                    <Button
+                        asChild
+                        size="lg"
+                        className="h-auto rounded-xl px-10 py-5 text-xl font-bold shadow-lg transition-all hover:translate-y-[-2px]"
+                    >
+                        <Link href={submitUrl}>{submitText}</Link>
                     </Button>
-                    <Button asChild variant="outline" size="lg" className="h-auto px-10 py-5 text-xl font-bold rounded-xl bg-surface-container-low transition-all hover:bg-surface-container-high border-outline-variant/20 dark:text-white">
+                    <Button
+                        asChild
+                        variant="outline"
+                        size="lg"
+                        className="h-auto rounded-xl border-outline-variant/20 bg-surface-container-low px-10 py-5 text-xl font-bold transition-all hover:bg-surface-container-high dark:text-white"
+                    >
                         <Link href="/how-it-works">
                             {__('messages.ui.how_it_works')}
                         </Link>

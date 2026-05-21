@@ -18,11 +18,18 @@ export function CountryDistribution({ data }: { data: CountryData[] }) {
     return (
         <Card className="h-full">
             <CardHeader>
-                <CardTitle className="font-bold">توزيع الأفكار حسب الدولة</CardTitle>
+                <CardTitle className="font-bold">
+                    توزيع الأفكار حسب الدولة
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className="h-[250px]">
-                    <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
+                    <ResponsiveContainer
+                        width="100%"
+                        height="100%"
+                        minWidth={0}
+                        minHeight={0}
+                    >
                         <PieChart>
                             <Pie
                                 data={data}
@@ -35,24 +42,40 @@ export function CountryDistribution({ data }: { data: CountryData[] }) {
                                 nameKey="country"
                             >
                                 {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
                                 ))}
                             </Pie>
-                            <Tooltip 
-                                contentStyle={{ backgroundColor: 'var(--color-sidebar)', border: '1px solid var(--color-border)', borderRadius: '8px', fontSize: '12px' }}
+                            <Tooltip
+                                contentStyle={{
+                                    backgroundColor: 'var(--color-sidebar)',
+                                    border: '1px solid var(--color-border)',
+                                    borderRadius: '8px',
+                                    fontSize: '12px',
+                                }}
                             />
                         </PieChart>
                     </ResponsiveContainer>
                 </div>
                 <div className="mt-4 space-y-2">
                     {data.slice(0, 5).map((item, index) => (
-                        <div key={item.country} className="flex items-center justify-between text-sm">
+                        <div
+                            key={item.country}
+                            className="flex items-center justify-between text-sm"
+                        >
                             <div className="flex items-center gap-2">
-                                <div 
-                                    className="size-3 rounded-full" 
-                                    style={{ backgroundColor: COLORS[index % COLORS.length] }} 
+                                <div
+                                    className="size-3 rounded-full"
+                                    style={{
+                                        backgroundColor:
+                                            COLORS[index % COLORS.length],
+                                    }}
                                 />
-                                <span className="text-muted-foreground">{item.country}</span>
+                                <span className="text-muted-foreground">
+                                    {item.country}
+                                </span>
                             </div>
                             <span className="font-bold">{item.count}</span>
                         </div>

@@ -1,11 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { 
-    Shapes, 
-    Calendar, 
-    CalendarDays, 
-    Trophy,
-    FilterX
-} from 'lucide-react';
+import { Shapes, Calendar, CalendarDays, Trophy, FilterX } from 'lucide-react';
 import {
     Select,
     SelectContent,
@@ -28,7 +22,13 @@ type Props = {
     locale: string;
 };
 
-export function ArchiveFilters({ filters, categories, onFilterChange, onClearFilters, locale }: Props) {
+export function ArchiveFilters({
+    filters,
+    categories,
+    onFilterChange,
+    onClearFilters,
+    locale,
+}: Props) {
     const { __ } = useLang();
 
     const days = [
@@ -64,21 +64,32 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
             <div className="-mx-4 flex items-start gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-row sm:flex-wrap sm:items-center sm:overflow-visible sm:px-0 sm:pb-0">
                 {/* Category Filter */}
                 <div className="shrink-0">
-                    <Select 
-                        value={filters.category || 'all'} 
+                    <Select
+                        value={filters.category || 'all'}
                         onValueChange={(v) => onFilterChange('category', v)}
                     >
-                        <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                        <SelectTrigger className="h-10 min-w-[140px] border-none bg-surface-container-low px-4 font-medium transition-colors hover:bg-surface-container-high dark:bg-surface-container-high dark:hover:bg-surface-container-highest">
                             <div className="flex items-center gap-2">
                                 <Shapes className="size-4 text-primary" />
-                                <SelectValue placeholder={__('messages.archive.all_fields')} />
+                                <SelectValue
+                                    placeholder={__(
+                                        'messages.archive.all_fields',
+                                    )}
+                                />
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">{__('messages.archive.all_fields')}</SelectItem>
+                            <SelectItem value="all">
+                                {__('messages.archive.all_fields')}
+                            </SelectItem>
                             {categories.map((cat) => (
-                                <SelectItem key={cat.id} value={cat.id.toString()}>
-                                    {locale === 'ar' ? cat.name_ar : cat.name_en}
+                                <SelectItem
+                                    key={cat.id}
+                                    value={cat.id.toString()}
+                                >
+                                    {locale === 'ar'
+                                        ? cat.name_ar
+                                        : cat.name_en}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -87,18 +98,24 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
 
                 {/* Day Filter */}
                 <div className="shrink-0">
-                    <Select 
-                        value={filters.day || 'all'} 
+                    <Select
+                        value={filters.day || 'all'}
                         onValueChange={(v) => onFilterChange('day', v)}
                     >
-                        <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                        <SelectTrigger className="h-10 min-w-[140px] border-none bg-surface-container-low px-4 font-medium transition-colors hover:bg-surface-container-high dark:bg-surface-container-high dark:hover:bg-surface-container-highest">
                             <div className="flex items-center gap-2">
                                 <Calendar className="size-4 text-primary" />
-                                <SelectValue placeholder={__('messages.archive.all_days')} />
+                                <SelectValue
+                                    placeholder={__(
+                                        'messages.archive.all_days',
+                                    )}
+                                />
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">{__('messages.archive.all_days')}</SelectItem>
+                            <SelectItem value="all">
+                                {__('messages.archive.all_days')}
+                            </SelectItem>
                             {days.map((day) => (
                                 <SelectItem key={day.value} value={day.value}>
                                     {day.label}
@@ -110,18 +127,24 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
 
                 {/* Month Filter */}
                 <div className="shrink-0">
-                    <Select 
-                        value={filters.month || 'all'} 
+                    <Select
+                        value={filters.month || 'all'}
                         onValueChange={(v) => onFilterChange('month', v)}
                     >
-                        <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                        <SelectTrigger className="h-10 min-w-[140px] border-none bg-surface-container-low px-4 font-medium transition-colors hover:bg-surface-container-high dark:bg-surface-container-high dark:hover:bg-surface-container-highest">
                             <div className="flex items-center gap-2">
                                 <CalendarDays className="size-4 text-primary" />
-                                <SelectValue placeholder={__('messages.archive.all_months')} />
+                                <SelectValue
+                                    placeholder={__(
+                                        'messages.archive.all_months',
+                                    )}
+                                />
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">{__('messages.archive.all_months')}</SelectItem>
+                            <SelectItem value="all">
+                                {__('messages.archive.all_months')}
+                            </SelectItem>
                             {months.map((m) => (
                                 <SelectItem key={m.value} value={m.value}>
                                     {m.label}
@@ -133,26 +156,36 @@ export function ArchiveFilters({ filters, categories, onFilterChange, onClearFil
 
                 {/* Status Filter */}
                 <div className="shrink-0">
-                    <Select 
-                        value={filters.status || 'all'} 
+                    <Select
+                        value={filters.status || 'all'}
                         onValueChange={(v) => onFilterChange('status', v)}
                     >
-                        <SelectTrigger className="bg-surface-container-low dark:bg-surface-container-high border-none h-10 px-4 font-medium transition-colors hover:bg-surface-container-high dark:hover:bg-surface-container-highest min-w-[140px]">
+                        <SelectTrigger className="h-10 min-w-[140px] border-none bg-surface-container-low px-4 font-medium transition-colors hover:bg-surface-container-high dark:bg-surface-container-high dark:hover:bg-surface-container-highest">
                             <div className="flex items-center gap-2">
                                 <Trophy className="size-4 text-primary" />
-                                <SelectValue placeholder={__('messages.archive.all_statuses')} />
+                                <SelectValue
+                                    placeholder={__(
+                                        'messages.archive.all_statuses',
+                                    )}
+                                />
                             </div>
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">{__('messages.archive.all_statuses')}</SelectItem>
-                            <SelectItem value="winner">{__('messages.archive.winner_status')}</SelectItem>
-                            <SelectItem value="non_winner">{__('messages.archive.non_winner_status')}</SelectItem>
+                            <SelectItem value="all">
+                                {__('messages.archive.all_statuses')}
+                            </SelectItem>
+                            <SelectItem value="winner">
+                                {__('messages.archive.winner_status')}
+                            </SelectItem>
+                            <SelectItem value="non_winner">
+                                {__('messages.archive.non_winner_status')}
+                            </SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
 
                 {hasActiveFilters && (
-                    <button 
+                    <button
                         onClick={onClearFilters}
                         className="flex shrink-0 items-center gap-1 text-sm font-bold text-primary hover:underline sm:ms-auto"
                     >

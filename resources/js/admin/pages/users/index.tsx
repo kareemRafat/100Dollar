@@ -1,5 +1,13 @@
 import { Head, Link, router, useForm } from '@inertiajs/react';
-import { Eye, Loader2, Pencil, Search, Trash2, UserPlus, User as UserIcon } from 'lucide-react';
+import {
+    Eye,
+    Loader2,
+    Pencil,
+    Search,
+    Trash2,
+    UserPlus,
+    User as UserIcon,
+} from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import type { SubmitEvent } from 'react';
 import { toast } from 'sonner';
@@ -77,7 +85,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
-            
+
             return;
         }
 
@@ -121,9 +129,13 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
         setRole('');
         setStatus('');
         setCountryId('');
-        router.get(admin.users.index().url, {}, {
-            replace: true,
-        });
+        router.get(
+            admin.users.index().url,
+            {},
+            {
+                replace: true,
+            },
+        );
     };
 
     const createForm = useForm({
@@ -220,7 +232,10 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                             إدارة مستخدمي النظام وصلاحياتهم
                         </p>
                     </div>
-                    <Button onClick={() => setIsCreateModalOpen(true)} className="w-full md:w-auto">
+                    <Button
+                        onClick={() => setIsCreateModalOpen(true)}
+                        className="w-full md:w-auto"
+                    >
                         <UserPlus className="me-2 h-4 w-4" />
                         إضافة مستخدم جديد
                     </Button>
@@ -231,7 +246,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                         <CardTitle>قائمة المستخدمين</CardTitle>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <div className="relative w-full sm:w-64">
-                                <div className="pointer-events-none absolute inset-y-0 inset-inline-start-0 flex items-center ps-3">
+                                <div className="inset-inline-start-0 pointer-events-none absolute inset-y-0 flex items-center ps-3">
                                     <Search className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <Input
@@ -254,9 +269,15 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                         <SelectValue placeholder="الدور" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">الكل</SelectItem>
-                                        <SelectItem value="admin">مدير</SelectItem>
-                                        <SelectItem value="user">مستخدم</SelectItem>
+                                        <SelectItem value="all">
+                                            الكل
+                                        </SelectItem>
+                                        <SelectItem value="admin">
+                                            مدير
+                                        </SelectItem>
+                                        <SelectItem value="user">
+                                            مستخدم
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <Select
@@ -270,7 +291,9 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                         <SelectValue placeholder="الدولة" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">كل الدول</SelectItem>
+                                        <SelectItem value="all">
+                                            كل الدول
+                                        </SelectItem>
                                         {countries.map((country) => (
                                             <SelectItem
                                                 key={country.id}
@@ -292,8 +315,12 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                         <SelectValue placeholder="الحالة" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="all">الكل</SelectItem>
-                                        <SelectItem value="active">نشط</SelectItem>
+                                        <SelectItem value="all">
+                                            الكل
+                                        </SelectItem>
+                                        <SelectItem value="active">
+                                            نشط
+                                        </SelectItem>
                                         <SelectItem value="inactive">
                                             معطل
                                         </SelectItem>
@@ -315,12 +342,22 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead className="w-[50px]"></TableHead>
-                                        <TableHead className="min-w-[150px]">الاسم</TableHead>
-                                        <TableHead className="min-w-[200px]">البريد الإلكتروني</TableHead>
-                                        <TableHead className="min-w-[100px]">الدولة</TableHead>
-                                        <TableHead className="min-w-[100px]">الدور</TableHead>
-                                        <TableHead className="min-w-[100px]">الحالة</TableHead>
-                                        <TableHead className="text-end min-w-[120px]">
+                                        <TableHead className="min-w-[150px]">
+                                            الاسم
+                                        </TableHead>
+                                        <TableHead className="min-w-[200px]">
+                                            البريد الإلكتروني
+                                        </TableHead>
+                                        <TableHead className="min-w-[100px]">
+                                            الدولة
+                                        </TableHead>
+                                        <TableHead className="min-w-[100px]">
+                                            الدور
+                                        </TableHead>
+                                        <TableHead className="min-w-[100px]">
+                                            الحالة
+                                        </TableHead>
+                                        <TableHead className="min-w-[120px] text-end">
                                             الإجراءات
                                         </TableHead>
                                     </TableRow>
@@ -328,15 +365,25 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 <TableBody>
                                     {users.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={6} className="h-72 text-center">
+                                            <TableCell
+                                                colSpan={6}
+                                                className="h-72 text-center"
+                                            >
                                                 <div className="flex flex-col items-center justify-center space-y-4 px-4">
                                                     <div className="rounded-full bg-muted p-4 ring-8 ring-muted/20">
                                                         <Search className="h-10 w-10 text-muted-foreground" />
                                                     </div>
                                                     <div className="space-y-1">
-                                                        <p className="text-xl font-semibold">لم يتم العثور على نتائج</p>
+                                                        <p className="text-xl font-semibold">
+                                                            لم يتم العثور على
+                                                            نتائج
+                                                        </p>
                                                         <p className="max-w-xs text-sm text-muted-foreground">
-                                                            لا يوجد مستخدمين يطابقون معايير البحث الحالية. جرب تغيير الفلاتر أو كلمة البحث.
+                                                            لا يوجد مستخدمين
+                                                            يطابقون معايير البحث
+                                                            الحالية. جرب تغيير
+                                                            الفلاتر أو كلمة
+                                                            البحث.
                                                         </p>
                                                     </div>
                                                 </div>
@@ -359,14 +406,18 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                                 <TableCell className="font-medium whitespace-nowrap">
                                                     {user.name}
                                                 </TableCell>
-                                                <TableCell className="whitespace-nowrap">{user.email}</TableCell>
                                                 <TableCell className="whitespace-nowrap">
-                                                    {user.country?.name_ar || '-'}
+                                                    {user.email}
+                                                </TableCell>
+                                                <TableCell className="whitespace-nowrap">
+                                                    {user.country?.name_ar ||
+                                                        '-'}
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge
                                                         variant={
-                                                            user.role === 'admin'
+                                                            user.role ===
+                                                            'admin'
                                                                 ? 'default'
                                                                 : 'secondary'
                                                         }
@@ -397,8 +448,12 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                                 <TableCell className="text-end">
                                                     <div className="flex items-center justify-end gap-2">
                                                         <Link
-                                                            href={admin.users.show(user.id).url}
-                                                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition-colors"
+                                                            href={
+                                                                admin.users.show(
+                                                                    user.id,
+                                                                ).url
+                                                            }
+                                                            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-primary"
                                                             title="عرض التفاصيل"
                                                         >
                                                             <Eye className="h-4 w-4" />
@@ -435,7 +490,7 @@ export default function UsersPage({ users, countries, filters }: UsersProps) {
                                 </TableBody>
                             </Table>
                         </div>
-                        <div className="p-4 border-t sm:p-0 sm:border-0 mt-6">
+                        <div className="mt-6 border-t p-4 sm:border-0 sm:p-0">
                             <Pagination links={users.meta.links} />
                         </div>
                     </CardContent>

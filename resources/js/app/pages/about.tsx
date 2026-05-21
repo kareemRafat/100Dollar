@@ -45,7 +45,6 @@ export default function About() {
 
                     {/* Airy dots texture layer */}
                     <div className="airy-dots absolute inset-0 opacity-40"></div>
-
                 </div>
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                     <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1 text-primary-fixed">
@@ -66,11 +65,11 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="bg-surface-container-lowest dark:bg-surface-container-low px-8 py-12">
+            <section className="bg-surface-container-lowest px-8 py-12 dark:bg-surface-container-low">
                 <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
                     <div className="space-y-6">
                         <div className="flex items-start gap-4">
-                            <div className="bg-primary-container/10 rounded-2xl p-3">
+                            <div className="rounded-2xl bg-primary-container/10 p-3">
                                 <span className="material-symbols-outlined text-xl text-primary">
                                     lightbulb
                                 </span>
@@ -79,13 +78,13 @@ export default function About() {
                                 <h3 className="mb-1 text-xl font-black text-on-surface dark:text-white">
                                     {__('messages.about.mission_title')}
                                 </h3>
-                                <p className="text-on-surface-variant text-sm leading-relaxed">
+                                <p className="text-sm leading-relaxed text-on-surface-variant">
                                     {__('messages.about.mission_desc')}
                                 </p>
                             </div>
                         </div>
                         <div className="flex items-start gap-4">
-                            <div className="bg-primary-container/10 rounded-2xl p-3">
+                            <div className="rounded-2xl bg-primary-container/10 p-3">
                                 <span className="material-symbols-outlined text-xl text-primary">
                                     visibility
                                 </span>
@@ -94,22 +93,22 @@ export default function About() {
                                 <h3 className="mb-1 text-xl font-black text-on-surface dark:text-white">
                                     {__('messages.about.vision_title')}
                                 </h3>
-                                <p className="text-on-surface-variant text-sm leading-relaxed">
+                                <p className="text-sm leading-relaxed text-on-surface-variant">
                                     {__('messages.about.vision_desc')}
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div className="border-outline-variant/10 bg-surface-container-low relative rounded-3xl border p-6">
-                        <p className="font-headline text-right text-lg leading-relaxed font-medium text-on-surface dark:text-white italic">
+                    <div className="relative rounded-3xl border border-outline-variant/10 bg-surface-container-low p-6">
+                        <p className="text-right font-headline text-lg leading-relaxed font-medium text-on-surface italic dark:text-white">
                             "{__('messages.about.quote')}"
                         </p>
                         <div className="mt-4 flex items-center justify-end gap-3">
                             <div className="text-right">
-                                <p className="font-bold text-on-surface dark:text-white text-sm">
+                                <p className="text-sm font-bold text-on-surface dark:text-white">
                                     {__('messages.about.management_team')}
                                 </p>
-                                <p className="text-on-surface-variant text-xs">
+                                <p className="text-xs text-on-surface-variant">
                                     {__('messages.about.golden_ledger')}
                                 </p>
                             </div>
@@ -119,25 +118,31 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="border-outline-variant/10 bg-primary-container/5 border-y px-8 py-10">
-                <div className="mx-auto max-w-7xl grid grid-cols-2 gap-8 md:grid-cols-4">
+            <section className="border-y border-outline-variant/10 bg-primary-container/5 px-8 py-10">
+                <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 md:grid-cols-4">
                     <div className="text-center">
                         <p className="mb-1 text-2xl font-black text-primary md:text-3xl">
                             1,500+
                         </p>
-                        <p className="text-xs font-bold text-on-surface dark:text-white">{__('messages.about.stats_ideas')}</p>
+                        <p className="text-xs font-bold text-on-surface dark:text-white">
+                            {__('messages.about.stats_ideas')}
+                        </p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-2xl font-black text-primary md:text-3xl">
                             45,000+
                         </p>
-                        <p className="text-xs font-bold text-on-surface dark:text-white">{__('messages.about.stats_voters')}</p>
+                        <p className="text-xs font-bold text-on-surface dark:text-white">
+                            {__('messages.about.stats_voters')}
+                        </p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-2xl font-black text-primary md:text-3xl">
                             85
                         </p>
-                        <p className="text-xs font-bold text-on-surface dark:text-white">{__('messages.about.stats_winners')}</p>
+                        <p className="text-xs font-bold text-on-surface dark:text-white">
+                            {__('messages.about.stats_winners')}
+                        </p>
                     </div>
                     <div className="text-center">
                         <p className="mb-1 text-2xl font-black text-primary md:text-3xl">
@@ -156,7 +161,7 @@ export default function About() {
                         <h2 className="mb-3 text-3xl font-black text-on-surface dark:text-white">
                             {__('messages.about.core_values_title')}
                         </h2>
-                        <p className="text-on-surface-variant mx-auto max-w-2xl text-sm">
+                        <p className="mx-auto max-w-2xl text-sm text-on-surface-variant">
                             {__('messages.about.core_values_desc')}
                         </p>
                     </div>
@@ -164,7 +169,7 @@ export default function About() {
                         {coreValues.map((value) => (
                             <div
                                 key={value.icon}
-                                className="border-outline-variant/5 bg-surface-container-lowest editorial-shadow rounded-2xl p-6 transition-transform hover:scale-[1.02]"
+                                className="editorial-shadow rounded-2xl border-outline-variant/5 bg-surface-container-lowest p-6 transition-transform hover:scale-[1.02]"
                             >
                                 <span className="material-symbols-outlined mb-4 text-xl text-primary">
                                     {value.icon}
@@ -172,7 +177,7 @@ export default function About() {
                                 <h4 className="mb-2 text-lg font-bold text-on-surface dark:text-white">
                                     {value.title}
                                 </h4>
-                                <p className="text-on-surface-variant text-sm leading-relaxed">
+                                <p className="text-sm leading-relaxed text-on-surface-variant">
                                     {value.description}
                                 </p>
                             </div>
@@ -200,17 +205,17 @@ export default function About() {
                         <h2 className="mb-4 text-2xl leading-tight font-black text-on-surface dark:text-white">
                             {__('messages.about.story_title')}
                         </h2>
-                        <p className="text-on-surface-variant mb-3 text-sm leading-relaxed">
+                        <p className="mb-3 text-sm leading-relaxed text-on-surface-variant">
                             {__('messages.about.story_p1')}
                         </p>
-                        <p className="text-on-surface-variant mb-5 text-sm leading-relaxed">
+                        <p className="mb-5 text-sm leading-relaxed text-on-surface-variant">
                             {__('messages.about.story_p2')}
                         </p>
-                        <div className="border-outline-variant/10 inline-block rounded-2xl border bg-surface-container-lowest p-3 shadow-sm">
+                        <div className="inline-block rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-3 shadow-sm">
                             <p className="text-base font-bold text-on-surface dark:text-white">
                                 {__('messages.about.founder_name')}
                             </p>
-                            <p className="text-primary text-xs">
+                            <p className="text-xs text-primary">
                                 {__('messages.about.founder_title')}
                             </p>
                         </div>
@@ -218,9 +223,9 @@ export default function About() {
                 </div>
             </section>
 
-            <section className="border-outline-variant/10 bg-surface overflow-hidden border-t px-8 py-10">
+            <section className="overflow-hidden border-t border-outline-variant/10 bg-surface px-8 py-10">
                 <div className="mx-auto max-w-7xl">
-                    <p className="text-outline mb-6 text-center text-sm font-bold tracking-widest uppercase">
+                    <p className="mb-6 text-center text-sm font-bold tracking-widest text-outline uppercase">
                         {__('messages.about.partners_title')}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-10 opacity-40 grayscale md:gap-20">

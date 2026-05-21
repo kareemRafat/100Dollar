@@ -1,7 +1,7 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { useEffect, useMemo, useState  } from 'react';
-import type {SubmitEvent} from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { SubmitEvent } from 'react';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,15 +15,20 @@ import { store } from '@/routes/admin/two-factor';
 
 export default function TwoFactorChallenge() {
     const [showRecoveryInput, setShowRecoveryInput] = useState<boolean>(false);
-    const { flash } = usePage().props as { flash?: { message?: string; retry_after?: number | null } };
-    const [retryAfter, setRetryAfter] = useState<number>(Number(flash?.retry_after ?? 0));
+    const { flash } = usePage().props as {
+        flash?: { message?: string; retry_after?: number | null };
+    };
+    const [retryAfter, setRetryAfter] = useState<number>(
+        Number(flash?.retry_after ?? 0),
+    );
     const isBlocked = retryAfter > 0;
     const waitButtonText = `حاول مرة أخرى بعد ${retryAfter} ثانية`;
 
-    const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
-        code: '',
-        recovery_code: '',
-    });
+    const { data, setData, post, processing, errors, clearErrors, reset } =
+        useForm({
+            code: '',
+            recovery_code: '',
+        });
 
     const authConfigContent = useMemo<{
         title: string;
@@ -112,7 +117,7 @@ export default function TwoFactorChallenge() {
                 </div>
 
                 {flash?.message ? (
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 font-semibold">
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900">
                         {flash.message}
                     </div>
                 ) : null}
@@ -125,18 +130,21 @@ export default function TwoFactorChallenge() {
                                 type="text"
                                 placeholder={authConfigContent.placeholder}
                                 value={data.recovery_code}
-                                onChange={(e) => setData('recovery_code', e.target.value)}
+                                onChange={(e) =>
+                                    setData('recovery_code', e.target.value)
+                                }
                                 autoFocus={showRecoveryInput}
                                 required
                                 disabled={processing || isBlocked}
                                 className="text-right"
                             />
-                            <InputError
-                                message={errors.recovery_code}
-                            />
+                            <InputError message={errors.recovery_code} />
                         </>
                     ) : (
-                        <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
+                        <div
+                            className="flex flex-col items-center justify-center space-y-3 text-center"
+                            dir="ltr"
+                        >
                             <div className="flex w-full items-center justify-center">
                                 <InputOTP
                                     name="code"

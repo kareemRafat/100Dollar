@@ -35,7 +35,9 @@ const getStoredAppearance = (scope: 'app' | 'admin'): Appearance => {
         return 'system';
     }
 
-    return (localStorage.getItem(`appearance_${scope}`) as Appearance) || 'system';
+    return (
+        (localStorage.getItem(`appearance_${scope}`) as Appearance) || 'system'
+    );
 };
 
 const isDarkMode = (appearance: Appearance): boolean => {
@@ -70,7 +72,9 @@ const mediaQuery = (): MediaQueryList | null => {
 };
 
 const handleSystemThemeChange = (): void => {
-    const isAdmin = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+    const isAdmin =
+        typeof window !== 'undefined' &&
+        window.location.pathname.startsWith('/admin');
     const appearance = isAdmin ? currentAdminAppearance : currentAppAppearance;
 
     if (appearance === 'system') {
@@ -109,10 +113,13 @@ export function initializeTheme(): void {
     mediaQuery()?.addEventListener('change', handleSystemThemeChange);
 }
 
-export function useAppearance(scope: 'app' | 'admin' = 'app'): UseAppearanceReturn {
+export function useAppearance(
+    scope: 'app' | 'admin' = 'app',
+): UseAppearanceReturn {
     const appearance: Appearance = useSyncExternalStore(
         subscribe,
-        () => (scope === 'admin' ? currentAdminAppearance : currentAppAppearance),
+        () =>
+            scope === 'admin' ? currentAdminAppearance : currentAppAppearance,
         () => 'system',
     );
 

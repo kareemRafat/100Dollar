@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import type {  SubmitEvent } from 'react';
+import type { SubmitEvent } from 'react';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -12,7 +12,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
-
 
 type Props = {
     status?: string;
@@ -50,7 +49,7 @@ export default function Login({
             <Head title={__('messages.login.hero_title')} />
 
             <header className="mb-10 text-start">
-                <h2 className="font-headline mb-2 text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
+                <h2 className="mb-2 font-headline text-3xl font-extrabold tracking-tight text-on-surface dark:text-white">
                     {__('messages.login.welcome_back')}
                 </h2>
                 <p className="text-on-surface-variant">
@@ -66,7 +65,9 @@ export default function Login({
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="block w-full">{__('messages.login.email_label')}</Label>
+                    <Label htmlFor="email" className="block w-full">
+                        {__('messages.login.email_label')}
+                    </Label>
                     <Input
                         id="email"
                         name="email"
@@ -84,7 +85,9 @@ export default function Login({
 
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="password">{__('messages.login.password_label')}</Label>
+                        <Label htmlFor="password">
+                            {__('messages.login.password_label')}
+                        </Label>
                         {canResetPassword && (
                             <Link
                                 className="text-xs font-bold text-primary hover:underline"
@@ -112,10 +115,12 @@ export default function Login({
                         id="remember-me"
                         name="remember"
                         checked={data.remember}
-                        onCheckedChange={(checked) => setData('remember', checked === true)}
+                        onCheckedChange={(checked) =>
+                            setData('remember', checked === true)
+                        }
                     />
                     <Label
-                        className="text-on-surface-variant cursor-pointer text-sm font-normal"
+                        className="cursor-pointer text-sm font-normal text-on-surface-variant"
                         htmlFor="remember-me"
                     >
                         {__('messages.login.remember_me')}
@@ -140,11 +145,11 @@ export default function Login({
 
             <div className="mt-8 flex flex-col items-center gap-6">
                 <div className="flex w-full items-center gap-4">
-                    <div className="bg-outline-variant/30 h-px flex-1" />
-                    <span className="text-on-surface-variant text-xs font-medium">
+                    <div className="h-px flex-1 bg-outline-variant/30" />
+                    <span className="text-xs font-medium text-on-surface-variant">
                         {__('messages.login.or_continue_with')}
                     </span>
-                    <div className="bg-outline-variant/30 h-px flex-1" />
+                    <div className="h-px flex-1 bg-outline-variant/30" />
                 </div>
                 <div className="w-full">
                     <Button
@@ -161,7 +166,7 @@ export default function Login({
                     </Button>
                 </div>
                 {canRegister && (
-                    <p className="text-on-surface-variant text-sm">
+                    <p className="text-sm text-on-surface-variant">
                         {__('messages.login.no_account')}{' '}
                         <Link
                             className="font-bold text-primary hover:underline"

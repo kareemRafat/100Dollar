@@ -201,7 +201,11 @@ export default function IdeaShow({
                     property="og:site_name"
                     content={appName as string}
                 />
-                <meta head-key="og:url" property="og:url" content={shareMeta.url} />
+                <meta
+                    head-key="og:url"
+                    property="og:url"
+                    content={shareMeta.url}
+                />
                 <meta
                     head-key="og:title"
                     property="og:title"
@@ -245,8 +249,16 @@ export default function IdeaShow({
                 )}
 
                 {/* Twitter */}
-                <meta head-key="twitter:card" name="twitter:card" content="summary_large_image" />
-                <meta head-key="twitter:url" name="twitter:url" content={shareMeta.url} />
+                <meta
+                    head-key="twitter:card"
+                    name="twitter:card"
+                    content="summary_large_image"
+                />
+                <meta
+                    head-key="twitter:url"
+                    name="twitter:url"
+                    content={shareMeta.url}
+                />
                 <meta
                     head-key="twitter:title"
                     name="twitter:title"
@@ -303,7 +315,9 @@ export default function IdeaShow({
                                     <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
                                         {isFollowingIdea
                                             ? __('messages.archive.following')
-                                            : __('messages.archive.follow_idea')}
+                                            : __(
+                                                  'messages.archive.follow_idea',
+                                              )}
                                     </span>
                                 </button>
                                 <button
@@ -322,7 +336,9 @@ export default function IdeaShow({
                                     <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
                                         {isFollowingOwner
                                             ? __('messages.archive.following')
-                                            : __('messages.archive.follow_owner')}
+                                            : __(
+                                                  'messages.archive.follow_owner',
+                                              )}
                                     </span>
                                 </button>
                             </div>

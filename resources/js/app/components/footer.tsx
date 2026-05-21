@@ -18,7 +18,10 @@ export function Footer() {
                             className="block font-headline text-2xl font-black text-white"
                             href={homeIndex().url}
                         >
-                            {__('messages.ideas')} <span className="text-primary-fixed-dim">{__('messages.for_100')}</span>
+                            {__('messages.ideas')}{' '}
+                            <span className="text-primary-fixed-dim">
+                                {__('messages.for_100')}
+                            </span>
                         </Link>
                         <p className="max-w-xs text-sm leading-relaxed text-gray-400">
                             {__('messages.footer.description')}
@@ -180,7 +183,8 @@ export function Footer() {
 
                 <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 md:flex-row">
                     <p className="font-body text-sm text-gray-400">
-                        © {new Date().getFullYear()} {__('messages.ideas_100')}. {__('messages.footer.rights_reserved')}
+                        © {new Date().getFullYear()} {__('messages.ideas_100')}.{' '}
+                        {__('messages.footer.rights_reserved')}
                     </p>
                     <div className="flex items-center gap-3">
                         <AppearanceSwitcher />

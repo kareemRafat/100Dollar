@@ -11,10 +11,10 @@ import {
     ShieldCheck,
     Rocket,
     ImagePlus,
-    UploadCloud
+    UploadCloud,
 } from 'lucide-react';
-import { useState  } from 'react';
-import type {ChangeEvent, SubmitEvent, DragEvent} from 'react';
+import { useState } from 'react';
+import type { ChangeEvent, SubmitEvent, DragEvent } from 'react';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
@@ -33,7 +33,11 @@ interface Country {
     code: string;
 }
 
-export default function SponsorshipApply({ countries }: { countries: Country[] }) {
+export default function SponsorshipApply({
+    countries,
+}: {
+    countries: Country[];
+}) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const isRtl = locale === 'ar';
@@ -119,14 +123,14 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                     <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/20 px-4 py-1.5 text-primary-fixed">
                         <Rocket className="size-4" />
-                        <span className="text-sm font-bold uppercase tracking-wider">
+                        <span className="text-sm font-bold tracking-wider uppercase">
                             {__('messages.sponsors.inspire_youth_title')}
                         </span>
                     </div>
                     <h1 className="mb-6 font-headline text-3xl font-black text-white md:text-5xl">
                         {__('messages.sponsors.become_sponsor_button')}
                     </h1>
-                    <p className="mx-auto max-w-2xl text-lg text-white/80 leading-relaxed">
+                    <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/80">
                         {__('messages.sponsors.inspire_youth_desc')}
                     </p>
                 </div>
@@ -138,16 +142,22 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                         <div className="mb-8">
                             <Link
                                 href={sponsorsIndex().url}
-                                className="inline-flex items-center gap-2 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors"
+                                className="inline-flex items-center gap-2 text-sm font-bold text-on-surface-variant transition-colors hover:text-primary"
                             >
-                                {isRtl ? <ArrowRight className="size-4" /> : <ArrowLeft className="size-4" />}
+                                {isRtl ? (
+                                    <ArrowRight className="size-4" />
+                                ) : (
+                                    <ArrowLeft className="size-4" />
+                                )}
                                 {__('messages.ui.back')}
                             </Link>
                         </div>
 
                         <div className="rounded-xl border border-outline-variant/30 bg-surface-container-lowest p-8 shadow-sm md:p-12 dark:border-white/5 dark:bg-card">
                             <h2 className="mb-8 font-headline text-2xl font-bold text-on-surface dark:text-white">
-                                {__('messages.sponsors.contact_for_sponsorship')}
+                                {__(
+                                    'messages.sponsors.contact_for_sponsorship',
+                                )}
                             </h2>
 
                             <form onSubmit={handleSubmit} className="space-y-6">
@@ -155,52 +165,95 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                     <div className="flex flex-col gap-2">
                                         <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                             <Building2 className="size-3.5 text-primary" />
-                                            {__('messages.sponsors.company_name')}
+                                            {__(
+                                                'messages.sponsors.company_name',
+                                            )}
                                         </Label>
                                         <Input
                                             size="lg"
-                                            className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                            placeholder={__('messages.sponsors.company_name_placeholder')}
+                                            className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                            placeholder={__(
+                                                'messages.sponsors.company_name_placeholder',
+                                            )}
                                             value={data.company_name}
-                                            onChange={(e) => setData('company_name', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'company_name',
+                                                    e.target.value,
+                                                )
+                                            }
                                             required
                                         />
-                                        <InputError message={errors.company_name ? __(errors.company_name) : undefined} />
+                                        <InputError
+                                            message={
+                                                errors.company_name
+                                                    ? __(errors.company_name)
+                                                    : undefined
+                                            }
+                                        />
                                     </div>
 
                                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                         <div className="flex flex-col gap-2">
                                             <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                                 <Mail className="size-3.5 text-primary" />
-                                                {__('messages.sponsors.company_email')}
+                                                {__(
+                                                    'messages.sponsors.company_email',
+                                                )}
                                             </Label>
                                             <Input
                                                 size="lg"
-                                                className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                                placeholder={__('messages.contact.email_placeholder')}
+                                                className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                                placeholder={__(
+                                                    'messages.contact.email_placeholder',
+                                                )}
                                                 type="email"
                                                 value={data.email}
-                                                onChange={(e) => setData('email', e.target.value)}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        'email',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 required
                                             />
-                                            <InputError message={errors.email ? __(errors.email) : undefined} />
+                                            <InputError
+                                                message={
+                                                    errors.email
+                                                        ? __(errors.email)
+                                                        : undefined
+                                                }
+                                            />
                                         </div>
                                         <div className="flex flex-col gap-2">
                                             <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                                 <Phone className="size-3.5 text-primary" />
-                                                {__('messages.sponsors.company_phone')}
+                                                {__(
+                                                    'messages.sponsors.company_phone',
+                                                )}
                                             </Label>
                                             <Input
                                                 size="lg"
-                                                className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                                className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
                                                 placeholder="+966 50 000 0000"
                                                 type="tel"
                                                 dir="ltr"
                                                 value={data.phone}
-                                                onChange={(e) => setData('phone', e.target.value)}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        'phone',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 required
                                             />
-                                            <InputError message={errors.phone ? __(errors.phone) : undefined} />
+                                            <InputError
+                                                message={
+                                                    errors.phone
+                                                        ? __(errors.phone)
+                                                        : undefined
+                                                }
+                                            />
                                         </div>
                                     </div>
 
@@ -208,65 +261,112 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                         <div className="flex flex-col gap-2">
                                             <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                                 <Globe className="size-3.5 text-primary" />
-                                                {__('messages.sponsors.company_website')}
+                                                {__(
+                                                    'messages.sponsors.company_website',
+                                                )}
                                             </Label>
                                             <Input
                                                 size="lg"
-                                                className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
+                                                className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
                                                 placeholder="https://company.com"
                                                 type="url"
                                                 dir="ltr"
                                                 value={data.website}
-                                                onChange={(e) => setData('website', e.target.value)}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        'website',
+                                                        e.target.value,
+                                                    )
+                                                }
                                             />
-                                            <InputError message={errors.website ? __(errors.website) : undefined} />
+                                            <InputError
+                                                message={
+                                                    errors.website
+                                                        ? __(errors.website)
+                                                        : undefined
+                                                }
+                                            />
                                         </div>
                                         <CountrySelect
                                             value={data.country_id}
-                                            onValueChange={(val) => setData('country_id', val)}
+                                            onValueChange={(val) =>
+                                                setData('country_id', val)
+                                            }
                                             countries={countries}
                                             label={
                                                 <>
                                                     <Globe className="size-3.5 text-primary" />
-                                                    {__('messages.submit_idea.country_label')}
+                                                    {__(
+                                                        'messages.submit_idea.country_label',
+                                                    )}
                                                 </>
                                             }
                                             labelClassName="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant"
                                             variant="flat"
                                             required
-                                            error={errors.country_id ? __(errors.country_id) : undefined}
+                                            error={
+                                                errors.country_id
+                                                    ? __(errors.country_id)
+                                                    : undefined
+                                            }
                                         />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                             <ImagePlus className="size-3.5 text-primary" />
-                                            {__('messages.sponsors.company_logo')}
+                                            {__(
+                                                'messages.sponsors.company_logo',
+                                            )}
                                         </Label>
                                         <div
-                                            onClick={() => document.getElementById('logo-upload')?.click()}
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        'logo-upload',
+                                                    )
+                                                    ?.click()
+                                            }
                                             onDragOver={handleDragOver}
                                             onDragLeave={handleDragLeave}
                                             onDrop={handleDrop}
                                             className={cn(
-                                                "group border-outline-variant dark:border-outline-variant/30 bg-surface-container-low dark:bg-surface-container-high hover:bg-surface-container dark:hover:bg-surface-container-highest flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-8 transition-all overflow-hidden relative min-h-[140px]",
-                                                isDragging ? "border-primary bg-primary/5 dark:bg-primary/10 scale-[1.02]" : "hover:border-primary dark:hover:border-primary"
+                                                'group relative flex min-h-[140px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low p-8 transition-all hover:bg-surface-container dark:border-outline-variant/30 dark:bg-surface-container-high dark:hover:bg-surface-container-highest',
+                                                isDragging
+                                                    ? 'scale-[1.02] border-primary bg-primary/5 dark:bg-primary/10'
+                                                    : 'hover:border-primary dark:hover:border-primary',
                                             )}
                                         >
                                             {logoPreview ? (
-                                                <img src={logoPreview} alt="Preview" className="absolute inset-0 w-full h-full object-contain opacity-80 group-hover:opacity-60 transition-opacity p-2" />
+                                                <img
+                                                    src={logoPreview}
+                                                    alt="Preview"
+                                                    className="absolute inset-0 h-full w-full object-contain p-2 opacity-80 transition-opacity group-hover:opacity-60"
+                                                />
                                             ) : (
-                                                <UploadCloud className={cn(
-                                                    "mb-2 size-10 transition-transform",
-                                                    isDragging ? "text-primary scale-110" : "text-primary group-hover:scale-110"
-                                                )} />
+                                                <UploadCloud
+                                                    className={cn(
+                                                        'mb-2 size-10 transition-transform',
+                                                        isDragging
+                                                            ? 'scale-110 text-primary'
+                                                            : 'text-primary group-hover:scale-110',
+                                                    )}
+                                                />
                                             )}
                                             <div className="relative z-10 flex flex-col items-center">
-                                                <p className="font-headline text-sm font-bold text-on-surface dark:text-white text-center">
-                                                    {logoPreview ? __('messages.submit_idea.change_image') : __('messages.submit_idea.image_placeholder')}
+                                                <p className="text-center font-headline text-sm font-bold text-on-surface dark:text-white">
+                                                    {logoPreview
+                                                        ? __(
+                                                              'messages.submit_idea.change_image',
+                                                          )
+                                                        : __(
+                                                              'messages.submit_idea.image_placeholder',
+                                                          )}
                                                 </p>
-                                                <p className="text-outline mt-1 text-xs dark:text-slate-400">
-                                                    {__('messages.submit_idea.image_hint')}
+                                                <p className="mt-1 text-xs text-outline dark:text-slate-400">
+                                                    {__(
+                                                        'messages.submit_idea.image_hint',
+                                                    )}
                                                 </p>
                                             </div>
                                             <input
@@ -277,22 +377,43 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                                 onChange={handleLogoChange}
                                             />
                                         </div>
-                                        <InputError message={errors.logo ? __(errors.logo) : undefined} />
+                                        <InputError
+                                            message={
+                                                errors.logo
+                                                    ? __(errors.logo)
+                                                    : undefined
+                                            }
+                                        />
                                     </div>
 
                                     <div className="flex flex-col gap-2">
                                         <Label className="flex items-center gap-2 pe-2 text-sm font-bold text-on-surface-variant">
                                             <MessageSquare className="size-3.5 text-primary" />
-                                            {__('messages.sponsors.message_label')}
+                                            {__(
+                                                'messages.sponsors.message_label',
+                                            )}
                                         </Label>
                                         <Textarea
-                                            className="min-h-[160px] bg-surface-container-low dark:bg-surface-container-high w-full resize-none border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                            placeholder={__('messages.contact.message_placeholder')}
+                                            className="min-h-[160px] w-full resize-none border-none bg-surface-container-low p-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                            placeholder={__(
+                                                'messages.contact.message_placeholder',
+                                            )}
                                             value={data.message}
-                                            onChange={(e) => setData('message', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'message',
+                                                    e.target.value,
+                                                )
+                                            }
                                             required
                                         />
-                                        <InputError message={errors.message ? __(errors.message) : undefined} />
+                                        <InputError
+                                            message={
+                                                errors.message
+                                                    ? __(errors.message)
+                                                    : undefined
+                                            }
+                                        />
                                     </div>
                                 </div>
 
@@ -301,14 +422,18 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                     type="submit"
                                     disabled={processing}
                                 >
-                                    {processing ? __('messages.common.processing') : __('messages.sponsors.become_sponsor_button')}
+                                    {processing
+                                        ? __('messages.common.processing')
+                                        : __(
+                                              'messages.sponsors.become_sponsor_button',
+                                          )}
                                 </Button>
                             </form>
                         </div>
                     </div>
 
-                    <div className="lg:col-span-5 space-y-8">
-                        <div className="rounded-3xl bg-primary/5 border border-primary/10 p-8 md:p-12">
+                    <div className="space-y-8 lg:col-span-5">
+                        <div className="rounded-3xl border border-primary/10 bg-primary/5 p-8 md:p-12">
                             <h3 className="mb-6 font-headline text-2xl font-black text-on-surface dark:text-white">
                                 {__('messages.about.core_values_title')}
                             </h3>
@@ -318,8 +443,16 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                         <ShieldCheck className="size-6" />
                                     </div>
                                     <div>
-                                        <h4 className="mb-1 font-bold text-on-surface dark:text-white">{__('messages.about.value_transparency_title')}</h4>
-                                        <p className="text-sm leading-relaxed text-on-surface-variant/80">{__('messages.about.value_transparency_desc')}</p>
+                                        <h4 className="mb-1 font-bold text-on-surface dark:text-white">
+                                            {__(
+                                                'messages.about.value_transparency_title',
+                                            )}
+                                        </h4>
+                                        <p className="text-sm leading-relaxed text-on-surface-variant/80">
+                                            {__(
+                                                'messages.about.value_transparency_desc',
+                                            )}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="flex gap-5">
@@ -327,8 +460,16 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                         <Rocket className="size-6" />
                                     </div>
                                     <div>
-                                        <h4 className="mb-1 font-bold text-on-surface dark:text-white">{__('messages.about.value_innovation_title')}</h4>
-                                        <p className="text-sm leading-relaxed text-on-surface-variant/80">{__('messages.about.value_innovation_desc')}</p>
+                                        <h4 className="mb-1 font-bold text-on-surface dark:text-white">
+                                            {__(
+                                                'messages.about.value_innovation_title',
+                                            )}
+                                        </h4>
+                                        <p className="text-sm leading-relaxed text-on-surface-variant/80">
+                                            {__(
+                                                'messages.about.value_innovation_desc',
+                                            )}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -341,8 +482,8 @@ export default function SponsorshipApply({ countries }: { countries: Country[] }
                                 src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1000"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/80 via-deep-navy/20 to-transparent" />
-                            <div className="absolute bottom-6 left-6 right-6">
-                                <p className="text-sm font-bold text-white/90 italic leading-relaxed">
+                            <div className="absolute right-6 bottom-6 left-6">
+                                <p className="text-sm leading-relaxed font-bold text-white/90 italic">
                                     " {__('messages.about.quote')} "
                                 </p>
                             </div>

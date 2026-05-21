@@ -15,7 +15,7 @@ import {
     Calendar,
     MapPin,
     FileText,
-    Eye
+    Eye,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -39,20 +39,28 @@ interface SponsorshipRequestShowProps {
     request: SponsorshipRequest;
 }
 
-export default function SponsorshipRequestShow({ request }: SponsorshipRequestShowProps) {
+export default function SponsorshipRequestShow({
+    request,
+}: SponsorshipRequestShowProps) {
     const [isProcessing, setIsProcessing] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    const handleUpdateStatus = (status: 'approved' | 'rejected' | 'pending') => {
+    const handleUpdateStatus = (
+        status: 'approved' | 'rejected' | 'pending',
+    ) => {
         setIsProcessing(true);
-        router.patch(admin.sponsorshipRequests.updateStatus(request.id).url, {
-            status: status
-        }, {
-            onSuccess: () => {
-                toast.success('تم تحديث حالة الطلب بنجاح');
+        router.patch(
+            admin.sponsorshipRequests.updateStatus(request.id).url,
+            {
+                status: status,
             },
-            onFinish: () => setIsProcessing(false)
-        });
+            {
+                onSuccess: () => {
+                    toast.success('تم تحديث حالة الطلب بنجاح');
+                },
+                onFinish: () => setIsProcessing(false),
+            },
+        );
     };
 
     const handleDeleteSubmit = () => {
@@ -71,18 +79,36 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                     <div className="flex items-center gap-3">
                         <Link
                             href={admin.sponsorshipRequests.index().url}
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-full border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                         >
                             <ArrowRight className="size-5" />
                         </Link>
                         <div>
-                            <h1 className="text-2xl font-bold">{request.company_name}</h1>
+                            <h1 className="text-2xl font-bold">
+                                {request.company_name}
+                            </h1>
                             <div className="mt-1 flex items-center gap-2">
-                                <Badge variant={request.status === 'approved' ? 'default' : request.status === 'rejected' ? 'destructive' : 'secondary'} className="font-bold">
-                                    {request.status === 'approved' ? 'تم القبول' : request.status === 'rejected' ? 'مرفوض' : 'قيد المراجعة'}
+                                <Badge
+                                    variant={
+                                        request.status === 'approved'
+                                            ? 'default'
+                                            : request.status === 'rejected'
+                                              ? 'destructive'
+                                              : 'secondary'
+                                    }
+                                    className="font-bold"
+                                >
+                                    {request.status === 'approved'
+                                        ? 'تم القبول'
+                                        : request.status === 'rejected'
+                                          ? 'مرفوض'
+                                          : 'قيد المراجعة'}
                                 </Badge>
-                                <span className="text-sm text-muted-foreground font-semibold">
-                                    تاريخ التقديم: {new Date(request.created_at).toLocaleDateString('ar-EG')}
+                                <span className="text-sm font-semibold text-muted-foreground">
+                                    تاريخ التقديم:{' '}
+                                    {new Date(
+                                        request.created_at,
+                                    ).toLocaleDateString('ar-EG')}
                                 </span>
                             </div>
                         </div>
@@ -93,19 +119,31 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                             <>
                                 <Button
                                     variant="destructive"
-                                    onClick={() => handleUpdateStatus('rejected')}
+                                    onClick={() =>
+                                        handleUpdateStatus('rejected')
+                                    }
                                     disabled={isProcessing}
                                     className="font-bold"
                                 >
-                                    {isProcessing ? <Loader2 className="me-2 size-4 animate-spin" /> : <XCircle className="me-2 size-4" />}
+                                    {isProcessing ? (
+                                        <Loader2 className="me-2 size-4 animate-spin" />
+                                    ) : (
+                                        <XCircle className="me-2 size-4" />
+                                    )}
                                     رفض الطلب
                                 </Button>
                                 <Button
-                                    onClick={() => handleUpdateStatus('approved')}
+                                    onClick={() =>
+                                        handleUpdateStatus('approved')
+                                    }
                                     disabled={isProcessing}
-                                    className="bg-green-600 hover:bg-green-700 font-bold"
+                                    className="bg-green-600 font-bold hover:bg-green-700"
                                 >
-                                    {isProcessing ? <Loader2 className="me-2 size-4 animate-spin" /> : <CheckCircle className="me-2 size-4" />}
+                                    {isProcessing ? (
+                                        <Loader2 className="me-2 size-4 animate-spin" />
+                                    ) : (
+                                        <CheckCircle className="me-2 size-4" />
+                                    )}
                                     قبول الطلب
                                 </Button>
                             </>
@@ -120,12 +158,15 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                 إعادة تعيين الحالة
                             </Button>
                         )}
-                        <Separator orientation="vertical" className="mx-1 h-8" />
+                        <Separator
+                            orientation="vertical"
+                            className="mx-1 h-8"
+                        />
                         <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => setIsDeleteModalOpen(true)}
-                            className="text-muted-foreground hover:bg-red-50 hover:text-red-600 transition-colors"
+                            className="text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
                         >
                             <Trash2 className="size-5" />
                         </Button>
@@ -133,7 +174,7 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-3">
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="space-y-6 lg:col-span-2">
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 font-bold">
@@ -162,8 +203,12 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <Mail className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">البريد الإلكتروني</p>
-                                            <p className="font-bold truncate max-w-[200px]">{request.email}</p>
+                                            <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                                                البريد الإلكتروني
+                                            </p>
+                                            <p className="max-w-[200px] truncate font-bold">
+                                                {request.email}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -172,8 +217,12 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <Phone className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">رقم الهاتف</p>
-                                            <p className="font-bold" dir="ltr">{request.phone}</p>
+                                            <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                                                رقم الهاتف
+                                            </p>
+                                            <p className="font-bold" dir="ltr">
+                                                {request.phone}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -183,12 +232,14 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                                 <Globe className="size-4 text-primary" />
                                             </div>
                                             <div>
-                                                <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">الموقع الإلكتروني</p>
-                                                <a 
-                                                    href={request.website} 
-                                                    target="_blank" 
+                                                <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                                                    الموقع الإلكتروني
+                                                </p>
+                                                <a
+                                                    href={request.website}
+                                                    target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="font-bold text-primary flex items-center gap-1 hover:underline"
+                                                    className="flex items-center gap-1 font-bold text-primary hover:underline"
                                                 >
                                                     {request.website}
                                                     <ExternalLink className="size-3" />
@@ -202,7 +253,9 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
 
                         <Card>
                             <CardHeader>
-                                <CardTitle className="font-bold">تفاصيل الطلب</CardTitle>
+                                <CardTitle className="font-bold">
+                                    تفاصيل الطلب
+                                </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="grid gap-6 sm:grid-cols-2">
@@ -211,8 +264,12 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <Building2 className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold">اسم الشركة</p>
-                                            <p className="font-bold">{request.company_name}</p>
+                                            <p className="text-xs font-semibold text-muted-foreground">
+                                                اسم الشركة
+                                            </p>
+                                            <p className="font-bold">
+                                                {request.company_name}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -221,8 +278,13 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <MapPin className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold">الدولة</p>
-                                            <p className="font-bold">{request.country?.name_ar || 'غير محدد'}</p>
+                                            <p className="text-xs font-semibold text-muted-foreground">
+                                                الدولة
+                                            </p>
+                                            <p className="font-bold">
+                                                {request.country?.name_ar ||
+                                                    'غير محدد'}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -231,8 +293,14 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <Calendar className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold">تاريخ التقديم</p>
-                                            <p className="font-bold">{new Date(request.created_at).toLocaleDateString('ar-EG')}</p>
+                                            <p className="text-xs font-semibold text-muted-foreground">
+                                                تاريخ التقديم
+                                            </p>
+                                            <p className="font-bold">
+                                                {new Date(
+                                                    request.created_at,
+                                                ).toLocaleDateString('ar-EG')}
+                                            </p>
                                         </div>
                                     </div>
 
@@ -241,9 +309,16 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                                             <Clock className="size-4 text-primary" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-muted-foreground font-semibold">الحالة الحالية</p>
+                                            <p className="text-xs font-semibold text-muted-foreground">
+                                                الحالة الحالية
+                                            </p>
                                             <p className="font-bold">
-                                                {request.status === 'pending' ? 'بانتظار المراجعة' : request.status === 'approved' ? 'مقبول' : 'مرفوض'}
+                                                {request.status === 'pending'
+                                                    ? 'بانتظار المراجعة'
+                                                    : request.status ===
+                                                        'approved'
+                                                      ? 'مقبول'
+                                                      : 'مرفوض'}
                                             </p>
                                         </div>
                                     </div>
@@ -255,35 +330,46 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                     <div className="space-y-6">
                         <Card className="overflow-hidden">
                             <CardHeader className="border-b bg-muted/10 px-6 py-4">
-                                <CardTitle className="font-bold text-lg flex items-center gap-2">
+                                <CardTitle className="flex items-center gap-2 text-lg font-bold">
                                     <ImageIcon className="size-5 text-primary" />
                                     شعار الشركة
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-6">
                                 {request.logo ? (
-                                    <div className="overflow-hidden rounded-xl border bg-white dark:bg-zinc-950 shadow-sm group relative aspect-square">
-                                        <img 
-                                            src={request.logo} 
-                                            alt={request.company_name} 
-                                            className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-110" 
+                                    <div className="group relative aspect-square overflow-hidden rounded-xl border bg-white shadow-sm dark:bg-zinc-950">
+                                        <img
+                                            src={request.logo}
+                                            alt={request.company_name}
+                                            className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
                                         />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-4">
-                                             <Button variant="secondary" size="sm" asChild className="font-bold shadow-lg">
-                                                <a href={request.logo} target="_blank" rel="noopener noreferrer">
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                                            <Button
+                                                variant="secondary"
+                                                size="sm"
+                                                asChild
+                                                className="font-bold shadow-lg"
+                                            >
+                                                <a
+                                                    href={request.logo}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
                                                     <Eye className="me-2 size-4" />
                                                     عرض الشعار كاملاً
                                                 </a>
-                                             </Button>
+                                            </Button>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center justify-center h-40 rounded-xl border-2 border-dashed border-muted text-muted-foreground bg-muted/5">
+                                    <div className="flex h-40 items-center justify-center rounded-xl border-2 border-dashed border-muted bg-muted/5 text-muted-foreground">
                                         <div className="flex flex-col items-center gap-2">
-                                            <div className="p-3 rounded-full bg-muted/50">
+                                            <div className="rounded-full bg-muted/50 p-3">
                                                 <ImageIcon className="size-8 opacity-40" />
                                             </div>
-                                            <span className="text-sm font-bold">لا يوجد شعار مرفق</span>
+                                            <span className="text-sm font-bold">
+                                                لا يوجد شعار مرفق
+                                            </span>
                                         </div>
                                     </div>
                                 )}
@@ -294,31 +380,42 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
             </div>
 
             {/* Delete Confirmation */}
-            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+            <Dialog
+                open={isDeleteModalOpen}
+                onOpenChange={setIsDeleteModalOpen}
+            >
                 <DialogContent className="p-6" dir="rtl">
                     <div className="space-y-4">
                         <DialogHeader>
-                            <DialogTitle className="text-start font-bold">حذف الطلب</DialogTitle>
+                            <DialogTitle className="text-start font-bold">
+                                حذف الطلب
+                            </DialogTitle>
                             <DialogDescription className="text-start font-semibold">
-                                هل أنت متأكد من حذف طلب الرعاية الخاص بـ <span className="text-foreground font-bold">{request.company_name}</span>؟ لا يمكن التراجع عن هذا الإجراء.
+                                هل أنت متأكد من حذف طلب الرعاية الخاص بـ{' '}
+                                <span className="font-bold text-foreground">
+                                    {request.company_name}
+                                </span>
+                                ؟ لا يمكن التراجع عن هذا الإجراء.
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter className="mt-6 flex flex-row items-center justify-start gap-2">
-                            <Button 
-                                type="button" 
-                                variant="outline" 
+                            <Button
+                                type="button"
+                                variant="outline"
                                 onClick={() => setIsDeleteModalOpen(false)}
                                 className="font-bold"
                             >
                                 إلغاء
                             </Button>
-                            <Button 
-                                type="button" 
-                                variant="destructive" 
+                            <Button
+                                type="button"
+                                variant="destructive"
                                 onClick={handleDeleteSubmit}
                                 className="font-bold"
                             >
-                                {isProcessing && <Loader2 className="me-2 size-4 animate-spin" />}
+                                {isProcessing && (
+                                    <Loader2 className="me-2 size-4 animate-spin" />
+                                )}
                                 حذف نهائي
                             </Button>
                         </DialogFooter>

@@ -5,7 +5,8 @@ import { IdeaCard } from '@/app/components/idea-card';
 import { Pagination } from '@/components/ui/pagination';
 import type { Idea } from '@/types';
 
-const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800';
+const DEFAULT_IMAGE =
+    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800';
 
 type Props = {
     ideas: {
@@ -58,7 +59,10 @@ export default function IdeaList({ ideas }: Props) {
         <div className="space-y-10">
             <div>
                 <div className="mb-4 text-sm font-medium text-outline">
-                    {__('messages.archive.results_found').replace(':count', ideas.meta.total.toString())}
+                    {__('messages.archive.results_found').replace(
+                        ':count',
+                        ideas.meta.total.toString(),
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
@@ -70,7 +74,13 @@ export default function IdeaList({ ideas }: Props) {
                             title={idea.title}
                             description={idea.description}
                             budget="100$"
-                            category={typeof idea.category === 'object' ? (isRtl ? idea.category.name_ar : idea.category.name_en) : idea.category}
+                            category={
+                                typeof idea.category === 'object'
+                                    ? isRtl
+                                        ? idea.category.name_ar
+                                        : idea.category.name_en
+                                    : idea.category
+                            }
                             categoryIcon={idea.category_icon || ''}
                             authorName={idea.user?.name || ''}
                             authorAvatar={idea.user?.avatar || ''}

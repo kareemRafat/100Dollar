@@ -16,7 +16,9 @@ export default function PreviousWinners({ winners = [] }: Props) {
     const { locale } = usePage().props;
     const isRtl = locale === 'ar';
 
-    const winnersArray = (Array.isArray(winners) ? winners : Object.values(winners || {})) as Idea[];
+    const winnersArray = (
+        Array.isArray(winners) ? winners : Object.values(winners || {})
+    ) as Idea[];
 
     const [emblaRef, emblaApi] = useEmblaCarousel({
         direction: isRtl ? 'rtl' : 'ltr',
@@ -27,8 +29,14 @@ export default function PreviousWinners({ winners = [] }: Props) {
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
     const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = useCallback(
+        () => emblaApi && emblaApi.scrollPrev(),
+        [emblaApi],
+    );
+    const scrollNext = useCallback(
+        () => emblaApi && emblaApi.scrollNext(),
+        [emblaApi],
+    );
 
     const onSelect = useCallback((emblaApi: any) => {
         setPrevBtnDisabled(!emblaApi.canScrollPrev());
@@ -86,26 +94,44 @@ export default function PreviousWinners({ winners = [] }: Props) {
                         href="/archive"
                     >
                         {__('messages.ui.browse_full_archive')}
-                        <ArrowRight className="size-4 rtl:rotate-180 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1" />
                     </Link>
                 </div>
             </div>
 
-            <div className="overflow-hidden cursor-grab active:cursor-grabbing select-none touch-pan-y" ref={emblaRef}>
+            <div
+                className="cursor-grab touch-pan-y overflow-hidden select-none active:cursor-grabbing"
+                ref={emblaRef}
+            >
                 <div className="flex items-stretch gap-6 pb-10 select-none">
                     {winnersArray.map((winner, index) => (
-                        <div key={`${winner.id}-${index}`} className="min-w-0 flex-[0_0_auto] select-none flex">
-                            <WinnerCard 
+                        <div
+                            key={`${winner.id}-${index}`}
+                            className="flex min-w-0 flex-[0_0_auto] select-none"
+                        >
+                            <WinnerCard
                                 id={winner.id}
-                                name={winner.user?.name || __('messages.home.anonymous')} 
-                                idea={winner.title} 
-                                badge={winner.winner_announced_at 
-                                    ? new Intl.DateTimeFormat(locale as string, { weekday: 'long' }).format(new Date(winner.winner_announced_at))
-                                    : ''} 
+                                name={
+                                    winner.user?.name ||
+                                    __('messages.home.anonymous')
+                                }
+                                idea={winner.title}
+                                badge={
+                                    winner.winner_announced_at
+                                        ? new Intl.DateTimeFormat(
+                                              locale as string,
+                                              { weekday: 'long' },
+                                          ).format(
+                                              new Date(
+                                                  winner.winner_announced_at,
+                                              ),
+                                          )
+                                        : ''
+                                }
                             />
                         </div>
                     ))}
-                    <div className="min-w-0 flex-[0_0_auto] flex">
+                    <div className="flex min-w-0 flex-[0_0_auto]">
                         <Link
                             href="/archive"
                             className="group flex w-72 cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 bg-surface-container-low p-6 text-center transition-colors hover:border-primary/50"

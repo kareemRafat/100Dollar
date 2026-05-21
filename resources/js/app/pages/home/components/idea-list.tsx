@@ -21,7 +21,7 @@ export default function IdeaList({ ideas, votedIdeaId }: Props) {
 
     if (ideasData.length === 0) {
         return (
-            <div className="mx-auto mb-20 flex max-w-7xl flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 py-20 px-6 text-center">
+            <div className="mx-auto mb-20 flex max-w-7xl flex-col items-center justify-center rounded-3xl border-2 border-dashed border-outline-variant/30 px-6 py-20 text-center">
                 <Lightbulb className="size-16 text-outline-variant" />
                 <h3 className="mt-4 text-xl font-bold text-on-surface dark:text-white">
                     {__('messages.home.no_ideas_yet')}
@@ -61,15 +61,16 @@ export default function IdeaList({ ideas, votedIdeaId }: Props) {
                 )}
             >
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {ideasData.map((idea, index) => (
-                        idea && (
-                            <VoteableIdeaCard
-                                key={`${idea.id}-${index}`}
-                                idea={idea}
-                                isVoted={votedIdeaId === idea.id}
-                            />
-                        )
-                    ))}
+                    {ideasData.map(
+                        (idea, index) =>
+                            idea && (
+                                <VoteableIdeaCard
+                                    key={`${idea.id}-${index}`}
+                                    idea={idea}
+                                    isVoted={votedIdeaId === idea.id}
+                                />
+                            ),
+                    )}
                 </div>
             </InfiniteScroll>
         </section>

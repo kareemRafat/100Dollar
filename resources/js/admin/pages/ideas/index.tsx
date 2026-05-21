@@ -1,5 +1,14 @@
 import { Head, Link, router } from '@inertiajs/react';
-import { Eye, Search, Lightbulb, User as UserIcon, Calendar, CheckCircle, XCircle, Clock } from 'lucide-react';
+import {
+    Eye,
+    Search,
+    Lightbulb,
+    User as UserIcon,
+    Calendar,
+    CheckCircle,
+    XCircle,
+    Clock,
+} from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
@@ -38,8 +47,18 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const statusTabs = [
-    { id: 'pending', label: 'في انتظار المراجعة', icon: Clock, color: 'text-amber-500' },
-    { id: 'approved', label: 'تمت الموافقة', icon: CheckCircle, color: 'text-green-500' },
+    {
+        id: 'pending',
+        label: 'في انتظار المراجعة',
+        icon: Clock,
+        color: 'text-amber-500',
+    },
+    {
+        id: 'approved',
+        label: 'تمت الموافقة',
+        icon: CheckCircle,
+        color: 'text-green-500',
+    },
     { id: 'rejected', label: 'مرفوضة', icon: XCircle, color: 'text-red-500' },
 ];
 
@@ -57,11 +76,15 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
         }
 
         const timeout = setTimeout(() => {
-            router.get(admin.ideas.index().url, { search, status }, {
-                preserveState: true,
-                replace: true,
-                only: ['ideas', 'filters'],
-            });
+            router.get(
+                admin.ideas.index().url,
+                { search, status },
+                {
+                    preserveState: true,
+                    replace: true,
+                    only: ['ideas', 'filters'],
+                },
+            );
         }, 300);
 
         return () => clearTimeout(timeout);
@@ -70,11 +93,26 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'approved':
-                return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 font-bold">تمت الموافقة</Badge>;
+                return (
+                    <Badge className="bg-green-100 font-bold text-green-800 hover:bg-green-100">
+                        تمت الموافقة
+                    </Badge>
+                );
             case 'rejected':
-                return <Badge variant="destructive" className="font-bold">مرفوضة</Badge>;
+                return (
+                    <Badge variant="destructive" className="font-bold">
+                        مرفوضة
+                    </Badge>
+                );
             default:
-                return <Badge variant="secondary" className="bg-amber-100 text-amber-800 hover:bg-amber-100 font-bold">قيد الانتظار</Badge>;
+                return (
+                    <Badge
+                        variant="secondary"
+                        className="bg-amber-100 font-bold text-amber-800 hover:bg-amber-100"
+                    >
+                        قيد الانتظار
+                    </Badge>
+                );
         }
     };
 
@@ -85,7 +123,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold">إدارة الأفكار</h1>
-                        <p className="text-sm text-muted-foreground font-semibold">
+                        <p className="text-sm font-semibold text-muted-foreground">
                             مراجعة وقبول أو رفض الأفكار المقدمة من المستخدمين
                         </p>
                     </div>
@@ -102,13 +140,18 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                     key={tab.id}
                                     onClick={() => setStatus(tab.id)}
                                     className={cn(
-                                        "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all",
+                                        'flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all',
                                         isActive
-                                            ? "bg-primary text-primary-foreground shadow-sm"
-                                            : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                                            ? 'bg-primary text-primary-foreground shadow-sm'
+                                            : 'bg-muted/50 text-muted-foreground hover:bg-muted',
                                     )}
                                 >
-                                    <Icon className={cn("size-4", !isActive && tab.color)} />
+                                    <Icon
+                                        className={cn(
+                                            'size-4',
+                                            !isActive && tab.color,
+                                        )}
+                                    />
                                     {tab.label}
                                 </button>
                             );
@@ -117,9 +160,11 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
 
                     <Card>
                         <CardHeader className="flex flex-col space-y-4 pb-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
-                            <CardTitle className="font-bold">قائمة الأفكار</CardTitle>
+                            <CardTitle className="font-bold">
+                                قائمة الأفكار
+                            </CardTitle>
                             <div className="relative w-full sm:w-64">
-                                <div className="pointer-events-none absolute inset-y-0 inset-inline-start-0 flex items-center ps-3">
+                                <div className="inset-inline-start-0 pointer-events-none absolute inset-y-0 flex items-center ps-3">
                                     <Search className="h-4 w-4 text-muted-foreground" />
                                 </div>
                                 <Input
@@ -136,26 +181,45 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead className="w-12 font-bold text-center">#</TableHead>
-                                            <TableHead className="min-w-50 font-bold">الفكرة وصاحبها</TableHead>
-                                            <TableHead className="min-w-25 font-bold">التصنيف</TableHead>
-                                            <TableHead className="min-w-30 font-bold">تاريخ التقديم</TableHead>
-                                            <TableHead className="min-w-25 font-bold">الحالة</TableHead>
-                                            <TableHead className="text-end min-w-25 font-bold">الإجراءات</TableHead>
+                                            <TableHead className="w-12 text-center font-bold">
+                                                #
+                                            </TableHead>
+                                            <TableHead className="min-w-50 font-bold">
+                                                الفكرة وصاحبها
+                                            </TableHead>
+                                            <TableHead className="min-w-25 font-bold">
+                                                التصنيف
+                                            </TableHead>
+                                            <TableHead className="min-w-30 font-bold">
+                                                تاريخ التقديم
+                                            </TableHead>
+                                            <TableHead className="min-w-25 font-bold">
+                                                الحالة
+                                            </TableHead>
+                                            <TableHead className="min-w-25 text-end font-bold">
+                                                الإجراءات
+                                            </TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         {ideas.data.length === 0 ? (
                                             <TableRow>
-                                                <TableCell colSpan={6} className="h-72 text-center">
+                                                <TableCell
+                                                    colSpan={6}
+                                                    className="h-72 text-center"
+                                                >
                                                     <div className="flex flex-col items-center justify-center space-y-4">
                                                         <div className="rounded-full bg-muted p-4">
                                                             <Lightbulb className="h-10 w-10 text-muted-foreground" />
                                                         </div>
                                                         <div className="space-y-1">
-                                                            <p className="text-xl font-bold">لا توجد أفكار</p>
-                                                            <p className="text-sm text-muted-foreground font-semibold">
-                                                                لا توجد أفكار تطابق المعايير المختارة حالياً.
+                                                            <p className="text-xl font-bold">
+                                                                لا توجد أفكار
+                                                            </p>
+                                                            <p className="text-sm font-semibold text-muted-foreground">
+                                                                لا توجد أفكار
+                                                                تطابق المعايير
+                                                                المختارة حالياً.
                                                             </p>
                                                         </div>
                                                     </div>
@@ -165,37 +229,61 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                             ideas.data.map((idea, index) => (
                                                 <TableRow key={idea.id}>
                                                     <TableCell className="text-center font-bold text-muted-foreground">
-                                                        {(ideas.meta.current_page - 1) * ideas.meta.per_page + index + 1}
+                                                        {(ideas.meta
+                                                            .current_page -
+                                                            1) *
+                                                            ideas.meta
+                                                                .per_page +
+                                                            index +
+                                                            1}
                                                     </TableCell>
                                                     <TableCell className="font-bold">
                                                         <div className="flex flex-col gap-1">
-                                                            <span className="text-sm md:text-base">{idea.title}</span>
-                                                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground font-bold">
+                                                            <span className="text-sm md:text-base">
+                                                                {idea.title}
+                                                            </span>
+                                                            <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
                                                                 <UserIcon className="size-3.5" />
-                                                                {idea.user?.name}
+                                                                {
+                                                                    idea.user
+                                                                        ?.name
+                                                                }
                                                             </div>
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <Badge variant="outline" className="font-bold">
-                                                            {typeof idea.category === 'object' ? idea.category?.name_ar : idea.category}
+                                                        <Badge
+                                                            variant="outline"
+                                                            className="font-bold"
+                                                        >
+                                                            {typeof idea.category ===
+                                                            'object'
+                                                                ? idea.category
+                                                                      ?.name_ar
+                                                                : idea.category}
                                                         </Badge>
                                                     </TableCell>
                                                     <TableCell>
-                                                        <div className="flex items-center gap-2 text-sm text-muted-foreground font-semibold">
+                                                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
                                                             <Calendar className="size-3" />
                                                             {idea.date}
                                                         </div>
                                                     </TableCell>
                                                     <TableCell>
-                                                        {getStatusBadge(idea.status)}
+                                                        {getStatusBadge(
+                                                            idea.status,
+                                                        )}
                                                     </TableCell>
                                                     <TableCell className="text-end">
                                                         <Link
-                                                            href={admin.ideas.show(idea.id).url}
+                                                            href={
+                                                                admin.ideas.show(
+                                                                    idea.id,
+                                                                ).url
+                                                            }
                                                             data={filters}
                                                             prefetch
-                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary hover:bg-primary/20 transition-colors"
+                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/20"
                                                         >
                                                             <Eye className="me-2 h-4 w-4" />
                                                             مراجعة

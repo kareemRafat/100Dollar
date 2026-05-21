@@ -22,12 +22,12 @@ export function WinnerCard({
     const { __ } = useLang();
 
     return (
-        <Link 
+        <Link
             href={`/ideas/${id}`}
             prefetch
-            className="group relative flex h-full w-72 flex-shrink-0 flex-col snap-start overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card"
+            className="group relative flex h-full w-72 flex-shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card"
         >
-            <div className="absolute top-0 start-0 h-1 w-full bg-gradient-to-inline-end from-primary to-transparent" />
+            <div className="bg-gradient-to-inline-end absolute start-0 top-0 h-1 w-full from-primary to-transparent" />
             <div className="relative mx-auto mb-6 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
                 {avatarUrl ? (
@@ -51,10 +51,10 @@ export function WinnerCard({
                 <div className="mb-4 inline-block self-center rounded-full bg-primary/10 px-3 py-1 text-[10px] font-bold text-primary uppercase">
                     {badge}
                 </div>
-                <h4 className="mb-2 font-headline text-lg font-bold text-on-surface dark:text-white transition-colors group-hover:text-primary">
+                <h4 className="mb-2 font-headline text-lg font-bold text-on-surface transition-colors group-hover:text-primary dark:text-white">
                     {name}
                 </h4>
-                <p className="mb-8 line-clamp-3 text-sm leading-relaxed text-on-surface-variant px-2">
+                <p className="mb-8 line-clamp-3 px-2 text-sm leading-relaxed text-on-surface-variant">
                     {idea}
                 </p>
                 <div className="mt-auto flex items-center justify-between border-t border-outline-variant/10 pt-4">

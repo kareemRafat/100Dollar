@@ -1,8 +1,8 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
-import { useEffect, useMemo, useState  } from 'react';
-import type {SubmitEvent} from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { SubmitEvent } from 'react';
 import { Button } from '@/app/components/ui/button';
 import AuthLayout from '@/app/layouts/auth/auth-layout';
 import InputError from '@/components/input-error';
@@ -16,36 +16,51 @@ import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { cn } from '@/lib/utils';
 
 export default function TwoFactorChallenge() {
-    const { locale, flash } = usePage().props as { locale: string; flash?: { message?: string; retry_after?: number | null } };
+    const { locale, flash } = usePage().props as {
+        locale: string;
+        flash?: { message?: string; retry_after?: number | null };
+    };
     const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
-    const [retryAfter, setRetryAfter] = useState<number>(Number(flash?.retry_after ?? 0));
+    const [retryAfter, setRetryAfter] = useState<number>(
+        Number(flash?.retry_after ?? 0),
+    );
     const isRtl = locale === 'ar';
     const isBlocked = retryAfter > 0;
-    const waitButtonText = locale === 'ar'
-        ? `حاول مرة أخرى بعد ${retryAfter} ثانية`
-        : `Try again in ${retryAfter} seconds`;
+    const waitButtonText =
+        locale === 'ar'
+            ? `حاول مرة أخرى بعد ${retryAfter} ثانية`
+            : `Try again in ${retryAfter} seconds`;
 
-    const { data, setData, post, processing, errors, clearErrors, reset } = useForm({
-        code: '',
-        recovery_code: '',
-        _locale: locale as string,
-    });
+    const { data, setData, post, processing, errors, clearErrors, reset } =
+        useForm({
+            code: '',
+            recovery_code: '',
+            _locale: locale as string,
+        });
 
     const content = useMemo(() => {
         if (showRecoveryInput) {
             return {
                 title: __('messages.two_factor_challenge.recovery_code_title'),
-                description: __('messages.two_factor_challenge.recovery_code_description'),
-                toggleText: __('messages.two_factor_challenge.toggle_auth_code'),
-                placeholder: __('messages.two_factor_challenge.recovery_code_placeholder'),
+                description: __(
+                    'messages.two_factor_challenge.recovery_code_description',
+                ),
+                toggleText: __(
+                    'messages.two_factor_challenge.toggle_auth_code',
+                ),
+                placeholder: __(
+                    'messages.two_factor_challenge.recovery_code_placeholder',
+                ),
             };
         }
 
         return {
             title: __('messages.two_factor_challenge.title'),
             description: __('messages.two_factor_challenge.description'),
-            toggleText: __('messages.two_factor_challenge.toggle_recovery_code'),
+            toggleText: __(
+                'messages.two_factor_challenge.toggle_recovery_code',
+            ),
             placeholder: '••••••',
         };
     }, [showRecoveryInput, __]);
@@ -92,7 +107,12 @@ export default function TwoFactorChallenge() {
             <Head title={__('messages.two_factor_challenge.title')} />
 
             <div className="space-y-6">
-                <div className={cn("space-y-2", isRtl ? "text-right" : "text-left")}>
+                <div
+                    className={cn(
+                        'space-y-2',
+                        isRtl ? 'text-right' : 'text-left',
+                    )}
+                >
                     <h1 className="text-2xl font-bold text-on-surface dark:text-white">
                         {content.title}
                     </h1>
@@ -102,7 +122,7 @@ export default function TwoFactorChallenge() {
                 </div>
 
                 {flash?.message ? (
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200 font-semibold">
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-200">
                         {flash.message}
                     </div>
                 ) : null}
@@ -115,18 +135,23 @@ export default function TwoFactorChallenge() {
                                 type="text"
                                 placeholder={content.placeholder}
                                 value={data.recovery_code}
-                                onChange={(e) => setData('recovery_code', e.target.value)}
+                                onChange={(e) =>
+                                    setData('recovery_code', e.target.value)
+                                }
                                 autoFocus={showRecoveryInput}
                                 required
                                 disabled={processing || isBlocked}
-                                className={cn(isRtl ? "text-right" : "text-left")}
+                                className={cn(
+                                    isRtl ? 'text-right' : 'text-left',
+                                )}
                             />
-                            <InputError
-                                message={errors.recovery_code}
-                            />
+                            <InputError message={errors.recovery_code} />
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center space-y-3 text-center" dir="ltr">
+                        <div
+                            className="flex flex-col items-center justify-center space-y-3 text-center"
+                            dir="ltr"
+                        >
                             <InputOTP
                                 name="code"
                                 maxLength={OTP_MAX_LENGTH}
@@ -151,10 +176,16 @@ export default function TwoFactorChallenge() {
                         </div>
                     )}
 
-                    <Button type="submit" className="w-full" disabled={processing || isBlocked}>
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={processing || isBlocked}
+                    >
                         {isBlocked
                             ? waitButtonText
-                            : __('messages.two_factor_challenge.continue_button')}
+                            : __(
+                                  'messages.two_factor_challenge.continue_button',
+                              )}
                     </Button>
 
                     <button
@@ -162,7 +193,7 @@ export default function TwoFactorChallenge() {
                         className="w-full text-sm text-primary underline underline-offset-4 disabled:cursor-not-allowed disabled:opacity-60"
                         disabled={processing || isBlocked}
                         onClick={() => {
-                            setShowRecoveryInput((current) => ! current);
+                            setShowRecoveryInput((current) => !current);
                             clearErrors();
                             setData({
                                 ...data,

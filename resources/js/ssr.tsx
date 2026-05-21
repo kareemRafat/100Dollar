@@ -17,7 +17,8 @@ createServer((page) =>
         resolve: (name) => {
             const pages = import.meta.glob('./**/*.tsx', { eager: true });
 
-            return (pages[`./${name}.tsx`] || pages[`./pages/${name}.tsx`]) as any;
+            return (pages[`./${name}.tsx`] ||
+                pages[`./pages/${name}.tsx`]) as any;
         },
         layout: (name) => {
             switch (true) {

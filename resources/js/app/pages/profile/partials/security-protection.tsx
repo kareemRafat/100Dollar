@@ -44,11 +44,17 @@ function SecurityAndProtection({
     useEffect(() => {
         if (prevTwoFactorEnabled.current && !twoFactorEnabled) {
             clearTwoFactorAuthData();
-            toast.success(__('messages.profile.protection_settings'), __('messages.two_factor.2fa_disabled_success'));
+            toast.success(
+                __('messages.profile.protection_settings'),
+                __('messages.two_factor.2fa_disabled_success'),
+            );
         }
 
         if (!prevTwoFactorEnabled.current && twoFactorEnabled) {
-            toast.success(__('messages.profile.protection_settings'), __('messages.two_factor.2fa_enabled_success'));
+            toast.success(
+                __('messages.profile.protection_settings'),
+                __('messages.two_factor.2fa_enabled_success'),
+            );
         }
 
         prevTwoFactorEnabled.current = twoFactorEnabled;
@@ -78,23 +84,46 @@ function SecurityAndProtection({
                                 <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary/5 text-primary">
                                     <ShieldCheck className="size-6" />
                                 </div>
-                                <div className={cn(isRtl ? 'text-right' : 'text-left')}>
+                                <div
+                                    className={cn(
+                                        isRtl ? 'text-right' : 'text-left',
+                                    )}
+                                >
                                     <h4 className="font-bold text-on-surface dark:text-white">
-                                        {__('messages.profile.two_factor_title')}
+                                        {__(
+                                            'messages.profile.two_factor_title',
+                                        )}
                                     </h4>
                                     <p className="max-w-md text-xs text-on-surface-variant/70">
                                         {twoFactorEnabled
-                                            ? __('messages.profile.two_factor_enabled_desc')
-                                            : __('messages.profile.two_factor_desc')}
+                                            ? __(
+                                                  'messages.profile.two_factor_enabled_desc',
+                                              )
+                                            : __(
+                                                  'messages.profile.two_factor_desc',
+                                              )}
                                     </p>
                                 </div>
                             </div>
 
                             <div className="w-full sm:w-auto">
                                 {twoFactorEnabled ? (
-                                    <Form 
-                                        {...disable.form({ query: { _locale: locale as string } })}
-                                        onError={() => toast.error(__('messages.profile.security_protection'), __('messages.two_factor.2fa_disable_failed'))}
+                                    <Form
+                                        {...disable.form({
+                                            query: {
+                                                _locale: locale as string,
+                                            },
+                                        })}
+                                        onError={() =>
+                                            toast.error(
+                                                __(
+                                                    'messages.profile.security_protection',
+                                                ),
+                                                __(
+                                                    'messages.two_factor.2fa_disable_failed',
+                                                ),
+                                            )
+                                        }
                                     >
                                         {({ processing }) => (
                                             <Button
@@ -107,7 +136,9 @@ function SecurityAndProtection({
                                                 {processing && (
                                                     <Loader2 className="me-2 size-4 animate-spin" />
                                                 )}
-                                                {__('messages.profile.2fa_disable')}
+                                                {__(
+                                                    'messages.profile.2fa_disable',
+                                                )}
                                             </Button>
                                         )}
                                     </Form>
@@ -117,15 +148,41 @@ function SecurityAndProtection({
                                             <Button
                                                 size="sm"
                                                 className="w-full rounded-xl font-bold sm:w-auto"
-                                                onClick={() => setShowSetupModal(true)}
+                                                onClick={() =>
+                                                    setShowSetupModal(true)
+                                                }
                                             >
-                                                {__('messages.two_factor.setup_continue')}
+                                                {__(
+                                                    'messages.two_factor.setup_continue',
+                                                )}
                                             </Button>
                                         ) : (
                                             <Form
-                                                {...enable.form({ query: { _locale: locale as string } })}
-                                                onSuccess={() => setTimeout(() => setShowSetupModal(true), 0)}
-                                                onError={() => toast.error(__('messages.profile.security_protection'), __('messages.two_factor.2fa_enable_failed'))}
+                                                {...enable.form({
+                                                    query: {
+                                                        _locale:
+                                                            locale as string,
+                                                    },
+                                                })}
+                                                onSuccess={() =>
+                                                    setTimeout(
+                                                        () =>
+                                                            setShowSetupModal(
+                                                                true,
+                                                            ),
+                                                        0,
+                                                    )
+                                                }
+                                                onError={() =>
+                                                    toast.error(
+                                                        __(
+                                                            'messages.profile.security_protection',
+                                                        ),
+                                                        __(
+                                                            'messages.two_factor.2fa_enable_failed',
+                                                        ),
+                                                    )
+                                                }
                                             >
                                                 {({ processing }) => (
                                                     <Button
@@ -137,7 +194,9 @@ function SecurityAndProtection({
                                                         {processing && (
                                                             <Loader2 className="me-2 size-4 animate-spin" />
                                                         )}
-                                                        {__('messages.profile.2fa_enable')}
+                                                        {__(
+                                                            'messages.profile.2fa_enable',
+                                                        )}
                                                     </Button>
                                                 )}
                                             </Form>

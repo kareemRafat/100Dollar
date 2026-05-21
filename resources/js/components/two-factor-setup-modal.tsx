@@ -24,7 +24,11 @@ import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { cn } from '@/lib/utils';
 import { confirm } from '@/routes/two-factor';
-import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
+import type {
+    RouteDefinition,
+    RouteFormDefinition,
+    RouteQueryOptions,
+} from '@/wayfinder';
 
 function GridScanIcon() {
     return (
@@ -112,7 +116,8 @@ function TwoFactorSetupStep({
                     <div className="relative flex w-full items-center justify-center">
                         <div className="absolute inset-0 top-1/2 h-px w-full bg-border" />
                         <span className="relative bg-card px-2 py-1 text-xs font-bold text-on-surface-variant">
-                            {labels?.setup_manual ?? __('messages.two_factor.setup_manual')}
+                            {labels?.setup_manual ??
+                                __('messages.two_factor.setup_manual')}
                         </span>
                     </div>
 
@@ -128,7 +133,7 @@ function TwoFactorSetupStep({
                                         type="text"
                                         readOnly
                                         value={manualSetupKey}
-                                        className="h-full w-full bg-background p-3 text-foreground outline-none text-center font-mono"
+                                        className="h-full w-full bg-background p-3 text-center font-mono text-foreground outline-none"
                                         dir="ltr"
                                     />
                                     <button
@@ -155,7 +160,9 @@ function TwoFactorVerificationStep({
 }: {
     onClose: () => void;
     onBack: () => void;
-    confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+    confirmRoute?: ((
+        options?: RouteQueryOptions,
+    ) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
     };
     labels?: {
@@ -192,7 +199,10 @@ function TwoFactorVerificationStep({
                         ref={pinInputContainerRef}
                         className="relative w-full space-y-3"
                     >
-                        <div className="flex w-full flex-col items-center space-y-3 py-2" dir="ltr">
+                        <div
+                            className="flex w-full flex-col items-center space-y-3 py-2"
+                            dir="ltr"
+                        >
                             <InputOTP
                                 id="otp"
                                 name="code"
@@ -228,7 +238,8 @@ function TwoFactorVerificationStep({
                                 onClick={onBack}
                                 disabled={processing}
                             >
-                                {labels?.setup_back ?? __('messages.two_factor.setup_back')}
+                                {labels?.setup_back ??
+                                    __('messages.two_factor.setup_back')}
                             </Button>
                             <Button
                                 type="submit"
@@ -237,7 +248,8 @@ function TwoFactorVerificationStep({
                                     processing || code.length < OTP_MAX_LENGTH
                                 }
                             >
-                                {labels?.setup_confirm ?? __('messages.two_factor.setup_confirm')}
+                                {labels?.setup_confirm ??
+                                    __('messages.two_factor.setup_confirm')}
                             </Button>
                         </div>
                     </div>
@@ -257,7 +269,9 @@ type Props = {
     clearErrors: () => void;
     fetchSetupData: () => Promise<void>;
     errors: string[];
-    confirmRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+    confirmRoute?: ((
+        options?: RouteQueryOptions,
+    ) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
     };
     labels?: {
@@ -301,24 +315,39 @@ export default function TwoFactorSetupModal({
     }>(() => {
         if (twoFactorEnabled) {
             return {
-                title: labels?.enabled_title ?? __('messages.two_factor.setup_enabled_title'),
-                description: labels?.enabled_desc ?? __('messages.two_factor.setup_enabled_desc'),
-                buttonText: labels?.button_close ?? __('messages.two_factor.setup_close'),
+                title:
+                    labels?.enabled_title ??
+                    __('messages.two_factor.setup_enabled_title'),
+                description:
+                    labels?.enabled_desc ??
+                    __('messages.two_factor.setup_enabled_desc'),
+                buttonText:
+                    labels?.button_close ??
+                    __('messages.two_factor.setup_close'),
             };
         }
 
         if (showVerificationStep) {
             return {
-                title: labels?.verify_title ?? __('messages.two_factor.setup_verify_title'),
-                description: labels?.verify_desc ?? __('messages.two_factor.setup_verify_desc'),
-                buttonText: labels?.button_continue ?? __('messages.two_factor.setup_continue'),
+                title:
+                    labels?.verify_title ??
+                    __('messages.two_factor.setup_verify_title'),
+                description:
+                    labels?.verify_desc ??
+                    __('messages.two_factor.setup_verify_desc'),
+                buttonText:
+                    labels?.button_continue ??
+                    __('messages.two_factor.setup_continue'),
             };
         }
 
         return {
             title: labels?.setup_title ?? __('messages.two_factor.setup_title'),
-            description: labels?.setup_desc ?? __('messages.two_factor.setup_desc'),
-            buttonText: labels?.button_continue ?? __('messages.two_factor.setup_continue'),
+            description:
+                labels?.setup_desc ?? __('messages.two_factor.setup_desc'),
+            buttonText:
+                labels?.button_continue ??
+                __('messages.two_factor.setup_continue'),
         };
     }, [twoFactorEnabled, showVerificationStep, __, labels]);
 
@@ -366,10 +395,12 @@ export default function TwoFactorSetupModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
-            <DialogContent className="sm:max-w-md" dir={isRtl ? "rtl" : "ltr"}>
+            <DialogContent className="sm:max-w-md" dir={isRtl ? 'rtl' : 'ltr'}>
                 <DialogHeader className="flex items-center justify-center">
                     <GridScanIcon />
-                    <DialogTitle className={cn(isRtl ? "text-right" : "text-left")}>
+                    <DialogTitle
+                        className={cn(isRtl ? 'text-right' : 'text-left')}
+                    >
                         {modalConfig.title}
                     </DialogTitle>
                     <DialogDescription className="text-center">

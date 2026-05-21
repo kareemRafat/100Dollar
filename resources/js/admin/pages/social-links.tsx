@@ -1,10 +1,16 @@
 import { Head, useForm } from '@inertiajs/react';
-import type {SubmitEvent} from 'react';
+import type { SubmitEvent } from 'react';
 import SocialLinksController from '@/actions/App/Http/Controllers/Admin/SocialLinksController';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/admin/social-links';
@@ -44,18 +50,26 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
                     <CardHeader>
                         <CardTitle>منصات التواصل</CardTitle>
                         <CardDescription>
-                            أدخل الروابط المباشرة لصفحات المنصة على وسائل التواصل الاجتماعي.
+                            أدخل الروابط المباشرة لصفحات المنصة على وسائل
+                            التواصل الاجتماعي.
                         </CardDescription>
                     </CardHeader>
                     <form onSubmit={submit}>
                         <CardContent className="space-y-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="social_whatsapp">واتساب (WhatsApp)</Label>
+                                <Label htmlFor="social_whatsapp">
+                                    واتساب (WhatsApp)
+                                </Label>
                                 <Input
                                     id="social_whatsapp"
                                     className="mt-1 block w-full"
                                     value={data.social_whatsapp}
-                                    onChange={(e) => setData('social_whatsapp', e.target.value)}
+                                    onChange={(e) =>
+                                        setData(
+                                            'social_whatsapp',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://wa.me/..."
                                     dir="rtl"
                                 />
@@ -63,12 +77,16 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="social_x">إكس (X / Twitter)</Label>
+                                <Label htmlFor="social_x">
+                                    إكس (X / Twitter)
+                                </Label>
                                 <Input
                                     id="social_x"
                                     className="mt-1 block w-full"
                                     value={data.social_x}
-                                    onChange={(e) => setData('social_x', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('social_x', e.target.value)
+                                    }
                                     placeholder="https://x.com/..."
                                     dir="rtl"
                                 />
@@ -76,12 +94,19 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="social_facebook">فيسبوك (Facebook)</Label>
+                                <Label htmlFor="social_facebook">
+                                    فيسبوك (Facebook)
+                                </Label>
                                 <Input
                                     id="social_facebook"
                                     className="mt-1 block w-full"
                                     value={data.social_facebook}
-                                    onChange={(e) => setData('social_facebook', e.target.value)}
+                                    onChange={(e) =>
+                                        setData(
+                                            'social_facebook',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://facebook.com/..."
                                     dir="rtl"
                                 />
@@ -89,12 +114,19 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="social_instagram">إنستغرام (Instagram)</Label>
+                                <Label htmlFor="social_instagram">
+                                    إنستغرام (Instagram)
+                                </Label>
                                 <Input
                                     id="social_instagram"
                                     className="mt-1 block w-full"
                                     value={data.social_instagram}
-                                    onChange={(e) => setData('social_instagram', e.target.value)}
+                                    onChange={(e) =>
+                                        setData(
+                                            'social_instagram',
+                                            e.target.value,
+                                        )
+                                    }
                                     placeholder="https://instagram.com/..."
                                     dir="rtl"
                                 />
@@ -102,7 +134,9 @@ export default function SocialLinks({ settings }: { settings: Settings }) {
                             </div>
 
                             <div className="flex items-center gap-4 pt-4">
-                                <Button disabled={processing}>حفظ التغييرات</Button>
+                                <Button disabled={processing}>
+                                    حفظ التغييرات
+                                </Button>
                             </div>
                         </CardContent>
                     </form>

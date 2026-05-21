@@ -2,7 +2,11 @@ import { usePage } from '@inertiajs/react';
 import { Globe } from 'lucide-react';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 
-export default function LanguageSwitcher({ variant = 'dropdown' }: { variant?: 'dropdown' | 'standalone' }) {
+export default function LanguageSwitcher({
+    variant = 'dropdown',
+}: {
+    variant?: 'dropdown' | 'standalone';
+}) {
     const { languages, locale } = usePage().props;
 
     // Admin is Arabic only as requested
@@ -20,7 +24,9 @@ export default function LanguageSwitcher({ variant = 'dropdown' }: { variant?: '
     if (variant === 'standalone') {
         return (
             <button
-                onClick={() => (window.location.href = `${otherLanguage.url}${otherLanguage.url.includes('?') ? '&' : '?'}set_locale=1`)}
+                onClick={() =>
+                    (window.location.href = `${otherLanguage.url}${otherLanguage.url.includes('?') ? '&' : '?'}set_locale=1`)
+                }
                 className="flex items-center gap-2 rounded-lg border border-outline-variant/10 bg-surface-container-low px-3 py-1.5 text-xs font-bold text-on-surface-variant transition-all hover:bg-primary/10 hover:text-primary dark:border-white/10 dark:bg-white/5 dark:text-gray-300 dark:hover:bg-white/10 dark:hover:text-primary"
             >
                 <Globe className="size-3.5" />
@@ -34,8 +40,10 @@ export default function LanguageSwitcher({ variant = 'dropdown' }: { variant?: '
 
     return (
         <DropdownMenuItem
-            onClick={() => (window.location.href = `${otherLanguage.url}${otherLanguage.url.includes('?') ? '&' : '?'}set_locale=1`)}
-            className="cursor-pointer rounded-lg py-2 flex items-center justify-between gap-2.5 text-xs font-bold focus:bg-primary/5"
+            onClick={() =>
+                (window.location.href = `${otherLanguage.url}${otherLanguage.url.includes('?') ? '&' : '?'}set_locale=1`)
+            }
+            className="flex cursor-pointer items-center justify-between gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5"
         >
             <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] text-primary uppercase">
                 {otherLanguage.key}

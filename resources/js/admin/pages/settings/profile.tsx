@@ -67,7 +67,9 @@ export default function Profile({ countries }: Props) {
                                 id="name"
                                 className="mt-1 block w-full"
                                 value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
+                                onChange={(e) =>
+                                    setData('name', e.target.value)
+                                }
                                 name="name"
                                 required
                                 autoComplete="name"
@@ -81,14 +83,18 @@ export default function Profile({ countries }: Props) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">عنوان البريد الإلكتروني</Label>
+                            <Label htmlFor="email">
+                                عنوان البريد الإلكتروني
+                            </Label>
 
                             <Input
                                 id="email"
                                 type="email"
                                 className="mt-1 block w-full"
                                 value={data.email}
-                                onChange={(e) => setData('email', e.target.value)}
+                                onChange={(e) =>
+                                    setData('email', e.target.value)
+                                }
                                 name="email"
                                 required
                                 autoComplete="username"
@@ -112,7 +118,9 @@ export default function Profile({ countries }: Props) {
                                 dir="rtl"
                                 className="mt-1 block w-full"
                                 value={data.phone}
-                                onChange={(e) => setData('phone', e.target.value)}
+                                onChange={(e) =>
+                                    setData('phone', e.target.value)
+                                }
                                 name="phone"
                                 required
                                 placeholder="رقم الهاتف"
@@ -130,7 +138,9 @@ export default function Profile({ countries }: Props) {
                                 id="nationality"
                                 className="mt-1 block w-full"
                                 value={data.nationality}
-                                onChange={(e) => setData('nationality', e.target.value)}
+                                onChange={(e) =>
+                                    setData('nationality', e.target.value)
+                                }
                                 name="nationality"
                                 required
                                 placeholder="الجنسية"
@@ -148,13 +158,22 @@ export default function Profile({ countries }: Props) {
 
                         <Select
                             value={data.country_id}
-                            onValueChange={(value) => setData('country_id', value)}
+                            onValueChange={(value) =>
+                                setData('country_id', value)
+                            }
                         >
-                            <SelectTrigger id="country_id" className="mt-1 w-full">
+                            <SelectTrigger
+                                id="country_id"
+                                className="mt-1 w-full"
+                            >
                                 <SelectValue placeholder="اختر الدولة" />
-                            </SelectTrigger>                            <SelectContent>
+                            </SelectTrigger>{' '}
+                            <SelectContent>
                                 {countries.map((country) => (
-                                    <SelectItem key={country.id} value={country.id.toString()}>
+                                    <SelectItem
+                                        key={country.id}
+                                        value={country.id.toString()}
+                                    >
                                         {country.name_ar}
                                     </SelectItem>
                                 ))}
@@ -172,7 +191,9 @@ export default function Profile({ countries }: Props) {
                             disabled={processing}
                             data-test="update-profile-button"
                         >
-                            {processing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            {processing && (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            )}
                             حفظ
                         </Button>
                     </div>

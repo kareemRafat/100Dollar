@@ -14,8 +14,12 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
     const [isAutoSending, setIsAutoSending] = useState(false);
 
     // Local timer for the block countdown
-    const [remainingSeconds, setRemainingSeconds] = useState(vote_block?.available_in || 0);
-    const [prevAvailableIn, setPrevAvailableIn] = useState(vote_block?.available_in);
+    const [remainingSeconds, setRemainingSeconds] = useState(
+        vote_block?.available_in || 0,
+    );
+    const [prevAvailableIn, setPrevAvailableIn] = useState(
+        vote_block?.available_in,
+    );
     const isBlocked = remainingSeconds > 0;
 
     // Sync local timer with server-side block status when it changes
@@ -50,8 +54,9 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
     const handleVoteClick = useCallback(() => {
         if (remainingSeconds > 0) {
             const timeStr = formatDuration(remainingSeconds, locale);
-            const message = __('messages.common.too_many_attempts', { time: timeStr })
-                .replace(':time', timeStr); // Manual fallback if helper fails
+            const message = __('messages.common.too_many_attempts', {
+                time: timeStr,
+            }).replace(':time', timeStr); // Manual fallback if helper fails
 
             toast.error(message);
 
@@ -77,14 +82,21 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
                     let message = __('messages.common.error');
 
                     try {
-                        const data = typeof response.data === 'string'
-                            ? JSON.parse(response.data)
-                            : response.data;
+                        const data =
+                            typeof response.data === 'string'
+                                ? JSON.parse(response.data)
+                                : response.data;
                         message = data?.message || message;
 
                         // Handle possible :time placeholder from server
-                        if (message.includes(':time') && vote_block?.available_in) {
-                            message = message.replace(':time', formatDuration(vote_block.available_in, locale));
+                        if (
+                            message.includes(':time') &&
+                            vote_block?.available_in
+                        ) {
+                            message = message.replace(
+                                ':time',
+                                formatDuration(vote_block.available_in, locale),
+                            );
                         }
                     } catch {
                         // ...
@@ -94,12 +106,21 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
                 },
                 onFinish: () => {
                     setIsAutoSending(false);
-                }
+                },
             });
         } else {
             setIsPinModalOpen(true);
         }
-    }, [remainingSeconds, locale, auth.user, ideaId, sendOtp, __, vote_block?.available_in, setData]);
+    }, [
+        remainingSeconds,
+        locale,
+        auth.user,
+        ideaId,
+        sendOtp,
+        __,
+        vote_block?.available_in,
+        setData,
+    ]);
 
     return {
         votesCount,
@@ -109,6 +130,6 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
         remainingSeconds,
         handleVoteClick,
         handleVoteSuccess,
-        setIsPinModalOpen
+        setIsPinModalOpen,
     };
 }

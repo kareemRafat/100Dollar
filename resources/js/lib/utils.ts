@@ -15,12 +15,12 @@ export function formatDuration(seconds: number, locale: string = 'en'): string {
     if (isAr) {
         const getArLabel = (value: number, type: 'minute' | 'second') => {
             if (value === 1) {
-return type === 'minute' ? 'دقيقة' : 'ثانية';
-}
+                return type === 'minute' ? 'دقيقة' : 'ثانية';
+            }
 
             if (value >= 2 && value <= 10) {
-return type === 'minute' ? 'دقائق' : 'ثواني';
-}
+                return type === 'minute' ? 'دقائق' : 'ثواني';
+            }
 
             return type === 'minute' ? 'دقيقة' : 'ثانية';
         };
@@ -28,16 +28,20 @@ return type === 'minute' ? 'دقائق' : 'ثواني';
         const parts: string[] = [];
 
         if (minutes > 0) {
-            parts.push(`${minutes.toLocaleString('ar-EG')} ${getArLabel(minutes, 'minute')}`);
+            parts.push(
+                `${minutes.toLocaleString('ar-EG')} ${getArLabel(minutes, 'minute')}`,
+            );
         }
 
         if (remainingSeconds > 0) {
-            parts.push(`${remainingSeconds.toLocaleString('ar-EG')} ${getArLabel(remainingSeconds, 'second')}`);
+            parts.push(
+                `${remainingSeconds.toLocaleString('ar-EG')} ${getArLabel(remainingSeconds, 'second')}`,
+            );
         }
 
         if (parts.length === 0) {
-return '٠ ثانية';
-}
+            return '٠ ثانية';
+        }
 
         return parts.join(' و ');
     }
@@ -49,16 +53,18 @@ return '٠ ثانية';
     }
 
     if (remainingSeconds > 0) {
-        parts.push(`${remainingSeconds} ${remainingSeconds === 1 ? 'second' : 'seconds'}`);
+        parts.push(
+            `${remainingSeconds} ${remainingSeconds === 1 ? 'second' : 'seconds'}`,
+        );
     }
 
     if (parts.length === 0) {
-return '0 seconds';
-}
+        return '0 seconds';
+    }
 
     if (parts.length === 2) {
-return `${parts[0]} and ${parts[1]}`;
-}
+        return `${parts[0]} and ${parts[1]}`;
+    }
 
     return parts[0];
 }

@@ -6,7 +6,7 @@ import {
     MoreHorizontal,
     Rocket,
     Phone,
-    Clock
+    Clock,
 } from 'lucide-react';
 import type { SubmitEvent } from 'react';
 import { store } from '@/actions/App/Http/Controllers/App/ContactController';
@@ -24,11 +24,18 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-
 export default function Contact() {
     const { __ } = useLang();
 
-    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm({
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        reset,
+        recentlySuccessful,
+    } = useForm({
         name: '',
         email: '',
         subject: '',
@@ -66,10 +73,26 @@ export default function Contact() {
     ];
 
     const subjects = [
-        { value: 'general', label: __('messages.contact.subject_general'), icon: Mail },
-        { value: 'sponsorship', label: __('messages.contact.subject_sponsorship'), icon: Rocket },
-        { value: 'complaint', label: __('messages.contact.subject_complaint'), icon: AlertCircle },
-        { value: 'other', label: __('messages.contact.subject_other'), icon: MoreHorizontal },
+        {
+            value: 'general',
+            label: __('messages.contact.subject_general'),
+            icon: Mail,
+        },
+        {
+            value: 'sponsorship',
+            label: __('messages.contact.subject_sponsorship'),
+            icon: Rocket,
+        },
+        {
+            value: 'complaint',
+            label: __('messages.contact.subject_complaint'),
+            icon: AlertCircle,
+        },
+        {
+            value: 'other',
+            label: __('messages.contact.subject_other'),
+            icon: MoreHorizontal,
+        },
     ];
 
     return (
@@ -88,7 +111,7 @@ export default function Contact() {
                 <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
                     <h1 className="relative mb-6 inline-block font-headline text-2xl font-extrabold text-white md:text-4xl">
                         {__('messages.contact.hero_title')}
-                        <span className="absolute end-0 -bottom-3 start-0 mx-auto h-1 w-16 rounded-full bg-primary shadow-lg" />
+                        <span className="absolute start-0 end-0 -bottom-3 mx-auto h-1 w-16 rounded-full bg-primary shadow-lg" />
                     </h1>
                     <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-white/90">
                         {__('messages.contact.hero_desc')}
@@ -110,14 +133,24 @@ export default function Contact() {
                                     </Label>
                                     <Input
                                         size="lg"
-                                        className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                        placeholder={__('messages.contact.name_placeholder')}
+                                        className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                        placeholder={__(
+                                            'messages.contact.name_placeholder',
+                                        )}
                                         type="text"
                                         value={data.name}
-                                        onChange={(e) => setData('name', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('name', e.target.value)
+                                        }
                                         required
                                     />
-                                    <InputError message={errors.name ? __(errors.name) : undefined} />
+                                    <InputError
+                                        message={
+                                            errors.name
+                                                ? __(errors.name)
+                                                : undefined
+                                        }
+                                    />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Label className="pe-2 text-sm font-bold text-on-surface-variant">
@@ -125,14 +158,24 @@ export default function Contact() {
                                     </Label>
                                     <Input
                                         size="lg"
-                                        className="bg-surface-container-low dark:bg-surface-container-high w-full border-none px-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                        placeholder={__('messages.contact.email_placeholder')}
+                                        className="w-full border-none bg-surface-container-low px-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                        placeholder={__(
+                                            'messages.contact.email_placeholder',
+                                        )}
                                         type="email"
                                         value={data.email}
-                                        onChange={(e) => setData('email', e.target.value)}
+                                        onChange={(e) =>
+                                            setData('email', e.target.value)
+                                        }
                                         required
                                     />
-                                    <InputError message={errors.email ? __(errors.email) : undefined} />
+                                    <InputError
+                                        message={
+                                            errors.email
+                                                ? __(errors.email)
+                                                : undefined
+                                        }
+                                    />
                                 </div>
                             </div>
                             <div className="flex flex-col gap-2">
@@ -141,15 +184,27 @@ export default function Contact() {
                                 </Label>
                                 <Select
                                     value={data.subject}
-                                    onValueChange={(val) => setData('subject', val)}
+                                    onValueChange={(val) =>
+                                        setData('subject', val)
+                                    }
                                     required
                                 >
-                                    <SelectTrigger size="lg" className="w-full bg-surface-container-low dark:bg-surface-container-high border-none px-4 text-on-surface dark:text-white focus:ring-2 focus:ring-primary">
-                                        <SelectValue placeholder={__('messages.contact.subject_label')} />
+                                    <SelectTrigger
+                                        size="lg"
+                                        className="w-full border-none bg-surface-container-low px-4 text-on-surface focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white"
+                                    >
+                                        <SelectValue
+                                            placeholder={__(
+                                                'messages.contact.subject_label',
+                                            )}
+                                        />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {subjects.map((subject) => (
-                                            <SelectItem key={subject.value} value={subject.value}>
+                                            <SelectItem
+                                                key={subject.value}
+                                                value={subject.value}
+                                            >
                                                 <div className="flex items-center gap-2">
                                                     <subject.icon className="size-4 text-primary" />
                                                     {subject.label}
@@ -158,27 +213,45 @@ export default function Contact() {
                                         ))}
                                     </SelectContent>
                                 </Select>
-                                <InputError message={errors.subject ? __(errors.subject) : undefined} />
+                                <InputError
+                                    message={
+                                        errors.subject
+                                            ? __(errors.subject)
+                                            : undefined
+                                    }
+                                />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <Label className="pe-2 text-sm font-bold text-on-surface-variant">
                                     {__('messages.contact.message_label')}
                                 </Label>
                                 <Textarea
-                                    className="h-32 bg-surface-container-low dark:bg-surface-container-high w-full resize-none border-none p-4 text-on-surface dark:text-white transition-all focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary"
-                                    placeholder={__('messages.contact.message_placeholder')}
+                                    className="h-32 w-full resize-none border-none bg-surface-container-low p-4 text-on-surface transition-all focus:bg-white focus:ring-2 focus:ring-primary dark:bg-surface-container-high dark:text-white dark:focus:bg-surface-container-highest"
+                                    placeholder={__(
+                                        'messages.contact.message_placeholder',
+                                    )}
                                     value={data.message}
-                                    onChange={(e) => setData('message', e.target.value)}
+                                    onChange={(e) =>
+                                        setData('message', e.target.value)
+                                    }
                                     required
                                 />
-                                <InputError message={errors.message ? __(errors.message) : undefined} />
+                                <InputError
+                                    message={
+                                        errors.message
+                                            ? __(errors.message)
+                                            : undefined
+                                    }
+                                />
                             </div>
                             <Button
-                                className="w-full h-12 text-lg font-bold md:w-auto md:px-12"
+                                className="h-12 w-full text-lg font-bold md:w-auto md:px-12"
                                 type="submit"
                                 disabled={processing}
                             >
-                                {processing ? __('messages.common.processing') : __('messages.contact.send_button')}
+                                {processing
+                                    ? __('messages.common.processing')
+                                    : __('messages.contact.send_button')}
                             </Button>
                             {recentlySuccessful && (
                                 <p className="text-sm font-medium text-success">
@@ -225,14 +298,19 @@ export default function Contact() {
 
                 <div className="mt-16 flex flex-col items-center justify-between gap-8 rounded-2xl border border-primary/10 bg-primary/5 p-8 text-center md:flex-row md:p-12 md:text-right dark:border-white/10 dark:bg-white/5">
                     <div>
-                        <h3 className="ltr:text-left mb-2 text-2xl font-extrabold text-on-surface dark:text-white">
+                        <h3 className="mb-2 text-2xl font-extrabold text-on-surface ltr:text-left dark:text-white">
                             {__('messages.contact.sponsor_cta_title')}
                         </h3>
                         <p className="text-on-surface-variant dark:text-gray-400">
                             {__('messages.contact.sponsor_cta_desc')}
                         </p>
                     </div>
-                    <Button asChild variant="secondary" size="lg" className="rounded-xl font-bold whitespace-nowrap">
+                    <Button
+                        asChild
+                        variant="secondary"
+                        size="lg"
+                        className="rounded-xl font-bold whitespace-nowrap"
+                    >
                         <Link href="/sponsors">
                             {__('messages.contact.learn_more')}
                         </Link>

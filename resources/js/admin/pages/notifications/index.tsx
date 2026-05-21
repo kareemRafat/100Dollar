@@ -65,9 +65,13 @@ export default function NotificationsPage({
     };
 
     const handleNotificationClick = (notification: Notification) => {
-        const url = notification.data?.url ?? admin.ideas.show(notification.data?.idea_id).url;
+        const url =
+            notification.data?.url ??
+            admin.ideas.show(notification.data?.idea_id).url;
         const returnUrl = admin.notifications.index().url;
-        const targetUrl = url ? `${url}?returnTo=${encodeURIComponent(returnUrl)}` : null;
+        const targetUrl = url
+            ? `${url}?returnTo=${encodeURIComponent(returnUrl)}`
+            : null;
 
         if (!notification.is_read) {
             router.patch(
@@ -77,8 +81,8 @@ export default function NotificationsPage({
                     preserveScroll: true,
                     onSuccess: () => {
                         if (targetUrl) {
-router.visit(targetUrl);
-}
+                            router.visit(targetUrl);
+                        }
                     },
                 },
             );

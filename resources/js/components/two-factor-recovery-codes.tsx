@@ -8,13 +8,19 @@ import { Button } from '@/components/ui/button';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { cn } from '@/lib/utils';
 import { regenerateRecoveryCodes } from '@/routes/two-factor';
-import type { RouteDefinition, RouteFormDefinition, RouteQueryOptions } from '@/wayfinder';
+import type {
+    RouteDefinition,
+    RouteFormDefinition,
+    RouteQueryOptions,
+} from '@/wayfinder';
 
 type Props = {
     recoveryCodesList: string[];
     fetchRecoveryCodes: () => Promise<void>;
     errors: string[];
-    regenerateRoute?: ((options?: RouteQueryOptions) => RouteDefinition<'post'>) & {
+    regenerateRoute?: ((
+        options?: RouteQueryOptions,
+    ) => RouteDefinition<'post'>) & {
         form: (options?: RouteQueryOptions) => RouteFormDefinition<'post'>;
     };
     labels?: {
@@ -48,7 +54,12 @@ export default function TwoFactorRecoveryCodes({
 
     return (
         <div className="flex w-full flex-col items-start justify-start space-y-4">
-            <div className={cn("flex w-full items-center gap-3", isRtl ? "justify-start flex-row-reverse" : "justify-start")}>
+            <div
+                className={cn(
+                    'flex w-full items-center gap-3',
+                    isRtl ? 'flex-row-reverse justify-start' : 'justify-start',
+                )}
+            >
                 <Button
                     variant="outline"
                     size="sm"
@@ -58,12 +69,14 @@ export default function TwoFactorRecoveryCodes({
                     {showRecoveryCodes ? (
                         <>
                             <EyeOff className="size-4" />
-                            {labels?.hide_codes ?? __('messages.two_factor.hide_codes')}
+                            {labels?.hide_codes ??
+                                __('messages.two_factor.hide_codes')}
                         </>
                     ) : (
                         <>
                             <Eye className="size-4" />
-                            {labels?.view_codes ?? __('messages.two_factor.view_codes')}
+                            {labels?.view_codes ??
+                                __('messages.two_factor.view_codes')}
                         </>
                     )}
                 </Button>
@@ -72,7 +85,12 @@ export default function TwoFactorRecoveryCodes({
                     {...(regenerateRoute ?? regenerateRecoveryCodes).form()}
                     onSuccess={() => {
                         fetchRecoveryCodes();
-                        toast.success(__('messages.two_factor.recovery_codes_title'), __('messages.two_factor.recovery_codes_regenerated'));
+                        toast.success(
+                            __('messages.two_factor.recovery_codes_title'),
+                            __(
+                                'messages.two_factor.recovery_codes_regenerated',
+                            ),
+                        );
                     }}
                 >
                     {({ processing }) => (
@@ -88,16 +106,23 @@ export default function TwoFactorRecoveryCodes({
                                     'animate-spin': processing,
                                 })}
                             />
-                            {labels?.regenerate_codes ?? __('messages.two_factor.regenerate_codes')}
+                            {labels?.regenerate_codes ??
+                                __('messages.two_factor.regenerate_codes')}
                         </Button>
                     )}
                 </Form>
             </div>
 
             {showRecoveryCodes && (
-                <div className="w-full space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <p className={cn("text-xs text-on-surface-variant/70", isRtl ? "text-right" : "text-left")}>
-                        {labels?.recovery_codes_warning ?? __('messages.two_factor.recovery_codes_warning')}
+                <div className="w-full animate-in space-y-4 duration-300 fade-in slide-in-from-top-2">
+                    <p
+                        className={cn(
+                            'text-xs text-on-surface-variant/70',
+                            isRtl ? 'text-right' : 'text-left',
+                        )}
+                    >
+                        {labels?.recovery_codes_warning ??
+                            __('messages.two_factor.recovery_codes_warning')}
                     </p>
 
                     {errors?.length > 0 && <AlertError errors={errors} />}
@@ -121,7 +146,7 @@ export default function TwoFactorRecoveryCodes({
                                             'rounded-lg p-1.5 transition-colors',
                                             isCopied
                                                 ? 'bg-primary/10 text-primary'
-                                                : 'text-on-surface-variant/40 hover:bg-primary/5 hover:text-primary'
+                                                : 'text-on-surface-variant/40 hover:bg-primary/5 hover:text-primary',
                                         )}
                                     >
                                         <IconComponent className="size-3.5" />

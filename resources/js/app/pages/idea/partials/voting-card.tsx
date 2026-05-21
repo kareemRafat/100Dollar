@@ -26,7 +26,7 @@ export const VotingCard = ({
     isBlocked = false,
     isOwner = false,
     remainingSeconds = 0,
-    isVoted = false
+    isVoted = false,
 }: VotingCardProps) => {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
@@ -34,34 +34,43 @@ export const VotingCard = ({
     // Data Sync
     const voteGoal = idea?.target_votes ?? 100;
     const currentVotes = idea?.votes_count ?? 0;
-    const votePercentage = idea?.progress ?? Math.min(Math.round((currentVotes / voteGoal) * 100), 100);
+    const votePercentage =
+        idea?.progress ??
+        Math.min(Math.round((currentVotes / voteGoal) * 100), 100);
 
     // Circular Progress Calculation
     const r = 72;
     const circumference = 2 * Math.PI * r; // ~452.39
-    const strokeDashoffset = circumference - (votePercentage / 100) * circumference;
+    const strokeDashoffset =
+        circumference - (votePercentage / 100) * circumference;
 
     return (
-        <div className={`bg-surface-container-lowest rounded-3xl p-8 border shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] relative overflow-hidden group transition-all ${
-            isVoted ? 'border-primary' : 'border-outline-variant/10'
-        }`}>
+        <div
+            className={`group relative overflow-hidden rounded-3xl border bg-surface-container-lowest p-8 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.08)] transition-all ${
+                isVoted ? 'border-primary' : 'border-outline-variant/10'
+            }`}
+        >
             {isVoted && (
-                <div className="absolute top-0 end-0 z-20">
-                    <div className="bg-primary text-on-primary text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bs-2xl shadow-lg">
+                <div className="absolute end-0 top-0 z-20">
+                    <div className="rounded-bs-2xl bg-primary px-4 py-1.5 text-[10px] font-black tracking-widest text-on-primary uppercase shadow-lg">
                         {__('messages.home.voted_badge')}
                     </div>
                 </div>
             )}
 
             {/* Ambient Background Glow */}
-            <div className={`absolute -top-24 -right-24 w-48 h-48 rounded-full blur-3xl transition-colors duration-700 ${
-                isVoted ? 'bg-primary/10' : 'bg-primary/5 group-hover:bg-primary/10'
-            }`} />
+            <div
+                className={`absolute -top-24 -right-24 h-48 w-48 rounded-full blur-3xl transition-colors duration-700 ${
+                    isVoted
+                        ? 'bg-primary/10'
+                        : 'bg-primary/5 group-hover:bg-primary/10'
+                }`}
+            />
 
             <div className="relative z-10 flex flex-col items-center text-center">
                 {/* High-Fidelity Circular Progress */}
-                <div className="relative w-40 h-40 flex items-center justify-center mb-8">
-                    <svg className="w-full h-full transform -rotate-90 filter drop-shadow-sm">
+                <div className="relative mb-8 flex h-40 w-40 items-center justify-center">
+                    <svg className="h-full w-full -rotate-90 transform drop-shadow-sm filter">
                         <circle
                             className="text-surface-container-highest"
                             cx="80"
@@ -85,17 +94,19 @@ export const VotingCard = ({
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-4xl font-black text-on-surface leading-none">{votePercentage}%</span>
-                        <span className="text-[10px] text-outline font-bold uppercase tracking-widest mt-1">
+                        <span className="text-4xl leading-none font-black text-on-surface">
+                            {votePercentage}%
+                        </span>
+                        <span className="mt-1 text-[10px] font-bold tracking-widest text-outline uppercase">
                             {__('messages.home.community_support')}
                         </span>
                     </div>
                 </div>
 
-                <h3 className="text-2xl font-black text-on-surface mb-3 font-headline">
+                <h3 className="mb-3 font-headline text-2xl font-black text-on-surface">
                     {__('messages.home.support_idea_question')}
                 </h3>
-                <p className="text-sm text-on-surface-variant/70 leading-relaxed mb-8 px-4 font-medium">
+                <p className="mb-8 px-4 text-sm leading-relaxed font-medium text-on-surface-variant/70">
                     {__('messages.home.support_idea_desc')}
                 </p>
 
@@ -103,9 +114,9 @@ export const VotingCard = ({
                 <Button
                     onClick={onVoteClick}
                     disabled={isVoted || isLoading || isBlocked || isOwner}
-                    className={`w-full h-14 rounded-2xl text-lg font-black transition-all active:scale-[0.97] mb-6 shadow-xl gap-3 ${
-                        isVoted 
-                            ? 'bg-primary text-on-primary shadow-primary/20 opacity-100' 
+                    className={`mb-6 h-14 w-full gap-3 rounded-2xl text-lg font-black shadow-xl transition-all active:scale-[0.97] ${
+                        isVoted
+                            ? 'bg-primary text-on-primary opacity-100 shadow-primary/20'
                             : 'animate-sparkle cursor-pointer shadow-primary/10'
                     }`}
                 >
@@ -132,14 +143,19 @@ export const VotingCard = ({
                     )}
                 </Button>
 
-                <div className="flex items-center gap-3 mb-2">
+                <div className="mb-2 flex items-center gap-3">
                     <div className="flex -space-x-2">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="w-6 h-6 rounded-full border-2 border-surface-container-lowest bg-surface-container-high" />
+                            <div
+                                key={i}
+                                className="h-6 w-6 rounded-full border-2 border-surface-container-lowest bg-surface-container-high"
+                            />
                         ))}
                     </div>
-                    <span className="text-[12px] text-outline font-medium">
-                        {__('messages.home.people_voted', { count: currentVotes.toLocaleString() })}
+                    <span className="text-[12px] font-medium text-outline">
+                        {__('messages.home.people_voted', {
+                            count: currentVotes.toLocaleString(),
+                        })}
                     </span>
                 </div>
             </div>

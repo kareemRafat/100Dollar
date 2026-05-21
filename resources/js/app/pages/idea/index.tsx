@@ -178,7 +178,9 @@ export default function MyIdeas({
                             <Input
                                 type="search"
                                 className="h-10 border-none bg-surface-container-lowest ps-4 pe-10 text-sm focus-visible:ring-1 focus-visible:ring-primary dark:bg-surface-container-low dark:text-white"
-                                placeholder={__('messages.my_ideas.search_placeholder')}
+                                placeholder={__(
+                                    'messages.my_ideas.search_placeholder',
+                                )}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -389,4 +391,3 @@ export default function MyIdeas({
         </>
     );
 }
-

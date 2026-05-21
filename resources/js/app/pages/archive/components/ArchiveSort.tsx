@@ -25,12 +25,18 @@ export function ArchiveSort({ value, onSortChange }: Props) {
                         <span className="text-sm font-medium text-outline">
                             {__('messages.archive.sort_by')}:
                         </span>
-                        <SelectValue placeholder={__('messages.archive.sort_newest')} />
+                        <SelectValue
+                            placeholder={__('messages.archive.sort_newest')}
+                        />
                     </div>
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="newest">{__('messages.archive.sort_newest')}</SelectItem>
-                    <SelectItem value="popular">{__('messages.archive.sort_popular')}</SelectItem>
+                    <SelectItem value="newest">
+                        {__('messages.archive.sort_newest')}
+                    </SelectItem>
+                    <SelectItem value="popular">
+                        {__('messages.archive.sort_popular')}
+                    </SelectItem>
                 </SelectContent>
             </Select>
         </div>

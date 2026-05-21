@@ -24,7 +24,7 @@ type Props = {
 function FollowedPeople({ people }: Props) {
     const { __ } = useLang();
     const { post, processing } = useForm();
-    const items = Array.isArray(people) ? people : (people?.data || []);
+    const items = Array.isArray(people) ? people : people?.data || [];
 
     // Standardized pagination data retrieval
     const meta = (people as any)?.meta;
@@ -36,7 +36,10 @@ function FollowedPeople({ people }: Props) {
         post(follow(id).url, {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success(__('messages.profile.followed_people'), `${__('messages.archive.unfollow_user_success')}: ${name}`);
+                toast.success(
+                    __('messages.profile.followed_people'),
+                    `${__('messages.archive.unfollow_user_success')}: ${name}`,
+                );
             },
         });
     };
@@ -94,7 +97,9 @@ function FollowedPeople({ people }: Props) {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8 text-on-surface-variant hover:text-red-500"
-                            onClick={() => handleUnfollow(person.id, person.name)}
+                            onClick={() =>
+                                handleUnfollow(person.id, person.name)
+                            }
                             disabled={processing}
                         >
                             <UserMinus className="size-4" />
@@ -106,10 +111,7 @@ function FollowedPeople({ people }: Props) {
             {/* Pagination */}
             {lastPage > 1 && (
                 <div className="mt-8">
-                    <Pagination
-                        links={links}
-                        only={['followedPeople']}
-                    />
+                    <Pagination links={links} only={['followedPeople']} />
                 </div>
             )}
         </div>

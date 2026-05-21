@@ -54,18 +54,34 @@ const breadcrumbs: BreadcrumbItem[] = [
 const getStatusBadge = (status: string) => {
     switch (status) {
         case 'approved':
-            return <Badge className="bg-green-100 text-green-800 hover:bg-green-100"><CheckCircle className="me-1 h-3 w-3" /> مقبول</Badge>;
+            return (
+                <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <CheckCircle className="me-1 h-3 w-3" /> مقبول
+                </Badge>
+            );
         case 'rejected':
-            return <Badge variant="destructive"><XCircle className="me-1 h-3 w-3" /> مرفوض</Badge>;
+            return (
+                <Badge variant="destructive">
+                    <XCircle className="me-1 h-3 w-3" /> مرفوض
+                </Badge>
+            );
         default:
-            return <Badge variant="secondary"><Clock className="me-1 h-3 w-3" /> قيد المراجعة</Badge>;
+            return (
+                <Badge variant="secondary">
+                    <Clock className="me-1 h-3 w-3" /> قيد المراجعة
+                </Badge>
+            );
     }
 };
 
-export default function SponsorshipRequestsPage({ requests, filters }: SponsorshipRequestsProps) {
+export default function SponsorshipRequestsPage({
+    requests,
+    filters,
+}: SponsorshipRequestsProps) {
     const [statusFilter, setStatusFilter] = useState(filters.status || 'all');
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [selectedRequest, setSelectedRequest] = useState<SponsorshipRequest | null>(null);
+    const [selectedRequest, setSelectedRequest] =
+        useState<SponsorshipRequest | null>(null);
 
     const isFirstRender = useRef(true);
 
@@ -95,15 +111,18 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
 
     const handleDeleteSubmit = () => {
         if (!selectedRequest) {
-            return ;
+            return;
         }
 
-        router.delete(admin.sponsorshipRequests.destroy(selectedRequest.id).url, {
-            onSuccess: () => {
-                setIsDeleteModalOpen(false);
-                toast.success('تم حذف الطلب بنجاح');
+        router.delete(
+            admin.sponsorshipRequests.destroy(selectedRequest.id).url,
+            {
+                onSuccess: () => {
+                    setIsDeleteModalOpen(false);
+                    toast.success('تم حذف الطلب بنجاح');
+                },
             },
-        });
+        );
     };
 
     return (
@@ -131,9 +150,15 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="pending">قيد المراجعة</SelectItem>
-                                    <SelectItem value="approved">مقبول</SelectItem>
-                                    <SelectItem value="rejected">مرفوض</SelectItem>
+                                    <SelectItem value="pending">
+                                        قيد المراجعة
+                                    </SelectItem>
+                                    <SelectItem value="approved">
+                                        مقبول
+                                    </SelectItem>
+                                    <SelectItem value="rejected">
+                                        مرفوض
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -143,43 +168,74 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-12 text-center">#</TableHead>
+                                        <TableHead className="w-12 text-center">
+                                            #
+                                        </TableHead>
                                         <TableHead>الشركة</TableHead>
                                         <TableHead>البريد الإلكتروني</TableHead>
                                         <TableHead>الدولة</TableHead>
                                         <TableHead>التاريخ</TableHead>
                                         <TableHead>الحالة</TableHead>
-                                        <TableHead className="text-end">الإجراءات</TableHead>
+                                        <TableHead className="text-end">
+                                            الإجراءات
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {requests.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={7} className="h-48 text-center text-muted-foreground">
-                                                لا يوجد طلبات رعاية تطابق المعايير.
+                                            <TableCell
+                                                colSpan={7}
+                                                className="h-48 text-center text-muted-foreground"
+                                            >
+                                                لا يوجد طلبات رعاية تطابق
+                                                المعايير.
                                             </TableCell>
                                         </TableRow>
                                     ) : (
                                         requests.data.map((request, index) => (
                                             <TableRow key={request.id}>
                                                 <TableCell className="text-center font-bold text-muted-foreground">
-                                                    {(requests.meta.current_page - 1) *
+                                                    {(requests.meta
+                                                        .current_page -
+                                                        1) *
                                                         requests.meta.per_page +
                                                         index +
                                                         1}
                                                 </TableCell>
-                                                <TableCell className="font-medium">{request.company_name}</TableCell>
-                                                <TableCell>{request.email}</TableCell>
-                                                <TableCell>{request.country?.name_ar || '-'}</TableCell>
-                                                <TableCell className="text-sm font-bold text-muted-foreground">
-                                                    {new Date(request.created_at).toISOString().split('T')[0]}
+                                                <TableCell className="font-medium">
+                                                    {request.company_name}
                                                 </TableCell>
-                                                <TableCell>{getStatusBadge(request.status)}</TableCell>
+                                                <TableCell>
+                                                    {request.email}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {request.country?.name_ar ||
+                                                        '-'}
+                                                </TableCell>
+                                                <TableCell className="text-sm font-bold text-muted-foreground">
+                                                    {
+                                                        new Date(
+                                                            request.created_at,
+                                                        )
+                                                            .toISOString()
+                                                            .split('T')[0]
+                                                    }
+                                                </TableCell>
+                                                <TableCell>
+                                                    {getStatusBadge(
+                                                        request.status,
+                                                    )}
+                                                </TableCell>
                                                 <TableCell className="text-end">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Link 
-                                                            href={admin.sponsorshipRequests.show(request.id).url}
-                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary hover:bg-primary/20 transition-colors"
+                                                        <Link
+                                                            href={
+                                                                admin.sponsorshipRequests.show(
+                                                                    request.id,
+                                                                ).url
+                                                            }
+                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/20"
                                                         >
                                                             <Eye className="me-2 h-4 w-4" />
                                                             مراجعة
@@ -187,7 +243,11 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            onClick={() => handleDeleteClick(request)}
+                                                            onClick={() =>
+                                                                handleDeleteClick(
+                                                                    request,
+                                                                )
+                                                            }
                                                             className="h-9 w-9 text-destructive hover:bg-destructive/10"
                                                         >
                                                             <Trash2 className="h-4 w-4" />
@@ -208,18 +268,35 @@ export default function SponsorshipRequestsPage({ requests, filters }: Sponsorsh
             </div>
 
             {/* Delete Modal */}
-            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+            <Dialog
+                open={isDeleteModalOpen}
+                onOpenChange={setIsDeleteModalOpen}
+            >
                 <DialogContent className="p-6" dir="rtl">
                     <div className="space-y-4">
                         <DialogHeader>
-                            <DialogTitle className="text-start">حذف الطلب</DialogTitle>
+                            <DialogTitle className="text-start">
+                                حذف الطلب
+                            </DialogTitle>
                             <DialogDescription className="text-start">
-                                هل أنت متأكد من حذف طلب الرعاية الخاص بـ {selectedRequest?.company_name}؟ لا يمكن التراجع عن هذا الإجراء.
+                                هل أنت متأكد من حذف طلب الرعاية الخاص بـ{' '}
+                                {selectedRequest?.company_name}؟ لا يمكن التراجع
+                                عن هذا الإجراء.
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter className="mt-6 flex flex-row items-center justify-start gap-2">
-                            <Button type="button" variant="outline" onClick={() => setIsDeleteModalOpen(false)}>إلغاء</Button>
-                            <Button type="button" variant="destructive" onClick={handleDeleteSubmit}>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setIsDeleteModalOpen(false)}
+                            >
+                                إلغاء
+                            </Button>
+                            <Button
+                                type="button"
+                                variant="destructive"
+                                onClick={handleDeleteSubmit}
+                            >
                                 حذف نهائي
                             </Button>
                         </DialogFooter>

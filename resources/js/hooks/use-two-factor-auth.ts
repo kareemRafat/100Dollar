@@ -71,69 +71,81 @@ export const useTwoFactorAuth = (
         setRecoveryCodesList([]);
     }, [cancel]);
 
-    const fetchQrCode = useCallback(async (requestCycle = requestCycleRef.current): Promise<void> => {
-        try {
-            const { svg } = (await submit(qrCodeRoute({ query: context }))) as {
-                svg: string;
-                url: string;
-            };
+    const fetchQrCode = useCallback(
+        async (requestCycle = requestCycleRef.current): Promise<void> => {
+            try {
+                const { svg } = (await submit(
+                    qrCodeRoute({ query: context }),
+                )) as {
+                    svg: string;
+                    url: string;
+                };
 
-            if (requestCycle !== requestCycleRef.current) {
-                return;
-            }
-
-            if (svg) {
-                setQrCodeSvg(svg);
-            }
-        } catch {
-            if (requestCycle !== requestCycleRef.current) {
-                return;
-            }
-
-            setErrors((prev) => {
-                if (prev.includes('Failed to fetch QR code')) {
-                    return prev;
+                if (requestCycle !== requestCycleRef.current) {
+                    return;
                 }
 
-                return [...prev, 'Failed to fetch QR code'];
-            });
-            setQrCodeSvg(null);
-        }
-    }, [submit, context, qrCodeRoute]);
-
-    const fetchSetupKey = useCallback(async (requestCycle = requestCycleRef.current): Promise<void> => {
-        try {
-            const { secretKey: key } = (await submit(secretKeyRoute({ query: context }))) as {
-                secretKey: string;
-            };
-
-            if (requestCycle !== requestCycleRef.current) {
-                return;
-            }
-
-            if (key) {
-                setManualSetupKey(key);
-            }
-        } catch {
-            if (requestCycle !== requestCycleRef.current) {
-                return;
-            }
-
-            setErrors((prev) => {
-                if (prev.includes('Failed to fetch a setup key')) {
-                    return prev;
+                if (svg) {
+                    setQrCodeSvg(svg);
+                }
+            } catch {
+                if (requestCycle !== requestCycleRef.current) {
+                    return;
                 }
 
-                return [...prev, 'Failed to fetch a setup key'];
-            });
-            setManualSetupKey(null);
-        }
-    }, [submit, context, secretKeyRoute]);
+                setErrors((prev) => {
+                    if (prev.includes('Failed to fetch QR code')) {
+                        return prev;
+                    }
+
+                    return [...prev, 'Failed to fetch QR code'];
+                });
+                setQrCodeSvg(null);
+            }
+        },
+        [submit, context, qrCodeRoute],
+    );
+
+    const fetchSetupKey = useCallback(
+        async (requestCycle = requestCycleRef.current): Promise<void> => {
+            try {
+                const { secretKey: key } = (await submit(
+                    secretKeyRoute({ query: context }),
+                )) as {
+                    secretKey: string;
+                };
+
+                if (requestCycle !== requestCycleRef.current) {
+                    return;
+                }
+
+                if (key) {
+                    setManualSetupKey(key);
+                }
+            } catch {
+                if (requestCycle !== requestCycleRef.current) {
+                    return;
+                }
+
+                setErrors((prev) => {
+                    if (prev.includes('Failed to fetch a setup key')) {
+                        return prev;
+                    }
+
+                    return [...prev, 'Failed to fetch a setup key'];
+                });
+                setManualSetupKey(null);
+            }
+        },
+        [submit, context, secretKeyRoute],
+    );
 
     const fetchRecoveryCodes = useCallback(async (): Promise<void> => {
         try {
             setErrors([]);
-            const codes = (await submit(recoveryCodesRoute({ query: context }))) as string[];
+            const codes = (await submit(
+                recoveryCodesRoute({ query: context }),
+            )) as string[];
             setRecoveryCodesList(codes);
         } catch {
             setErrors((prev) => [...prev, 'Failed to fetch recovery codes']);

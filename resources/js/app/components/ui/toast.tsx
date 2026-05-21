@@ -22,7 +22,12 @@ function emitChange() {
 }
 
 export const toast = {
-    add: (type: ToastType, title: string, description?: string, duration = 5000) => {
+    add: (
+        type: ToastType,
+        title: string,
+        description?: string,
+        duration = 5000,
+    ) => {
         const id = Math.random().toString(36).substring(2, 9);
         const newToast = { id, type, title, description, duration };
         toasts = [...toasts, newToast];
@@ -36,10 +41,14 @@ export const toast = {
 
         return id;
     },
-    success: (title: string, description?: string) => toast.add('success', title, description),
-    info: (title: string, description?: string) => toast.add('info', title, description),
-    error: (title: string, description?: string) => toast.add('error', title, description),
-    warning: (title: string, description?: string) => toast.add('warning', title, description),
+    success: (title: string, description?: string) =>
+        toast.add('success', title, description),
+    info: (title: string, description?: string) =>
+        toast.add('info', title, description),
+    error: (title: string, description?: string) =>
+        toast.add('error', title, description),
+    warning: (title: string, description?: string) =>
+        toast.add('warning', title, description),
     dismiss: (id: string | number) => {
         toasts = toasts.filter((t) => t.id !== id.toString());
         emitChange();
@@ -84,7 +93,15 @@ const styles = {
     },
 };
 
-function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: {
+function ToastCard({
+    id,
+    title,
+    description,
+    type,
+    onClose,
+    isRtl,
+    isExiting,
+}: {
     id: string;
     title: string;
     description?: string;
@@ -98,26 +115,33 @@ function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: 
     return (
         <div
             className={cn(
-                "w-full md:min-w-[450px] max-w-md bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] border-s-4 transition-all duration-300 active:scale-95 cursor-pointer",
+                'flex w-full max-w-md cursor-pointer items-center gap-4 rounded-xl border-s-4 bg-surface-container-lowest p-4 shadow-[0_8px_32px_rgba(0,0,0,0.06)] transition-all duration-300 active:scale-95 md:min-w-[450px]',
                 style.border,
-                isExiting ? "opacity-0 scale-95 translate-y-[-10px]" : "opacity-100 scale-100 translate-y-0"
+                isExiting
+                    ? 'translate-y-[-10px] scale-95 opacity-0'
+                    : 'translate-y-0 scale-100 opacity-100',
             )}
             onClick={() => onClose(id)}
         >
-            <div className={cn("flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center", style.iconBg)}>
+            <div
+                className={cn(
+                    'flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full',
+                    style.iconBg,
+                )}
+            >
                 <span
-                    className={cn("material-symbols-outlined", style.iconColor)}
+                    className={cn('material-symbols-outlined', style.iconColor)}
                     style={{ fontVariationSettings: "'FILL' 1" }}
                 >
                     {icons[type]}
                 </span>
             </div>
             <div className="flex-1 space-y-0.5">
-                <h3 className="font-bold text-on-surface font-headline leading-tight text-[14px]">
+                <h3 className="font-headline text-[14px] leading-tight font-bold text-on-surface">
                     {title}
                 </h3>
                 {description && (
-                    <p className="text-on-surface-variant leading-relaxed font-body text-[13px]">
+                    <p className="font-body text-[13px] leading-relaxed text-on-surface-variant">
                         {description}
                     </p>
                 )}
@@ -127,7 +151,7 @@ function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: 
                     e.stopPropagation();
                     onClose(id);
                 }}
-                className="text-on-surface-variant/40 hover:text-on-surface transition-colors"
+                className="text-on-surface-variant/40 transition-colors hover:text-on-surface"
             >
                 <span className="material-symbols-outlined text-lg">close</span>
             </button>
@@ -137,7 +161,9 @@ function ToastCard({ id, title, description, type, onClose, isRtl, isExiting }: 
 
 // --- Exported Component ---
 export function Toaster() {
-    const [activeToasts, setActiveToasts] = useState<(Toast & { isExiting?: boolean })[]>([]);
+    const [activeToasts, setActiveToasts] = useState<
+        (Toast & { isExiting?: boolean })[]
+    >([]);
     const [isRtl, setIsRtl] = useState(false);
     const [mounted, setMounted] = useState(false);
 
@@ -151,7 +177,10 @@ export function Toaster() {
         const observer = new MutationObserver(() => {
             setIsRtl(document.documentElement.getAttribute('dir') === 'rtl');
         });
-        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'] });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['dir'],
+        });
 
         return () => {
             observer.disconnect();
@@ -163,28 +192,36 @@ export function Toaster() {
             setActiveToasts((current) => {
                 // Find toasts that were removed
                 const removedIds = current
-                    .filter(t => !t.isExiting && !newToasts.find(nt => nt.id === t.id))
-                    .map(t => t.id);
+                    .filter(
+                        (t) =>
+                            !t.isExiting &&
+                            !newToasts.find((nt) => nt.id === t.id),
+                    )
+                    .map((t) => t.id);
 
                 if (removedIds.length === 0) {
                     // Update current ones with new data, preserve isExiting
-                    const merged = newToasts.map(nt => {
-                        const existing = current.find(t => t.id === nt.id);
+                    const merged = newToasts.map((nt) => {
+                        const existing = current.find((t) => t.id === nt.id);
 
-                        return existing ? { ...nt, isExiting: existing.isExiting } : nt;
+                        return existing
+                            ? { ...nt, isExiting: existing.isExiting }
+                            : nt;
                     });
 
                     // Keep the exiting ones too
-                    const exiting = current.filter(t => t.isExiting);
+                    const exiting = current.filter((t) => t.isExiting);
 
                     // Filter out exiting that are now back in newToasts (shouldn't happen with unique IDs but just in case)
-                    const filteredExiting = exiting.filter(et => !newToasts.find(nt => nt.id === et.id));
+                    const filteredExiting = exiting.filter(
+                        (et) => !newToasts.find((nt) => nt.id === et.id),
+                    );
 
                     return [...merged, ...filteredExiting];
                 }
 
                 // Mark removed as exiting
-                const updated = current.map(t => {
+                const updated = current.map((t) => {
                     if (removedIds.includes(t.id)) {
                         return { ...t, isExiting: true };
                     }
@@ -193,16 +230,18 @@ export function Toaster() {
                 });
 
                 // Add any new toasts that weren't in current
-                newToasts.forEach(nt => {
-                    if (!current.find(t => t.id === nt.id)) {
+                newToasts.forEach((nt) => {
+                    if (!current.find((t) => t.id === nt.id)) {
                         updated.push(nt);
                     }
                 });
 
                 // Set timeout to remove them from state
-                removedIds.forEach(id => {
+                removedIds.forEach((id) => {
                     setTimeout(() => {
-                        setActiveToasts(prev => prev.filter(t => t.id !== id));
+                        setActiveToasts((prev) =>
+                            prev.filter((t) => t.id !== id),
+                        );
                     }, 300);
                 });
 
@@ -220,16 +259,16 @@ export function Toaster() {
     return (
         <div
             className={cn(
-                "fixed top-0 z-[100] p-4 md:p-6 pointer-events-none flex flex-col gap-4 w-full md:w-auto",
-                isRtl ? "left-0" : "right-0"
+                'pointer-events-none fixed top-0 z-[100] flex w-full flex-col gap-4 p-4 md:w-auto md:p-6',
+                isRtl ? 'left-0' : 'right-0',
             )}
         >
             {activeToasts.map((t) => (
                 <div
                     key={t.id}
                     className={cn(
-                        "pointer-events-auto w-full max-w-md animate-in fade-in slide-in-from-top-4 duration-300",
-                        isRtl ? "md:mr-0" : "md:ml-0"
+                        'pointer-events-auto w-full max-w-md animate-in duration-300 fade-in slide-in-from-top-4',
+                        isRtl ? 'md:mr-0' : 'md:ml-0',
                     )}
                 >
                     <ToastCard

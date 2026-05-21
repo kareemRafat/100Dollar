@@ -14,7 +14,7 @@ import {
     Lock,
     Award,
     ThumbsUp,
-    Trophy
+    Trophy,
 } from 'lucide-react';
 import { show } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { Button } from '@/app/components/ui/button';
@@ -46,12 +46,12 @@ type Props = {
 
 const categoryIcons: Record<string, any> = {
     'shopping-bag': ShoppingBag,
-    'home': Home,
-    'palette': Palette,
-    'cpu': Cpu,
-    'leaf': Leaf,
+    home: Home,
+    palette: Palette,
+    cpu: Cpu,
+    leaf: Leaf,
     'graduation-cap': GraduationCap,
-    'heart': Heart,
+    heart: Heart,
     'more-horizontal': MoreHorizontal,
 };
 
@@ -81,7 +81,9 @@ export function IdeaCard({
     const { __ } = useLang();
     const { locale } = usePage().props as any;
 
-    const Icon = categoryIcon ? (categoryIcons[categoryIcon] || MoreHorizontal) : null;
+    const Icon = categoryIcon
+        ? categoryIcons[categoryIcon] || MoreHorizontal
+        : null;
     const isBlocked = !!blockedUntil;
 
     if (variant === 'archive') {
@@ -97,11 +99,14 @@ export function IdeaCard({
             >
                 {isWinner && (
                     <>
-                        <div className="absolute top-0 start-0 z-20 h-1 w-full rounded-t-xl bg-gradient-to-inline-end from-primary to-transparent" />
-                        <div className="absolute -top-3 -start-3 z-30 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
+                        <div className="bg-gradient-to-inline-end absolute start-0 top-0 z-20 h-1 w-full rounded-t-xl from-primary to-transparent" />
+                        <div className="absolute -start-3 -top-3 z-30 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
                             <Trophy className="size-3.5 text-on-primary" />
                             <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
-                                {__('messages.archive.winner_status').replace(' 🏆', '')}
+                                {__('messages.archive.winner_status').replace(
+                                    ' 🏆',
+                                    '',
+                                )}
                             </span>
                         </div>
                     </>
@@ -171,7 +176,7 @@ export function IdeaCard({
             }`}
         >
             {isVoted && (
-                <div className="absolute -top-3 -end-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
+                <div className="absolute -end-3 -top-3 z-10 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
                     <Award className="size-3.5 text-on-primary" />
                     <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
                         {__('messages.home.voted_badge')}
@@ -181,7 +186,9 @@ export function IdeaCard({
 
             <div className="mb-4 flex items-start justify-between">
                 <div className="flex items-center gap-2 rounded-md bg-primary-fixed px-3 py-1">
-                    {Icon && <Icon className="size-3.5 text-on-primary-fixed" />}
+                    {Icon && (
+                        <Icon className="size-3.5 text-on-primary-fixed" />
+                    )}
                     <span className="text-xs font-bold text-on-primary-fixed">
                         {category}
                     </span>
@@ -232,7 +239,7 @@ export function IdeaCard({
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20 dark:bg-outline-variant/40">
                         <div
-                            className="h-full rounded-full bg-gradient-to-inline-end from-primary to-primary-container"
+                            className="bg-gradient-to-inline-end h-full rounded-full from-primary to-primary-container"
                             style={{ width: `${voteProgress}%` }}
                         />
                     </div>
@@ -243,30 +250,30 @@ export function IdeaCard({
                         e.stopPropagation();
                         onVote?.();
                     }}
-                    variant={isVoted ? "default" : "secondary"}
+                    variant={isVoted ? 'default' : 'secondary'}
                     disabled={isVoted || isLoading || isBlocked}
                     className={`w-full cursor-pointer rounded-xl py-6 transition-all ${
                         isVoted
-                            ? 'bg-primary text-on-primary shadow-inner opacity-100'
-                            : 'animate-sparkle hover:bg-primary hover:text-on-primary group-hover:bg-primary group-hover:text-on-primary'
+                            ? 'bg-primary text-on-primary opacity-100 shadow-inner'
+                            : 'animate-sparkle group-hover:bg-primary group-hover:text-on-primary hover:bg-primary hover:text-on-primary'
                     }`}
-                >                    {isLoading ? (
+                >
+                    {' '}
+                    {isLoading ? (
                         <Loader2 className="size-5 animate-spin" />
+                    ) : isVoted ? (
+                        <Award className="size-5" />
+                    ) : isBlocked ? (
+                        <Lock className="size-5" />
                     ) : (
-                        isVoted ? (
-                            <Award className="size-5" />
-                        ) : isBlocked ? (
-                            <Lock className="size-5" />
-                        ) : (
-                            <ThumbsUp className="size-5" />
-                        )
+                        <ThumbsUp className="size-5" />
                     )}
                     <span className="font-bold">
                         {isVoted
                             ? __('messages.home.voted')
                             : isBlocked
-                                ? formatDuration(remainingSeconds, locale)
-                                : __('messages.home.vote_now')}
+                              ? formatDuration(remainingSeconds, locale)
+                              : __('messages.home.vote_now')}
                     </span>
                 </Button>
             </div>

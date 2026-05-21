@@ -52,8 +52,14 @@ export default function Home({
 
             <IdeaList ideas={ideas} votedIdeaId={votedIdeaId} />
 
-            <WhenVisible data="previousWinners" fallback={<PreviousWinnersSkeleton />} buffer={300}>
-                {previousWinners && <MemoizedPreviousWinners winners={previousWinners} />}
+            <WhenVisible
+                data="previousWinners"
+                fallback={<PreviousWinnersSkeleton />}
+                buffer={300}
+            >
+                {previousWinners && (
+                    <MemoizedPreviousWinners winners={previousWinners} />
+                )}
             </WhenVisible>
         </>
     );

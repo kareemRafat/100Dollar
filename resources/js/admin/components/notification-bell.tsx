@@ -23,7 +23,9 @@ export function NotificationBell() {
     const [open, setOpen] = useState(false);
     const [notifications, setNotifications] = useState<any[]>([]);
     const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
-    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<number | null>(null);
+    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<
+        number | null
+    >(null);
 
     // Poll for new notifications every 60 seconds
     usePoll(60000, {
@@ -53,46 +55,59 @@ export function NotificationBell() {
     };
 
     useEffect(() => {
-        if (open && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+        if (
+            open &&
+            (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
+        ) {
             void loadNotifications();
         }
     }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
 
     const handleMarkAsRead = (id: number) => {
-        router.patch(markAsRead.url(), { id, is_read: true }, {
-            preserveScroll: true,
-            onSuccess: () => {
-                setNotifications((currentNotifications) =>
-                    currentNotifications.map((notification) =>
-                        notification.id === id
-                            ? { ...notification, is_read: true }
-                            : notification,
-                    ),
-                );
+        router.patch(
+            markAsRead.url(),
+            { id, is_read: true },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setNotifications((currentNotifications) =>
+                        currentNotifications.map((notification) =>
+                            notification.id === id
+                                ? { ...notification, is_read: true }
+                                : notification,
+                        ),
+                    );
+                },
             },
-        });
+        );
     };
 
     const handleMarkAllAsRead = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        router.patch(markAllAsRead.url(), {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                setNotifications((currentNotifications) =>
-                    currentNotifications.map((notification) => ({
-                        ...notification,
-                        is_read: true,
-                    })),
-                );
+        router.patch(
+            markAllAsRead.url(),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setNotifications((currentNotifications) =>
+                        currentNotifications.map((notification) => ({
+                            ...notification,
+                            is_read: true,
+                        })),
+                    );
+                },
             },
-        });
+        );
     };
 
     const formatTime = (dateString: string) => {
         const date = new Date(dateString);
         const now = new Date();
-        const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+        const diffInSeconds = Math.floor(
+            (now.getTime() - date.getTime()) / 1000,
+        );
 
         if (diffInSeconds < 60) {
             return 'الآن';
@@ -121,7 +136,11 @@ export function NotificationBell() {
             onOpenChange={(nextOpen) => {
                 setOpen(nextOpen);
 
-                if (nextOpen && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+                if (
+                    nextOpen &&
+                    (!hasLoadedNotifications ||
+                        lastLoadedUnreadCount !== unreadCount)
+                ) {
                     void loadNotifications();
                 }
             }}
@@ -136,7 +155,7 @@ export function NotificationBell() {
                     <button className="relative flex items-center justify-center">
                         <Bell className="size-6" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white ring-2 ring-white dark:ring-neutral-950 shadow-sm z-20">
+                            <span className="absolute -top-0.5 -right-0.5 z-20 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-neutral-950">
                                 {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
                         )}
@@ -146,7 +165,7 @@ export function NotificationBell() {
 
             <DropdownMenuContent
                 align="end"
-                className="w-80 rounded-xl p-0 shadow-xl border-neutral-200 dark:border-neutral-800 dark:bg-neutral-950"
+                className="w-80 rounded-xl border-neutral-200 p-0 shadow-xl dark:border-neutral-800 dark:bg-neutral-950"
             >
                 <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3 dark:border-neutral-800">
                     <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
@@ -155,44 +174,53 @@ export function NotificationBell() {
                     {unreadCount > 0 && (
                         <button
                             onClick={handleMarkAllAsRead}
-                            className="text-[10px] font-bold text-blue-600 hover:underline cursor-pointer dark:text-blue-400"
+                            className="cursor-pointer text-[10px] font-bold text-blue-600 hover:underline dark:text-blue-400"
                         >
                             تحديد الكل كمقروء
                         </button>
                     )}
                 </div>
 
-                <div className="max-h-[350px] overflow-y-auto no-scrollbar">
+                <div className="no-scrollbar max-h-[350px] overflow-y-auto">
                     {notifications.length > 0 ? (
                         notifications.map((notification: any) => (
                             <DropdownMenuItem
                                 key={notification.id}
                                 className={cn(
-                                    "flex flex-col items-start gap-1 cursor-pointer border-b border-neutral-50 px-4 py-3 last:border-0 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900",
-                                    !notification.is_read && "bg-blue-50/50 dark:bg-blue-900/10"
+                                    'flex cursor-pointer flex-col items-start gap-1 border-b border-neutral-50 px-4 py-3 last:border-0 hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-900',
+                                    !notification.is_read &&
+                                        'bg-blue-50/50 dark:bg-blue-900/10',
                                 )}
                                 onSelect={() => {
                                     if (!notification.is_read) {
                                         handleMarkAsRead(notification.id);
                                     }
-                                    
+
                                     if (notification.data?.idea_id) {
-                                        router.visit(admin.ideas.show(notification.data.idea_id).url);
+                                        router.visit(
+                                            admin.ideas.show(
+                                                notification.data.idea_id,
+                                            ).url,
+                                        );
                                     }
                                 }}
                             >
                                 <div className="flex w-full items-start justify-between gap-2">
-                                    <span className={cn(
-                                        "text-[13px] font-bold leading-tight",
-                                        notification.is_read ? "text-neutral-500" : "text-neutral-900 dark:text-white"
-                                    )}>
+                                    <span
+                                        className={cn(
+                                            'text-[13px] leading-tight font-bold',
+                                            notification.is_read
+                                                ? 'text-neutral-500'
+                                                : 'text-neutral-900 dark:text-white',
+                                        )}
+                                    >
                                         {notification.title}
                                     </span>
                                     {!notification.is_read && (
                                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
                                     )}
                                 </div>
-                                <p className="text-[11px] text-neutral-500 line-clamp-2">
+                                <p className="line-clamp-2 text-[11px] text-neutral-500">
                                     {notification.body}
                                 </p>
                                 <span className="mt-1 text-[9px] text-neutral-400">
@@ -215,7 +243,7 @@ export function NotificationBell() {
                 <DropdownMenuSeparator className="m-0 dark:bg-neutral-800" />
                 <Link
                     href={admin.notifications.index().url}
-                    className="flex w-full items-center justify-center py-2.5 text-xs font-bold text-blue-600 hover:bg-neutral-50 dark:text-blue-400 dark:hover:bg-neutral-900 cursor-pointer"
+                    className="flex w-full cursor-pointer items-center justify-center py-2.5 text-xs font-bold text-blue-600 hover:bg-neutral-50 dark:text-blue-400 dark:hover:bg-neutral-900"
                     onClick={() => setOpen(false)}
                 >
                     عرض جميع التنبيهات

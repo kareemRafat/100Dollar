@@ -2,7 +2,10 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { router, usePage } from '@inertiajs/react';
 import { Bell, Clock, CheckCheck } from 'lucide-react';
 import { memo } from 'react';
-import { markAsRead, markAllAsRead } from '@/actions/App/Http/Controllers/App/NotificationController';
+import {
+    markAsRead,
+    markAllAsRead,
+} from '@/actions/App/Http/Controllers/App/NotificationController';
 import { toast } from '@/app/components/ui/toast';
 import {
     resolveNotificationBody,
@@ -35,8 +38,10 @@ function Notifications({ notifications }: Props) {
     const locale = pageProps.locale as string;
     const localizedPath = (path: string) => `/${locale}${path}`;
 
-    const items = Array.isArray(notifications) ? notifications : (notifications?.data || []);
-    const hasUnread = items.some(n => !n.is_read);
+    const items = Array.isArray(notifications)
+        ? notifications
+        : notifications?.data || [];
+    const hasUnread = items.some((n) => !n.is_read);
 
     // Standardized pagination data retrieval
     const meta = (notifications as any)?.meta;
@@ -45,33 +50,49 @@ function Notifications({ notifications }: Props) {
     const total = meta?.total || (notifications as any)?.total || items.length;
 
     const handleMarkAsRead = (id: number, isRead: boolean = true) => {
-        router.patch(markAsRead.url(), { id, is_read: isRead }, {
-            preserveScroll: true,
-        });
+        router.patch(
+            markAsRead.url(),
+            { id, is_read: isRead },
+            {
+                preserveScroll: true,
+            },
+        );
     };
 
     const handleMarkAllAsRead = () => {
-        router.patch(markAllAsRead.url(), {}, {
-            preserveScroll: true,
-            onSuccess: () => {
-                toast.success(__('messages.profile.notifications'), __('messages.profile.mark_all_read_success'));
+        router.patch(
+            markAllAsRead.url(),
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success(
+                        __('messages.profile.notifications'),
+                        __('messages.profile.mark_all_read_success'),
+                    );
+                },
             },
-        });
+        );
     };
 
     const handleNotificationClick = (notification: Notification) => {
-        const targetUrl = notification.data?.url
-            ?? (notification.data?.idea_id
+        const targetUrl =
+            notification.data?.url ??
+            (notification.data?.idea_id
                 ? localizedPath(show(notification.data.idea_id).url)
                 : null);
 
         if (targetUrl) {
-            router.patch(markAsRead.url(), { id: notification.id, is_read: true }, {
-                preserveScroll: true,
-                onFinish: () => {
-                    router.visit(targetUrl);
+            router.patch(
+                markAsRead.url(),
+                { id: notification.id, is_read: true },
+                {
+                    preserveScroll: true,
+                    onFinish: () => {
+                        router.visit(targetUrl);
+                    },
                 },
-            });
+            );
         } else if (!notification.is_read) {
             handleMarkAsRead(notification.id, true);
         }
@@ -127,26 +148,32 @@ function Notifications({ notifications }: Props) {
                         onClick={() => handleNotificationClick(notification)}
                         className={`group relative flex gap-4 rounded-xl border p-4 transition-all ${
                             notification.is_read
-                                ? 'border-outline-variant/10 bg-surface-container-lowest dark:bg-surface-container-low opacity-75'
-                                : 'border-primary/20 bg-primary/5 cursor-pointer hover:shadow-md dark:bg-primary/10'
+                                ? 'border-outline-variant/10 bg-surface-container-lowest opacity-75 dark:bg-surface-container-low'
+                                : 'cursor-pointer border-primary/20 bg-primary/5 hover:shadow-md dark:bg-primary/10'
                         }`}
                     >
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-                            notification.is_read
-                                ? 'bg-surface-container-high text-on-surface-variant/60 dark:bg-white/5'
-                                : 'bg-primary/10 text-primary'
-                        }`}>
+                        <div
+                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                                notification.is_read
+                                    ? 'bg-surface-container-high text-on-surface-variant/60 dark:bg-white/5'
+                                    : 'bg-primary/10 text-primary'
+                            }`}
+                        >
                             <Bell className="size-5" />
                         </div>
 
                         <div className="flex-1 space-y-1">
                             <div className="flex items-start justify-between gap-2">
-                                <h3 className={`text-sm font-bold ${
-                                    notification.is_read ? 'text-secondary dark:text-white/80' : 'text-secondary dark:text-white'
-                                }`}>
+                                <h3
+                                    className={`text-sm font-bold ${
+                                        notification.is_read
+                                            ? 'text-secondary dark:text-white/80'
+                                            : 'text-secondary dark:text-white'
+                                    }`}
+                                >
                                     {resolveNotificationTitle(notification, __)}
                                 </h3>
-                                <div className="flex items-center me-5 gap-1 text-[10px] text-on-surface-variant/40">
+                                <div className="me-5 flex items-center gap-1 text-[10px] text-on-surface-variant/40">
                                     <Clock className="size-3" />
                                     {formatDate(notification.created_at)}
                                 </div>
@@ -157,8 +184,8 @@ function Notifications({ notifications }: Props) {
                         </div>
 
                         {!notification.is_read && (
-                            <div className="absolute top-4 end-4 mt-1">
-                                <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+                            <div className="absolute end-4 top-4 mt-1">
+                                <div className="h-2 w-2 animate-pulse rounded-full bg-primary"></div>
                             </div>
                         )}
                     </div>
@@ -168,10 +195,7 @@ function Notifications({ notifications }: Props) {
             {/* Pagination */}
             {lastPage > 1 && (
                 <div className="mt-8">
-                    <Pagination
-                        links={links}
-                        only={['notifications']}
-                    />
+                    <Pagination links={links} only={['notifications']} />
                 </div>
             )}
         </div>

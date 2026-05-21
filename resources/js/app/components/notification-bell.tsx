@@ -32,7 +32,9 @@ export function NotificationBell() {
     const [notifications, setNotifications] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
-    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<number | null>(null);
+    const [lastLoadedUnreadCount, setLastLoadedUnreadCount] = useState<
+        number | null
+    >(null);
 
     // Poll for new notifications every 60 seconds
     usePoll(60000, {
@@ -70,7 +72,10 @@ export function NotificationBell() {
     };
 
     useEffect(() => {
-        if (open && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+        if (
+            open &&
+            (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
+        ) {
             void loadNotifications();
         }
     }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
@@ -129,18 +134,24 @@ export function NotificationBell() {
         if (diffInSeconds < 3600) {
             const mins = Math.floor(diffInSeconds / 60);
 
-            return locale === 'ar' ? `قبل ${formattedMins(mins)} دقيقة` : `${mins}m ago`;
+            return locale === 'ar'
+                ? `قبل ${formattedMins(mins)} دقيقة`
+                : `${mins}m ago`;
         }
 
         if (diffInSeconds < 86400) {
             const hours = Math.floor(diffInSeconds / 3600);
 
-            return locale === 'ar' ? `قبل ${formattedMins(hours)} ساعة` : `${hours}h ago`;
+            return locale === 'ar'
+                ? `قبل ${formattedMins(hours)} ساعة`
+                : `${hours}h ago`;
         }
 
         const days = Math.floor(diffInSeconds / 86400);
 
-        return locale === 'ar' ? `قبل ${formattedMins(days)} يوم` : `${days}d ago`;
+        return locale === 'ar'
+            ? `قبل ${formattedMins(days)} يوم`
+            : `${days}d ago`;
     };
 
     // Helper to format numbers in Arabic locale if needed, otherwise fallback to simple number
@@ -152,7 +163,11 @@ export function NotificationBell() {
             onOpenChange={(nextOpen) => {
                 setOpen(nextOpen);
 
-                if (nextOpen && (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)) {
+                if (
+                    nextOpen &&
+                    (!hasLoadedNotifications ||
+                        lastLoadedUnreadCount !== unreadCount)
+                ) {
                     void loadNotifications();
                 }
             }}
@@ -167,7 +182,7 @@ export function NotificationBell() {
                     <button className="relative flex items-center justify-center">
                         <Bell className="size-6" />
                         {unreadCount > 0 && (
-                            <span className="absolute -top-0.5 -right-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white ring-2 ring-surface dark:ring-surface shadow-sm z-20">
+                            <span className="absolute -top-0.5 -right-0.5 z-20 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-surface dark:ring-surface">
                                 {unreadCount > 9 ? '9+' : unreadCount}
                             </span>
                         )}
@@ -224,9 +239,14 @@ export function NotificationBell() {
                                         handleMarkAsRead(notification.id);
                                     }
 
-                                    const targetUrl = notification.data?.url
-                                        ?? (notification.data?.idea_id
-                                            ? localizedPath(show(notification.data.idea_id).url)
+                                    const targetUrl =
+                                        notification.data?.url ??
+                                        (notification.data?.idea_id
+                                            ? localizedPath(
+                                                  show(
+                                                      notification.data.idea_id,
+                                                  ).url,
+                                              )
                                             : null);
 
                                     if (targetUrl) {
@@ -243,7 +263,10 @@ export function NotificationBell() {
                                                 : 'text-on-surface dark:text-white',
                                         )}
                                     >
-                                        {resolveNotificationTitle(notification, __)}
+                                        {resolveNotificationTitle(
+                                            notification,
+                                            __,
+                                        )}
                                     </span>
                                     {!notification.is_read && (
                                         <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />

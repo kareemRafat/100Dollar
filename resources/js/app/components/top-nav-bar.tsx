@@ -44,7 +44,6 @@ import { index } from '@/routes/app/ideas';
 import { personalInfo as profilePersonalInfo } from '@/routes/app/profile';
 import type { NavItem } from '@/types';
 
-
 type Props = {
     activeRoute?: string;
 };
@@ -93,10 +92,12 @@ export function TopNavBar({ activeRoute }: Props) {
                             className="flex w-[300px] flex-col border-outline-variant/10 bg-surface p-0 dark:border-white/5 dark:bg-surface"
                         >
                             <SheetHeader className="relative border-b border-outline-variant/10 p-5 dark:border-white/5">
-                                <SheetTitle className={cn(
-                                    "font-headline text-lg font-black tracking-tighter text-secondary dark:text-white",
-                                    isRtl ? "text-right" : "text-left"
-                                )}>
+                                <SheetTitle
+                                    className={cn(
+                                        'font-headline text-lg font-black tracking-tighter text-secondary dark:text-white',
+                                        isRtl ? 'text-right' : 'text-left',
+                                    )}
+                                >
                                     <span className="text-primary">
                                         {__('messages.ideas')}
                                     </span>{' '}
@@ -104,7 +105,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                 </SheetTitle>
                             </SheetHeader>
 
-                            <div className="flex flex-1 flex-col p-4 overflow-y-auto no-scrollbar">
+                            <div className="no-scrollbar flex flex-1 flex-col overflow-y-auto p-4">
                                 <div className="flex flex-col gap-0.5">
                                     {navItems.map((item) => (
                                         <SheetClose asChild key={item.title}>
@@ -148,12 +149,17 @@ export function TopNavBar({ activeRoute }: Props) {
                                         <div className="flex flex-col gap-4">
                                             <SheetClose asChild>
                                                 <Link
-                                                    href={profilePersonalInfo().url}
+                                                    href={
+                                                        profilePersonalInfo()
+                                                            .url
+                                                    }
                                                     className="flex items-center gap-3 rounded-xl p-2 transition-all hover:bg-surface-container-high dark:hover:bg-white/5"
                                                 >
                                                     <Avatar className="size-10">
                                                         <AvatarImage
-                                                            src={auth.user.avatar}
+                                                            src={
+                                                                auth.user.avatar
+                                                            }
                                                             alt={auth.user.name}
                                                         />
                                                         <AvatarFallback className="bg-primary font-bold text-white">
@@ -162,10 +168,14 @@ export function TopNavBar({ activeRoute }: Props) {
                                                             )}
                                                         </AvatarFallback>
                                                     </Avatar>
-                                                    <div className={cn(
-                                                        "flex flex-col",
-                                                        isRtl ? "text-right" : "text-left"
-                                                    )}>
+                                                    <div
+                                                        className={cn(
+                                                            'flex flex-col',
+                                                            isRtl
+                                                                ? 'text-right'
+                                                                : 'text-left',
+                                                        )}
+                                                    >
                                                         <span className="text-sm font-bold text-on-surface dark:text-white">
                                                             {auth.user.name}
                                                         </span>
@@ -181,7 +191,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     <SheetClose asChild>
                                                         <Button
                                                             asChild
-                                                            className="h-9 rounded-xl bg-secondary font-bold text-xs"
+                                                            className="h-9 rounded-xl bg-secondary text-xs font-bold"
                                                         >
                                                             <a href="/admin">
                                                                 {__(
@@ -194,9 +204,11 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     <SheetClose asChild>
                                                         <Button
                                                             asChild
-                                                            className="h-9 rounded-xl font-bold text-xs"
+                                                            className="h-9 rounded-xl text-xs font-bold"
                                                         >
-                                                            <Link href={create.url()}>
+                                                            <Link
+                                                                href={create.url()}
+                                                            >
                                                                 {__(
                                                                     'messages.ui.submit_your_idea',
                                                                 )}
@@ -209,7 +221,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     <Button
                                                         asChild
                                                         variant="outline"
-                                                        className="h-9 rounded-xl font-bold text-xs border-error/20 text-error hover:bg-error/5"
+                                                        className="h-9 rounded-xl border-error/20 text-xs font-bold text-error hover:bg-error/5"
                                                     >
                                                         <Link
                                                             href={logout()}
@@ -219,7 +231,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                                 _locale: locale,
                                                             }}
                                                         >
-                                                            <LogOut className="size-3.5 me-1.5" />
+                                                            <LogOut className="me-1.5 size-3.5" />
                                                             {__(
                                                                 'messages.auth.logout',
                                                             )}
@@ -229,13 +241,22 @@ export function TopNavBar({ activeRoute }: Props) {
                                             </div>
                                         </div>
                                     ) : (
-                                    <div className="flex flex-col gap-2">
+                                        <div className="flex flex-col gap-2">
                                             <SheetClose asChild>
                                                 <Button
                                                     asChild
-                                                    className="h-9 rounded-xl font-bold text-xs transition-all active:scale-[0.98]"
+                                                    className="h-9 rounded-xl text-xs font-bold transition-all active:scale-[0.98]"
                                                 >
-                                                    <Link href={login.url({ query: { redirect: window.location.pathname } })}>
+                                                    <Link
+                                                        href={login.url({
+                                                            query: {
+                                                                redirect:
+                                                                    window
+                                                                        .location
+                                                                        .pathname,
+                                                            },
+                                                        })}
+                                                    >
                                                         {__(
                                                             'messages.ui.submit_your_idea',
                                                         )}
@@ -247,10 +268,21 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     <Button
                                                         asChild
                                                         variant="ghost"
-                                                        className="h-9 rounded-xl font-bold text-xs"
+                                                        className="h-9 rounded-xl text-xs font-bold"
                                                     >
-                                                        <Link href={login.url({ query: { redirect: window.location.pathname } })}>
-                                                            {__('messages.auth.login')}
+                                                        <Link
+                                                            href={login.url({
+                                                                query: {
+                                                                    redirect:
+                                                                        window
+                                                                            .location
+                                                                            .pathname,
+                                                                },
+                                                            })}
+                                                        >
+                                                            {__(
+                                                                'messages.auth.login',
+                                                            )}
                                                         </Link>
                                                     </Button>
                                                 </SheetClose>
@@ -258,9 +290,11 @@ export function TopNavBar({ activeRoute }: Props) {
                                                     <Button
                                                         asChild
                                                         variant="outline"
-                                                        className="h-9 rounded-xl font-bold text-xs"
+                                                        className="h-9 rounded-xl text-xs font-bold"
                                                     >
-                                                        <Link href={register.url()}>
+                                                        <Link
+                                                            href={register.url()}
+                                                        >
                                                             {__(
                                                                 'messages.auth.register',
                                                             )}
@@ -317,7 +351,7 @@ export function TopNavBar({ activeRoute }: Props) {
                             {auth.user.role === 'admin' ? (
                                 <Button
                                     asChild
-                                    className="h-9 rounded-lg bg-secondary px-4 text-sm font-bold transition-all hover:scale-[1.02] hover:bg-secondary/90 active:scale-95 ms-2 hidden md:inline-flex"
+                                    className="ms-2 hidden h-9 rounded-lg bg-secondary px-4 text-sm font-bold transition-all hover:scale-[1.02] hover:bg-secondary/90 active:scale-95 md:inline-flex"
                                 >
                                     <a href="/admin">
                                         {__('messages.ui.dashboard')}
@@ -326,7 +360,7 @@ export function TopNavBar({ activeRoute }: Props) {
                             ) : (
                                 <Button
                                     asChild
-                                    className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden md:inline-flex"
+                                    className="ms-2 hidden h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 md:inline-flex"
                                 >
                                     <Link href={create.url()}>
                                         {__('messages.ui.submit_your_idea')}
@@ -338,9 +372,9 @@ export function TopNavBar({ activeRoute }: Props) {
 
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <button className="group relative flex items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-1 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card cursor-pointer">
-                                        <div className="hidden flex-col md:flex items-start">
-                                            <span className="text-[11px] font-bold text-on-surface dark:text-white px-1">
+                                    <button className="group relative flex cursor-pointer items-center gap-2 rounded-full border border-outline-variant/10 bg-surface-container-lowest p-1 pe-1 transition-all hover:border-primary/30 dark:border-white/10 dark:bg-card">
+                                        <div className="hidden flex-col items-start md:flex">
+                                            <span className="px-1 text-[11px] font-bold text-on-surface dark:text-white">
                                                 {auth.user.name}
                                             </span>
                                         </div>
@@ -378,7 +412,10 @@ export function TopNavBar({ activeRoute }: Props) {
                                             asChild
                                             className="cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5 focus:text-primary"
                                         >
-                                            <Link href={profilePersonalInfo().url} className="w-full flex items-center gap-2.5">
+                                            <Link
+                                                href={profilePersonalInfo().url}
+                                                className="flex w-full items-center gap-2.5"
+                                            >
                                                 <UserIcon className="size-3.5" />
                                                 <span>
                                                     {__(
@@ -391,7 +428,10 @@ export function TopNavBar({ activeRoute }: Props) {
                                             asChild
                                             className="cursor-pointer gap-2.5 rounded-lg py-2 text-xs font-bold focus:bg-primary/5 focus:text-primary"
                                         >
-                                            <Link href={index()} className="w-full flex items-center gap-2.5">
+                                            <Link
+                                                href={index()}
+                                                className="flex w-full items-center gap-2.5"
+                                            >
                                                 <Lightbulb className="size-3.5" />
                                                 <span>
                                                     {__(
@@ -458,7 +498,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                             data={{
                                                 _locale: locale,
                                             }}
-                                            className="w-full flex items-center gap-2.5"
+                                            className="flex w-full items-center gap-2.5"
                                         >
                                             <LogOut className="size-3.5" />
                                             <span>
@@ -473,27 +513,35 @@ export function TopNavBar({ activeRoute }: Props) {
                         <div className="flex items-center gap-1">
                             <Button
                                 asChild
-                                className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 ms-2 hidden md:inline-flex"
+                                className="ms-2 hidden h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] active:scale-95 md:inline-flex"
                             >
-                                <Link href={login.url({ query: { redirect: window.location.pathname } })}>
+                                <Link
+                                    href={login.url({
+                                        query: {
+                                            redirect: window.location.pathname,
+                                        },
+                                    })}
+                                >
                                     {__('messages.ui.submit_your_idea')}
                                 </Link>
                             </Button>
                             <Link
-                                className="px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface dark:text-slate-400 hidden md:inline-block"
-                                href={login.url({ query: { redirect: window.location.pathname } })}
+                                className="hidden px-3 py-2 text-sm font-bold text-on-surface-variant hover:text-on-surface md:inline-block dark:text-slate-400"
+                                href={login.url({
+                                    query: {
+                                        redirect: window.location.pathname,
+                                    },
+                                })}
                             >
                                 {__('messages.auth.login')}
                             </Link>
                             <Button
                                 asChild
                                 variant="outline"
-                                className="h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] hidden md:inline-flex"
+                                className="hidden h-9 rounded-lg px-4 text-sm font-bold transition-all hover:scale-[1.02] md:inline-flex"
                             >
                                 <Link href={register.url()}>
-                                    {__(
-                                        'messages.auth.register',
-                                    )}
+                                    {__('messages.auth.register')}
                                 </Link>
                             </Button>
                         </div>

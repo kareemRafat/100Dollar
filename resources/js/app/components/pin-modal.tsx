@@ -17,7 +17,13 @@ type Props = {
 
 type Step = 'email' | 'otp';
 
-export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: Props) {
+export function PinModal({
+    isOpen,
+    onClose,
+    ideaId,
+    initialEmail,
+    onSuccess,
+}: Props) {
     const { __ } = useLang();
     const [step, setStep] = useState<Step>(initialEmail ? 'otp' : 'email');
     const [resendTimer, setResendTimer] = useState(0);
@@ -46,9 +52,13 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
 
     const handleSendOtp = (targetEmail?: string) => {
         const emailToSend = targetEmail || data.email;
-        
+
         if (!emailToSend || !/^\S+@\S+\.\S+$/.test(emailToSend)) {
-            toast.error(__('validation.email', { attribute: __('messages.vote_pin.email_label') }));
+            toast.error(
+                __('validation.email', {
+                    attribute: __('messages.vote_pin.email_label'),
+                }),
+            );
 
             return;
         }
@@ -71,26 +81,39 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 }
 
                 let message = __('messages.common.error');
-                
+
                 try {
-                    const data = typeof response.data === 'string' 
-                        ? JSON.parse(response.data) 
-                        : response.data;
-                        
+                    const data =
+                        typeof response.data === 'string'
+                            ? JSON.parse(response.data)
+                            : response.data;
+
                     message = data?.message || message;
 
                     if (message.includes(':time')) {
                         // The server response usually has the time, but if it doesn't, we show a generic "10 minutes"
-                        message = message.replace(':time', '10 ' + __('messages.vote_pin.resend').split('(')[0].trim().includes('دقيقة') ? 'دقائق' : 'minutes');
+                        message = message.replace(
+                            ':time',
+                            '10 ' +
+                                __('messages.vote_pin.resend')
+                                    .split('(')[0]
+                                    .trim()
+                                    .includes('دقيقة')
+                                ? 'دقائق'
+                                : 'minutes',
+                        );
                     }
                 } catch {
-                    if (typeof response.data === 'string' && response.data.trim()) {
+                    if (
+                        typeof response.data === 'string' &&
+                        response.data.trim()
+                    ) {
                         message = response.data;
                     }
                 }
-                
+
                 toast.error(message);
-            }
+            },
         });
     };
 
@@ -121,26 +144,39 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                 }
 
                 let message = __('messages.common.error');
-                
+
                 try {
-                    const data = typeof response.data === 'string' 
-                        ? JSON.parse(response.data) 
-                        : response.data;
-                        
+                    const data =
+                        typeof response.data === 'string'
+                            ? JSON.parse(response.data)
+                            : response.data;
+
                     message = data?.message || message;
 
                     if (message.includes(':time')) {
                         // The server response usually has the time, but if it doesn't, we show a generic "10 minutes"
-                        message = message.replace(':time', '10 ' + __('messages.vote_pin.resend').split('(')[0].trim().includes('دقيقة') ? 'دقائق' : 'minutes');
+                        message = message.replace(
+                            ':time',
+                            '10 ' +
+                                __('messages.vote_pin.resend')
+                                    .split('(')[0]
+                                    .trim()
+                                    .includes('دقيقة')
+                                ? 'دقائق'
+                                : 'minutes',
+                        );
                     }
                 } catch {
-                    if (typeof response.data === 'string' && response.data.trim()) {
+                    if (
+                        typeof response.data === 'string' &&
+                        response.data.trim()
+                    ) {
                         message = response.data;
                     }
                 }
-                
+
                 toast.error(message);
-            }
+            },
         });
     };
 
@@ -164,7 +200,7 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
         if (e.key === 'Backspace' && !data.otp[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
-        
+
         if (e.key === 'Enter' && data.otp.length === 6) {
             handleVerifyOtp();
         }
@@ -178,11 +214,11 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
     }
 
     return (
-        <div 
+        <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-deep-navy/10 p-4 backdrop-blur-sm sm:p-6 dark:bg-deep-navy/40"
             onClick={handleClose}
         >
-            <div 
+            <div
                 className="relative flex w-full max-w-[440px] flex-col items-center rounded-3xl border border-gray-100 bg-white p-8 shadow-2xl sm:p-12 dark:border-gray-800 dark:bg-gray-900"
                 onClick={(e) => e.stopPropagation()}
             >
@@ -221,10 +257,16 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                 <input
                                     type="email"
                                     value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    placeholder={__('messages.vote_pin.email_placeholder')}
+                                    onChange={(e) =>
+                                        setData('email', e.target.value)
+                                    }
+                                    placeholder={__(
+                                        'messages.vote_pin.email_placeholder',
+                                    )}
                                     className={`w-full rounded-xl border-gray-200 bg-gray-50 p-4 text-deep-navy transition-all focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 ${errors.email ? 'border-red-500 ring-red-500/20' : ''}`}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleSendOtp()}
+                                    onKeyDown={(e) =>
+                                        e.key === 'Enter' && handleSendOtp()
+                                    }
                                 />
                                 {errors.email && (
                                     <p className="text-xs font-bold text-red-500">
@@ -238,7 +280,9 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                 onClick={() => handleSendOtp()}
                                 disabled={processing}
                             >
-                                {processing ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
+                                {processing ? (
+                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                ) : null}
                                 {__('messages.vote_pin.send_code')}
                             </Button>
                         </div>
@@ -262,23 +306,29 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                     className="flex justify-center gap-2 sm:gap-3"
                                     dir="ltr"
                                 >
-                                    {Array(6).fill('').map((_, i) => (
-                                        <input
-                                            key={i}
-                                            autoFocus={i === 0}
-                                            ref={(el) => {
-                                                inputRefs.current[i] = el;
-                                            }}
-                                            className={`h-14 w-10 sm:h-16 sm:w-12 rounded-xl border-gray-200 bg-gray-50 text-center text-2xl font-bold text-deep-navy transition-all placeholder:text-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-600 ${errors.otp ? 'border-red-500 ring-red-500/20' : ''}`}
-                                            maxLength={1}
-                                            placeholder="-"
-                                            type="text"
-                                            inputMode="numeric"
-                                            value={data.otp[i] || ''}
-                                            onChange={(e) => handleChange(i, e)}
-                                            onKeyDown={(e) => handleKeyDown(i, e)}
-                                        />
-                                    ))}
+                                    {Array(6)
+                                        .fill('')
+                                        .map((_, i) => (
+                                            <input
+                                                key={i}
+                                                autoFocus={i === 0}
+                                                ref={(el) => {
+                                                    inputRefs.current[i] = el;
+                                                }}
+                                                className={`h-14 w-10 rounded-xl border-gray-200 bg-gray-50 text-center text-2xl font-bold text-deep-navy transition-all placeholder:text-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/20 sm:h-16 sm:w-12 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-600 ${errors.otp ? 'border-red-500 ring-red-500/20' : ''}`}
+                                                maxLength={1}
+                                                placeholder="-"
+                                                type="text"
+                                                inputMode="numeric"
+                                                value={data.otp[i] || ''}
+                                                onChange={(e) =>
+                                                    handleChange(i, e)
+                                                }
+                                                onKeyDown={(e) =>
+                                                    handleKeyDown(i, e)
+                                                }
+                                            />
+                                        ))}
                                 </div>
                                 {errors.otp && (
                                     <p className="text-center text-xs font-bold text-red-500">
@@ -291,9 +341,13 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                 <Button
                                     className="h-14 w-full rounded-xl text-lg font-bold shadow-lg"
                                     onClick={handleVerifyOtp}
-                                    disabled={processing || data.otp.length !== 6}
+                                    disabled={
+                                        processing || data.otp.length !== 6
+                                    }
                                 >
-                                    {processing ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
+                                    {processing ? (
+                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                    ) : null}
                                     {__('messages.vote_pin.confirm')}
                                 </Button>
 
@@ -304,12 +358,11 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                         onClick={() => handleSendOtp()}
                                         disabled={processing || resendTimer > 0}
                                     >
-                                        {resendTimer > 0 
+                                        {resendTimer > 0
                                             ? `${__('messages.vote_pin.resend')} (${resendTimer}s)`
-                                            : __('messages.vote_pin.resend')
-                                        }
+                                            : __('messages.vote_pin.resend')}
                                     </button>
-                                    
+
                                     {!initialEmail && (
                                         <button
                                             className="text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
@@ -319,7 +372,9 @@ export function PinModal({ isOpen, onClose, ideaId, initialEmail, onSuccess }: P
                                             }}
                                             disabled={processing}
                                         >
-                                            {__('messages.vote_pin.change_email')}
+                                            {__(
+                                                'messages.vote_pin.change_email',
+                                            )}
                                         </button>
                                     )}
                                 </div>

@@ -14,7 +14,7 @@ export function AppSidebarHeader({
                 <SidebarTrigger className="-ms-1" />
                 <Breadcrumbs breadcrumbs={breadcrumbs} />
             </div>
-            
+
             <div className="flex items-center gap-2">
                 <NotificationBell />
             </div>

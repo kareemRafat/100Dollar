@@ -29,7 +29,7 @@ function VotedIdeas({ ideas }: Props) {
     const { props: pageProps } = usePage();
     const locale = pageProps.locale as string;
     const isRtl = locale === 'ar';
-    const items = Array.isArray(ideas) ? ideas : (ideas?.data || []);
+    const items = Array.isArray(ideas) ? ideas : ideas?.data || [];
 
     // Standardized pagination data retrieval
     const meta = (ideas as any)?.meta;
@@ -75,15 +75,20 @@ function VotedIdeas({ ideas }: Props) {
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
                                 <span className="rounded-full bg-secondary/10 px-2 py-0.5 text-[10px] font-bold text-secondary uppercase dark:bg-white/10 dark:text-white/60">
-                                    {isRtl ? idea.category?.name_ar : idea.category?.name_en}
+                                    {isRtl
+                                        ? idea.category?.name_ar
+                                        : idea.category?.name_en}
                                 </span>
                             </div>
                             <h3 className="text-sm font-bold text-secondary group-hover:text-primary dark:text-white">
-                                <Link href={`/ideas/${idea.id}`}>{idea.title}</Link>
+                                <Link href={`/ideas/${idea.id}`}>
+                                    {idea.title}
+                                </Link>
                             </h3>
                             <div className="flex items-center gap-1 text-[10px] text-on-surface-variant/60">
                                 <User className="size-3" />
-                                {idea.user?.name || __('messages.home.anonymous')}
+                                {idea.user?.name ||
+                                    __('messages.home.anonymous')}
                             </div>
                         </div>
 
@@ -100,10 +105,7 @@ function VotedIdeas({ ideas }: Props) {
             {/* Pagination */}
             {lastPage > 1 && (
                 <div className="mt-8">
-                    <Pagination
-                        links={links}
-                        only={['votedIdeas']}
-                    />
+                    <Pagination links={links} only={['votedIdeas']} />
                 </div>
             )}
         </div>

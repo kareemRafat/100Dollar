@@ -16,11 +16,7 @@ type Props = {
     onItemClick?: (id: string) => void;
 };
 
-export function MobileBottomNav({
-    activeSection,
-    items,
-    onItemClick,
-}: Props) {
+export function MobileBottomNav({ activeSection, items, onItemClick }: Props) {
     const { __ } = useLang();
 
     return (

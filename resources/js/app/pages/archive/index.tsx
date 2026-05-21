@@ -44,50 +44,75 @@ type Props = {
     };
 };
 
-export default function Archive({ filters = {}, categories = [], ideas }: Props) {
+export default function Archive({
+    filters = {},
+    categories = [],
+    ideas,
+}: Props) {
     const { __ } = useLang();
     const { locale } = usePage().props as any;
 
-    const updateFilters = useCallback((updatedFilters: any, showProgress = true) => {
-        const newFilters = { ...filters, ...updatedFilters };
+    const updateFilters = useCallback(
+        (updatedFilters: any, showProgress = true) => {
+            const newFilters = { ...filters, ...updatedFilters };
 
-        // Remove 'all' and empty values to keep URL clean
-        Object.keys(newFilters).forEach((key) => {
-            const val = newFilters[key];
-            
-            if (val === 'all' || val === '' || val === undefined || val === null) {
-                delete newFilters[key];
-            }
-        });
+            // Remove 'all' and empty values to keep URL clean
+            Object.keys(newFilters).forEach((key) => {
+                const val = newFilters[key];
 
-        router.get(index.url(), newFilters, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-            only: ['ideas', 'filters'],
-            showProgress,
-        });
-    }, [filters]);
+                if (
+                    val === 'all' ||
+                    val === '' ||
+                    val === undefined ||
+                    val === null
+                ) {
+                    delete newFilters[key];
+                }
+            });
 
-    const handleFilterChange = useCallback((name: string, value: string) => {
-        updateFilters({ [name]: value });
-    }, [updateFilters]);
+            router.get(index.url(), newFilters, {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['ideas', 'filters'],
+                showProgress,
+            });
+        },
+        [filters],
+    );
 
-    const handleSearch = useCallback((value: string) => {
-        updateFilters({ search: value }, false);
-    }, [updateFilters]);
+    const handleFilterChange = useCallback(
+        (name: string, value: string) => {
+            updateFilters({ [name]: value });
+        },
+        [updateFilters],
+    );
 
-    const handleSortChange = useCallback((value: string) => {
-        updateFilters({ sort: value });
-    }, [updateFilters]);
+    const handleSearch = useCallback(
+        (value: string) => {
+            updateFilters({ search: value }, false);
+        },
+        [updateFilters],
+    );
+
+    const handleSortChange = useCallback(
+        (value: string) => {
+            updateFilters({ sort: value });
+        },
+        [updateFilters],
+    );
 
     const handleClearFilters = useCallback(() => {
-        router.get(index.url(), {}, {
-            preserveState: true,
-            preserveScroll: true,
-            replace: true,
-            only: ['ideas', 'filters'],
-        });
+        router.get(
+            index.url(),
+            {},
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+                only: ['ideas', 'filters'],
+            },
+        );
     }, []);
 
     return (
@@ -115,10 +140,7 @@ export default function Archive({ filters = {}, categories = [], ideas }: Props)
                     onSortChange={handleSortChange}
                 />
 
-                <IdeaList
-                    ideas={ideas}
-                    key={JSON.stringify(filters)}
-                />
+                <IdeaList ideas={ideas} key={JSON.stringify(filters)} />
             </div>
         </>
     );

@@ -192,7 +192,9 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="w-12 text-center">#</TableHead>
+                                        <TableHead className="w-12 text-center">
+                                            #
+                                        </TableHead>
                                         <TableHead>الراعي</TableHead>
                                         <TableHead>الفائز</TableHead>
                                         <TableHead>الفكرة</TableHead>
@@ -219,7 +221,8 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                         prizes.data.map((prize, index) => (
                                             <TableRow key={prize.id}>
                                                 <TableCell className="text-center font-bold text-muted-foreground">
-                                                    {(prizes.meta.current_page - 1) *
+                                                    {(prizes.meta.current_page -
+                                                        1) *
                                                         prizes.meta.per_page +
                                                         index +
                                                         1}

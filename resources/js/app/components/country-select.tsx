@@ -29,8 +29,8 @@ interface Props {
     className?: string;
     triggerClassName?: string;
     labelClassName?: string;
-    size?: "sm" | "default" | "lg";
-    variant?: "default" | "flat";
+    size?: 'sm' | 'default' | 'lg';
+    variant?: 'default' | 'flat';
     label?: React.ReactNode;
     id?: string;
     required?: boolean;
@@ -45,10 +45,10 @@ export function CountrySelect({
     className,
     triggerClassName,
     labelClassName,
-    size = "lg",
-    variant = "default",
+    size = 'lg',
+    variant = 'default',
     label,
-    id = "country",
+    id = 'country',
     required = false,
 }: Props) {
     const { __ } = useLang();
@@ -56,7 +56,7 @@ export function CountrySelect({
 
     // Use passed countries or fallback to empty array
     const countriesSource = countriesProp || [];
-    
+
     // Sort by localized name
     const sortedCountries = [...countriesSource].sort((a, b) => {
         const nameA = locale === 'ar' ? a.name_ar : a.name_en;
@@ -65,21 +65,20 @@ export function CountrySelect({
         return nameA.localeCompare(nameB, locale, { sensitivity: 'base' });
     });
 
-    const variantClasses = variant === 'flat' 
-        ? "bg-surface-container-low dark:bg-surface-container-high border-none focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary shadow-none"
-        : "border-input bg-transparent focus-visible:ring-ring/50 focus-visible:ring-[3px]";
+    const variantClasses =
+        variant === 'flat'
+            ? 'bg-surface-container-low dark:bg-surface-container-high border-none focus:bg-white dark:focus:bg-surface-container-highest focus:ring-2 focus:ring-primary shadow-none'
+            : 'border-input bg-transparent focus-visible:ring-ring/50 focus-visible:ring-[3px]';
 
-    const labelStyles = variant === 'flat'
-        ? "font-headline block text-sm font-bold text-on-surface dark:text-white"
-        : "";
+    const labelStyles =
+        variant === 'flat'
+            ? 'font-headline block text-sm font-bold text-on-surface dark:text-white'
+            : '';
 
     return (
-        <div className={cn("space-y-2", className)}>
+        <div className={cn('space-y-2', className)}>
             {label && (
-                <Label 
-                    htmlFor={id} 
-                    className={cn(labelStyles, labelClassName)}
-                >
+                <Label htmlFor={id} className={cn(labelStyles, labelClassName)}>
                     {label}
                 </Label>
             )}
@@ -89,23 +88,33 @@ export function CountrySelect({
                 required={required}
                 dir={locale === 'ar' ? 'rtl' : 'ltr'}
             >
-                <SelectTrigger 
-                    id={id} 
-                    size={size} 
+                <SelectTrigger
+                    id={id}
+                    size={size}
                     className={cn(
-                        "w-full px-4 text-on-surface dark:text-white transition-all",
+                        'w-full px-4 text-on-surface transition-all dark:text-white',
                         variantClasses,
-                        triggerClassName
+                        triggerClassName,
                     )}
                 >
-                    <SelectValue placeholder={placeholder || __('messages.submit_idea.country_placeholder')} />
+                    <SelectValue
+                        placeholder={
+                            placeholder ||
+                            __('messages.submit_idea.country_placeholder')
+                        }
+                    />
                 </SelectTrigger>
                 <SelectContent>
                     {sortedCountries.map((country) => (
-                        <SelectItem key={country.id} value={country.id.toString()}>
+                        <SelectItem
+                            key={country.id}
+                            value={country.id.toString()}
+                        >
                             <div className="flex items-center gap-2">
                                 <Flag className="size-4 text-primary" />
-                                {locale === 'ar' ? country.name_ar : country.name_en}
+                                {locale === 'ar'
+                                    ? country.name_ar
+                                    : country.name_en}
                             </div>
                         </SelectItem>
                     ))}

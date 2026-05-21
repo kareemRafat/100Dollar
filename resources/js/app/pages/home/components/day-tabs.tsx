@@ -21,10 +21,14 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
     }
 
     const handleDayChange = (dayId: number) => {
-        router.get('/', { day: dayId }, {
-            preserveScroll: true,
-            only: ['ideas', 'sponsor', 'currentDay', 'votedIdeaId'],
-        });
+        router.get(
+            '/',
+            { day: dayId },
+            {
+                preserveScroll: true,
+                only: ['ideas', 'sponsor', 'currentDay', 'votedIdeaId'],
+            },
+        );
     };
 
     return (
@@ -34,12 +38,14 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
                     <Button
                         key={day.id}
                         onClick={() => handleDayChange(day.id)}
-                        variant={currentDay === day.id ? 'default' : 'secondary'}
+                        variant={
+                            currentDay === day.id ? 'default' : 'secondary'
+                        }
                         className={cn(
                             'h-auto cursor-pointer rounded-xl px-6 py-3 font-headline text-sm font-bold whitespace-nowrap shadow-none',
                             currentDay === day.id
                                 ? 'shadow-md'
-                                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant'
+                                : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high dark:text-on-surface-variant',
                         )}
                     >
                         {__(day.name)}
