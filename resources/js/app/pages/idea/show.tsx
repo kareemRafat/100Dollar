@@ -18,12 +18,18 @@ import {
     GraduationCap,
     Heart,
     MoreHorizontal,
+    AlertTriangle,
 } from 'lucide-react';
 import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
 import { useIdeaVote } from '@/app/hooks/use-idea-vote';
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from '@/components/ui/alert';
 import {
     Dialog,
     DialogContent,
@@ -282,6 +288,29 @@ export default function IdeaShow({
                 <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
+                    {isOwner && idea.status === 'rejected' && (
+                        <div className="lg:col-span-12">
+                            <div className="rounded-3xl border border-red-200 bg-red-50/30 p-6 dark:border-red-900/30 dark:bg-red-950/10">
+                                <div className="flex items-start gap-4">
+                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                                        <AlertTriangle className="h-6 w-6" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h3 className="font-headline text-lg font-black text-red-950 dark:text-red-50">
+                                            {__('messages.idea_detail.rejection_notice')}
+                                        </h3>
+                                        <p className="text-base leading-relaxed text-red-900/80 dark:text-red-200/80">
+                                            {idea.rejection_reason ||
+                                                __(
+                                                    'messages.idea_detail.no_reason_provided',
+                                                )}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Sidebar */}
                     <aside className="order-1 space-y-6 lg:order-2 lg:col-span-4">
                         <VotingCard

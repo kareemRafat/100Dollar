@@ -620,6 +620,10 @@ return [
         'idea_owner' => 'Idea Owner',
         'view_image' => 'View Project Image',
         'share_with_friends' => 'Share with friends',
+        'rejection_notice' => 'Idea Rejected',
+        'rejection_reason' => 'Rejection Reason',
+        'no_reason_provided' => 'No specific reason was provided for the rejection.',
+        'moderation_update' => 'Moderation Update',
     ],
 
     'comments' => [

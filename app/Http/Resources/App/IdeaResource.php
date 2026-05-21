@@ -46,6 +46,7 @@ class IdeaResource extends JsonResource
             'user' => new PublicUserResource($this->whenLoaded('user')),
             'user_id' => $this->user_id,
             'status' => $this->is_winner ? 'winner' : $this->status,
+            'rejection_reason' => $this->rejection_reason,
             'is_winner' => $this->is_winner,
             'created_at' => $this->created_at->format('d M Y'),
             'date' => $this->created_at->translatedFormat('d F Y'),

@@ -618,6 +618,10 @@ return [
         'idea_owner' => 'صاحب الفكرة',
         'view_image' => 'عرض صورة المشروع',
         'share_with_friends' => 'شارك الفكرة مع أصدقائك',
+        'rejection_notice' => 'تم رفض الفكرة',
+        'rejection_reason' => 'سبب الرفض',
+        'no_reason_provided' => 'لم يتم تقديم سبب محدد للرفض.',
+        'moderation_update' => 'تحديث من فريق المراجعة',
     ],
 
     'comments' => [
