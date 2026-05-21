@@ -21,12 +21,17 @@ class HomeController extends Controller
         $currentWeek = $now->weekOfYear;
         $currentYear = $now->year;
 
-        $ideas = Idea::with(['user:id,name', 'user.media', 'category', 'country', 'media'])
+        $ideasQuery = Idea::with(['user:id,name', 'user.media', 'category', 'country', 'media'])
             ->withCount('comments')
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
             ->where('year', $currentYear)
-            ->where('status', 'approved')
+            ->where('status', 'approved');
+
+        $maxVotesCount = (int) ((clone $ideasQuery)->max('votes_count') ?? 0);
+        $request->attributes->set('idea_max_votes', $maxVotesCount);
+
+        $ideas = $ideasQuery
             ->orderByDesc('votes_count')
             ->simplePaginate(6)
             ->withQueryString();

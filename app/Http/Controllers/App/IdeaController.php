@@ -37,6 +37,9 @@ class IdeaController extends Controller
                 }
             });
 
+        $maxVotesCount = (int) ((clone $query)->max('votes_count') ?? 0);
+        $request->attributes->set('idea_max_votes', $maxVotesCount);
+
         $ideas = $query->get();
 
         $userStats = $user->ideas()
@@ -156,6 +159,14 @@ class IdeaController extends Controller
 
         $idea->load(['user.media', 'sponsor.media', 'country', 'category', 'media']);
         $idea->loadCount(['votes', 'comments']);
+
+        $maxVotesCount = (int) (Idea::query()
+            ->where('submission_day', $idea->submission_day)
+            ->where('week_number', $idea->week_number)
+            ->where('year', $idea->year)
+            ->where('status', 'approved')
+            ->max('votes_count') ?? 0);
+        $request->attributes->set('idea_max_votes', $maxVotesCount);
 
         $shareDescription = Str::limit(trim((string) $idea->description), 160, '');
         $shareUrl = $request->fullUrl();

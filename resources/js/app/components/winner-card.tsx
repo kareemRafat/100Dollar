@@ -27,7 +27,7 @@ export function WinnerCard({
             prefetch
             className="group relative flex h-full w-72 flex-shrink-0 snap-start flex-col overflow-hidden rounded-3xl border border-primary/10 bg-surface-container-lowest p-6 shadow-lg transition-all duration-500 hover:shadow-xl dark:bg-card"
         >
-            <div className="bg-gradient-to-inline-end absolute start-0 top-0 h-1 w-full from-primary to-transparent" />
+            <div className="absolute start-0 top-0 h-1 w-full bg-gradient-to-r from-primary to-transparent" />
             <div className="relative mx-auto mb-6 h-24 w-24">
                 <div className="absolute inset-0 animate-pulse rounded-full bg-primary/20" />
                 {avatarUrl ? (

@@ -26,6 +26,8 @@ class IdeaResource extends JsonResource
     {
         $locale = app()->getLocale();
         $countryName = $this->country ? $this->country->{'name_'.$locale} : null;
+        $votesCount = (int) ($this->votes_count ?? $this->votes()->count());
+        $maxVotesCount = (int) $request->attributes->get('idea_max_votes', 100);
 
         return [
             'id' => $this->id,
@@ -41,7 +43,7 @@ class IdeaResource extends JsonResource
             'marketing_channel' => $this->marketing_channel,
             'target_audience' => $this->target_audience,
             'implementation_time' => $this->implementation_time,
-            'votes_count' => (int) ($this->votes_count ?? $this->votes()->count()),
+            'votes_count' => $votesCount,
             'comments_count' => (int) ($this->comments_count ?? $this->comments()->count()),
             'user' => new PublicUserResource($this->whenLoaded('user')),
             'user_id' => $this->user_id,
@@ -50,9 +52,22 @@ class IdeaResource extends JsonResource
             'is_winner' => $this->is_winner,
             'created_at' => $this->created_at->format('d M Y'),
             'date' => $this->created_at->translatedFormat('d F Y'),
-            'progress' => $this->is_winner ? 100 : min(100, round(($this->votes_count / 100) * 100)), // Dummy target of 100 for now
-            'target_votes' => 100, // Dummy target
+            'progress' => $this->progressFor($votesCount, $maxVotesCount),
+            'target_votes' => $maxVotesCount,
             'funded' => $this->is_winner,
         ];
+    }
+
+    private function progressFor(int $votesCount, int $maxVotesCount): int
+    {
+        if ($this->is_winner) {
+            return 100;
+        }
+
+        if ($maxVotesCount <= 0) {
+            return 0;
+        }
+
+        return min(100, (int) round(($votesCount / $maxVotesCount) * 100));
     }
 }

@@ -24,6 +24,8 @@ class CompactIdeaResource extends JsonResource
     public function toArray(Request $request): array
     {
         $locale = app()->getLocale();
+        $votesCount = (int) ($this->votes_count ?? 0);
+        $maxVotesCount = (int) $request->attributes->get('idea_max_votes', 100);
 
         return [
             'id' => $this->id,
@@ -36,7 +38,7 @@ class CompactIdeaResource extends JsonResource
             'country_code' => $this->country?->code,
             'city' => $this->city,
             'image' => $this->image,
-            'votes_count' => (int) ($this->votes_count ?? 0),
+            'votes_count' => $votesCount,
             'comments_count' => (int) ($this->comments_count ?? 0),
             'user' => new PublicUserResource($this->whenLoaded('user')),
             'user_id' => $this->user_id,
@@ -44,9 +46,22 @@ class CompactIdeaResource extends JsonResource
             'is_winner' => $this->is_winner,
             'created_at' => $this->created_at->format('d M Y'),
             'date' => $this->created_at->translatedFormat('d F Y'),
-            'progress' => $this->is_winner ? 100 : min(100, round((($this->votes_count ?? 0) / 100) * 100)),
-            'target_votes' => 100,
+            'progress' => $this->progressFor($votesCount, $maxVotesCount),
+            'target_votes' => $maxVotesCount,
             'funded' => $this->is_winner,
         ];
+    }
+
+    private function progressFor(int $votesCount, int $maxVotesCount): int
+    {
+        if ($this->is_winner) {
+            return 100;
+        }
+
+        if ($maxVotesCount <= 0) {
+            return 0;
+        }
+
+        return min(100, (int) round(($votesCount / $maxVotesCount) * 100));
     }
 }

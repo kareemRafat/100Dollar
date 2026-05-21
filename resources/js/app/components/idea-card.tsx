@@ -99,7 +99,7 @@ export function IdeaCard({
             >
                 {isWinner && (
                     <>
-                        <div className="bg-gradient-to-inline-end absolute start-0 top-0 z-20 h-1 w-full rounded-t-xl from-primary to-transparent" />
+                        <div className="absolute start-0 top-0 z-20 h-1 w-full rounded-t-xl bg-gradient-to-r from-primary to-transparent" />
                         <div className="absolute -start-3 -top-3 z-30 flex h-8 items-center gap-1.5 rounded-full bg-primary px-3 shadow-lg ring-2 ring-surface dark:ring-card">
                             <Trophy className="size-3.5 text-on-primary" />
                             <span className="text-[10px] font-black tracking-wider text-on-primary uppercase">
@@ -239,7 +239,7 @@ export function IdeaCard({
                     </div>
                     <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20 dark:bg-outline-variant/40">
                         <div
-                            className="bg-gradient-to-inline-end h-full rounded-full from-primary to-primary-container"
+                            className="h-full rounded-full bg-gradient-to-r from-primary to-primary-container"
                             style={{ width: `${voteProgress}%` }}
                         />
                     </div>

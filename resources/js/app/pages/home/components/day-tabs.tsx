@@ -27,6 +27,7 @@ export default function DayTabs({ weekDays = [], currentDay }: Props) {
             {
                 preserveScroll: true,
                 only: ['ideas', 'sponsor', 'currentDay', 'votedIdeaId'],
+                reset: ['ideas'],
             },
         );
     };

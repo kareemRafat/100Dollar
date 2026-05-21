@@ -14,8 +14,9 @@ class ArchiveController extends Controller
 {
     public function index(Request $request): Response
     {
-        $ideas = Idea::query()
+        $ideasQuery = Idea::query()
             ->with(['user.media', 'category', 'country', 'media'])
+            ->withCount('comments')
             ->where('status', 'approved')
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -37,7 +38,12 @@ class ArchiveController extends Controller
             })
             ->when($request->status === 'non_winner', function ($query) {
                 $query->where('is_winner', false);
-            })
+            });
+
+        $maxVotesCount = (int) ((clone $ideasQuery)->max('votes_count') ?? 0);
+        $request->attributes->set('idea_max_votes', $maxVotesCount);
+
+        $ideas = $ideasQuery
             ->when($request->sort === 'popular', function ($query) {
                 $query->orderBy('votes_count', 'desc');
             }, function ($query) {

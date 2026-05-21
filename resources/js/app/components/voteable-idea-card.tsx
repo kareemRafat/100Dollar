@@ -26,6 +26,13 @@ export function VoteableIdeaCard({ idea, isVoted }: Props) {
         handleVoteSuccess,
         setIsPinModalOpen,
     } = useIdeaVote(idea.id, idea.votes_count);
+    const targetVotes = Number(idea.target_votes ?? 0);
+    const serverProgress = Number(idea.progress ?? 0);
+    const voteProgress = idea.is_winner
+        ? 100
+        : targetVotes > 0
+          ? Math.min(Math.round((votesCount / targetVotes) * 100), 100)
+          : serverProgress;
 
     return (
         <>
@@ -39,7 +46,7 @@ export function VoteableIdeaCard({ idea, isVoted }: Props) {
                 authorName={idea.user?.name || 'Anonymous'}
                 timeAgo={idea.date}
                 votes={votesCount}
-                voteProgress={idea.progress}
+                voteProgress={voteProgress}
                 imageUrl={idea.image}
                 onVote={handleVoteClick}
                 isLoading={isAutoSending}
