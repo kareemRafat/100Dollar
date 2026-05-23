@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, WhenVisible } from '@inertiajs/react';
 import {
     Eye,
     Search,
@@ -8,6 +8,7 @@ import {
     CheckCircle,
     XCircle,
     Clock,
+    Loader2,
 } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import AdminLayout from '@/admin/layouts/admin-layout';
@@ -26,12 +27,18 @@ import {
 import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Idea, Paginated } from '@/types';
+import { IdeaStatus } from '@/types';
 
 interface IdeasProps {
     ideas: Paginated<Idea>;
     filters: {
         status?: string;
         search?: string;
+    };
+    counts?: {
+        pending: number;
+        approved: number;
+        rejected: number;
     };
 }
 
@@ -48,23 +55,23 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const statusTabs = [
     {
-        id: 'pending',
+        id: IdeaStatus.PENDING,
         label: 'في انتظار المراجعة',
         icon: Clock,
         color: 'text-amber-500',
     },
     {
-        id: 'approved',
+        id: IdeaStatus.APPROVED,
         label: 'تمت الموافقة',
         icon: CheckCircle,
         color: 'text-green-500',
     },
-    { id: 'rejected', label: 'مرفوضة', icon: XCircle, color: 'text-red-500' },
+    { id: IdeaStatus.REJECTED, label: 'مرفوضة', icon: XCircle, color: 'text-red-500' },
 ];
 
-export default function IdeasPage({ ideas, filters }: IdeasProps) {
+export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
     const [search, setSearch] = useState(filters.search || '');
-    const [status, setStatus] = useState(filters.status || 'pending');
+    const [status, setStatus] = useState(filters.status || IdeaStatus.PENDING);
 
     const isFirstRender = useRef(true);
 
@@ -92,13 +99,13 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
 
     const getStatusBadge = (status: string) => {
         switch (status) {
-            case 'approved':
+            case IdeaStatus.APPROVED:
                 return (
                     <Badge className="bg-green-100 font-bold text-green-800 hover:bg-green-100">
                         تمت الموافقة
                     </Badge>
                 );
-            case 'rejected':
+            case IdeaStatus.REJECTED:
                 return (
                     <Badge variant="destructive" className="font-bold">
                         مرفوضة
@@ -140,7 +147,7 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                     key={tab.id}
                                     onClick={() => setStatus(tab.id)}
                                     className={cn(
-                                        'flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all',
+                                        'flex cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all',
                                         isActive
                                             ? 'bg-primary text-primary-foreground shadow-sm'
                                             : 'bg-muted/50 text-muted-foreground hover:bg-muted',
@@ -153,9 +160,25 @@ export default function IdeasPage({ ideas, filters }: IdeasProps) {
                                         )}
                                     />
                                     {tab.label}
+                                    <Badge
+                                        variant={isActive ? 'secondary' : 'outline'}
+                                        className={cn(
+                                            'ms-1.5 flex h-4.5 min-w-6 items-center justify-center px-1 py-0 text-[10px] font-bold transition-all',
+                                            isActive
+                                                ? 'bg-white/20 text-white border-none'
+                                                : 'bg-muted text-muted-foreground',
+                                        )}
+                                    >
+                                        {counts ? (
+                                            (counts as any)[tab.id]
+                                        ) : (
+                                            <Loader2 className="size-2.5 animate-spin opacity-70" />
+                                        )}
+                                    </Badge>
                                 </button>
                             );
                         })}
+                        {!counts && <WhenVisible data="counts" />}
                     </div>
 
                     <Card>

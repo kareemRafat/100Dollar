@@ -41,6 +41,21 @@ class IdeaController extends Controller
         return Inertia::render('admin/pages/ideas/index', [
             'ideas' => IdeaResource::collection($ideas),
             'filters' => $request->only(['status', 'search', 'page']),
+            'counts' => Inertia::optional(function () {
+                $counts = Idea::query()
+                    ->selectRaw("
+                        COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
+                        COUNT(CASE WHEN status = 'approved' THEN 1 END) as approved,
+                        COUNT(CASE WHEN status = 'rejected' THEN 1 END) as rejected
+                    ")
+                    ->first();
+
+                return [
+                    'pending' => (int) ($counts->pending ?? 0),
+                    'approved' => (int) ($counts->approved ?? 0),
+                    'rejected' => (int) ($counts->rejected ?? 0),
+                ];
+            }),
         ]);
     }
 

@@ -13,6 +13,7 @@ import { Button } from '@/app/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import app from '@/routes/app';
+import { IdeaStatus } from '@/types';
 
 interface Idea {
     id: number;
@@ -58,20 +59,20 @@ export default function MyIdeas({
 
     const getStatusLabel = (status: string) => {
         switch (status) {
-            case 'pending':
+            case IdeaStatus.PENDING:
                 return __('messages.my_ideas.filter_pending');
-            case 'approved':
+            case IdeaStatus.APPROVED:
                 return __('messages.my_ideas.filter_approved');
-            case 'winner':
+            case IdeaStatus.WINNER:
                 return __('messages.my_ideas.filter_winner') + ' 🏆';
-            case 'rejected':
+            case IdeaStatus.REJECTED:
                 return __('messages.my_ideas.filter_rejected') || 'Rejected';
             default:
                 return status;
         }
     };
 
-    const handleFilter = (status: string | null) => {
+    const handleFilter = (status: IdeaStatus | null) => {
         router.get(
             app.ideas.index.url({
                 query: {
@@ -201,7 +202,7 @@ export default function MyIdeas({
                         </div>
                         <div className="no-scrollbar flex w-full gap-3 overflow-x-auto pb-2 md:w-auto md:pb-0">
                             <Button
-                                className="h-10 rounded-full px-6 text-xs font-black"
+                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
                                 variant={
                                     !filters.status ? 'default' : 'secondary'
                                 }
@@ -210,46 +211,46 @@ export default function MyIdeas({
                                 {__('messages.my_ideas.filter_all')}
                             </Button>
                             <Button
-                                className="h-10 rounded-full px-6 text-xs font-black"
+                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
                                 variant={
-                                    filters.status === 'pending'
+                                    filters.status === IdeaStatus.PENDING
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter('pending')}
+                                onClick={() => handleFilter(IdeaStatus.PENDING)}
                             >
                                 {__('messages.my_ideas.filter_pending')}
                             </Button>
                             <Button
-                                className="h-10 rounded-full px-6 text-xs font-black"
+                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
                                 variant={
-                                    filters.status === 'approved'
+                                    filters.status === IdeaStatus.APPROVED
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter('approved')}
+                                onClick={() => handleFilter(IdeaStatus.APPROVED)}
                             >
                                 {__('messages.my_ideas.filter_approved')}
                             </Button>
                             <Button
-                                className="h-10 rounded-full px-6 text-xs font-black"
+                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
                                 variant={
-                                    filters.status === 'winner'
+                                    filters.status === IdeaStatus.WINNER
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter('winner')}
+                                onClick={() => handleFilter(IdeaStatus.WINNER)}
                             >
                                 {__('messages.my_ideas.filter_winner')}
                             </Button>
                             <Button
-                                className="h-10 rounded-full px-6 text-xs font-black"
+                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
                                 variant={
-                                    filters.status === 'rejected'
+                                    filters.status === IdeaStatus.REJECTED
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter('rejected')}
+                                onClick={() => handleFilter(IdeaStatus.REJECTED)}
                             >
                                 {__('messages.my_ideas.filter_rejected')}
                             </Button>

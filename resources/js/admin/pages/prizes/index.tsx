@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/table';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Paginated, PrizeRecord, Sponsor } from '@/types';
+import { PrizeStatus } from '@/types';
 
 interface PrizesProps {
     prizes: Paginated<PrizeRecord>;
@@ -55,10 +56,10 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const getStatusBadge = (status: string) => {
     switch (status) {
-        case 'paid':
+        case PrizeStatus.DELIVERED:
             return (
                 <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                    <CheckCircle className="me-1 h-3 w-3" /> تم الدفع
+                    <CheckCircle className="me-1 h-3 w-3" /> تم التسليم
                 </Badge>
             );
         default:
@@ -111,7 +112,9 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
         }
 
         const newStatus =
-            confirmingPrize.status === 'paid' ? 'pending' : 'paid';
+            confirmingPrize.status === PrizeStatus.DELIVERED
+                ? PrizeStatus.PENDING
+                : PrizeStatus.DELIVERED;
 
         setProcessing(true);
         router.patch(
@@ -122,7 +125,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
             {
                 preserveScroll: true,
                 onSuccess: () => {
-                    toast.success('تم تحديث حالة الدفع');
+                    toast.success('تم تحديث حالة الجائزة');
                     setConfirmingPrize(null);
                 },
                 onFinish: () => setProcessing(false),
@@ -177,11 +180,11 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="pending">
+                                    <SelectItem value={PrizeStatus.PENDING}>
                                         معلق
                                     </SelectItem>
-                                    <SelectItem value="paid">
-                                        تم الدفع
+                                    <SelectItem value={PrizeStatus.DELIVERED}>
+                                        تم التسليم
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
@@ -269,14 +272,15 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                                                         }
                                                         className={
                                                             prize.status ===
-                                                            'paid'
+                                                            PrizeStatus.DELIVERED
                                                                 ? 'bg-emerald-600 text-xs font-semibold text-white hover:bg-emerald-700'
                                                                 : 'bg-sky-800 text-xs font-semibold text-white hover:bg-sky-900'
                                                         }
                                                     >
-                                                        {prize.status === 'paid'
+                                                        {prize.status ===
+                                                        PrizeStatus.DELIVERED
                                                             ? 'تغيير للمعلق'
-                                                            : 'تأكيد الدفع'}
+                                                            : 'تأكيد التسليم'}
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -302,9 +306,9 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400" />
                         </div>
                         <DialogTitle className="mt-4 text-center">
-                            {confirmingPrize?.status === 'paid'
-                                ? 'تغيير حالة الدفع إلى معلق'
-                                : 'تأكيد عملية الدفع'}
+                            {confirmingPrize?.status === PrizeStatus.DELIVERED
+                                ? 'تغيير حالة الجائزة إلى معلق'
+                                : 'تأكيد تسليم الجائزة'}
                         </DialogTitle>
                         <DialogDescription className="text-center font-bold">
                             هل أنت متأكد من تغيير حالة الجائزة الخاصة بـ{' '}
@@ -352,7 +356,7 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             onClick={handleToggleStatus}
                             disabled={processing}
                             className={
-                                confirmingPrize?.status === 'paid'
+                                confirmingPrize?.status === PrizeStatus.DELIVERED
                                     ? 'flex-1 bg-amber-600 hover:bg-amber-700'
                                     : 'flex-1 bg-green-600 hover:bg-green-700'
                             }
