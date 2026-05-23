@@ -14,22 +14,11 @@ import { Input } from '@/components/ui/input';
 
 import app from '@/routes/app';
 import { IdeaStatus } from '@/types';
-
-interface Idea {
-    id: number;
-    title: string;
-    category: string;
-    status: 'pending' | 'approved' | 'winner' | 'rejected';
-    date: string;
-    votes_count: number;
-    target_votes: number;
-    progress: number;
-    funded: boolean;
-}
+import type { Idea } from '@/types';
 
 interface FilterProps {
     search?: string;
-    status?: string;
+    status?: IdeaStatus;
 }
 
 interface Stat {
@@ -263,18 +252,18 @@ export default function MyIdeas({
                             <div
                                 key={idea.id}
                                 className={`group flex h-full flex-col rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg ${
-                                    idea.status === 'winner'
+                                    idea.status === IdeaStatus.WINNER
                                         ? 'relative overflow-hidden border-2 border-primary/30 bg-surface-container-lowest shadow-lg dark:bg-card'
                                         : 'border-outline-variant/10 bg-surface-container-lowest dark:bg-card'
                                 }`}
                             >
-                                {idea.status === 'winner' && (
+                                {idea.status === IdeaStatus.WINNER && (
                                     <div className="absolute start-0 top-0 h-32 w-32 -translate-x-16 -translate-y-16 rotate-45 bg-primary/10"></div>
                                 )}
                                 <div className="relative z-10 mb-4 flex items-start justify-between">
                                     <span
                                         className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
-                                            idea.status === 'winner'
+                                            idea.status === IdeaStatus.WINNER
                                                 ? 'bg-primary/10 text-primary'
                                                 : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
                                         }`}
@@ -282,7 +271,7 @@ export default function MyIdeas({
                                         {idea.category}
                                     </span>
                                     <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
-                                        {idea.status === 'winner' ? (
+                                        {idea.status === IdeaStatus.WINNER ? (
                                             <>
                                                 <span className="material-symbols-outlined cursor-pointer text-xl text-on-surface-variant transition-colors hover:text-primary">
                                                     edit
@@ -317,24 +306,23 @@ export default function MyIdeas({
                                 <div className="relative z-10 mb-5 flex items-center gap-2">
                                     <span
                                         className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase ${
-                                            idea.status === 'pending'
+                                            idea.status === IdeaStatus.PENDING
                                                 ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                                                : idea.status === 'approved'
+                                                : idea.status === IdeaStatus.APPROVED
                                                   ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                  : idea.status === 'rejected'
+                                                  : idea.status === IdeaStatus.REJECTED
                                                     ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                                                     : 'bg-primary-fixed text-on-primary-fixed-variant'
                                         }`}
                                     >
-                                        {(idea.status === 'pending' ||
-                                            idea.status === 'approved' ||
-                                            idea.status === 'rejected') && (
+                                        {(idea.status === IdeaStatus.PENDING ||
+                                            idea.status === IdeaStatus.APPROVED ||
+                                            idea.status === IdeaStatus.REJECTED) && (
                                             <span
                                                 className={`me-2 h-1.5 w-1.5 rounded-full ${
-                                                    idea.status === 'pending'
+                                                    idea.status === IdeaStatus.PENDING
                                                         ? 'bg-amber-500'
-                                                        : idea.status ===
-                                                            'approved'
+                                                        : idea.status === IdeaStatus.APPROVED
                                                           ? 'bg-green-500'
                                                           : 'bg-red-500'
                                                 }`}
@@ -349,7 +337,7 @@ export default function MyIdeas({
                                 <div className="relative z-10 mt-auto">
                                     <div className="mb-2 flex items-end justify-between">
                                         <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
-                                            {idea.status === 'winner'
+                                            {idea.status === IdeaStatus.WINNER
                                                 ? __(
                                                       'messages.my_ideas.final_votes',
                                                   )

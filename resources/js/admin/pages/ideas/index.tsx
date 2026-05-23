@@ -32,13 +32,11 @@ import { IdeaStatus } from '@/types';
 interface IdeasProps {
     ideas: Paginated<Idea>;
     filters: {
-        status?: string;
+        status?: IdeaStatus;
         search?: string;
     };
     counts?: {
-        pending: number;
-        approved: number;
-        rejected: number;
+        [key in IdeaStatus]?: number;
     };
 }
 
@@ -97,7 +95,7 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
         return () => clearTimeout(timeout);
     }, [search, status]);
 
-    const getStatusBadge = (status: string) => {
+    const getStatusBadge = (status: IdeaStatus) => {
         switch (status) {
             case IdeaStatus.APPROVED:
                 return (
@@ -178,7 +176,7 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                                 </button>
                             );
                         })}
-                        {!counts && <WhenVisible data="counts" />}
+                        {!counts && <WhenVisible data="counts" children={undefined} fallback={undefined} />}
                     </div>
 
                     <Card>

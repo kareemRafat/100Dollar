@@ -39,6 +39,7 @@ import {
 import ideasRoute from '@/routes/app/ideas';
 import usersRoute from '@/routes/app/users';
 import type { Idea, Paginated, Comment } from '@/types';
+import { IdeaStatus } from '@/types';
 
 // Partials
 import { CommentSection } from './partials/comment-section';
@@ -288,7 +289,7 @@ export default function IdeaShow({
                 <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
-                    {isOwner && idea.status === 'rejected' && (
+                    {isOwner && idea.status === IdeaStatus.REJECTED && (
                         <div className="lg:col-span-12">
                             <div className="rounded-3xl border border-red-200 bg-red-50/30 p-6 dark:border-red-900/30 dark:bg-red-950/10">
                                 <div className="flex items-start gap-4">

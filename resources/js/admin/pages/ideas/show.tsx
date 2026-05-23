@@ -47,6 +47,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
 import type { Idea, Comment } from '@/types';
+import { IdeaStatus } from '@/types';
 
 interface IdeaShowProps {
     idea: Idea;
@@ -82,12 +83,12 @@ export default function IdeaShowPage({
     const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
     const approveForm = useForm({
-        status: 'approved',
-        submission_day: idea.submission_day?.toString() || '',
+        status: IdeaStatus.APPROVED,
+        submission_day: idea.submission_day || 0,
     });
 
     const rejectForm = useForm({
-        status: 'rejected',
+        status: IdeaStatus.REJECTED,
         rejection_reason: idea.rejection_reason || '',
     });
 
@@ -163,17 +164,17 @@ export default function IdeaShowPage({
                             <div className="mt-1 flex items-center gap-2">
                                 <Badge
                                     variant={
-                                        idea.status === 'approved'
+                                        idea.status === IdeaStatus.APPROVED
                                             ? 'default'
-                                            : idea.status === 'rejected'
+                                            : idea.status === IdeaStatus.REJECTED
                                               ? 'destructive'
                                               : 'secondary'
                                     }
                                     className="font-bold"
                                 >
-                                    {idea.status === 'approved'
+                                    {idea.status === IdeaStatus.APPROVED
                                         ? 'تمت الموافقة'
-                                        : idea.status === 'rejected'
+                                        : idea.status === IdeaStatus.REJECTED
                                           ? 'مرفوضة'
                                           : 'قيد المراجعة'}
                                 </Badge>
@@ -185,25 +186,25 @@ export default function IdeaShowPage({
                     </div>
 
                     <div className="flex items-center gap-3">
-                        {idea.status !== 'rejected' && (
+                        {idea.status !== IdeaStatus.REJECTED && (
                             <Button
                                 variant="destructive"
                                 onClick={() => setIsRejectModalOpen(true)}
                                 className="font-bold"
                             >
                                 <XCircle className="me-2 size-4" />
-                                {idea.status === 'approved'
+                                {idea.status === IdeaStatus.APPROVED
                                     ? 'تغيير لرفض'
                                     : 'رفض الفكرة'}
                             </Button>
                         )}
-                        {idea.status !== 'approved' && (
+                        {idea.status !== IdeaStatus.APPROVED && (
                             <Button
                                 onClick={() => setIsApproveModalOpen(true)}
                                 className="bg-green-600 font-bold hover:bg-green-700"
                             >
                                 <CheckCircle className="me-2 size-4" />
-                                {idea.status === 'rejected'
+                                {idea.status === IdeaStatus.REJECTED
                                     ? 'تغيير لموافقة'
                                     : 'الموافقة على الفكرة'}
                             </Button>
@@ -379,7 +380,7 @@ export default function IdeaShowPage({
                             </Card>
                         )}
 
-                        {idea.status === 'rejected' &&
+                        {idea.status === IdeaStatus.REJECTED &&
                             idea.rejection_reason && (
                                 <Card className="border-red-200 bg-red-50 dark:border-red-900/50 dark:bg-red-950/20">
                                     <CardHeader>

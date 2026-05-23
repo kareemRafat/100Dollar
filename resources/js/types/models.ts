@@ -1,5 +1,5 @@
 import type { User } from './auth';
-import type { PrizeStatus } from './enums';
+import type { IdeaStatus, PrizeStatus, SponsorshipStatus } from './enums';
 
 export interface Country {
     id: number;
@@ -27,7 +27,7 @@ export interface Idea {
     submission_day: number;
     week_number: number;
     year: number;
-    status: 'pending' | 'approved' | 'rejected' | 'winner';
+    status: IdeaStatus;
     votes_count: number;
     is_winner: boolean;
     rejection_reason?: string;
@@ -70,7 +70,7 @@ export interface SponsorshipRequest {
     country_id: number;
     country?: Country;
     message: string;
-    status: 'pending' | 'approved' | 'rejected';
+    status: SponsorshipStatus;
     logo?: string;
     created_at: string;
 }
