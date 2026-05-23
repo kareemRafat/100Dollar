@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin\Settings;
 
-use Illuminate\Contracts\Validation\ValidationRule;
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SocialLinksUpdateRequest extends FormRequest
@@ -12,14 +12,9 @@ class SocialLinksUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->role === 'admin';
+        return $this->user()->role === UserRole::ADMIN;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
+use App\Enums\UserRole;
 use App\Http\Responses\AppFailedTwoFactorLoginResponse;
 use App\Http\Responses\AppLoginResponse;
 use App\Http\Responses\AppLogoutResponse;
@@ -84,14 +85,14 @@ class FortifyServiceProvider extends ServiceProvider
     }
 
     /**
-     * Configure Fortify authentication rules.
+     * Configure authentication.
      */
     private function configureAuthentication(): void
     {
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::query()
                 ->where('email', $request->string('email')->toString())
-                ->where('role', 'user')
+                ->where('role', UserRole::USER)
                 ->where('is_active', true)
                 ->first();
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\IdeaStatus;
 use App\Events\IdeaApproved;
 use App\Events\IdeaRejected;
 use App\Http\Controllers\Controller;
@@ -76,9 +77,9 @@ class IdeaController extends Controller
             return back()->with('status', 'idea-approved');
         }
 
-        if ($validated['status'] === 'rejected') {
+        if ($validated['status'] === IdeaStatus::REJECTED->value) {
             $idea->update([
-                'status' => 'rejected',
+                'status' => IdeaStatus::REJECTED,
                 'rejection_reason' => $validated['rejection_reason'],
                 'approved_at' => null,
                 'submission_day' => 0,

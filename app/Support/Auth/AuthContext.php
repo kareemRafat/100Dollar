@@ -2,6 +2,7 @@
 
 namespace App\Support\Auth;
 
+use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -94,8 +95,8 @@ class AuthContext
 
         // If we are in the App context but the intended URL is Admin, and the user is not an admin, clear it.
         if (! $currentIsAdmin && $intendedIsAdmin) {
-            $user = $request->user();
-            if (! $user || $user->role !== 'admin') {
+            $user = $request->user(self::guard($request));
+            if (! $user || $user->role !== UserRole::ADMIN) {
                 Session::forget('url.intended');
             }
         }
@@ -140,13 +141,17 @@ class AuthContext
             return null;
         }
 
-        $parts = parse_url($redirect);
-
-        if ($parts === false || Arr::hasAny($parts, ['scheme', 'host', 'port', 'user', 'pass'])) {
+        // Prevent external redirects by ensuring no scheme or host is present.
+        // We also check for other components that could be used in a malicious URL.
+        if (parse_url($redirect, PHP_URL_SCHEME) ||
+            parse_url($redirect, PHP_URL_HOST) ||
+            parse_url($redirect, PHP_URL_PORT) ||
+            parse_url($redirect, PHP_URL_USER) ||
+            parse_url($redirect, PHP_URL_PASS)) {
             return null;
         }
 
-        $path = $parts['path'] ?? null;
+        $path = parse_url($redirect, PHP_URL_PATH);
 
         if (! is_string($path) || ! str_starts_with($path, '/')) {
             return null;
@@ -163,14 +168,17 @@ class AuthContext
             return null;
         }
 
+        $query = parse_url($redirect, PHP_URL_QUERY);
+        $fragment = parse_url($redirect, PHP_URL_FRAGMENT);
+
         $sanitized = $path;
 
-        if (isset($parts['query'])) {
-            $sanitized .= '?'.$parts['query'];
+        if (is_string($query)) {
+            $sanitized .= '?'.$query;
         }
 
-        if (isset($parts['fragment'])) {
-            $sanitized .= '#'.$parts['fragment'];
+        if (is_string($fragment)) {
+            $sanitized .= '#'.$fragment;
         }
 
         return $sanitized;

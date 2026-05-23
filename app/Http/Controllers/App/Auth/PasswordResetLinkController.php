@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,7 @@ class PasswordResetLinkController extends Controller
 
         $user = User::query()
             ->where('email', $validated['email'])
-            ->where('role', 'user')
+            ->where('role', UserRole::USER)
             ->where('is_active', true)
             ->first();
 

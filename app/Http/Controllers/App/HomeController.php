@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\IdeaResource;
 use App\Models\Idea;
@@ -26,7 +27,7 @@ class HomeController extends Controller
             ->where('submission_day', $currentDay)
             ->where('week_number', $currentWeek)
             ->where('year', $currentYear)
-            ->where('status', 'approved');
+            ->where('status', IdeaStatus::APPROVED);
 
         $maxVotesCount = (int) ((clone $ideasQuery)->max('votes_count') ?? 0);
         $request->attributes->set('idea_max_votes', $maxVotesCount);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Actions\Admin\ConfirmWinner;
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
 use App\Models\Sponsor;
@@ -73,7 +74,7 @@ class WinnerController extends Controller
             return back()->withErrors(['error' => 'هذه الفكرة فائزة بالفعل.']);
         }
 
-        if ($idea->status !== 'approved') {
+        if ($idea->status !== IdeaStatus::APPROVED) {
             return back()->withErrors(['error' => 'لا يمكن اختيار فكرة غير معتمدة كفائزة.']);
         }
 

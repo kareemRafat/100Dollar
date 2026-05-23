@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Auth;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Support\Auth\AuthContext;
@@ -27,7 +28,7 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         $admin = User::where('email', $credentials['email'])
-            ->where('role', 'admin')
+            ->where('role', UserRole::ADMIN)
             ->where('is_active', true)
             ->first();
 
@@ -44,9 +45,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.two-factor.login');
         }
 
-        Auth::guard('admin')->login($admin, $request->boolean('remember'));
-
         $request->session()->regenerate();
+
+        Auth::guard('admin')->login($admin, $request->boolean('remember'));
 
         AuthContext::sanitizeIntended($request);
 

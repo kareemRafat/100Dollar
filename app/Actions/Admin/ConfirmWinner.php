@@ -2,6 +2,7 @@
 
 namespace App\Actions\Admin;
 
+use App\Enums\PrizeStatus;
 use App\Events\WinnerAnnounced;
 use App\Models\Idea;
 use App\Models\PrizeRecord;
@@ -30,7 +31,7 @@ class ConfirmWinner
                 'idea_id' => $idea->id,
                 'sponsor_id' => $idea->sponsor_id,
                 'amount' => 100.00, // Default prize amount
-                'status' => 'pending',
+                'status' => PrizeStatus::PENDING,
             ]);
 
             // 3. Trigger Event

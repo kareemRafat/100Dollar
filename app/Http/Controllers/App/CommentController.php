@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\IdeaStatus;
 use App\Events\CommentCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
@@ -12,7 +13,7 @@ class CommentController extends Controller
 {
     public function store(Request $request, Idea $idea)
     {
-        if ($idea->status !== 'approved') {
+        if ($idea->status !== IdeaStatus::APPROVED) {
             abort(404);
         }
 

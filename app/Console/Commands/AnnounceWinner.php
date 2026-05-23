@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Actions\Admin\ConfirmWinner;
+use App\Enums\IdeaStatus;
 use App\Models\Idea;
 use Illuminate\Console\Command;
 
@@ -64,7 +65,7 @@ class AnnounceWinner extends Command
         $leadingIdea = Idea::where('submission_day', $day)
             ->where('week_number', $weekNumber)
             ->where('year', $year)
-            ->where('status', 'approved')
+            ->where('status', IdeaStatus::APPROVED)
             ->orderByDesc('votes_count')
             ->first();
 

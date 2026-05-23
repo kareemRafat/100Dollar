@@ -2,6 +2,7 @@ export type * from './auth';
 export type * from './navigation';
 export type * from './ui';
 export type * from './models';
+export * from './enums';
 
 export interface Paginated<T> {
     data: T[];

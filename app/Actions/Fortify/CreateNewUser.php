@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -32,7 +33,7 @@ class CreateNewUser implements CreatesNewUsers
             'phone' => $input['phone'],
             'country_id' => $input['country_id'],
             'nationality' => $input['nationality'],
-            'role' => 'user',
+            'role' => UserRole::USER,
             'locale' => app()->getLocale(),
         ]);
     }

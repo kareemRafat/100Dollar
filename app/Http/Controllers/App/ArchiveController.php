@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\IdeaResource;
 use App\Models\Category;
@@ -17,7 +18,7 @@ class ArchiveController extends Controller
         $ideasQuery = Idea::query()
             ->with(['user.media', 'category', 'country', 'media'])
             ->withCount('comments')
-            ->where('status', 'approved')
+            ->where('status', IdeaStatus::APPROVED)
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('title', 'like', "%{$search}%")

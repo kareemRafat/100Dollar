@@ -1,4 +1,5 @@
 import type { User } from './auth';
+import type { PrizeStatus } from './enums';
 
 export interface Country {
     id: number;
@@ -79,7 +80,7 @@ export interface PrizeRecord {
     idea_id: number;
     sponsor_id: number;
     amount: number;
-    status: string;
+    status: PrizeStatus;
     delivered_at?: string;
     created_at: string;
     sponsor?: Sponsor;

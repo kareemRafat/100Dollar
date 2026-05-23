@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\IdeaStatus;
 use App\Events\IdeaSubmitted;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\App\CommentResource;
@@ -220,7 +221,7 @@ class IdeaController extends Controller
 
     public function toggleFollow(Idea $idea)
     {
-        if ($idea->status !== 'approved') {
+        if ($idea->status !== IdeaStatus::APPROVED) {
             abort(404);
         }
 

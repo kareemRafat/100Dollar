@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\UserResource;
 use App\Models\Country;
@@ -72,7 +73,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
             'password' => ['required', 'string', 'min:8'],
-            'role' => ['required', 'string', Rule::in(['admin', 'user'])],
+            'role' => ['required', Rule::enum(UserRole::class)],
             'country_id' => ['required', 'exists:countries,id'],
             'phone' => ['nullable', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],
@@ -100,7 +101,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'role' => ['required', 'string', Rule::in(['admin', 'user'])],
+            'role' => ['required', Rule::enum(UserRole::class)],
             'country_id' => ['required', 'exists:countries,id'],
             'phone' => ['nullable', 'string', 'max:20'],
             'is_active' => ['required', 'boolean'],

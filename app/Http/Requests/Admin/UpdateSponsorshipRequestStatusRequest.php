@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\SponsorshipStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -24,7 +25,7 @@ class UpdateSponsorshipRequestStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', 'string', Rule::in(['pending', 'approved', 'rejected'])],
+            'status' => ['required', Rule::enum(SponsorshipStatus::class)],
         ];
     }
 }

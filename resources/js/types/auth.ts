@@ -1,12 +1,12 @@
+import type { UserRole } from './enums';
 import type { Country } from './models';
 
 export type User = {
     id: number;
     name: string;
     email: string;
-    role: 'admin' | 'user';
+    role: UserRole;
     avatar?: string;
-    phone?: string;
     country_id?: number;
     country?: Country;
     is_active: boolean;

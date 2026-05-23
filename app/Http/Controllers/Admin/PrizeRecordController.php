@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PrizeStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\PrizeRecordResource;
 use App\Models\PrizeRecord;
 use App\Models\Sponsor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -46,11 +48,11 @@ class PrizeRecordController extends Controller
     public function updateStatus(Request $request, PrizeRecord $prizeRecord): RedirectResponse
     {
         $validated = $request->validate([
-            'status' => ['required', 'string'], // e.g., 'pending', 'paid'
+            'status' => ['required', Rule::enum(PrizeStatus::class)],
             'delivered_at' => ['nullable', 'date'],
         ]);
 
-        if ($validated['status'] === 'paid' && ! $prizeRecord->delivered_at) {
+        if ($validated['status'] === PrizeStatus::DELIVERED->value && ! $prizeRecord->delivered_at) {
             $validated['delivered_at'] = now();
         }
 

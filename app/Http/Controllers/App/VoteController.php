@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Mail\OtpVerificationMail;
 use App\Models\Idea;
@@ -20,7 +21,7 @@ class VoteController extends Controller
 {
     public function sendOtp(Request $request, Idea $idea)
     {
-        if ($idea->status !== 'approved') {
+        if ($idea->status !== IdeaStatus::APPROVED) {
             abort(404);
         }
 
@@ -127,7 +128,7 @@ class VoteController extends Controller
 
     public function verifyOtp(Request $request, Idea $idea)
     {
-        if ($idea->status !== 'approved') {
+        if ($idea->status !== IdeaStatus::APPROVED) {
             abort(404);
         }
 

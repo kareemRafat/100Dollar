@@ -32,6 +32,7 @@ class SponsorshipRequest extends Model
     {
         return [
             'country_id' => 'integer',
+            'status' => \App\Enums\SponsorshipStatus::class,
         ];
     }
 

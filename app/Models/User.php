@@ -47,7 +47,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => 'string',
+            'role' => \App\Enums\UserRole::class,
             'is_active' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
             'country_id' => 'integer',

@@ -44,6 +44,7 @@ class Idea extends Model
             'year' => 'integer',
             'votes_count' => 'integer',
             'is_winner' => 'boolean',
+            'status' => \App\Enums\IdeaStatus::class,
             'approved_at' => 'datetime',
             'winner_announced_at' => 'datetime',
             'target_audience' => 'array',

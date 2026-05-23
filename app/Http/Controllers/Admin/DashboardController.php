@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\IdeaStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Idea;
 use App\Models\Sponsor;
@@ -24,7 +25,7 @@ class DashboardController extends Controller
                 'votes_count' => Vote::count(),
                 'users_count' => User::count(),
                 'sponsors_count' => Sponsor::count(),
-                'pending_ideas_count' => Idea::where('status', 'pending')->count(),
+                'pending_ideas_count' => Idea::where('status', IdeaStatus::PENDING)->count(),
             ],
 
             // Deferred: Load after the page renders or when visible

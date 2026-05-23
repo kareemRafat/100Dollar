@@ -22,6 +22,7 @@ class PrizeRecord extends Model
     {
         return [
             'amount' => 'decimal:2',
+            'status' => \App\Enums\PrizeStatus::class,
             'delivered_at' => 'datetime',
         ];
     }
