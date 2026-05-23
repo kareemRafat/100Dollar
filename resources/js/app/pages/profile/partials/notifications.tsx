@@ -12,6 +12,7 @@ import {
     resolveNotificationTitle,
 } from '@/app/lib/notifications';
 import { Pagination } from '@/components/ui/pagination';
+import { cn, getLocalizedPath } from '@/lib/utils';
 import { show } from '@/routes/app/ideas';
 
 type Notification = {
@@ -36,7 +37,6 @@ function Notifications({ notifications }: Props) {
     const { __ } = useLang();
     const { props: pageProps } = usePage();
     const locale = pageProps.locale as string;
-    const localizedPath = (path: string) => `/${locale}${path}`;
 
     const items = Array.isArray(notifications)
         ? notifications
@@ -79,7 +79,7 @@ function Notifications({ notifications }: Props) {
         const targetUrl =
             notification.data?.url ??
             (notification.data?.idea_id
-                ? localizedPath(show(notification.data.idea_id).url)
+                ? show(notification.data.idea_id).url
                 : null);
 
         if (targetUrl) {
@@ -89,7 +89,7 @@ function Notifications({ notifications }: Props) {
                 {
                     preserveScroll: true,
                     onFinish: () => {
-                        router.visit(targetUrl);
+                        router.visit(getLocalizedPath(targetUrl, locale));
                     },
                 },
             );

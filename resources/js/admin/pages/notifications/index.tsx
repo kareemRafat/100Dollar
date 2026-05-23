@@ -66,12 +66,14 @@ export default function NotificationsPage({
 
     const handleNotificationClick = (notification: Notification) => {
         const url =
-            notification.data?.url ??
-            admin.ideas.show(notification.data?.idea_id).url;
+            (notification.data?.idea_id
+                ? admin.ideas.show(notification.data.idea_id).url
+                : null) ?? notification.data?.url;
+
+        if (!url) return;
+
         const returnUrl = admin.notifications.index().url;
-        const targetUrl = url
-            ? `${url}?returnTo=${encodeURIComponent(returnUrl)}`
-            : null;
+        const targetUrl = `${url}?returnTo=${encodeURIComponent(returnUrl)}`;
 
         if (!notification.is_read) {
             router.patch(
@@ -79,14 +81,12 @@ export default function NotificationsPage({
                 { id: notification.id, is_read: true },
                 {
                     preserveScroll: true,
-                    onSuccess: () => {
-                        if (targetUrl) {
-                            router.visit(targetUrl);
-                        }
+                    onFinish: () => {
+                        router.visit(targetUrl);
                     },
                 },
             );
-        } else if (targetUrl) {
+        } else {
             router.visit(targetUrl);
         }
     };

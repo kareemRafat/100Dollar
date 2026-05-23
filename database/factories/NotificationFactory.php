@@ -48,16 +48,13 @@ class NotificationFactory extends Factory
         $followerId = $follower?->id ?? 1;
         $followerName = $follower?->name ?? 'مستخدم';
 
-        $locale = fake()->randomElement(['ar', 'en']);
-        $baseUrl = "/{$locale}";
-
         [$title, $body, $data] = match ($shortType) {
             'idea_approved' => [
                 'تمت الموافقة على فكرتك',
                 "تمت الموافقة على فكرتك \"{$ideaTitle}\" وهي الآن متاحة للتصويت.",
                 [
                     'idea_id' => $ideaId,
-                    'url' => "{$baseUrl}/ideas/{$ideaId}",
+                    'url' => "/ideas/{$ideaId}",
                     'title_key' => 'messages.notifications.idea_approved_title',
                     'body_key' => 'messages.notifications.idea_approved_body',
                     'translation_params' => ['title' => $ideaTitle],
@@ -73,7 +70,7 @@ class NotificationFactory extends Factory
                         'الفكرة مكررة أو مشابهة لفكرة موجودة.',
                         'الميزانية تتجاوز الحد المسموح به.',
                     ]),
-                    'url' => "{$baseUrl}/ideas/{$ideaId}",
+                    'url' => "/ideas/{$ideaId}",
                     'title_key' => 'messages.notifications.idea_rejected_title',
                     'body_key' => 'messages.notifications.idea_rejected_body',
                     'translation_params' => ['title' => $ideaTitle],
@@ -85,7 +82,7 @@ class NotificationFactory extends Factory
                 [
                     'idea_id' => $ideaId,
                     'comment_id' => fake()->numberBetween(1, 9999),
-                    'url' => "{$baseUrl}/ideas/{$ideaId}",
+                    'url' => "/ideas/{$ideaId}",
                     'title_key' => 'messages.notifications.new_comment_title',
                     'body_key' => 'messages.notifications.new_comment_body',
                     'translation_params' => ['user' => $followerName, 'title' => $ideaTitle],
@@ -96,7 +93,7 @@ class NotificationFactory extends Factory
                 "بدأ {$followerName} في متابعتك.",
                 [
                     'follower_id' => $followerId,
-                    'url' => "{$baseUrl}/profile/notifications",
+                    'url' => "/profile/notifications",
                     'title_key' => 'messages.notifications.new_follower_title',
                     'body_key' => 'messages.notifications.new_follower_body',
                     'translation_params' => ['user' => $followerName],
@@ -108,7 +105,7 @@ class NotificationFactory extends Factory
                 [
                     'idea_id' => $ideaId,
                     'amount' => 100.00,
-                    'url' => "{$baseUrl}/ideas/{$ideaId}",
+                    'url' => "/ideas/{$ideaId}",
                     'title_key' => 'messages.notifications.winner_announced_title',
                     'body_key' => 'messages.notifications.winner_announced_body',
                     'translation_params' => ['title' => $ideaTitle],

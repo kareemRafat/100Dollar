@@ -29,6 +29,8 @@ class AdminNewIdeaNotification extends Notification implements ShouldQueue
             'data' => [
                 'idea_id' => $this->idea->id,
                 'url' => route('admin.ideas.show', $this->idea, false),
+                'title_key' => 'messages.notifications.admin_new_idea_title',
+                'body_key' => 'messages.notifications.admin_new_idea_body',
                 'translation_params' => $translationParams,
             ],
         ];

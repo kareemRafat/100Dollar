@@ -63,7 +63,7 @@ export function NotificationBell() {
         }
     }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
 
-    const handleMarkAsRead = (id: number) => {
+    const handleMarkAsRead = (id: number, onFinish?: () => void) => {
         router.patch(
             markAsRead.url(),
             { id, is_read: true },
@@ -77,6 +77,9 @@ export function NotificationBell() {
                                 : notification,
                         ),
                     );
+                },
+                onFinish: () => {
+                    if (onFinish) onFinish();
                 },
             },
         );
@@ -192,14 +195,27 @@ export function NotificationBell() {
                                         'bg-blue-50/50 dark:bg-blue-900/10',
                                 )}
                                 onSelect={() => {
-                                    if (!notification.is_read) {
-                                        handleMarkAsRead(notification.id);
-                                    }
+                                    const targetUrl =
+                                        (notification.data?.idea_id
+                                            ? admin.ideas.show(
+                                                  notification.data.idea_id,
+                                              ).url
+                                            : null) ??
+                                        notification.data?.url;
 
-                                    if (notification.data?.url) {
-                                        router.visit(notification.data.url);
-                                    } else if (notification.data?.idea_id) {
-                                        router.visit(admin.ideas.show(notification.data.idea_id).url);
+                                    const navigate = () => {
+                                        if (targetUrl) {
+                                            router.visit(targetUrl);
+                                        }
+                                    };
+
+                                    if (!notification.is_read) {
+                                        handleMarkAsRead(
+                                            notification.id,
+                                            navigate,
+                                        );
+                                    } else {
+                                        navigate();
                                     }
                                 }}
                             >

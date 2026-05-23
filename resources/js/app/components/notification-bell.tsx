@@ -21,7 +21,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+import { cn, getLocalizedPath } from '@/lib/utils';
 import { show } from '@/routes/app/ideas';
 import { notifications as notificationsPage } from '@/routes/app/profile';
 
@@ -42,19 +42,21 @@ export function NotificationBell() {
     });
 
     const unreadCount = auth.unread_notifications_count || 0;
-    const localizedPath = (path: string) => `/${locale}${path}`;
 
     const loadNotifications = async () => {
         setLoading(true);
 
         try {
-            const response = await fetch(localizedPath(dropdown.url()), {
-                headers: {
-                    Accept: 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
+            const response = await fetch(
+                getLocalizedPath(dropdown.url(), locale),
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    credentials: 'same-origin',
                 },
-                credentials: 'same-origin',
-            });
+            );
 
             if (!response.ok) {
                 return;
@@ -81,7 +83,7 @@ export function NotificationBell() {
         }
     }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
 
-    const handleMarkAsRead = (id: number) => {
+    const handleMarkAsRead = (id: number, onFinish?: () => void) => {
         router.patch(
             markAsRead.url(),
             { id, is_read: true },
@@ -95,6 +97,9 @@ export function NotificationBell() {
                                 : notification,
                         ),
                     );
+                },
+                onFinish: () => {
+                    if (onFinish) onFinish();
                 },
             },
         );
@@ -236,22 +241,31 @@ export function NotificationBell() {
                                         'bg-primary/5 dark:bg-primary/5',
                                 )}
                                 onSelect={() => {
-                                    if (!notification.is_read) {
-                                        handleMarkAsRead(notification.id);
-                                    }
-
                                     const targetUrl =
                                         notification.data?.url ??
                                         (notification.data?.idea_id
-                                            ? localizedPath(
-                                                  show(
-                                                      notification.data.idea_id,
-                                                  ).url,
-                                              )
+                                            ? show(notification.data.idea_id)
+                                                  .url
                                             : null);
 
-                                    if (targetUrl) {
-                                        router.visit(targetUrl);
+                                    const navigate = () => {
+                                        if (targetUrl) {
+                                            router.visit(
+                                                getLocalizedPath(
+                                                    targetUrl,
+                                                    locale,
+                                                ),
+                                            );
+                                        }
+                                    };
+
+                                    if (!notification.is_read) {
+                                        handleMarkAsRead(
+                                            notification.id,
+                                            navigate,
+                                        );
+                                    } else {
+                                        navigate();
                                     }
                                 }}
                             >

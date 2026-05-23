@@ -13,6 +13,7 @@ import {
 import { lazy, Suspense, useMemo } from 'react';
 import { MobileBottomNav } from '@/app/components/mobile-bottom-nav';
 import { SideNav } from '@/app/components/side-nav';
+import { getLocalizedPath } from '@/lib/utils';
 import profile from '@/routes/app/profile';
 
 // Lazy load tab components
@@ -79,18 +80,23 @@ export default function Profile({
     const { locale } = pageProps;
     const { __ } = useLang();
     const isRtl = locale === 'ar';
-    const localizedPath = (path: string) => `/${locale}${path}`;
 
     // Determine active section from URL
-    const activeSection = url.includes(localizedPath(profile.security.url()))
+    const activeSection = url.includes(
+        getLocalizedPath(profile.security.url(), locale),
+    )
         ? 'security'
-        : url.includes(localizedPath(profile.votedIdeas.url()))
+        : url.includes(getLocalizedPath(profile.votedIdeas.url(), locale))
           ? 'voted-ideas'
-          : url.includes(localizedPath(profile.followedIdeas.url()))
+          : url.includes(getLocalizedPath(profile.followedIdeas.url(), locale))
             ? 'followed-ideas'
-            : url.includes(localizedPath(profile.followedPeople.url()))
+            : url.includes(
+                  getLocalizedPath(profile.followedPeople.url(), locale),
+              )
               ? 'followed-people'
-              : url.includes(localizedPath(profile.notifications.url()))
+              : url.includes(
+                    getLocalizedPath(profile.notifications.url(), locale),
+                )
                 ? 'notifications'
                 : 'personal-info';
 
@@ -100,42 +106,42 @@ export default function Profile({
                 id: 'personal-info',
                 label: __('messages.profile.personal_info'),
                 icon: UserIcon,
-                href: localizedPath(profile.personalInfo.url()),
+                href: getLocalizedPath(profile.personalInfo.url(), locale),
                 only: ['user'],
             },
             {
                 id: 'voted-ideas',
                 label: __('messages.profile.voted_ideas'),
                 icon: VoteIcon,
-                href: localizedPath(profile.votedIdeas.url()),
+                href: getLocalizedPath(profile.votedIdeas.url(), locale),
                 only: ['votedIdeas'],
             },
             {
                 id: 'followed-ideas',
                 label: __('messages.profile.followed_ideas'),
                 icon: Heart,
-                href: localizedPath(profile.followedIdeas.url()),
+                href: getLocalizedPath(profile.followedIdeas.url(), locale),
                 only: ['followedIdeas'],
             },
             {
                 id: 'followed-people',
                 label: __('messages.profile.followed_people'),
                 icon: Users,
-                href: localizedPath(profile.followedPeople.url()),
+                href: getLocalizedPath(profile.followedPeople.url(), locale),
                 only: ['followedPeople'],
             },
             {
                 id: 'notifications',
                 label: __('messages.profile.notifications'),
                 icon: Bell,
-                href: localizedPath(profile.notifications.url()),
+                href: getLocalizedPath(profile.notifications.url(), locale),
                 only: ['notifications'],
             },
             {
                 id: 'security',
                 label: __('messages.profile.security_protection'),
                 icon: Lock,
-                href: localizedPath(profile.security.url()),
+                href: getLocalizedPath(profile.security.url(), locale),
                 only: [
                     'canManageTwoFactor',
                     'twoFactorEnabled',
@@ -152,42 +158,42 @@ export default function Profile({
                 id: 'personal-info',
                 label: __('messages.profile.personal_tab'),
                 icon: UserIcon,
-                href: localizedPath(profile.personalInfo.url()),
+                href: getLocalizedPath(profile.personalInfo.url(), locale),
                 only: ['user'],
             },
             {
                 id: 'voted-ideas',
                 label: __('messages.profile.voted_ideas'),
                 icon: VoteIcon,
-                href: localizedPath(profile.votedIdeas.url()),
+                href: getLocalizedPath(profile.votedIdeas.url(), locale),
                 only: ['votedIdeas'],
             },
             {
                 id: 'followed-ideas',
                 label: __('messages.profile.followed_ideas'),
                 icon: Heart,
-                href: localizedPath(profile.followedIdeas.url()),
+                href: getLocalizedPath(profile.followedIdeas.url(), locale),
                 only: ['followedIdeas'],
             },
             {
                 id: 'followed-people',
                 label: __('messages.profile.followed_people'),
                 icon: Users,
-                href: localizedPath(profile.followedPeople.url()),
+                href: getLocalizedPath(profile.followedPeople.url(), locale),
                 only: ['followedPeople'],
             },
             {
                 id: 'notifications',
                 label: __('messages.profile.notifications'),
                 icon: Bell,
-                href: localizedPath(profile.notifications.url()),
+                href: getLocalizedPath(profile.notifications.url(), locale),
                 only: ['notifications'],
             },
             {
                 id: 'security',
                 label: __('messages.profile.security_protection_tab'),
                 icon: Lock,
-                href: localizedPath(profile.security.url()),
+                href: getLocalizedPath(profile.security.url(), locale),
                 only: [
                     'canManageTwoFactor',
                     'twoFactorEnabled',

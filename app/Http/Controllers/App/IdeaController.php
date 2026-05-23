@@ -26,6 +26,7 @@ class IdeaController extends Controller
         $user = auth()->user();
         $query = $user->ideas()
             ->with(['media', 'category', 'country'])
+            ->withCount(['comments'])
             ->latest()
             ->when($request->search, function ($query, $search) {
                 $query->whereFullText(['title', 'description'], $search);

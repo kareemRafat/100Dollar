@@ -251,124 +251,132 @@ export default function MyIdeas({
                         {ideas.data.map((idea) => (
                             <div
                                 key={idea.id}
-                                className={`group flex h-full flex-col rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg ${
+                                className={`group flex h-full flex-col rounded-2xl border transition-all duration-300 hover:shadow-lg ${
                                     idea.status === IdeaStatus.WINNER
                                         ? 'relative overflow-hidden border-2 border-primary/30 bg-surface-container-lowest shadow-lg dark:bg-card'
                                         : 'border-outline-variant/10 bg-surface-container-lowest dark:bg-card'
                                 }`}
                             >
-                                {idea.status === IdeaStatus.WINNER && (
-                                    <div className="absolute start-0 top-0 h-32 w-32 -translate-x-16 -translate-y-16 rotate-45 bg-primary/10"></div>
-                                )}
-                                <div className="relative z-10 mb-4 flex items-start justify-between">
-                                    <span
-                                        className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
-                                            idea.status === IdeaStatus.WINNER
-                                                ? 'bg-primary/10 text-primary'
-                                                : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
-                                        }`}
-                                    >
-                                        {idea.category}
-                                    </span>
-                                    <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
-                                        {idea.status === IdeaStatus.WINNER ? (
-                                            <>
-                                                <span className="material-symbols-outlined cursor-pointer text-xl text-on-surface-variant transition-colors hover:text-primary">
-                                                    edit
-                                                </span>
-                                                <span className="material-symbols-outlined cursor-pointer text-xl text-on-surface-variant transition-colors hover:text-red-500">
-                                                    delete
-                                                </span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Link
-                                                    href={app.ideas.index.url()}
-                                                >
-                                                    {' '}
-                                                    {/* Placeholder for edit */}
-                                                    <Pencil className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-primary" />
-                                                </Link>
-                                                <Trash2 className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-red-500" />
-                                            </>
-                                        )}
-                                    </div>
-                                </div>
                                 <Link
                                     href={app.ideas.show.url(idea.id)}
                                     prefetch
-                                    className="group block"
+                                    className="relative block aspect-video w-full overflow-hidden rounded-t-2xl"
                                 >
-                                    <h3 className="mb-3 text-lg leading-tight font-black text-on-surface transition-colors group-hover:text-primary dark:text-white">
-                                        {idea.title}
-                                    </h3>
-                                </Link>
-                                <div className="relative z-10 mb-5 flex items-center gap-2">
-                                    <span
-                                        className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase ${
-                                            idea.status === IdeaStatus.PENDING
-                                                ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                                                : idea.status === IdeaStatus.APPROVED
-                                                  ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                  : idea.status === IdeaStatus.REJECTED
-                                                    ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                                                    : 'bg-primary-fixed text-on-primary-fixed-variant'
-                                        }`}
-                                    >
-                                        {(idea.status === IdeaStatus.PENDING ||
-                                            idea.status === IdeaStatus.APPROVED ||
-                                            idea.status === IdeaStatus.REJECTED) && (
-                                            <span
-                                                className={`me-2 h-1.5 w-1.5 rounded-full ${
-                                                    idea.status === IdeaStatus.PENDING
-                                                        ? 'bg-amber-500'
-                                                        : idea.status === IdeaStatus.APPROVED
-                                                          ? 'bg-green-500'
-                                                          : 'bg-red-500'
-                                                }`}
-                                            ></span>
-                                        )}
-                                        {getStatusLabel(idea.status)}
-                                    </span>
-                                    <span className="ms-auto text-xs font-bold text-on-surface-variant dark:text-slate-400">
-                                        {idea.date}
-                                    </span>
-                                </div>
-                                <div className="relative z-10 mt-auto">
-                                    <div className="mb-2 flex items-end justify-between">
-                                        <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
-                                            {idea.status === IdeaStatus.WINNER
-                                                ? __(
-                                                      'messages.my_ideas.final_votes',
-                                                  )
-                                                : __(
-                                                      'messages.my_ideas.current_votes',
-                                                  )}
-                                        </span>
-                                        <span className="text-sm font-black text-primary">
-                                            {idea.votes_count.toLocaleString()}
-                                            {idea.target_votes &&
-                                                ` / ${idea.target_votes}`}
-                                        </span>
-                                    </div>
-                                    <div className="h-2 w-full overflow-hidden rounded-full bg-surface-container-high dark:bg-white/10">
-                                        <div
-                                            className="h-full bg-gradient-to-l from-primary to-primary-container transition-all duration-1000"
-                                            style={{
-                                                width: `${idea.progress}%`,
-                                            }}
-                                        ></div>
-                                    </div>
-                                    {idea.funded && (
-                                        <div className="mt-4 flex items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-xs font-black tracking-widest text-primary uppercase">
-                                            <span className="material-symbols-outlined text-sm">
-                                                workspace_premium
-                                            </span>
-                                            {__(
-                                                'messages.my_ideas.funded_success',
-                                            )}
+                                    {idea.image ? (
+                                        <img
+                                            src={idea.image}
+                                            alt={idea.title}
+                                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <div className="flex h-full w-full items-center justify-center bg-surface-container-high text-on-surface-variant/20 dark:bg-white/5">
+                                            <Lightbulb size={48} strokeWidth={1} />
                                         </div>
                                     )}
+
+                                    {idea.status === IdeaStatus.WINNER && (
+                                        <div className="absolute top-3 end-3 rounded-full bg-primary-fixed/90 px-3 py-1 text-[10px] font-black tracking-widest text-on-primary-fixed-variant uppercase backdrop-blur-sm">
+                                            🏆 {__('messages.my_ideas.winner_badge') || 'Winner'}
+                                        </div>
+                                    )}
+                                </Link>
+
+                                <div className="flex flex-grow flex-col p-6">
+                                    <div className="relative z-10 mb-4 flex items-start justify-between">
+                                        <span
+                                            className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
+                                                idea.status === IdeaStatus.WINNER
+                                                    ? 'bg-primary/10 text-primary'
+                                                    : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
+                                            }`}
+                                        >
+                                            {idea.category}
+                                        </span>
+                                        <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
+                                            <Link href={app.ideas.index.url()}>
+                                                <Pencil className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-primary" />
+                                            </Link>
+                                            <Trash2 className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-red-500" />
+                                        </div>
+                                    </div>
+
+                                    <Link
+                                        href={app.ideas.show.url(idea.id)}
+                                        prefetch
+                                        className="group block"
+                                    >
+                                        <h3 className="mb-3 text-lg leading-tight font-black text-on-surface transition-colors group-hover:text-primary dark:text-white">
+                                            {idea.title}
+                                        </h3>
+                                    </Link>
+
+                                    <div className="relative z-10 mb-5 flex items-center gap-2">
+                                        <span
+                                            className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase ${
+                                                idea.status === IdeaStatus.PENDING
+                                                    ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                                                    : idea.status === IdeaStatus.APPROVED
+                                                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                                      : idea.status === IdeaStatus.REJECTED
+                                                        ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                                        : 'bg-primary-fixed text-on-primary-fixed-variant'
+                                            }`}
+                                        >
+                                            {(idea.status === IdeaStatus.PENDING ||
+                                                idea.status === IdeaStatus.APPROVED ||
+                                                idea.status === IdeaStatus.REJECTED) && (
+                                                <span
+                                                    className={`me-2 h-1.5 w-1.5 rounded-full ${
+                                                        idea.status === IdeaStatus.PENDING
+                                                            ? 'bg-amber-500'
+                                                            : idea.status === IdeaStatus.APPROVED
+                                                              ? 'bg-green-500'
+                                                              : 'bg-red-500'
+                                                    }`}
+                                                ></span>
+                                            )}
+                                            {getStatusLabel(idea.status)}
+                                        </span>
+                                        <span className="ms-auto text-xs font-bold text-on-surface-variant dark:text-slate-400">
+                                            {idea.date}
+                                        </span>
+                                    </div>
+
+                                    <div className="relative z-10 mt-auto">
+                                        <div className="mb-2 flex items-end justify-between">
+                                            <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
+                                                {idea.status === IdeaStatus.WINNER
+                                                    ? __(
+                                                          'messages.my_ideas.final_votes',
+                                                      )
+                                                    : __(
+                                                          'messages.my_ideas.current_votes',
+                                                      )}
+                                            </span>
+                                            <span className="text-sm font-black text-primary">
+                                                {idea.votes_count.toLocaleString()}
+                                                {idea.target_votes &&
+                                                    ` / ${idea.target_votes}`}
+                                            </span>
+                                        </div>
+                                        <div className="h-2 w-full overflow-hidden rounded-full bg-outline-variant/20 dark:bg-outline-variant/40">
+                                            <div
+                                                className="h-full rounded-full bg-gradient-to-r from-primary to-primary-container transition-all duration-1000"
+                                                style={{
+                                                    width: `${idea.progress}%`,
+                                                }}
+                                            ></div>
+                                        </div>                                        {idea.funded && (
+                                            <div className="mt-4 flex items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-xs font-black tracking-widest text-primary uppercase">
+                                                <span className="material-symbols-outlined text-sm">
+                                                    workspace_premium
+                                                </span>
+                                                {__(
+                                                    'messages.my_ideas.funded_success',
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         ))}

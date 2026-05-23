@@ -72,3 +72,27 @@ export function formatDuration(seconds: number, locale: string = 'en'): string {
 export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
 }
+
+/**
+ * Returns a localized path by prefixing the current locale.
+ * If the path already has a locale prefix (e.g., /ar/ideas/1), it replaces it with the current locale.
+ */
+export function getLocalizedPath(path: string, locale: string): string {
+    if (!path) return '';
+
+    // Remove any double slashes and ensure it starts with a single slash
+    let cleanPath = path.replace(/\/+/g, '/');
+    if (!cleanPath.startsWith('/')) {
+        cleanPath = '/' + cleanPath;
+    }
+
+    // Pattern to match /ar or /en at the start of the path
+    const localePattern = /^\/(ar|en)(\/|$)/;
+
+    if (localePattern.test(cleanPath)) {
+        return cleanPath.replace(localePattern, `/${locale}$2`);
+    }
+
+    return `/${locale}${cleanPath}`;
+}
+
