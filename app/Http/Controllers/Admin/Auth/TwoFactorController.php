@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
-use Laravel\Fortify\Actions\ConfirmTwoFactorAuthentication;
 use Laravel\Fortify\Actions\DisableTwoFactorAuthentication;
 use Laravel\Fortify\Actions\EnableTwoFactorAuthentication;
 use Laravel\Fortify\Actions\GenerateNewRecoveryCodes;
@@ -75,13 +74,28 @@ class TwoFactorController extends Controller
         return back();
     }
 
-    public function confirm(Request $request, ConfirmTwoFactorAuthentication $confirm): RedirectResponse
+    public function confirm(Request $request): RedirectResponse
     {
         $request->validate([
             'code' => ['required', 'string'],
         ]);
 
-        $confirm($request->user('admin'), $request->string('code')->toString());
+        $admin = $request->user('admin');
+
+        $verified = app(TwoFactorAuthenticationProvider::class)->verify(
+            Fortify::currentEncrypter()->decrypt($admin->two_factor_secret),
+            $request->code
+        );
+
+        if (! $verified) {
+            throw ValidationException::withMessages([
+                'code' => ['رمز المصادقة الثنائية الذي أدخلته غير صحيح.'],
+            ]);
+        }
+
+        $admin->forceFill([
+            'two_factor_confirmed_at' => now(),
+        ])->save();
 
         return back();
     }

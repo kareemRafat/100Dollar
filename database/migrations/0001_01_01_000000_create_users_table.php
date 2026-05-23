@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserRole;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->text('two_factor_recovery_codes')->nullable();
             $table->timestamp('two_factor_confirmed_at')->nullable();
             $table->rememberToken();
-            $table->string('role')->default('user');
+            $table->string('role')->default(UserRole::USER->value);
             $table->string('phone')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
             $table->string('nationality')->nullable();

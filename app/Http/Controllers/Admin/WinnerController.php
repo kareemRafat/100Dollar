@@ -37,7 +37,7 @@ class WinnerController extends Controller
                 ->where('submission_day', $i)
                 ->where('week_number', $currentWeek)
                 ->where('year', $currentYear)
-                ->where('status', 'approved')
+                ->where('status', IdeaStatus::APPROVED)
                 ->orderByDesc('votes_count')
                 ->first();
 

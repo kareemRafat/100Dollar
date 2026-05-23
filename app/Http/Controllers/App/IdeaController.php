@@ -113,7 +113,7 @@ class IdeaController extends Controller
                 'marketing_channel' => $validated['marketing_channel'],
                 'target_audience' => $validated['target_audience'],
                 'implementation_time' => $validated['implementation_time'],
-                'status' => 'pending',
+                'status' => IdeaStatus::PENDING,
                 'submission_day' => now()->dayOfWeek,
                 'week_number' => now()->weekOfYear,
                 'year' => now()->year,
@@ -152,7 +152,7 @@ class IdeaController extends Controller
 
     public function show(Request $request, Idea $idea): Response
     {
-        if ($idea->status !== 'approved' && auth()->id() !== $idea->user_id) {
+        if ($idea->status !== IdeaStatus::APPROVED && auth()->id() !== $idea->user_id) {
             abort(404);
         }
 
@@ -165,7 +165,7 @@ class IdeaController extends Controller
             ->where('submission_day', $idea->submission_day)
             ->where('week_number', $idea->week_number)
             ->where('year', $idea->year)
-            ->where('status', 'approved')
+            ->where('status', IdeaStatus::APPROVED)
             ->max('votes_count') ?? 0);
         $request->attributes->set('idea_max_votes', $maxVotesCount);
 

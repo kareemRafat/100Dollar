@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\PrizeStatus;
 use App\Models\Idea;
 use App\Models\PrizeRecord;
 use App\Models\Sponsor;
@@ -23,7 +24,7 @@ class PrizeRecordFactory extends Factory
             'idea_id' => Idea::factory(),
             'sponsor_id' => Sponsor::factory(),
             'amount' => 100.00,
-            'status' => 'pending',
+            'status' => PrizeStatus::PENDING,
             'delivered_at' => null,
         ];
     }
@@ -31,7 +32,7 @@ class PrizeRecordFactory extends Factory
     public function delivered(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'delivered',
+            'status' => PrizeStatus::DELIVERED,
             'delivered_at' => now(),
         ]);
     }
@@ -39,7 +40,7 @@ class PrizeRecordFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'pending',
+            'status' => PrizeStatus::PENDING,
             'delivered_at' => null,
         ]);
     }

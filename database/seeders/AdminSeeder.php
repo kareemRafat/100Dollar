@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -17,14 +18,14 @@ class AdminSeeder extends Seeder
             'name' => 'مدير المنصة',
             'email' => 'admin@admin.com',
             'password' => Hash::make('12345678'),
-            'role' => 'admin',
+            'role' => UserRole::ADMIN,
         ]);
 
         User::factory()->create([
             'name' => 'موظف المنصة',
             'email' => 'user@admin.com',
             'password' => Hash::make('12345678'),
-            'role' => 'user',
+            'role' => UserRole::USER,
         ]);
 
         User::factory()->admin()->create([

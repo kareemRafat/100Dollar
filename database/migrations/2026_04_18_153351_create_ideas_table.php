@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\IdeaStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('submission_day')->default(0);
             $table->unsignedInteger('week_number');
             $table->unsignedSmallInteger('year');
-            $table->string('status')->default('pending');
+            $table->string('status')->default(IdeaStatus::PENDING->value);
             $table->unsignedInteger('votes_count')->default(0);
             $table->boolean('is_winner')->default(false);
             $table->text('rejection_reason')->nullable();

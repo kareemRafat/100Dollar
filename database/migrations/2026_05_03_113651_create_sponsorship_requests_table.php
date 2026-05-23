@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\SponsorshipStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->foreignId('country_id')->nullable()->constrained('countries')->nullOnDelete();
             $table->text('message');
-            $table->string('status')->default('pending'); // pending, reviewed, approved, rejected
+            $table->string('status')->default(SponsorshipStatus::PENDING->value); // pending, reviewed, approved, rejected
             $table->timestamps();
         });
     }

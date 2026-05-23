@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\IdeaStatus;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Idea;
@@ -45,7 +46,7 @@ class IdeaFactory extends Factory
             'marketing_channel' => fake()->randomElements(['social_media', 'word_of_mouth', 'physical', 'whatsapp', 'other'], fake()->numberBetween(1, 3)),
             'target_audience' => fake()->randomElements(['youth', 'students', 'entrepreneurs', 'housewives', 'professionals', 'small_business_owners', 'children', 'elderly'], fake()->numberBetween(1, 3)),
             'implementation_time' => fake()->randomElement(['less_than_week', 'one_two_weeks', 'month', 'more_than_month']),
-            'status' => 'pending',
+            'status' => IdeaStatus::PENDING,
             'votes_count' => 0,
             'is_winner' => false,
             'rejection_reason' => null,
@@ -57,14 +58,14 @@ class IdeaFactory extends Factory
     public function pending(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'pending',
+            'status' => IdeaStatus::PENDING,
         ]);
     }
 
     public function approved(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'approved',
+            'status' => IdeaStatus::APPROVED,
             'approved_at' => now(),
         ]);
     }
@@ -72,7 +73,7 @@ class IdeaFactory extends Factory
     public function rejected(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'rejected',
+            'status' => IdeaStatus::REJECTED,
             'rejection_reason' => 'المحتوى لا يطابق شروط المنصة.',
         ]);
     }
@@ -80,7 +81,7 @@ class IdeaFactory extends Factory
     public function winner(): static
     {
         return $this->state(fn (array $attributes) => [
-            'status' => 'approved',
+            'status' => IdeaStatus::APPROVED,
             'is_winner' => true,
             'winner_announced_at' => now(),
         ]);

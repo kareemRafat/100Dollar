@@ -18,7 +18,7 @@ class IdeaController extends Controller
 {
     public function index(Request $request): Response
     {
-        $status = $request->input('status', 'pending');
+        $status = $request->input('status', IdeaStatus::PENDING->value);
         $search = $request->input('search');
 
         $ideas = Idea::with(['user.media', 'category', 'country', 'media'])
@@ -64,9 +64,9 @@ class IdeaController extends Controller
     {
         $validated = $request->validated();
 
-        if ($validated['status'] === 'approved') {
+        if ($validated['status'] === IdeaStatus::APPROVED->value) {
             $idea->update([
-                'status' => 'approved',
+                'status' => IdeaStatus::APPROVED,
                 'submission_day' => $validated['submission_day'],
                 'approved_at' => now(),
                 'rejection_reason' => null,

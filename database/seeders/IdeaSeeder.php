@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\Idea;
 use App\Models\Sponsor;
 use App\Models\User;
@@ -14,7 +15,7 @@ class IdeaSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::where('role', 'user')->get();
+        $users = User::where('role', UserRole::USER)->get();
         $sponsors = Sponsor::all();
 
         // 5 Approved ideas per day for current week (35 total)
