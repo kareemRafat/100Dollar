@@ -27,7 +27,7 @@ import {
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import admin from '@/routes/admin';
-import type { BreadcrumbItem, ContactMessage } from '@/types';
+import type { ContactMessage } from '@/types';
 
 interface ContactShowProps {
     contactMessage: ContactMessage;
@@ -41,21 +41,6 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
     });
 
     const deleteForm = useForm({});
-
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'لوحة التحكم',
-            href: admin.dashboard().url,
-        },
-        {
-            title: 'رسائل التواصل',
-            href: admin.contacts.index().url,
-        },
-        {
-            title: `رسالة #${contactMessage.id}`,
-            href: admin.contacts.show(contactMessage.id).url,
-        },
-    ];
 
     const handleReplySubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

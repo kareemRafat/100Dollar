@@ -19,8 +19,8 @@
 {{ $actionText }}
 {{ $actionUrl }}
 
-{{ $subcopy ?? __('messages.notifications.subcopy', ['actionText' => $actionText]) }}
+{{ $subcopy ?? __('messages.notifications.subcopy', ['actionText' => $actionText], $locale ?? null) }}
 {{ $actionUrl }}
 
 @endif
-{{ $salutation ?? __('messages.notifications.regards')."\n".config('app.name') }}
+{{ $salutation ?? __('messages.notifications.regards', [], $locale ?? null)."\n".config('app.name') }}

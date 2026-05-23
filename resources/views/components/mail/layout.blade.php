@@ -1,5 +1,11 @@
+@php
+    $mailLocale = $locale ?? app()->getLocale();
+    $isRtl = $mailLocale === 'ar';
+    $alignment = $isRtl ? 'right' : 'left';
+    $borderSide = $isRtl ? 'right' : 'left';
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+<html lang="{{ str_replace('_', '-', $mailLocale) }}" dir="{{ $isRtl ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +47,7 @@
 
         .header-content {
             padding: 35px 40px 0;
-            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
+            text-align: {{ $alignment }};
             border-top: 2px solid #e2e8f0;
             margin-top: 8px;
         }
@@ -70,12 +76,12 @@
             font-size: 14px;
             line-height: 1.6;
             color: #64748b;
-            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 3px solid #e2e8f0;
+            border-{{ $borderSide }}: 3px solid #e2e8f0;
         }
 
         .content {
             padding: 24px 40px 35px;
-            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
+            text-align: {{ $alignment }};
         }
 
         .greeting {
@@ -99,12 +105,12 @@
             border-radius: 0;
             background-color: #fffaf0;
             border: none;
-            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 4px solid #f97316;
+            border-{{ $borderSide }}: 4px solid #f97316;
         }
 
         .panel-rejected {
             background-color: #fff5f5;
-            border-{{ app()->getLocale() === 'ar' ? 'right' : 'left' }}: 4px solid #ef4444;
+            border-{{ $borderSide }}: 4px solid #ef4444;
         }
 
         .panel-label {
@@ -131,6 +137,20 @@
             color: #991b1b;
         }
 
+        .panel-reply {
+            background-color: #f7f7f9;
+            border-{{ $borderSide }}: 4px solid #b91c1c;
+        }
+
+        .panel-reply .panel-label {
+            color: #475569;
+        }
+
+        .panel-reply .panel-value {
+            color: #1e293b;
+            font-weight: normal;
+        }
+
         .otp-panel {
             text-align: center;
             background-color: #f8fafc;
@@ -146,7 +166,7 @@
 
         .button-wrap {
             padding: 16px 0 24px;
-            text-align: {{ app()->getLocale() === 'ar' ? 'right' : 'left' }};
+            text-align: {{ $alignment }};
         }
 
         .button {
