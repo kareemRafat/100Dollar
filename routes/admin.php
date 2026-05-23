@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Admin\Auth\TwoFactorController;
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\IdeaController;
 use App\Http\Controllers\Admin\NotificationController;
@@ -87,6 +88,12 @@ Route::middleware(['auth:admin', 'role:admin'])->group(function () {
     // Prize Records
     Route::get('prizes', [PrizeRecordController::class, 'index'])->name('admin.prizes.index');
     Route::patch('prizes/{prizeRecord}/status', [PrizeRecordController::class, 'updateStatus'])->name('admin.prizes.update-status');
+
+    // Contact Messages
+    Route::get('contacts', [ContactController::class, 'index'])->name('admin.contacts.index');
+    Route::get('contacts/{contactMessage}', [ContactController::class, 'show'])->name('admin.contacts.show');
+    Route::post('contacts/{contactMessage}/reply', [ContactController::class, 'reply'])->name('admin.contacts.reply');
+    Route::delete('contacts/{contactMessage}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
 
     // winners
     Route::get('winners', [WinnerController::class, 'index'])->name('admin.winners.index');

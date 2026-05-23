@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Models\User;
+use App\Notifications\NewContactMessageNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -25,7 +28,13 @@ class ContactController extends Controller
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
-        ContactMessage::create($validated);
+        $contactMessage = ContactMessage::create($validated);
+
+        $admins = User::where('role', UserRole::ADMIN)->get();
+
+        foreach ($admins as $admin) {
+            $admin->notify((new NewContactMessageNotification($contactMessage))->locale($admin->preferredLocale()));
+        }
 
         return back()->with('success', __('messages.contact.success_message'));
     }

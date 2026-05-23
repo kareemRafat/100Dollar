@@ -163,6 +163,9 @@ return [
         'working_hours_card_label' => 'ساعات العمل',
         'working_hours_value' => 'الأحد - الخميس: 9ص - 6م',
         'success_message' => 'شكراً لرسالتك. سنتواصل معك قريباً!',
+        'reply_mail_subject' => 'رد على رسالتك من فريق المنصة',
+        'reply_mail_greeting' => 'مرحباً :name،',
+        'reply_mail_intro' => 'شكراً لتواصلك معنا بخصوص: :subject. فيما يلي رد فريقنا:',
     ],
 
     'sponsors' => [

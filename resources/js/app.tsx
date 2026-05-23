@@ -13,13 +13,23 @@ import {
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+const absolutePages = import.meta.glob('/resources/js/**/*.tsx');
+const relativePages = import.meta.glob('./**/*.tsx');
+
+const pages = {
+    ...absolutePages,
+    ...Object.fromEntries(
+        Object.entries(relativePages).map(([key, importer]) => [
+            `/resources/js/${key.replace(/^\.\//, '')}`,
+            importer,
+        ]),
+    ),
+};
+
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) =>
-        resolvePageComponent(
-            `/resources/js/${name}.tsx`,
-            import.meta.glob('/resources/js/**/*.tsx'),
-        ) as any,
+        resolvePageComponent(`/resources/js/${name}.tsx`, pages) as any,
     layout: (name) => {
         switch (true) {
             case name === 'welcome':

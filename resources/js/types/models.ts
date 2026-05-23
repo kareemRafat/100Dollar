@@ -99,3 +99,15 @@ export interface Comment {
     is_deleted: boolean;
     user?: User;
 }
+
+export interface ContactMessage {
+    id: number;
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    reply_body?: string | null;
+    replied_at?: string | null;
+    is_replied: boolean;
+    created_at: string;
+}

@@ -196,12 +196,10 @@ export function NotificationBell() {
                                         handleMarkAsRead(notification.id);
                                     }
 
-                                    if (notification.data?.idea_id) {
-                                        router.visit(
-                                            admin.ideas.show(
-                                                notification.data.idea_id,
-                                            ).url,
-                                        );
+                                    if (notification.data?.url) {
+                                        router.visit(notification.data.url);
+                                    } else if (notification.data?.idea_id) {
+                                        router.visit(admin.ideas.show(notification.data.idea_id).url);
                                     }
                                 }}
                             >

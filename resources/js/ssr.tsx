@@ -1,13 +1,10 @@
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
 import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import AdminSettingsLayout from '@/admin/layouts/settings-layout';
-import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import AppLayout from '@/app/layouts/app-layout';
-import { Toaster as AdminToaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 createServer((page) =>

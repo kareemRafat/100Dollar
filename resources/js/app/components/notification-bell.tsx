@@ -46,6 +46,7 @@ export function NotificationBell() {
 
     const loadNotifications = async () => {
         setLoading(true);
+
         try {
             const response = await fetch(localizedPath(dropdown.url()), {
                 headers: {

@@ -8,6 +8,7 @@ import {
     Banknote,
     Lightbulb,
     Share2,
+    MessageSquare,
 } from 'lucide-react';
 import AppLogo from '@/admin/components/app-logo';
 import { NavMain } from '@/admin/components/nav-main';
@@ -59,6 +60,11 @@ const mainNavItems: NavItem[] = [
         title: 'الجوائز',
         href: admin.prizes.index().url,
         icon: Banknote,
+    },
+    {
+        title: 'رسائل التواصل',
+        href: admin.contacts.index().url,
+        icon: MessageSquare,
     },
     {
         title: 'روابط التواصل',

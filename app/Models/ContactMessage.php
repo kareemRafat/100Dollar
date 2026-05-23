@@ -11,5 +11,23 @@ class ContactMessage extends Model
         'email',
         'subject',
         'message',
+        'reply_body',
+        'replied_at',
     ];
+
+    protected $appends = [
+        'is_replied',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'replied_at' => 'datetime',
+        ];
+    }
+
+    public function getIsRepliedAttribute(): bool
+    {
+        return $this->replied_at !== null;
+    }
 }
