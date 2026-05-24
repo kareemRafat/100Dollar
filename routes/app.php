@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     // Idea Actions
     Route::post('/ideas/{idea}/follow', [IdeaController::class, 'toggleFollow'])->name('app.ideas.follow');
     Route::post('/ideas/{idea}/comments', [CommentController::class, 'store'])->name('app.comments.store');
+    Route::delete('/ideas/{idea}', [IdeaController::class, 'destroy'])->name('app.ideas.destroy');
 
     // User/Owner Actions
     Route::post('/users/{user}/follow', [ProfileController::class, 'toggleFollow'])->name('app.users.follow');

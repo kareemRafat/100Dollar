@@ -242,4 +242,22 @@ class IdeaController extends Controller
 
         return back();
     }
+
+    public function destroy(Idea $idea): RedirectResponse
+    {
+        if (auth()->id() !== $idea->user_id) {
+            abort(403);
+        }
+
+        if ($idea->is_winner) {
+            return back()->with('error', __('messages.idea_deletion_error_winner'));
+        }
+
+        // Deleting the idea will trigger the Media deleting hook via the relationship
+        // and database cascade for other relationships.
+        $idea->delete();
+
+        return redirect()->route('app.ideas.index')
+            ->with('success', __('messages.idea_deleted_successfully'));
+    }
 }

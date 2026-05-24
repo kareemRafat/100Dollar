@@ -23,6 +23,16 @@ class Media extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function (Media $media) {
+            Storage::disk($media->disk)->delete($media->file_path);
+        });
+    }
+
+    /**
      * Get the parent mediable model.
      */
     public function mediable(): MorphTo

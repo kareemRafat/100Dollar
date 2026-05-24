@@ -353,10 +353,15 @@ return [
         'processing' => 'جاري المعالجة...',
         'error' => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
         'too_many_attempts' => 'محاولات كثيرة . يرجى المحاولة مرة أخرى بعد :time.',
+        'cancel' => 'إلغاء',
+        'delete' => 'حذف',
+        'confirm' => 'تأكيد',
     ],
 
     'messages' => [
         'idea_submitted_successfully' => 'تم تقديم فكرتك بنجاح وهي قيد المراجعة الآن.',
+        'idea_deleted_successfully' => 'تم حذف الفكرة بنجاح.',
+        'idea_deletion_error_winner' => 'لا يمكن حذف الأفكار التي فازت بجوائز.',
     ],
 
     'vote_pin' => [
@@ -429,7 +434,6 @@ return [
         'arabic' => 'العربية',
         'english' => 'الإنجليزية',
     ],
-
     'my_ideas' => [
         'hero_badge' => 'سجل الابتكارات',
         'hero_title' => 'أفكاري',
@@ -446,11 +450,15 @@ return [
         'filter_approved' => 'مُعتمدة',
         'filter_winner' => 'فائزة',
         'filter_rejected' => 'مرفوضة',
-        'final_votes' => 'الأصوات النهائية',
-        'current_votes' => 'الأصوات الحالية',
-        'funded_success' => 'تم تمويل المشروع بنجاح',
+        'winner_badge' => 'فائزة',
         'share_new_idea' => 'شارك فكرة جديدة',
-        'share_new_idea_desc' => 'حول رؤيتك إلى مشروع حقيقي ونافس في المسابقات القادمة',
+        'share_new_idea_desc' => 'ابدأ رحلة ابتكارك التالية وشاركنا فكرة جديدة في سجل الابتكارات',
+        'current_votes' => 'الأصوات الحالية',
+        'final_votes' => 'الأصوات النهائية',
+        'funded_success' => 'تم التمويل بنجاح',
+        'delete_confirm_title' => 'حذف الفكرة',
+        'delete_confirm_desc' => 'هل أنت متأكد أنك تريد حذف فكرة ":title"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف جميع البيانات المرتبطة بها نهائياً.',
+        'delete_success' => 'تم حذف الفكرة بنجاح.',
     ],
 
     'login' => [

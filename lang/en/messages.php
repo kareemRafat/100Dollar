@@ -355,10 +355,15 @@ return [
         'processing' => 'Processing...',
         'error' => 'An error occurred. Please try again.',
         'too_many_attempts' => 'Too many attempts. Please try again in :time.',
+        'cancel' => 'Cancel',
+        'delete' => 'Delete',
+        'confirm' => 'Confirm',
     ],
 
     'messages' => [
         'idea_submitted_successfully' => 'Your idea has been submitted successfully and is now under review.',
+        'idea_deleted_successfully' => 'Idea deleted successfully.',
+        'idea_deletion_error_winner' => 'Winning ideas cannot be deleted.',
     ],
 
     'vote_pin' => [
@@ -448,11 +453,15 @@ return [
         'filter_approved' => 'Approved',
         'filter_winner' => 'Winner',
         'filter_rejected' => 'Rejected',
-        'final_votes' => 'Final Votes',
+        'winner_badge' => 'Winner',
+        'share_new_idea' => 'Share a new idea',
+        'share_new_idea_desc' => 'Start your next innovation journey and share a new idea in the Innovation Record',
         'current_votes' => 'Current Votes',
-        'funded_success' => 'Project funded successfully',
-        'share_new_idea' => 'Share new idea',
-        'share_new_idea_desc' => 'Turn your vision into a real project and compete in upcoming competitions',
+        'final_votes' => 'Final Votes',
+        'funded_success' => 'Successfully Funded',
+        'delete_confirm_title' => 'Delete Idea',
+        'delete_confirm_desc' => 'Are you sure you want to delete the idea ":title"? This action cannot be undone and all associated data will be permanently deleted.',
+        'delete_success' => 'Idea deleted successfully.',
     ],
 
     'login' => [

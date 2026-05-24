@@ -4,13 +4,23 @@ import {
     Lightbulb,
     Vote as VoteIcon,
     Search,
-    Pencil,
     Trash2,
     PlusCircle,
+    AlertTriangle,
+    Loader2,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/app/components/ui/button';
+import { toast } from '@/app/components/ui/toast';
 import { Input } from '@/components/ui/input';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 
 import app from '@/routes/app';
 import { IdeaStatus } from '@/types';
@@ -41,6 +51,8 @@ export default function MyIdeas({
     const { locale } = usePage().props;
     const isRtl = locale === 'ar';
     const [search, setSearch] = useState(filters.search || '');
+    const [ideaToDelete, setIdeaToDelete] = useState<Idea | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const iconMap: Record<string, any> = {
         lightbulb: Lightbulb,
@@ -78,6 +90,20 @@ export default function MyIdeas({
                 replace: true,
             },
         );
+    };
+
+    const handleDelete = () => {
+        if (!ideaToDelete) return;
+
+        router.delete(app.ideas.destroy.url(ideaToDelete.id), {
+            preserveScroll: true,
+            onBefore: () => setIsDeleting(true),
+            onSuccess: () => {
+                setIdeaToDelete(null);
+                toast.success(__('messages.my_ideas.delete_success'));
+            },
+            onFinish: () => setIsDeleting(false),
+        });
     };
 
     useEffect(() => {
@@ -310,13 +336,17 @@ export default function MyIdeas({
                                                 : idea.category}
                                         </span>
                                         <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
-                                            <Link href={app.ideas.index.url()}>
-                                                <Pencil className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-primary" />
-                                            </Link>
-                                            <Trash2 className="size-5 cursor-pointer text-on-surface-variant transition-colors hover:text-red-500" />
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    setIdeaToDelete(idea)
+                                                }
+                                                className="cursor-pointer text-on-surface-variant transition-colors hover:text-red-500"
+                                            >
+                                                <Trash2 className="size-5" />
+                                            </button>
                                         </div>
                                     </div>
-
                                     <Link
                                         href={app.ideas.show.url(idea.id)}
                                         prefetch
@@ -426,6 +456,49 @@ export default function MyIdeas({
                     </div>
                 </div>
             </main>
+
+            <Dialog
+                open={!!ideaToDelete}
+                onOpenChange={(open) => !open && setIdeaToDelete(null)}
+            >
+                <DialogContent className="max-w-md" dir={isRtl ? 'rtl' : 'ltr'}>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-destructive">
+                            <AlertTriangle className="size-5" />
+                            {__('messages.my_ideas.delete_confirm_title')}
+                        </DialogTitle>
+                        <DialogDescription className="pt-2 text-start">
+                            {__(
+                                'messages.my_ideas.delete_confirm_desc',
+                            ).replace(':title', ideaToDelete?.title || '')}
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    <DialogFooter className="mt-6 flex gap-3">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setIdeaToDelete(null)}
+                            disabled={isDeleting}
+                            className="flex-1"
+                        >
+                            {__('messages.common.cancel')}
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={handleDelete}
+                            disabled={isDeleting}
+                            className="flex-1"
+                        >
+                            {isDeleting ? (
+                                <Loader2 className="mr-2 size-4 animate-spin" />
+                            ) : (
+                                <Trash2 className="mr-2 size-4" />
+                            )}
+                            {__('messages.common.delete')}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

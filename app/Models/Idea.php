@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
+use App\Models\Media;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +36,18 @@ class Idea extends Model
     use HasFactory, HasMedia;
 
     protected $appends = ['date', 'pdf_file', 'image'];
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function (Idea $idea) {
+            $idea->media()->each(function (Media $media) {
+                $media->delete();
+            });
+        });
+    }
 
     protected function casts(): array
     {
