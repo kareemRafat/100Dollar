@@ -13,7 +13,7 @@ class CommentController extends Controller
 {
     public function store(Request $request, Idea $idea)
     {
-        if ($idea->status !== IdeaStatus::APPROVED) {
+        if ($idea->status !== IdeaStatus::APPROVED && auth()->id() !== $idea->user_id) {
             abort(404);
         }
 

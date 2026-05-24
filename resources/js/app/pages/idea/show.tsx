@@ -25,7 +25,6 @@ import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
 import { useIdeaVote } from '@/app/hooks/use-idea-vote';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
     Dialog,
     DialogContent,
@@ -34,6 +33,7 @@ import {
 } from '@/components/ui/dialog';
 import ideasRoute from '@/routes/app/ideas';
 import usersRoute from '@/routes/app/users';
+import { login as loginRoute } from '@/routes/index';
 import type { Idea, Paginated, Comment } from '@/types';
 import { IdeaStatus } from '@/types';
 
@@ -86,7 +86,7 @@ export default function IdeaShow({
     shareMeta,
 }: Props) {
     const { __ } = useLang();
-    const { auth, name: appName } = usePage().props as any;
+    const { auth, name: appName, locale } = usePage().props as any;
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
     const commentsTopRef = useRef<HTMLDivElement>(null);
 
@@ -109,7 +109,11 @@ export default function IdeaShow({
 
     const toggleFollowIdea = () => {
         if (!auth.user) {
-            router.visit(`/login?redirect=${window.location.pathname}`);
+            router.visit(
+                loginRoute.url({
+                    query: { redirect: window.location.pathname },
+                }),
+            );
 
             return;
         }
@@ -145,7 +149,11 @@ export default function IdeaShow({
 
     const toggleFollowOwner = () => {
         if (!auth.user) {
-            router.visit(`/login?redirect=${window.location.pathname}`);
+            router.visit(
+                loginRoute.url({
+                    query: { redirect: window.location.pathname },
+                }),
+            );
 
             return;
         }
@@ -388,7 +396,7 @@ export default function IdeaShow({
                                     <CategoryIcon className="size-4" />
                                     <span className="text-xs font-bold tracking-wider uppercase">
                                         {typeof idea.category === 'object'
-                                            ? usePage().props.locale === 'ar'
+                                            ? locale === 'ar'
                                                 ? idea.category.name_ar
                                                 : idea.category.name_en
                                             : idea.category}

@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Watch, Clock } from 'lucide-react';
+import { Clock } from 'lucide-react';
+import { useState } from 'react';
 import { CountdownTimer } from '@/app/components/countdown-timer';
 
 interface Props {
@@ -8,7 +9,9 @@ interface Props {
 
 export default function VotingCountdown({ secondsUntilEnd }: Props) {
     const { __ } = useLang();
-    const targetDate = new Date(Date.now() + secondsUntilEnd * 1000);
+    const [targetDate] = useState(
+        () => new Date(Date.now() + secondsUntilEnd * 1000),
+    );
 
     return (
         <div className="group relative flex h-full flex-col items-start justify-between overflow-hidden rounded-3xl border border-outline-variant/10 bg-surface-container-low p-6 shadow-md transition-all hover:shadow-lg md:col-span-8 md:flex-row md:items-center">

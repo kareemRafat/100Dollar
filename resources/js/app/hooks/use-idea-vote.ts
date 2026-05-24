@@ -51,7 +51,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
         router.reload({ only: ['vote_block', 'votedIdeaId'] });
     }, []);
 
-    const handleVoteClick = useCallback(() => {
+    const handleVoteClick = () => {
         if (remainingSeconds > 0) {
             const timeStr = formatDuration(remainingSeconds, locale);
             const message = __('messages.common.too_many_attempts', {
@@ -111,16 +111,7 @@ export function useIdeaVote(ideaId: number, initialVotesCount: number) {
         } else {
             setIsPinModalOpen(true);
         }
-    }, [
-        remainingSeconds,
-        locale,
-        auth.user,
-        ideaId,
-        sendOtp,
-        __,
-        vote_block?.available_in,
-        setData,
-    ]);
+    };
 
     return {
         votesCount,

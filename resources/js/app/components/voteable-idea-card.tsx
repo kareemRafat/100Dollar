@@ -20,7 +20,6 @@ export function VoteableIdeaCard({ idea, isVoted }: Props) {
         votesCount,
         isPinModalOpen,
         isAutoSending,
-        isBlocked,
         remainingSeconds,
         handleVoteClick,
         handleVoteSuccess,
@@ -50,9 +49,6 @@ export function VoteableIdeaCard({ idea, isVoted }: Props) {
                 imageUrl={idea.image}
                 onVote={handleVoteClick}
                 isLoading={isAutoSending}
-                blockedUntil={
-                    isBlocked ? Date.now() + remainingSeconds * 1000 : null
-                }
                 remainingSeconds={remainingSeconds}
                 isVoted={isVoted}
             />

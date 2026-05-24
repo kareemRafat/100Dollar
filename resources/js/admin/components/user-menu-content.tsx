@@ -1,4 +1,4 @@
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Bell, LogOut, Settings } from 'lucide-react';
 import { UserInfo } from '@/admin/components/user-info';
 import {

@@ -11,7 +11,6 @@ import {
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { NotificationBell } from '@/app/components/notification-bell';
 import { Button } from '@/app/components/ui/button';
-import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,

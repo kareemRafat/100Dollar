@@ -1,6 +1,4 @@
-import { useLang } from '@erag/lang-sync-inertia/react';
 import type { LucideIcon } from 'lucide-react';
-import { LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type NavItem = {
@@ -17,7 +15,6 @@ type Props = {
 };
 
 export function MobileBottomNav({ activeSection, items, onItemClick }: Props) {
-    const { __ } = useLang();
 
     return (
         <nav className="fixed right-0 bottom-0 left-0 z-50 flex justify-around border-t border-outline-variant/10 bg-surface/80 p-3 backdrop-blur-xl md:hidden dark:border-white/5 dark:bg-surface-container-lowest/80">

@@ -1,5 +1,4 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { usePage } from '@inertiajs/react';
 import { Copy } from 'lucide-react';
 import React from 'react';
 import { toast } from '@/app/components/ui/toast';
@@ -11,7 +10,6 @@ interface SocialShareProps {
 
 export const SocialShare = React.memo(({ idea }: SocialShareProps) => {
     const { __ } = useLang();
-    const { locale } = usePage().props;
 
     const handleShare = (platform: string) => {
         const url = window.location.href;

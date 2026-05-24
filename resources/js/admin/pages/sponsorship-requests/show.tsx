@@ -33,7 +33,7 @@ import {
 } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import admin from '@/routes/admin';
-import type { BreadcrumbItem, SponsorshipRequest } from '@/types';
+import type { SponsorshipRequest } from '@/types';
 
 interface SponsorshipRequestShowProps {
     request: SponsorshipRequest;

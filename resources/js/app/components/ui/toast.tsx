@@ -99,7 +99,6 @@ function ToastCard({
     description,
     type,
     onClose,
-    isRtl,
     isExiting,
 }: {
     id: string;
@@ -107,7 +106,6 @@ function ToastCard({
     description?: string;
     type: ToastType;
     onClose: (id: string) => void;
-    isRtl: boolean;
     isExiting?: boolean;
 }) {
     const style = styles[type];
@@ -164,14 +162,19 @@ export function Toaster() {
     const [activeToasts, setActiveToasts] = useState<
         (Toast & { isExiting?: boolean })[]
     >([]);
-    const [isRtl, setIsRtl] = useState(false);
+    const [isRtl, setIsRtl] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return document.documentElement.getAttribute('dir') === 'rtl';
+        }
+
+        return false;
+    });
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-        // Detect direction
-        const dir = document.documentElement.getAttribute('dir') || 'ltr';
-        setIsRtl(dir === 'rtl');
+        const frame = requestAnimationFrame(() => {
+            setMounted(true);
+        });
 
         // Observe direction changes
         const observer = new MutationObserver(() => {
@@ -183,6 +186,7 @@ export function Toaster() {
         });
 
         return () => {
+            cancelAnimationFrame(frame);
             observer.disconnect();
         };
     }, []);
@@ -277,7 +281,6 @@ export function Toaster() {
                         description={t.description}
                         type={t.type}
                         onClose={(id) => toast.dismiss(id)}
-                        isRtl={isRtl}
                         isExiting={t.isExiting}
                     />
                 </div>

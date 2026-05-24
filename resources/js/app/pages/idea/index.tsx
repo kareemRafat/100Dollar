@@ -101,7 +101,7 @@ export default function MyIdeas({
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [search]);
+    }, [search, filters]);
 
     return (
         <>

@@ -22,9 +22,20 @@ export default function TwoFactorChallenge() {
     };
     const { __ } = useLang();
     const [showRecoveryInput, setShowRecoveryInput] = useState(false);
+    const [prevRetryAfter, setPrevRetryAfter] = useState<number>(
+        Number(flash?.retry_after ?? 0),
+    );
     const [retryAfter, setRetryAfter] = useState<number>(
         Number(flash?.retry_after ?? 0),
     );
+
+    const currentFlashRetryAfter = Number(flash?.retry_after ?? 0);
+
+    if (currentFlashRetryAfter !== prevRetryAfter) {
+        setPrevRetryAfter(currentFlashRetryAfter);
+        setRetryAfter(currentFlashRetryAfter);
+    }
+
     const isRtl = locale === 'ar';
     const isBlocked = retryAfter > 0;
     const waitButtonText =
@@ -64,10 +75,6 @@ export default function TwoFactorChallenge() {
             placeholder: '••••••',
         };
     }, [showRecoveryInput, __]);
-
-    useEffect(() => {
-        setRetryAfter(Number(flash?.retry_after ?? 0));
-    }, [flash?.retry_after]);
 
     useEffect(() => {
         if (retryAfter <= 0) {

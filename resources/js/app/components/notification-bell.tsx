@@ -43,45 +43,45 @@ export function NotificationBell() {
 
     const unreadCount = auth.unread_notifications_count || 0;
 
-    const loadNotifications = async () => {
-        setLoading(true);
-
-        try {
-            const response = await fetch(
-                getLocalizedPath(dropdown.url(), locale),
-                {
-                    headers: {
-                        Accept: 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    credentials: 'same-origin',
-                },
-            );
-
-            if (!response.ok) {
-                return;
-            }
-
-            const data = await response.json();
-
-            setNotifications(Array.isArray(data) ? data : []);
-            setHasLoadedNotifications(true);
-            setLastLoadedUnreadCount(unreadCount);
-        } catch (error) {
-            console.error('Failed to load notifications:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const loadNotifications = async () => {
+            setLoading(true);
+
+            try {
+                const response = await fetch(
+                    getLocalizedPath(dropdown.url(), locale),
+                    {
+                        headers: {
+                            Accept: 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        credentials: 'same-origin',
+                    },
+                );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const data = await response.json();
+
+                setNotifications(Array.isArray(data) ? data : []);
+                setHasLoadedNotifications(true);
+                setLastLoadedUnreadCount(unreadCount);
+            } catch (error) {
+                console.error('Failed to load notifications:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         if (
             open &&
             (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
         ) {
             void loadNotifications();
         }
-    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
+    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount, locale]);
 
     const handleMarkAsRead = (id: number, onFinish?: () => void) => {
         router.patch(

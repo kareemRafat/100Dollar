@@ -5,7 +5,6 @@ import {
     Loader2,
     User as UserIcon,
     AlertCircle,
-    Languages,
 } from 'lucide-react';
 import React, { memo } from 'react';
 import type { SubmitEvent } from 'react';

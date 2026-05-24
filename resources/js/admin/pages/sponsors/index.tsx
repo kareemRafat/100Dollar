@@ -4,7 +4,6 @@ import {
     Pencil,
     Plus,
     Trash2,
-    Eye,
     Image as ImageIcon,
 } from 'lucide-react';
 import React, { useState } from 'react';

@@ -1,21 +1,18 @@
 import { Head, Link } from '@inertiajs/react';
 import {
     Calendar,
-    CheckCircle,
     ChevronRight,
     FileText,
     Mail,
     MapPin,
     Phone,
     ThumbsUp,
-    XCircle,
     User as UserIcon,
 } from 'lucide-react';
 import React from 'react';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import {

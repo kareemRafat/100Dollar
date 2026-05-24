@@ -13,6 +13,8 @@ import type { SubmitEvent } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
 import { cn } from '@/lib/utils';
+import commentsRoute from '@/routes/app/comments';
+import { login as loginRoute } from '@/routes/index';
 import type { Idea, User, Paginated, Comment } from '@/types';
 
 interface CommentSectionProps {
@@ -51,7 +53,7 @@ export const CommentSection = ({
             return;
         }
 
-        post(`/ideas/${idea.id}/comments`, {
+        post(commentsRoute.store(idea.id).url, {
             preserveScroll: true,
             onSuccess: () => {
                 reset('body');
@@ -68,7 +70,11 @@ export const CommentSection = ({
     const toggleLike = (comment: Comment) => {
         if (!auth.user || comment.is_deleted) {
             if (!auth.user) {
-                router.visit(`/login?redirect=${window.location.pathname}`);
+                router.visit(
+                    loginRoute.url({
+                        query: { redirect: window.location.pathname },
+                    }),
+                );
             }
 
             return;
@@ -92,7 +98,7 @@ export const CommentSection = ({
                 },
             }))
             .post(
-                `/comments/${comment.id}/like`,
+                commentsRoute.like(comment.id).url,
                 {},
                 {
                     preserveScroll: true,
@@ -372,7 +378,11 @@ export const CommentSection = ({
                             </div>
                             <p className="text-lg font-bold text-on-surface">
                                 <Link
-                                    href={`/login?redirect=${window.location.pathname}`}
+                                    href={loginRoute.url({
+                                        query: {
+                                            redirect: window.location.pathname,
+                                        },
+                                    })}
                                     className="text-primary transition-all hover:underline"
                                 >
                                     {__('messages.login.login_button')}

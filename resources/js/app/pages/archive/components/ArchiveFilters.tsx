@@ -55,8 +55,6 @@ export function ArchiveFilters({
         { value: '11', label: __('messages.archive.months.11') },
         { value: '12', label: __('messages.archive.months.12') },
     ];
-
-    const filterKeys = ['category', 'day', 'month', 'status'] as const;
     const hasActiveFilters = Object.keys(filters).length > 0;
 
     return (

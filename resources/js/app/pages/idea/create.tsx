@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import type { ChangeEvent, SubmitEvent, DragEvent } from 'react';
 import { useState } from 'react';
-import { store } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import InputError from '@/components/input-error';
@@ -33,6 +32,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import ideasRoute from '@/routes/app/ideas';
 
 interface Category {
     id: number;
@@ -59,8 +59,8 @@ export default function SubmitIdea({
     const { __ } = useLang();
     const { locale } = usePage().props as any;
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [isDragging, setIsDragging] = useState(false);
     const [dragCounter, setDragCounter] = useState(0);
+    const isDragging = dragCounter > 0;
 
     const categoryIcons: Record<string, any> = {
         'shopping-bag': ShoppingBag,
@@ -110,7 +110,6 @@ export default function SubmitIdea({
         e.preventDefault();
         e.stopPropagation();
         setDragCounter((prev) => prev + 1);
-        setIsDragging(true);
     };
 
     const handleDragOver = (e: DragEvent) => {
@@ -121,21 +120,12 @@ export default function SubmitIdea({
     const handleDragLeave = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setDragCounter((prev) => {
-            const next = prev - 1;
-
-            if (next === 0) {
-                setIsDragging(false);
-            }
-
-            return next;
-        });
+        setDragCounter((prev) => prev - 1);
     };
 
     const handleDrop = (e: DragEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragging(false);
         setDragCounter(0);
 
         const file = e.dataTransfer.files?.[0];
@@ -155,8 +145,8 @@ export default function SubmitIdea({
 
     const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post(store.url(), {
-            preserveScroll: 'errors',
+        post(ideasRoute.store().url, {
+            preserveScroll: true,
         });
     };
 

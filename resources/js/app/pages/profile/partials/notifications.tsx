@@ -12,7 +12,7 @@ import {
     resolveNotificationTitle,
 } from '@/app/lib/notifications';
 import { Pagination } from '@/components/ui/pagination';
-import { cn, getLocalizedPath } from '@/lib/utils';
+import { getLocalizedPath } from '@/lib/utils';
 import { show } from '@/routes/app/ideas';
 
 type Notification = {

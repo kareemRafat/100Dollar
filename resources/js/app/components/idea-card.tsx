@@ -35,7 +35,6 @@ type Props = {
     voteProgress: number;
     onVote?: () => void;
     isLoading?: boolean;
-    blockedUntil?: number | null;
     remainingSeconds?: number;
     isWinner?: boolean;
     imageUrl?: string;
@@ -70,7 +69,6 @@ export function IdeaCard({
     voteProgress,
     onVote,
     isLoading,
-    blockedUntil,
     remainingSeconds = 0,
     isWinner,
     imageUrl,
@@ -84,7 +82,7 @@ export function IdeaCard({
     const Icon = categoryIcon
         ? categoryIcons[categoryIcon] || MoreHorizontal
         : null;
-    const isBlocked = !!blockedUntil;
+    const isBlocked = remainingSeconds > 0;
 
     if (variant === 'archive') {
         return (

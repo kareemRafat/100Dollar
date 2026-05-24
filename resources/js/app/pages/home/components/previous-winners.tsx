@@ -48,9 +48,16 @@ export default function PreviousWinners({ winners = [] }: Props) {
             return;
         }
 
-        onSelect(emblaApi);
+        const frame = requestAnimationFrame(() => {
+            onSelect(emblaApi);
+        });
+
         emblaApi.on('reInit', onSelect);
         emblaApi.on('select', onSelect);
+
+        return () => {
+            cancelAnimationFrame(frame);
+        };
     }, [emblaApi, onSelect]);
 
     if (winnersArray.length === 0) {

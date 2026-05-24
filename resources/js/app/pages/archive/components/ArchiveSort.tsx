@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { ArrowUpDown, X } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 import {
     Select,
     SelectContent,

@@ -14,7 +14,7 @@ type Props = {
     canRegister: boolean;
 };
 
-export default function Login({ status, canRegister }: Props) {
+export default function Login({ status }: Props) {
     return (
         <>
             <Head title="تسجيل الدخول" />

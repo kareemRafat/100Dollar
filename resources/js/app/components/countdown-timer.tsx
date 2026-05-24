@@ -1,6 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { usePage } from '@inertiajs/react';
-import { Clock, Timer, Hourglass } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 type Props = {

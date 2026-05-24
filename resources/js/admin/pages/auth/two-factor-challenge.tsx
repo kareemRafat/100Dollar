@@ -18,9 +18,20 @@ export default function TwoFactorChallenge() {
     const { flash } = usePage().props as {
         flash?: { message?: string; retry_after?: number | null };
     };
+    const [prevRetryAfter, setPrevRetryAfter] = useState<number>(
+        Number(flash?.retry_after ?? 0),
+    );
     const [retryAfter, setRetryAfter] = useState<number>(
         Number(flash?.retry_after ?? 0),
     );
+
+    const currentFlashRetryAfter = Number(flash?.retry_after ?? 0);
+
+    if (currentFlashRetryAfter !== prevRetryAfter) {
+        setPrevRetryAfter(currentFlashRetryAfter);
+        setRetryAfter(currentFlashRetryAfter);
+    }
+
     const isBlocked = retryAfter > 0;
     const waitButtonText = `حاول مرة أخرى بعد ${retryAfter} ثانية`;
 
@@ -54,10 +65,6 @@ export default function TwoFactorChallenge() {
             placeholder: '••••••',
         };
     }, [showRecoveryInput]);
-
-    useEffect(() => {
-        setRetryAfter(Number(flash?.retry_after ?? 0));
-    }, [flash?.retry_after]);
 
     useEffect(() => {
         if (retryAfter <= 0) {
