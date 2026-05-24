@@ -787,6 +787,10 @@ return [
 
         'new_comment_title' => 'تعليق جديد',
         'new_comment_body' => 'قام :user بالتعليق على فكرة ":title"',
+        'new_comment_mail_subject' => 'تعليق جديد على فكرتك',
+        'new_comment_mail_greeting' => 'مرحباً :name،',
+        'new_comment_mail_line1' => 'قام :user بالتعليق على فكرتك ":title":',
+        'new_comment_mail_action' => 'عرض التعليق',
         'new_follower_title' => 'متابع جديد',
         'new_follower_body' => 'بدأ :user بمتابعتك',
 

@@ -25,17 +25,18 @@ class NewContactMessageNotification extends Notification implements ShouldQueue
         $locale = $this->contactMessage->locale ?? 'ar';
 
         return (new MailMessage)
-            ->subject(__('messages.notifications.new_contact_message_subject'))
+            ->subject(__('messages.notifications.new_contact_message_subject', [], $locale))
             ->view(['mail.notification', 'mail.notification-text'], [
-                'subject' => __('messages.notifications.new_contact_message_subject'),
-                'greeting' => __('messages.notifications.new_contact_message_greeting'),
+                'subject' => __('messages.notifications.new_contact_message_subject', [], $locale),
+                'greeting' => __('messages.notifications.new_contact_message_greeting', [], $locale),
                 'lines' => [
-                    __('messages.notifications.new_contact_message_line1', ['name' => $this->contactMessage->name]),
+                    __('messages.notifications.new_contact_message_line1', ['name' => $this->contactMessage->name], $locale),
                     $this->contactMessage->message,
                 ],
-                'actionText' => __('messages.notifications.new_contact_message_action'),
+                'actionText' => __('messages.notifications.new_contact_message_action', [], $locale),
                 'actionUrl' => route('admin.contacts.show', $this->contactMessage),
                 'mail_locale' => $locale,
+                'salutation' => __('messages.notifications.regards', [], $locale) . "\n" . config('app.name'),
             ]);
     }
 

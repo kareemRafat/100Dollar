@@ -18,7 +18,7 @@ These are sent to regular users based on their activity and submissions.
 | **Idea Approved** | When an admin approves a pending idea. | ✅ | ✅ |
 | **Idea Rejected** | When an admin rejects an idea (includes reason). | ✅ | ✅ |
 | **Winner Announced** | When an idea is selected as the $100 prize winner. | ✅ | ✅ |
-| **New Comment** | When someone comments on the user's idea. | ✅ | ❌ |
+| **New Comment** | When someone comments on the user's idea. | ✅ | ✅* |
 | **New Follower** | When another user follows the user's profile. | ✅ | ❌ |
 
 ---
@@ -26,5 +26,7 @@ These are sent to regular users based on their activity and submissions.
 ## Technical Notes
 - **Email Delivery:** Handled via queued jobs (`ShouldQueue`) to ensure fast performance.
 - **In-App:** Stored in the `notifications` table and resolved dynamically for RTL/Localization.
+- **Locale Persistence:** Contact messages store the visitor's locale to ensure admin notifications and replies match the original submission's language and direction (RTL/LTR).
+- **New Comment Emails:** (*) Email notifications for new comments are sent **only to the idea owner** to keep them informed without over-notifying followers.
 - **Admin Panel:** Always redirects to moderation/dashboard views.
 - **App Panel:** Redirects to the specific idea or profile page.

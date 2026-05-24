@@ -19,7 +19,7 @@ class HandleCommentCreated
         // 1. Notify idea owner if they aren't the one who commented
         if ($idea->user_id !== $comment->user_id) {
             $owner = $idea->user;
-            $owner->notify((new NewCommentNotification($comment))->locale($owner->preferredLocale()));
+            $owner->notify((new NewCommentNotification($comment, sendMail: true))->locale($owner->preferredLocale()));
         }
 
         // 2. Notify idea followers

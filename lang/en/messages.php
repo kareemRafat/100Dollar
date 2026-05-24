@@ -789,6 +789,10 @@ return [
 
         'new_comment_title' => 'New Comment',
         'new_comment_body' => ':user commented on your idea ":title"',
+        'new_comment_mail_subject' => 'New comment on your idea',
+        'new_comment_mail_greeting' => 'Hello :name,',
+        'new_comment_mail_line1' => ':user commented on your idea ":title":',
+        'new_comment_mail_action' => 'View Comment',
         'new_follower_title' => 'New Follower',
         'new_follower_body' => ':user started following you',
 
