@@ -5,6 +5,7 @@ import {
     Vote as VoteIcon,
     Search,
     Trash2,
+    Pencil,
     PlusCircle,
     AlertTriangle,
     Loader2,
@@ -335,15 +336,35 @@ export default function MyIdeas({
                                                     : idea.category.name_en
                                                 : idea.category}
                                         </span>
-                                        <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
+                                        <div className="flex items-center gap-2 transition-opacity group-hover:opacity-100 md:opacity-0">
+                                            {([IdeaStatus.PENDING, IdeaStatus.REJECTED] as string[]).includes(idea.status) && (
+                                                <Link
+                                                    href={app.ideas.edit.url(
+                                                        idea.id,
+                                                    )}
+                                                    className="group/btn flex h-9 w-9 cursor-pointer flex-row-reverse items-center justify-start overflow-hidden rounded-full bg-surface-container-highest text-on-surface-variant transition-[width,background-color] duration-300 ease-in-out will-change-[width] hover:w-22 hover:bg-primary hover:text-on-primary dark:bg-white/10 dark:hover:bg-primary"
+                                                >
+                                                    <div className="flex min-w-[36px] items-center justify-center shrink-0">
+                                                        <Pencil className="size-5" />
+                                                    </div>
+                                                    <span className="whitespace-nowrap text-sm font-bold opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100 group-hover/btn:me-1">
+                                                        {__('messages.common.edit')}
+                                                    </span>
+                                                </Link>
+                                            )}
                                             <button
                                                 type="button"
                                                 onClick={() =>
                                                     setIdeaToDelete(idea)
                                                 }
-                                                className="cursor-pointer text-on-surface-variant transition-colors hover:text-red-500"
+                                                className="group/btn flex h-9 w-9 cursor-pointer flex-row-reverse items-center justify-start overflow-hidden rounded-full bg-surface-container-highest text-on-surface-variant transition-[width,background-color] duration-300 ease-in-out will-change-[width] hover:w-24 hover:bg-red-600 hover:text-white dark:bg-white/10 dark:hover:bg-red-600"
                                             >
-                                                <Trash2 className="size-5" />
+                                                <div className="flex min-w-[36px] items-center justify-center shrink-0">
+                                                    <Trash2 className="size-5" />
+                                                </div>
+                                                <span className="whitespace-nowrap text-sm font-bold opacity-0 transition-opacity duration-300 group-hover/btn:opacity-100 group-hover/btn:me-1">
+                                                    {__('messages.common.delete')}
+                                                </span>
                                             </button>
                                         </div>
                                     </div>

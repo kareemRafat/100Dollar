@@ -320,6 +320,7 @@ return [
         'pledge_originality' => 'I pledge that this idea is original and can be implemented with a budget of $100 or less.',
         'agreed_legal' => 'I pledge that all provided information is correct and I bear full legal responsibility for it.',
         'submit_button' => 'Submit idea for review',
+        'update_button' => 'Update idea',
         'marketing_channel_label' => 'Marketing Channel',
         'marketing_channel_placeholder' => 'How will people find you?',
         'implementation_time_label' => 'Implementation Time',
@@ -357,13 +358,16 @@ return [
         'too_many_attempts' => 'Too many attempts. Please try again in :time.',
         'cancel' => 'Cancel',
         'delete' => 'Delete',
+        'edit' => 'Edit',
         'confirm' => 'Confirm',
     ],
 
     'messages' => [
         'idea_submitted_successfully' => 'Your idea has been submitted successfully and is now under review.',
+        'idea_updated_successfully' => 'Your idea has been updated successfully and is back under review.',
         'idea_deleted_successfully' => 'Idea deleted successfully.',
         'idea_deletion_error_winner' => 'Winning ideas cannot be deleted.',
+        'edit_not_allowed' => 'You cannot edit this idea at its current status.',
     ],
 
     'vote_pin' => [

@@ -318,6 +318,7 @@ return [
         'pledge_originality' => 'أتعهد بأن هذه الفكرة أصلية ويمكن تنفيذها بميزانية 100 دولار أو أقل.',
         'agreed_legal' => 'أتعهد بأن جميع المعلومات المقدمة صحيحة وأتحمل المسؤولية القانونية عنها.',
         'submit_button' => 'إرسال الفكرة للمراجعة',
+        'update_button' => 'تحديث الفكرة',
         'marketing_channel_label' => 'قناة التسويق',
         'marketing_channel_placeholder' => 'كيف سيعرف الناس عنك؟',
         'implementation_time_label' => 'وقت التنفيذ المتوقع',
@@ -351,17 +352,21 @@ return [
 
     'common' => [
         'processing' => 'جاري المعالجة...',
-        'error' => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.',
-        'too_many_attempts' => 'محاولات كثيرة . يرجى المحاولة مرة أخرى بعد :time.',
+        'error' => 'حدث خطأ ما، يرجى المحاولة مرة أخرى.',
+        'too_many_attempts' => 'محاولات كثيرة جداً، يرجى المحاولة بعد :time.',
         'cancel' => 'إلغاء',
         'delete' => 'حذف',
+        'edit' => 'تعديل',
         'confirm' => 'تأكيد',
     ],
 
+
     'messages' => [
         'idea_submitted_successfully' => 'تم تقديم فكرتك بنجاح وهي قيد المراجعة الآن.',
+        'idea_updated_successfully' => 'تم تحديث فكرتك بنجاح وهي الآن قيد المراجعة مجدداً.',
         'idea_deleted_successfully' => 'تم حذف الفكرة بنجاح.',
         'idea_deletion_error_winner' => 'لا يمكن حذف الأفكار التي فازت بجوائز.',
+        'edit_not_allowed' => 'لا يمكنك تعديل هذه الفكرة في حالتها الحالية.',
     ],
 
     'vote_pin' => [

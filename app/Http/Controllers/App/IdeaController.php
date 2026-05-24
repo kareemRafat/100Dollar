@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Enums\IdeaStatus;
 use App\Events\IdeaSubmitted;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\App\IdeaRequest;
 use App\Http\Resources\App\CommentResource;
 use App\Http\Resources\App\IdeaResource;
 use App\Models\Category;
@@ -84,24 +85,9 @@ class IdeaController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(IdeaRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['required', 'string'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'country_id' => ['required', 'exists:countries,id'],
-            'city' => ['required', 'string'],
-            'image' => ['nullable', 'image', 'max:2048'], // 2MB
-            'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // 5MB
-            'agreed_terms' => ['required', 'accepted'],
-            'agreed_privacy' => ['required', 'accepted'],
-            'agreed_legal' => ['required', 'accepted'],
-            'marketing_channel' => ['required', 'array', 'min:1'],
-            'marketing_channel.*' => ['string', 'in:social_media,word_of_mouth,physical,whatsapp,other'],
-            'target_audience' => ['required', 'array', 'min:1'],
-            'implementation_time' => ['required', 'string'],
-        ]);
+        $validated = $request->validated();
 
         $idea = DB::transaction(function () use ($validated, $request) {
             /** @var Idea $idea */
@@ -149,6 +135,73 @@ class IdeaController extends Controller
 
         return redirect()->route('app.ideas.index')
             ->with('success', __('messages.idea_submitted_successfully'));
+    }
+
+    public function edit(Idea $idea): Response|RedirectResponse
+    {
+        if (auth()->id() !== $idea->user_id) {
+            abort(403);
+        }
+
+        if (! in_array($idea->status, [IdeaStatus::PENDING, IdeaStatus::REJECTED])) {
+            return redirect()->route('app.ideas.index')->with('error', __('messages.edit_not_allowed'));
+        }
+
+        return Inertia::render('app/pages/idea/edit', [
+            'idea' => (new IdeaResource($idea->load(['media', 'category', 'country'])))->resolve(),
+            'categories' => Category::all(),
+            'countries' => Country::all(),
+        ]);
+    }
+
+    public function update(IdeaRequest $request, Idea $idea): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        DB::transaction(function () use ($validated, $request, $idea) {
+            $idea->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'category_id' => $validated['category_id'],
+                'country_id' => $validated['country_id'],
+                'city' => $validated['city'],
+                'marketing_channel' => $validated['marketing_channel'],
+                'target_audience' => $validated['target_audience'],
+                'implementation_time' => $validated['implementation_time'],
+                'status' => IdeaStatus::PENDING, // Reset to pending
+            ]);
+
+            if ($request->hasFile('image')) {
+                // Delete old image explicitly to trigger model hooks
+                $idea->media()->where('collection_name', 'image')->get()->each->delete();
+
+                $path = $request->file('image')->store('ideas/images', 'public');
+                $idea->media()->create([
+                    'file_path' => $path,
+                    'mime_type' => $request->file('image')->getMimeType(),
+                    'file_size' => $request->file('image')->getSize(),
+                    'collection_name' => 'image',
+                    'disk' => 'public',
+                ]);
+            }
+
+            if ($request->hasFile('pdf_file')) {
+                // Delete old PDF explicitly to trigger model hooks
+                $idea->media()->where('collection_name', 'pdf')->get()->each->delete();
+
+                $path = $request->file('pdf_file')->store('ideas/pdfs', 'public');
+                $idea->media()->create([
+                    'file_path' => $path,
+                    'mime_type' => $request->file('pdf_file')->getMimeType(),
+                    'file_size' => $request->file('pdf_file')->getSize(),
+                    'collection_name' => 'pdf',
+                    'disk' => 'public',
+                ]);
+            }
+        });
+
+        return redirect()->route('app.ideas.index')
+            ->with('success', __('messages.idea_updated_successfully'));
     }
 
     public function show(Request $request, Idea $idea): Response

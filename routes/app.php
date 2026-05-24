@@ -44,8 +44,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('app.profile.password.update');
     Route::get('/ideas/create', [IdeaController::class, 'create'])->name('app.ideas.create');
+    Route::get('/ideas/{idea}/edit', [IdeaController::class, 'edit'])->name('app.ideas.edit');
     Route::get('/my-ideas', [IdeaController::class, 'index'])->name('app.ideas.index');
     Route::post('/ideas', [IdeaController::class, 'store'])->name('app.ideas.store');
+    Route::patch('/ideas/{idea}', [IdeaController::class, 'update'])->name('app.ideas.update');
 
     // Idea Actions
     Route::post('/ideas/{idea}/follow', [IdeaController::class, 'toggleFollow'])->name('app.ideas.follow');

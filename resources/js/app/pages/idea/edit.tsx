@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link } from '@inertiajs/react';
+import ideasRoute from '@/routes/app/ideas';
 import IdeaForm from './partials/idea-form';
 
 interface Category {
@@ -17,10 +18,12 @@ interface Country {
     code: string;
 }
 
-export default function SubmitIdea({
+export default function EditIdea({
+    idea,
     categories,
     countries,
 }: {
+    idea: any;
     categories: Category[];
     countries: Country[];
 }) {
@@ -66,6 +69,15 @@ export default function SubmitIdea({
                     <span className="material-symbols-outlined text-xs rtl:rotate-180">
                         chevron_left
                     </span>
+                    <Link
+                        className="transition-colors hover:text-primary"
+                        href={ideasRoute.index.url()}
+                    >
+                        {__('messages.auth.my_ideas')}
+                    </Link>
+                    <span className="material-symbols-outlined text-xs rtl:rotate-180">
+                        chevron_left
+                    </span>
                     <span className="font-medium text-on-surface dark:text-white">
                         {__('messages.submit_idea.hero_badge')}
                     </span>
@@ -73,7 +85,11 @@ export default function SubmitIdea({
 
                 <div className="mx-auto max-w-[800px]">
                     <div className="relative overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-xl md:p-12 dark:bg-card">
-                        <IdeaForm categories={categories} countries={countries} />
+                        <IdeaForm 
+                            categories={categories} 
+                            countries={countries} 
+                            initialData={idea}
+                        />
                     </div>
                 </div>
             </main>
