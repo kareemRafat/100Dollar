@@ -32,11 +32,15 @@ export const VotingCard = ({
     const { locale } = usePage().props as any;
 
     // Data Sync
-    const voteGoal = idea?.target_votes ?? 100;
+    const targetVotes = Number(idea?.target_votes ?? 0);
+    const serverProgress = Number(idea?.progress ?? 0);
     const currentVotes = idea?.votes_count ?? 0;
-    const votePercentage =
-        idea?.progress ??
-        Math.min(Math.round((currentVotes / voteGoal) * 100), 100);
+
+    const votePercentage = idea?.is_winner
+        ? 100
+        : targetVotes > 0
+          ? Math.min(Math.round((currentVotes / targetVotes) * 100), 100)
+          : serverProgress;
 
     // Circular Progress Calculation
     const r = 72;
