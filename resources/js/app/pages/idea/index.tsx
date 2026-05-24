@@ -1,5 +1,5 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Lightbulb,
     Vote as VoteIcon,
@@ -38,6 +38,8 @@ export default function MyIdeas({
     stats: Stat[];
 }) {
     const { __ } = useLang();
+    const { locale } = usePage().props;
+    const isRtl = locale === 'ar';
     const [search, setSearch] = useState(filters.search || '');
 
     const iconMap: Record<string, any> = {
@@ -301,7 +303,11 @@ export default function MyIdeas({
                                                     : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
                                             }`}
                                         >
-                                            {idea.category}
+                                            {typeof idea.category === 'object'
+                                                ? isRtl
+                                                    ? idea.category.name_ar
+                                                    : idea.category.name_en
+                                                : idea.category}
                                         </span>
                                         <div className="flex gap-3 opacity-0 transition-opacity group-hover:opacity-100">
                                             <Link href={app.ideas.index.url()}>

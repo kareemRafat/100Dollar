@@ -71,17 +71,25 @@ export function TopNavBar({ activeRoute }: Props) {
 
     const isRtl = locale === 'ar';
 
+    const hrefToString = (href: string | { url: string }) =>
+        typeof href === 'object' ? href.url : href;
+
     const normalizePath = (path: string) => {
         const cleanPath = path.split('?')[0].split('#')[0];
         const parts = cleanPath.split('/').filter(Boolean);
+
         if (parts[0] === 'ar' || parts[0] === 'en') {
             parts.shift();
         }
+
         return '/' + parts.join('/');
     };
 
-    const isActive = (href: string) => {
-        return normalizePath(activeRoute || '') === normalizePath(href);
+    const isActive = (href: string | { url: string }) => {
+        return (
+            normalizePath(activeRoute || '') ===
+            normalizePath(hrefToString(href))
+        );
     };
 
     return (

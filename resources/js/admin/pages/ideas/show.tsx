@@ -706,7 +706,10 @@ export default function IdeaShowPage({
                                 dir="rtl"
                                 value={approveForm.data.submission_day.toString()}
                                 onValueChange={(v) =>
-                                    approveForm.setData('submission_day', v)
+                                    approveForm.setData(
+                                        'submission_day',
+                                        Number(v),
+                                    )
                                 }
                             >
                                 <SelectTrigger className="font-semibold">
