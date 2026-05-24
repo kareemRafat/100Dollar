@@ -792,6 +792,11 @@ return [
         'new_follower_title' => 'New Follower',
         'new_follower_body' => ':user started following you',
 
+        'new_contact_message_subject' => 'New Contact Message',
+        'new_contact_message_greeting' => 'Hello,',
+        'new_contact_message_line1' => 'You have received a new contact message from :name.',
+        'new_contact_message_action' => 'View Message',
+
         'whoops' => 'Whoops!',
         'hello' => 'Hello!',
         'regards' => 'Regards,',

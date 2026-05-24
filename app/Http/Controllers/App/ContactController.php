@@ -28,12 +28,15 @@ class ContactController extends Controller
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
-        $contactMessage = ContactMessage::create($validated);
+        $contactMessage = ContactMessage::create([
+            ...$validated,
+            'locale' => app()->getLocale(),
+        ]);
 
         $admins = User::where('role', UserRole::ADMIN)->get();
 
         foreach ($admins as $admin) {
-            $admin->notify((new NewContactMessageNotification($contactMessage))->locale($admin->preferredLocale()));
+            $admin->notify((new NewContactMessageNotification($contactMessage))->locale($contactMessage->locale));
         }
 
         return back()->with('success', __('messages.contact.success_message'));

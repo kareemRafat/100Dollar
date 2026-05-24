@@ -1,5 +1,6 @@
+@props(['mail_locale' => null, 'title' => null, 'preheader' => null])
 @php
-    $mailLocale = $locale ?? app()->getLocale();
+    $mailLocale = $mail_locale ?? app()->getLocale();
     $isRtl = $mailLocale === 'ar';
     $alignment = $isRtl ? 'right' : 'left';
     $borderSide = $isRtl ? 'right' : 'left';

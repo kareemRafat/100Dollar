@@ -63,10 +63,8 @@ class ContactController extends Controller
             'reply_body' => ['required', 'string', 'max:5000'],
         ]);
 
-        $user = \App\Models\User::where('email', $contactMessage->email)->first();
-
         Mail::to($contactMessage->email)->send(
-            new ContactMessageReplyMail($contactMessage, $validated['reply_body'], $user?->locale)
+            new ContactMessageReplyMail($contactMessage, $validated['reply_body'], $contactMessage->locale)
         );
 
         $contactMessage->update([

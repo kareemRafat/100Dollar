@@ -1,4 +1,4 @@
-<x-mail.layout :title="$subject ?? config('app.name')">
+<x-mail.layout :title="$subject ?? config('app.name')" :mail_locale="$mail_locale ?? null">
     @if (! empty($greeting))
         <p class="greeting">{{ $greeting }}</p>
     @endif

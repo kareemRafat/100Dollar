@@ -790,6 +790,11 @@ return [
         'new_follower_title' => 'متابع جديد',
         'new_follower_body' => 'بدأ :user بمتابعتك',
 
+        'new_contact_message_subject' => 'رسالة تواصل جديدة',
+        'new_contact_message_greeting' => 'مرحباً،',
+        'new_contact_message_line1' => 'لقد تلقيت رسالة تواصل جديدة من :name.',
+        'new_contact_message_action' => 'عرض الرسالة',
+
         'whoops' => 'عذراً!',
         'hello' => 'مرحباً!',
         'regards' => 'مع أطيب التحيات،',

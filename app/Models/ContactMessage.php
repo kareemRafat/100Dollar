@@ -13,6 +13,7 @@ class ContactMessage extends Model
         'message',
         'reply_body',
         'replied_at',
+        'locale',
     ];
 
     protected $appends = [
