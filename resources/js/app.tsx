@@ -6,10 +6,7 @@ import AdminLayout from '@/admin/layouts/admin-layout';
 import AdminSettingsLayout from '@/admin/layouts/settings-layout';
 import AppLayout from '@/app/layouts/app-layout';
 import { TooltipProvider } from '@/components/ui/tooltip';
-import {
-    initializeTheme,
-    applyTheme,
-} from '@/hooks/use-appearance';
+import { initializeTheme, applyTheme } from '@/hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

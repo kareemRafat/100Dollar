@@ -64,7 +64,12 @@ const statusTabs = [
         icon: CheckCircle,
         color: 'text-green-500',
     },
-    { id: IdeaStatus.REJECTED, label: 'مرفوضة', icon: XCircle, color: 'text-red-500' },
+    {
+        id: IdeaStatus.REJECTED,
+        label: 'مرفوضة',
+        icon: XCircle,
+        color: 'text-red-500',
+    },
 ];
 
 export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
@@ -159,11 +164,13 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                                     />
                                     {tab.label}
                                     <Badge
-                                        variant={isActive ? 'secondary' : 'outline'}
+                                        variant={
+                                            isActive ? 'secondary' : 'outline'
+                                        }
                                         className={cn(
                                             'ms-1.5 flex h-4.5 min-w-6 items-center justify-center px-1 py-0 text-[10px] font-bold transition-all',
                                             isActive
-                                                ? 'bg-white/20 text-white border-none'
+                                                ? 'border-none bg-white/20 text-white'
                                                 : 'bg-muted text-muted-foreground',
                                         )}
                                     >
@@ -176,7 +183,13 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                                 </button>
                             );
                         })}
-                        {!counts && <WhenVisible data="counts" children={undefined} fallback={undefined} />}
+                        {!counts && (
+                            <WhenVisible
+                                data="counts"
+                                children={undefined}
+                                fallback={undefined}
+                            />
+                        )}
                     </div>
 
                     <Card>

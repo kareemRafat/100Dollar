@@ -166,7 +166,8 @@ export default function IdeaShowPage({
                                     variant={
                                         idea.status === IdeaStatus.APPROVED
                                             ? 'default'
-                                            : idea.status === IdeaStatus.REJECTED
+                                            : idea.status ===
+                                                IdeaStatus.REJECTED
                                               ? 'destructive'
                                               : 'secondary'
                                     }

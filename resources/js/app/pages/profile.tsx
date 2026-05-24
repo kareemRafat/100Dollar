@@ -91,12 +91,12 @@ export default function Profile({
           : url.includes(getLocalizedPath(profile.followedIdeas.url(), locale))
             ? 'followed-ideas'
             : url.includes(
-                  getLocalizedPath(profile.followedPeople.url(), locale),
-              )
+                    getLocalizedPath(profile.followedPeople.url(), locale),
+                )
               ? 'followed-people'
               : url.includes(
-                    getLocalizedPath(profile.notifications.url(), locale),
-                )
+                      getLocalizedPath(profile.notifications.url(), locale),
+                  )
                 ? 'notifications'
                 : 'personal-info';
 

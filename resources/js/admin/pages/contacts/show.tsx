@@ -50,7 +50,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                 toast.success('تم إرسال الرد وحفظه بنجاح.');
             },
             onError: () => {
-                toast.error('تعذر إرسال الرد. يرجى مراجعة البيانات والمحاولة مجدداً.');
+                toast.error(
+                    'تعذر إرسال الرد. يرجى مراجعة البيانات والمحاولة مجدداً.',
+                );
             },
         });
     };
@@ -81,9 +83,12 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                         </Link>
 
                         <div>
-                            <h1 className="text-2xl font-bold">تفاصيل رسالة التواصل</h1>
+                            <h1 className="text-2xl font-bold">
+                                تفاصيل رسالة التواصل
+                            </h1>
                             <p className="text-sm font-semibold text-muted-foreground">
-                                مراجعة الرسالة والرد على الزائر عبر البريد الإلكتروني
+                                مراجعة الرسالة والرد على الزائر عبر البريد
+                                الإلكتروني
                             </p>
                         </div>
                     </div>
@@ -118,7 +123,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 font-bold">
                                     <Reply className="size-5 text-primary" />
-                                    {contactMessage.is_replied ? 'الرد المحفوظ' : 'إرسال رد'}
+                                    {contactMessage.is_replied
+                                        ? 'الرد المحفوظ'
+                                        : 'إرسال رد'}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
@@ -139,26 +146,48 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                                             <span>
                                                 تم الرد في{' '}
                                                 {contactMessage.replied_at
-                                                    ? new Date(contactMessage.replied_at).toLocaleString('ar-EG')
+                                                    ? new Date(
+                                                          contactMessage.replied_at,
+                                                      ).toLocaleString('ar-EG')
                                                     : '-'}
                                             </span>
                                         </div>
                                     </div>
                                 ) : (
-                                    <form onSubmit={handleReplySubmit} className="space-y-4">
+                                    <form
+                                        onSubmit={handleReplySubmit}
+                                        className="space-y-4"
+                                    >
                                         <div className="grid gap-2">
-                                            <Label htmlFor="reply_body">نص الرد</Label>
+                                            <Label htmlFor="reply_body">
+                                                نص الرد
+                                            </Label>
                                             <Textarea
                                                 id="reply_body"
-                                                value={replyForm.data.reply_body}
-                                                onChange={(e) => replyForm.setData('reply_body', e.target.value)}
+                                                value={
+                                                    replyForm.data.reply_body
+                                                }
+                                                onChange={(e) =>
+                                                    replyForm.setData(
+                                                        'reply_body',
+                                                        e.target.value,
+                                                    )
+                                                }
                                                 className="min-h-40"
                                                 placeholder="اكتب رد الإدارة الذي سيُرسل إلى بريد الزائر"
                                             />
-                                            <InputError message={replyForm.errors.reply_body} />
+                                            <InputError
+                                                message={
+                                                    replyForm.errors.reply_body
+                                                }
+                                            />
                                         </div>
 
-                                        <Button type="submit" disabled={replyForm.processing} className="font-bold">
+                                        <Button
+                                            type="submit"
+                                            disabled={replyForm.processing}
+                                            className="font-bold"
+                                        >
                                             {replyForm.processing && (
                                                 <Loader2 className="me-2 size-4 animate-spin" />
                                             )}
@@ -173,7 +202,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                     <div className="space-y-6">
                         <Card>
                             <CardHeader>
-                                <CardTitle className="font-bold">بيانات المرسل</CardTitle>
+                                <CardTitle className="font-bold">
+                                    بيانات المرسل
+                                </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="flex items-start gap-3">
@@ -184,7 +215,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                                         <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                                             الاسم
                                         </p>
-                                        <p className="font-bold">{contactMessage.name}</p>
+                                        <p className="font-bold">
+                                            {contactMessage.name}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -196,7 +229,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                                         <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                                             البريد الإلكتروني
                                         </p>
-                                        <p className="font-bold">{contactMessage.email}</p>
+                                        <p className="font-bold">
+                                            {contactMessage.email}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -208,7 +243,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                                         <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                                             الموضوع
                                         </p>
-                                        <p className="font-bold">{contactMessage.subject}</p>
+                                        <p className="font-bold">
+                                            {contactMessage.subject}
+                                        </p>
                                     </div>
                                 </div>
 
@@ -221,7 +258,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                                             تاريخ الإرسال
                                         </p>
                                         <p className="font-bold">
-                                            {new Date(contactMessage.created_at).toLocaleString('ar-EG')}
+                                            {new Date(
+                                                contactMessage.created_at,
+                                            ).toLocaleString('ar-EG')}
                                         </p>
                                     </div>
                                 </div>
@@ -230,7 +269,9 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
 
                         <Card>
                             <CardHeader>
-                                <CardTitle className="font-bold">الحالة</CardTitle>
+                                <CardTitle className="font-bold">
+                                    الحالة
+                                </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 {contactMessage.is_replied ? (
@@ -251,14 +292,18 @@ export default function ContactShowPage({ contactMessage }: ContactShowProps) {
                 </div>
             </div>
 
-            <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+            <Dialog
+                open={isDeleteModalOpen}
+                onOpenChange={setIsDeleteModalOpen}
+            >
                 <DialogContent dir="rtl">
                     <DialogHeader>
                         <DialogTitle className="text-start font-bold">
                             حذف رسالة التواصل
                         </DialogTitle>
                         <DialogDescription className="text-start font-semibold">
-                            سيتم حذف الرسالة نهائياً من لوحة التحكم. هل أنت متأكد؟
+                            سيتم حذف الرسالة نهائياً من لوحة التحكم. هل أنت
+                            متأكد؟
                         </DialogDescription>
                     </DialogHeader>
 

@@ -217,7 +217,9 @@ export default function MyIdeas({
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter(IdeaStatus.APPROVED)}
+                                onClick={() =>
+                                    handleFilter(IdeaStatus.APPROVED)
+                                }
                             >
                                 {__('messages.my_ideas.filter_approved')}
                             </Button>
@@ -239,7 +241,9 @@ export default function MyIdeas({
                                         ? 'default'
                                         : 'secondary'
                                 }
-                                onClick={() => handleFilter(IdeaStatus.REJECTED)}
+                                onClick={() =>
+                                    handleFilter(IdeaStatus.REJECTED)
+                                }
                             >
                                 {__('messages.my_ideas.filter_rejected')}
                             </Button>
@@ -270,13 +274,19 @@ export default function MyIdeas({
                                         />
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center bg-surface-container-high text-on-surface-variant/20 dark:bg-white/5">
-                                            <Lightbulb size={48} strokeWidth={1} />
+                                            <Lightbulb
+                                                size={48}
+                                                strokeWidth={1}
+                                            />
                                         </div>
                                     )}
 
                                     {idea.status === IdeaStatus.WINNER && (
-                                        <div className="absolute top-3 end-3 rounded-full bg-primary-fixed/90 px-3 py-1 text-[10px] font-black tracking-widest text-on-primary-fixed-variant uppercase backdrop-blur-sm">
-                                            🏆 {__('messages.my_ideas.winner_badge') || 'Winner'}
+                                        <div className="absolute end-3 top-3 rounded-full bg-primary-fixed/90 px-3 py-1 text-[10px] font-black tracking-widest text-on-primary-fixed-variant uppercase backdrop-blur-sm">
+                                            🏆{' '}
+                                            {__(
+                                                'messages.my_ideas.winner_badge',
+                                            ) || 'Winner'}
                                         </div>
                                     )}
                                 </Link>
@@ -285,7 +295,8 @@ export default function MyIdeas({
                                     <div className="relative z-10 mb-4 flex items-start justify-between">
                                         <span
                                             className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
-                                                idea.status === IdeaStatus.WINNER
+                                                idea.status ===
+                                                IdeaStatus.WINNER
                                                     ? 'bg-primary/10 text-primary'
                                                     : 'bg-surface-container-highest text-on-surface-variant dark:bg-white/10 dark:text-white/60'
                                             }`}
@@ -313,23 +324,31 @@ export default function MyIdeas({
                                     <div className="relative z-10 mb-5 flex items-center gap-2">
                                         <span
                                             className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase ${
-                                                idea.status === IdeaStatus.PENDING
+                                                idea.status ===
+                                                IdeaStatus.PENDING
                                                     ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
-                                                    : idea.status === IdeaStatus.APPROVED
+                                                    : idea.status ===
+                                                        IdeaStatus.APPROVED
                                                       ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                      : idea.status === IdeaStatus.REJECTED
+                                                      : idea.status ===
+                                                          IdeaStatus.REJECTED
                                                         ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                                                         : 'bg-primary-fixed text-on-primary-fixed-variant'
                                             }`}
                                         >
-                                            {(idea.status === IdeaStatus.PENDING ||
-                                                idea.status === IdeaStatus.APPROVED ||
-                                                idea.status === IdeaStatus.REJECTED) && (
+                                            {(idea.status ===
+                                                IdeaStatus.PENDING ||
+                                                idea.status ===
+                                                    IdeaStatus.APPROVED ||
+                                                idea.status ===
+                                                    IdeaStatus.REJECTED) && (
                                                 <span
                                                     className={`me-2 h-1.5 w-1.5 rounded-full ${
-                                                        idea.status === IdeaStatus.PENDING
+                                                        idea.status ===
+                                                        IdeaStatus.PENDING
                                                             ? 'bg-amber-500'
-                                                            : idea.status === IdeaStatus.APPROVED
+                                                            : idea.status ===
+                                                                IdeaStatus.APPROVED
                                                               ? 'bg-green-500'
                                                               : 'bg-red-500'
                                                     }`}
@@ -345,7 +364,8 @@ export default function MyIdeas({
                                     <div className="relative z-10 mt-auto">
                                         <div className="mb-2 flex items-end justify-between">
                                             <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
-                                                {idea.status === IdeaStatus.WINNER
+                                                {idea.status ===
+                                                IdeaStatus.WINNER
                                                     ? __(
                                                           'messages.my_ideas.final_votes',
                                                       )
@@ -366,7 +386,8 @@ export default function MyIdeas({
                                                     width: `${idea.progress}%`,
                                                 }}
                                             ></div>
-                                        </div>                                        {idea.funded && (
+                                        </div>{' '}
+                                        {idea.funded && (
                                             <div className="mt-4 flex items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-xs font-black tracking-widest text-primary uppercase">
                                                 <span className="material-symbols-outlined text-sm">
                                                     workspace_premium

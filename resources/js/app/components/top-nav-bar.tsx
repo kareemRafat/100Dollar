@@ -71,6 +71,19 @@ export function TopNavBar({ activeRoute }: Props) {
 
     const isRtl = locale === 'ar';
 
+    const normalizePath = (path: string) => {
+        const cleanPath = path.split('?')[0].split('#')[0];
+        const parts = cleanPath.split('/').filter(Boolean);
+        if (parts[0] === 'ar' || parts[0] === 'en') {
+            parts.shift();
+        }
+        return '/' + parts.join('/');
+    };
+
+    const isActive = (href: string) => {
+        return normalizePath(activeRoute || '') === normalizePath(href);
+    };
+
     return (
         <header className="fixed top-0 z-40 w-full border-b border-outline-variant/10 bg-surface/80 backdrop-blur-xl dark:border-white/5 dark:bg-surface/80">
             <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
@@ -113,7 +126,7 @@ export function TopNavBar({ activeRoute }: Props) {
                                                 href={item.href}
                                                 className={cn(
                                                     'flex items-center rounded-xl px-4 py-2.5 font-headline text-sm font-bold transition-all',
-                                                    activeRoute === item.href
+                                                    isActive(item.href)
                                                         ? 'bg-primary/10 text-primary'
                                                         : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
                                                 )}
@@ -329,17 +342,22 @@ export function TopNavBar({ activeRoute }: Props) {
                         <Link
                             key={item.title}
                             className={cn(
-                                'relative px-3 py-1.5 font-headline text-[15px] font-bold transition-all duration-300',
-                                activeRoute === item.href
+                                'group relative px-3 py-1.5 font-headline text-[15px] font-bold transition-all duration-300',
+                                isActive(item.href)
                                     ? 'text-primary'
                                     : 'text-on-surface-variant hover:text-on-surface dark:text-on-surface-variant dark:hover:text-white',
                             )}
                             href={item.href}
                         >
                             {item.title}
-                            {activeRoute === item.href && (
-                                <span className="absolute start-3 end-3 bottom-0 h-0.5 rounded-full bg-primary" />
-                            )}
+                            <span
+                                className={cn(
+                                    'absolute start-3 end-3 bottom-0 h-0.5 origin-center rounded-full bg-primary transition-transform duration-300',
+                                    isActive(item.href)
+                                        ? 'scale-x-100'
+                                        : 'scale-x-0 group-hover:scale-x-100',
+                                )}
+                            />
                         </Link>
                     ))}
                 </div>

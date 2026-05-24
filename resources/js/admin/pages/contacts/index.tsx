@@ -98,7 +98,9 @@ export default function ContactsIndexPage({
 
                 <Card>
                     <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                        <CardTitle className="font-bold">قائمة الرسائل</CardTitle>
+                        <CardTitle className="font-bold">
+                            قائمة الرسائل
+                        </CardTitle>
 
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <div className="relative w-full sm:w-72">
@@ -120,8 +122,12 @@ export default function ContactsIndexPage({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">الكل</SelectItem>
-                                    <SelectItem value="pending">بانتظار الرد</SelectItem>
-                                    <SelectItem value="replied">تم الرد</SelectItem>
+                                    <SelectItem value="pending">
+                                        بانتظار الرد
+                                    </SelectItem>
+                                    <SelectItem value="replied">
+                                        تم الرد
+                                    </SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -132,77 +138,116 @@ export default function ContactsIndexPage({
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead className="font-bold">المرسل</TableHead>
-                                        <TableHead className="font-bold">الموضوع</TableHead>
-                                        <TableHead className="font-bold">الحالة</TableHead>
-                                        <TableHead className="font-bold">تاريخ الإرسال</TableHead>
-                                        <TableHead className="text-end font-bold">الإجراء</TableHead>
+                                        <TableHead className="font-bold">
+                                            المرسل
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            الموضوع
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            الحالة
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            تاريخ الإرسال
+                                        </TableHead>
+                                        <TableHead className="text-end font-bold">
+                                            الإجراء
+                                        </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {contactMessages.data.length === 0 ? (
                                         <TableRow>
-                                            <TableCell colSpan={5} className="h-72 text-center">
+                                            <TableCell
+                                                colSpan={5}
+                                                className="h-72 text-center"
+                                            >
                                                 <div className="flex flex-col items-center justify-center gap-4">
                                                     <div className="rounded-full bg-muted p-4">
                                                         <MessageSquare className="h-10 w-10 text-muted-foreground" />
                                                     </div>
                                                     <div className="space-y-1">
-                                                        <p className="text-xl font-bold">لا توجد رسائل</p>
+                                                        <p className="text-xl font-bold">
+                                                            لا توجد رسائل
+                                                        </p>
                                                         <p className="text-sm font-semibold text-muted-foreground">
-                                                            لم يتم العثور على رسائل مطابقة للفلاتر الحالية.
+                                                            لم يتم العثور على
+                                                            رسائل مطابقة للفلاتر
+                                                            الحالية.
                                                         </p>
                                                     </div>
                                                 </div>
                                             </TableCell>
                                         </TableRow>
                                     ) : (
-                                        contactMessages.data.map((contactMessage) => (
-                                            <TableRow key={contactMessage.id}>
-                                                <TableCell>
-                                                    <div className="space-y-1">
-                                                        <div className="font-bold">{contactMessage.name}</div>
-                                                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                                                            <Mail className="size-3.5" />
-                                                            <span>{contactMessage.email}</span>
+                                        contactMessages.data.map(
+                                            (contactMessage) => (
+                                                <TableRow
+                                                    key={contactMessage.id}
+                                                >
+                                                    <TableCell>
+                                                        <div className="space-y-1">
+                                                            <div className="font-bold">
+                                                                {
+                                                                    contactMessage.name
+                                                                }
+                                                            </div>
+                                                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                                                                <Mail className="size-3.5" />
+                                                                <span>
+                                                                    {
+                                                                        contactMessage.email
+                                                                    }
+                                                                </span>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    <div className="max-w-sm truncate font-semibold">
-                                                        {contactMessage.subject}
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    {contactMessage.is_replied ? (
-                                                        <Badge className="bg-green-100 font-bold text-green-800 hover:bg-green-100">
-                                                            <CheckCircle2 className="me-1 size-3.5" />
-                                                            تم الرد
-                                                        </Badge>
-                                                    ) : (
-                                                        <Badge
-                                                            variant="secondary"
-                                                            className="bg-amber-100 font-bold text-amber-800 hover:bg-amber-100"
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <div className="max-w-sm truncate font-semibold">
+                                                            {
+                                                                contactMessage.subject
+                                                            }
+                                                        </div>
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {contactMessage.is_replied ? (
+                                                            <Badge className="bg-green-100 font-bold text-green-800 hover:bg-green-100">
+                                                                <CheckCircle2 className="me-1 size-3.5" />
+                                                                تم الرد
+                                                            </Badge>
+                                                        ) : (
+                                                            <Badge
+                                                                variant="secondary"
+                                                                className="bg-amber-100 font-bold text-amber-800 hover:bg-amber-100"
+                                                            >
+                                                                <Clock3 className="me-1 size-3.5" />
+                                                                بانتظار الرد
+                                                            </Badge>
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="text-sm font-semibold text-muted-foreground">
+                                                        {new Date(
+                                                            contactMessage.created_at,
+                                                        ).toLocaleString(
+                                                            'ar-EG',
+                                                        )}
+                                                    </TableCell>
+                                                    <TableCell className="text-end">
+                                                        <Link
+                                                            href={
+                                                                admin.contacts.show(
+                                                                    contactMessage.id,
+                                                                ).url
+                                                            }
+                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-3 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
                                                         >
-                                                            <Clock3 className="me-1 size-3.5" />
-                                                            بانتظار الرد
-                                                        </Badge>
-                                                    )}
-                                                </TableCell>
-                                                <TableCell className="text-sm font-semibold text-muted-foreground">
-                                                    {new Date(contactMessage.created_at).toLocaleString('ar-EG')}
-                                                </TableCell>
-                                                <TableCell className="text-end">
-                                                    <Link
-                                                        href={admin.contacts.show(contactMessage.id).url}
-                                                        className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-3 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
-                                                    >
-                                                        <Eye className="me-1.5 size-3.5" />
-                                                        عرض
-                                                    </Link>
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
+                                                            <Eye className="me-1.5 size-3.5" />
+                                                            عرض
+                                                        </Link>
+                                                    </TableCell>
+                                                </TableRow>
+                                            ),
+                                        )
                                     )}
                                 </TableBody>
                             </Table>

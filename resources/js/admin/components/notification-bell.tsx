@@ -79,7 +79,9 @@ export function NotificationBell() {
                     );
                 },
                 onFinish: () => {
-                    if (onFinish) onFinish();
+                    if (onFinish) {
+                        onFinish();
+                    }
                 },
             },
         );
@@ -200,8 +202,7 @@ export function NotificationBell() {
                                             ? admin.ideas.show(
                                                   notification.data.idea_id,
                                               ).url
-                                            : null) ??
-                                        notification.data?.url;
+                                            : null) ?? notification.data?.url;
 
                                     const navigate = () => {
                                         if (targetUrl) {

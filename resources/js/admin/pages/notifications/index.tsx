@@ -70,7 +70,9 @@ export default function NotificationsPage({
                 ? admin.ideas.show(notification.data.idea_id).url
                 : null) ?? notification.data?.url;
 
-        if (!url) return;
+        if (!url) {
+            return;
+        }
 
         const returnUrl = admin.notifications.index().url;
         const targetUrl = `${url}?returnTo=${encodeURIComponent(returnUrl)}`;

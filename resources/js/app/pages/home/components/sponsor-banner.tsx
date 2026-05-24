@@ -8,8 +8,6 @@ interface Props {
 export default function SponsorBanner({ sponsor }: Props) {
     const { __ } = useLang();
 
-    const sponsorInitial = sponsor ? sponsor.name.trim().charAt(0) : '?';
-
     return (
         <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-on-secondary-fixed/10 bg-secondary-fixed p-6 shadow-md transition-all duration-500 hover:border-on-secondary-fixed/20 hover:shadow-lg md:col-span-4">
             {/* Dynamic Background Pattern */}

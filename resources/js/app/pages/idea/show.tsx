@@ -25,11 +25,7 @@ import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
 import { toast } from '@/app/components/ui/toast';
 import { useIdeaVote } from '@/app/hooks/use-idea-vote';
-import {
-    Alert,
-    AlertDescription,
-    AlertTitle,
-} from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
     Dialog,
     DialogContent,
@@ -298,7 +294,9 @@ export default function IdeaShow({
                                     </div>
                                     <div className="space-y-1">
                                         <h3 className="font-headline text-lg font-black text-red-950 dark:text-red-50">
-                                            {__('messages.idea_detail.rejection_notice')}
+                                            {__(
+                                                'messages.idea_detail.rejection_notice',
+                                            )}
                                         </h3>
                                         <p className="text-base leading-relaxed text-red-900/80 dark:text-red-200/80">
                                             {idea.rejection_reason ||

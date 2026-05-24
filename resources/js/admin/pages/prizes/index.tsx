@@ -356,7 +356,8 @@ export default function PrizesPage({ prizes, sponsors, filters }: PrizesProps) {
                             onClick={handleToggleStatus}
                             disabled={processing}
                             className={
-                                confirmingPrize?.status === PrizeStatus.DELIVERED
+                                confirmingPrize?.status ===
+                                PrizeStatus.DELIVERED
                                     ? 'flex-1 bg-amber-600 hover:bg-amber-700'
                                     : 'flex-1 bg-green-600 hover:bg-green-700'
                             }

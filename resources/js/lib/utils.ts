@@ -78,10 +78,13 @@ export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
  * If the path already has a locale prefix (e.g., /ar/ideas/1), it replaces it with the current locale.
  */
 export function getLocalizedPath(path: string, locale: string): string {
-    if (!path) return '';
+    if (!path) {
+        return '';
+    }
 
     // Remove any double slashes and ensure it starts with a single slash
     let cleanPath = path.replace(/\/+/g, '/');
+
     if (!cleanPath.startsWith('/')) {
         cleanPath = '/' + cleanPath;
     }
@@ -95,4 +98,3 @@ export function getLocalizedPath(path: string, locale: string): string {
 
     return `/${locale}${cleanPath}`;
 }
-

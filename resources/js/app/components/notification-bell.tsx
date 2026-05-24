@@ -99,7 +99,9 @@ export function NotificationBell() {
                     );
                 },
                 onFinish: () => {
-                    if (onFinish) onFinish();
+                    if (onFinish) {
+                        onFinish();
+                    }
                 },
             },
         );
