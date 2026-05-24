@@ -84,7 +84,7 @@ export default function IdeaShowPage({
 
     const approveForm = useForm({
         status: IdeaStatus.APPROVED,
-        submission_day: idea.submission_day || 0,
+        submission_day: idea.submission_day ?? '',
     });
 
     const rejectForm = useForm({
@@ -703,7 +703,7 @@ export default function IdeaShowPage({
                             </Label>
                             <Select
                                 dir="rtl"
-                                value={approveForm.data.submission_day}
+                                value={approveForm.data.submission_day.toString()}
                                 onValueChange={(v) =>
                                     approveForm.setData('submission_day', v)
                                 }

@@ -18,8 +18,7 @@ class UpdateIdeaStatusRequest extends FormRequest
         return [
             'status' => ['required', Rule::enum(IdeaStatus::class)],
             'submission_day' => [
-                Rule::requiredIf($this->status === IdeaStatus::APPROVED->value),
-                'nullable',
+                'required_if:status,' . IdeaStatus::APPROVED->value,
                 'integer',
                 'min:0',
                 'max:6',
