@@ -36,7 +36,7 @@ class NewContactMessageNotification extends Notification implements ShouldQueue
                 'actionText' => __('messages.notifications.new_contact_message_action', [], $locale),
                 'actionUrl' => route('admin.contacts.show', $this->contactMessage),
                 'mail_locale' => $locale,
-                'salutation' => __('messages.notifications.regards', [], $locale) . "\n" . config('app.name'),
+                'salutation' => __('messages.notifications.regards', [], $locale)."\n".config('app.name'),
             ]);
     }
 

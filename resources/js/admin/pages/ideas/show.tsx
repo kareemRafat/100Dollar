@@ -80,6 +80,8 @@ export default function IdeaShowPage({
     const [showPdfPreview, setShowPdfPreview] = useState(false);
     const [isLoadingComments, setIsLoadingComments] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [isDeletingIdea, setIsDeletingIdea] = useState(false);
+    const [isDeleteIdeaModalOpen, setIsDeleteIdeaModalOpen] = useState(false);
     const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
     const approveForm = useForm({
@@ -146,6 +148,17 @@ export default function IdeaShowPage({
             });
     };
 
+    const handleDeleteIdea = () => {
+        setIsDeletingIdea(true);
+        router.delete(admin.ideas.destroy(idea.id).url, {
+            onSuccess: () => {
+                setIsDeleteIdeaModalOpen(false);
+                toast.success('تم حذف الفكرة وجميع بياناتها بنجاح');
+            },
+            onFinish: () => setIsDeletingIdea(false),
+        });
+    };
+
     return (
         <>
             <Head title={`مراجعة فكرة: ${idea.title}`} />
@@ -187,6 +200,16 @@ export default function IdeaShowPage({
                     </div>
 
                     <div className="flex items-center gap-3">
+                        <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => setIsDeleteIdeaModalOpen(true)}
+                            className="h-10 w-10 border-red-200 text-red-500 hover:bg-red-50 hover:text-red-600 dark:border-red-900/50 dark:hover:bg-red-900/20"
+                            title="حذف الفكرة نهائياً"
+                        >
+                            <Trash2 className="size-5" />
+                        </Button>
+
                         {idea.status !== IdeaStatus.REJECTED && (
                             <Button
                                 variant="destructive"
@@ -733,7 +756,7 @@ export default function IdeaShowPage({
                                 </p>
                             )}
                         </div>
-                        <DialogFooter className="flex flex-row items-center gap-2">
+                        <DialogFooter className="gap-2">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -798,7 +821,7 @@ export default function IdeaShowPage({
                                 </p>
                             )}
                         </div>
-                        <DialogFooter className="flex flex-row items-center gap-2">
+                        <DialogFooter className="gap-2">
                             <Button
                                 type="button"
                                 variant="outline"
@@ -839,7 +862,7 @@ export default function IdeaShowPage({
                             للأرشفة.
                         </DialogDescription>
                     </DialogHeader>
-                    <DialogFooter className="mt-4 flex flex-row items-center gap-2">
+                    <DialogFooter className="mt-4">
                         <Button
                             type="button"
                             variant="outline"
@@ -859,6 +882,51 @@ export default function IdeaShowPage({
                                 <Loader2 className="me-2 size-4 animate-spin" />
                             )}
                             تأكيد الحذف
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Idea Confirmation Modal */}
+            <Dialog
+                open={isDeleteIdeaModalOpen}
+                onOpenChange={setIsDeleteIdeaModalOpen}
+            >
+                <DialogContent dir="rtl">
+                    <DialogHeader>
+                        <DialogTitle className="text-start font-bold">
+                            حذف الفكرة نهائياً
+                        </DialogTitle>
+                        <DialogDescription className="text-start font-semibold break-words">
+                            هل أنت متأكد من رغبتك في حذف هذه الفكرة "
+                            <span className="font-bold text-foreground inline-block" title={idea.title}>
+                                {idea.title}
+                            </span>
+                            "؟ سيتم حذف جميع البيانات المتعلقة بها (التعليقات،
+                            التصويتات، الملفات) نهائياً ولا يمكن التراجع عن هذا
+                            الإجراء.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="mt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setIsDeleteIdeaModalOpen(false)}
+                            className="font-bold"
+                        >
+                            إلغاء
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={isDeletingIdea}
+                            onClick={handleDeleteIdea}
+                            className="font-bold"
+                        >
+                            {isDeletingIdea && (
+                                <Loader2 className="me-2 size-4 animate-spin" />
+                            )}
+                            تأكيد الحذف النهائي
                         </Button>
                     </DialogFooter>
                 </DialogContent>

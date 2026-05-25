@@ -27,12 +27,13 @@ class ContactMessageReplyMail extends Mailable implements ShouldQueue
             subject: __('messages.contact.reply_mail_subject', [], $this->locale),
         );
     }
+
     public function content(): Content
     {
-        $translatedSubject = __('messages.contact.subject_' . $this->contactMessage->subject, [], $this->locale);
+        $translatedSubject = __('messages.contact.subject_'.$this->contactMessage->subject, [], $this->locale);
 
         // Fallback to the raw subject if no translation is found
-        if ($translatedSubject === 'messages.contact.subject_' . $this->contactMessage->subject) {
+        if ($translatedSubject === 'messages.contact.subject_'.$this->contactMessage->subject) {
             $translatedSubject = $this->contactMessage->subject;
         }
 
@@ -48,7 +49,7 @@ class ContactMessageReplyMail extends Mailable implements ShouldQueue
                 ],
                 'panelValue' => $this->replyBody,
                 'panelType' => 'panel-reply',
-                'salutation' => __('messages.notifications.regards', [], $this->locale) . "\n" . config('app.name'),
+                'salutation' => __('messages.notifications.regards', [], $this->locale)."\n".config('app.name'),
             ],
         );
     }

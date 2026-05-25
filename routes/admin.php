@@ -61,6 +61,7 @@ Route::middleware(['auth:admin', 'role:admin'])->group(function () {
     // Ideas
     Route::get('ideas', [IdeaController::class, 'index'])->name('admin.ideas.index');
     Route::get('ideas/{idea}', [IdeaController::class, 'show'])->name('admin.ideas.show');
+    Route::delete('ideas/{idea}', [IdeaController::class, 'destroy'])->name('admin.ideas.destroy');
     Route::patch('ideas/{idea}/status', [IdeaController::class, 'updateStatus'])->name('admin.ideas.update-status');
 
     // Comments

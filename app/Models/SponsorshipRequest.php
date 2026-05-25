@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
+use App\Enums\SponsorshipStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +33,7 @@ class SponsorshipRequest extends Model
     {
         return [
             'country_id' => 'integer',
-            'status' => \App\Enums\SponsorshipStatus::class,
+            'status' => SponsorshipStatus::class,
         ];
     }
 

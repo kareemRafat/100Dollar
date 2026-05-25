@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileDeleteRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\Country;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ class ProfileController extends Controller
     public function edit(): Response
     {
         return Inertia::render('admin/pages/settings/profile', [
-            'countries' => \App\Models\Country::all(['id', 'name_en', 'name_ar', 'code']),
+            'countries' => Country::all(['id', 'name_en', 'name_ar', 'code']),
         ]);
     }
 

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
-use App\Models\Media;
+use App\Enums\IdeaStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,7 +57,7 @@ class Idea extends Model
             'year' => 'integer',
             'votes_count' => 'integer',
             'is_winner' => 'boolean',
-            'status' => \App\Enums\IdeaStatus::class,
+            'status' => IdeaStatus::class,
             'approved_at' => 'datetime',
             'winner_announced_at' => 'datetime',
             'target_audience' => 'array',

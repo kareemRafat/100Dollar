@@ -16,7 +16,7 @@ beforeEach(function () {
     $this->user = User::factory()->create(['role' => UserRole::USER]);
     $this->category = Category::factory()->create();
     $this->country = Country::factory()->create();
-    
+
     $this->idea = Idea::factory()->create([
         'user_id' => $this->user->id,
         'category_id' => $this->category->id,
@@ -33,7 +33,7 @@ test('owner can see edit page for pending idea', function () {
 
 test('non-owner cannot see edit page', function () {
     $otherUser = User::factory()->create(['role' => UserRole::USER]);
-    
+
     actingAs($otherUser)
         ->get(localizedUrl("/ideas/{$this->idea->id}/edit", 'en'))
         ->assertForbidden();
@@ -41,7 +41,7 @@ test('non-owner cannot see edit page', function () {
 
 test('approved idea cannot be edited', function () {
     $this->idea->update(['status' => IdeaStatus::APPROVED]);
-    
+
     actingAs($this->user)
         ->get(localizedUrl("/ideas/{$this->idea->id}/edit", 'en'))
         ->assertRedirect(localizedUrl('/my-ideas', 'en'))
@@ -50,7 +50,7 @@ test('approved idea cannot be edited', function () {
 
 test('rejected idea can be edited', function () {
     $this->idea->update(['status' => IdeaStatus::REJECTED]);
-    
+
     actingAs($this->user)
         ->get(localizedUrl("/ideas/{$this->idea->id}/edit", 'en'))
         ->assertSuccessful();
@@ -58,7 +58,7 @@ test('rejected idea can be edited', function () {
 
 test('owner can update idea and it resets to pending', function () {
     $this->idea->update(['status' => IdeaStatus::REJECTED]);
-    
+
     actingAs($this->user)
         ->patch(localizedUrl("/ideas/{$this->idea->id}", 'en'), [
             'title' => 'Updated Title',
@@ -89,12 +89,12 @@ test('replacing image deletes the old one', function () {
         'collection_name' => 'image',
         'disk' => 'public',
     ]);
-    
+
     Storage::disk('public')->assertExists($path);
-    
+
     // Update with new image
     $newImage = UploadedFile::fake()->image('new.jpg');
-    
+
     actingAs($this->user)
         ->patch(localizedUrl("/ideas/{$this->idea->id}", 'en'), [
             'title' => 'Updated Title',
@@ -107,7 +107,7 @@ test('replacing image deletes the old one', function () {
             'implementation_time' => 'month',
             'image' => $newImage,
         ]);
-        
+
     Storage::disk('public')->assertMissing($path);
     $this->idea->refresh();
     expect($this->idea->media()->where('collection_name', 'image')->count())->toBe(1);

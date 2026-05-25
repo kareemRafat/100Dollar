@@ -93,7 +93,7 @@ class NotificationFactory extends Factory
                 "بدأ {$followerName} في متابعتك.",
                 [
                     'follower_id' => $followerId,
-                    'url' => "/profile/notifications",
+                    'url' => '/profile/notifications',
                     'title_key' => 'messages.notifications.new_follower_title',
                     'body_key' => 'messages.notifications.new_follower_body',
                     'translation_params' => ['user' => $followerName],

@@ -1,6 +1,6 @@
 import { Link, usePage, router, usePoll } from '@inertiajs/react';
 import { Bell, Inbox } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useState } from 'react';
 import {
     dropdown,
@@ -34,34 +34,40 @@ export function NotificationBell() {
 
     const unreadCount = auth.unread_notifications_count || 0;
 
+    const loadNotifications = useCallback(async () => {
+        const response = await fetch(dropdown.url(), {
+            headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            credentials: 'same-origin',
+        });
+
+        if (!response.ok) {
+            return;
+        }
+
+        const data = await response.json();
+
+        setNotifications(Array.isArray(data) ? data : []);
+        setHasLoadedNotifications(true);
+        setLastLoadedUnreadCount(unreadCount);
+    }, [unreadCount]);
+
     useEffect(() => {
-        const loadNotifications = async () => {
-            const response = await fetch(dropdown.url(), {
-                headers: {
-                    Accept: 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-                credentials: 'same-origin',
-            });
-
-            if (!response.ok) {
-                return;
-            }
-
-            const data = await response.json();
-
-            setNotifications(Array.isArray(data) ? data : []);
-            setHasLoadedNotifications(true);
-            setLastLoadedUnreadCount(unreadCount);
-        };
-
         if (
             open &&
             (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
         ) {
             void loadNotifications();
         }
-    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount]);
+    }, [
+        hasLoadedNotifications,
+        lastLoadedUnreadCount,
+        open,
+        unreadCount,
+        loadNotifications,
+    ]);
 
     const handleMarkAsRead = (id: number, onFinish?: () => void) => {
         router.patch(

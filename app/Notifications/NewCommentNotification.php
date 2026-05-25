@@ -49,7 +49,7 @@ class NewCommentNotification extends Notification implements ShouldQueue
                 'actionText' => __('messages.notifications.new_comment_mail_action', [], $locale),
                 'actionUrl' => route('app.ideas.show', $this->comment->idea),
                 'mail_locale' => $locale,
-                'salutation' => __('messages.notifications.regards', [], $locale) . "\n" . config('app.name'),
+                'salutation' => __('messages.notifications.regards', [], $locale)."\n".config('app.name'),
             ]);
     }
 

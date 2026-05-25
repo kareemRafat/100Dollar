@@ -1,7 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage, router, usePoll } from '@inertiajs/react';
 import { Bell, Inbox } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useState } from 'react';
 import {
     dropdown,
@@ -43,45 +43,52 @@ export function NotificationBell() {
 
     const unreadCount = auth.unread_notifications_count || 0;
 
-    useEffect(() => {
-        const loadNotifications = async () => {
-            setLoading(true);
+    const loadNotifications = useCallback(async () => {
+        setLoading(true);
 
-            try {
-                const response = await fetch(
-                    getLocalizedPath(dropdown.url(), locale),
-                    {
-                        headers: {
-                            Accept: 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest',
-                        },
-                        credentials: 'same-origin',
+        try {
+            const response = await fetch(
+                getLocalizedPath(dropdown.url(), locale),
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                     },
-                );
+                    credentials: 'same-origin',
+                },
+            );
 
-                if (!response.ok) {
-                    return;
-                }
-
-                const data = await response.json();
-
-                setNotifications(Array.isArray(data) ? data : []);
-                setHasLoadedNotifications(true);
-                setLastLoadedUnreadCount(unreadCount);
-            } catch (error) {
-                console.error('Failed to load notifications:', error);
-            } finally {
-                setLoading(false);
+            if (!response.ok) {
+                return;
             }
-        };
 
+            const data = await response.json();
+
+            setNotifications(Array.isArray(data) ? data : []);
+            setHasLoadedNotifications(true);
+            setLastLoadedUnreadCount(unreadCount);
+        } catch (error) {
+            console.error('Failed to load notifications:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, [locale, unreadCount]);
+
+    useEffect(() => {
         if (
             open &&
             (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
         ) {
             void loadNotifications();
         }
-    }, [hasLoadedNotifications, lastLoadedUnreadCount, open, unreadCount, locale]);
+    }, [
+        hasLoadedNotifications,
+        lastLoadedUnreadCount,
+        open,
+        unreadCount,
+        locale,
+        loadNotifications,
+    ]);
 
     const handleMarkAsRead = (id: number, onFinish?: () => void) => {
         router.patch(

@@ -360,7 +360,6 @@ return [
         'confirm' => 'تأكيد',
     ],
 
-
     'messages' => [
         'idea_submitted_successfully' => 'تم تقديم فكرتك بنجاح وهي قيد المراجعة الآن.',
         'idea_updated_successfully' => 'تم تحديث فكرتك بنجاح وهي الآن قيد المراجعة مجدداً.',

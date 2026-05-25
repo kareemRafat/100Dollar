@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PrizeStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,7 +23,7 @@ class PrizeRecord extends Model
     {
         return [
             'amount' => 'decimal:2',
-            'status' => \App\Enums\PrizeStatus::class,
+            'status' => PrizeStatus::class,
             'delivered_at' => 'datetime',
         ];
     }

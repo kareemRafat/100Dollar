@@ -9,11 +9,22 @@ import {
     XCircle,
     Clock,
     Loader2,
+    Trash2,
 } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
+import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
 import {
@@ -75,6 +86,8 @@ const statusTabs = [
 export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
     const [search, setSearch] = useState(filters.search || '');
     const [status, setStatus] = useState(filters.status || IdeaStatus.PENDING);
+    const [ideaToDelete, setIdeaToDelete] = useState<Idea | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const isFirstRender = useRef(true);
 
@@ -124,6 +137,21 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                     </Badge>
                 );
         }
+    };
+
+    const handleDeleteIdea = () => {
+        if (!ideaToDelete) {
+            return;
+        }
+
+        setIsDeleting(true);
+        router.delete(admin.ideas.destroy(ideaToDelete.id).url, {
+            onSuccess: () => {
+                setIdeaToDelete(null);
+                toast.success('تم حذف الفكرة وجميع بياناتها بنجاح');
+            },
+            onFinish: () => setIsDeleting(false),
+        });
     };
 
     return (
@@ -309,19 +337,33 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                                                         )}
                                                     </TableCell>
                                                     <TableCell className="text-end">
-                                                        <Link
-                                                            href={
-                                                                admin.ideas.show(
-                                                                    idea.id,
-                                                                ).url
-                                                            }
-                                                            data={filters}
-                                                            prefetch
-                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/20"
-                                                        >
-                                                            <Eye className="me-2 h-4 w-4" />
-                                                            مراجعة
-                                                        </Link>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Link
+                                                                href={
+                                                                    admin.ideas.show(
+                                                                        idea.id,
+                                                                    ).url
+                                                                }
+                                                                data={filters}
+                                                                prefetch
+                                                                className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/20"
+                                                            >
+                                                                <Eye className="me-2 h-4 w-4" />
+                                                                مراجعة
+                                                            </Link>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                onClick={() =>
+                                                                    setIdeaToDelete(
+                                                                        idea,
+                                                                    )
+                                                                }
+                                                                className="h-9 w-9 text-red-500 hover:bg-red-50 hover:text-red-600"
+                                                            >
+                                                                <Trash2 className="size-4" />
+                                                            </Button>
+                                                        </div>
                                                     </TableCell>
                                                 </TableRow>
                                             ))
@@ -336,6 +378,51 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                     </Card>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            <Dialog
+                open={ideaToDelete !== null}
+                onOpenChange={(open) => !open && setIdeaToDelete(null)}
+            >
+                <DialogContent dir="rtl">
+                    <DialogHeader>
+                        <DialogTitle className="text-start font-bold">
+                            حذف الفكرة نهائياً
+                        </DialogTitle>
+                        <DialogDescription className="text-start font-semibold break-words">
+                            هل أنت متأكد من رغبتك في حذف الفكرة "
+                            <span className="font-bold text-foreground inline-block" title={ideaToDelete?.title}>
+                                {ideaToDelete?.title}
+                            </span>
+                            "؟ سيتم حذف جميع البيانات المتعلقة بها (التعليقات،
+                            التصويتات، الملفات) نهائياً ولا يمكن التراجع عن هذا
+                            الإجراء.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="mt-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setIdeaToDelete(null)}
+                            className="font-bold"
+                        >
+                            إلغاء
+                        </Button>
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            disabled={isDeleting}
+                            onClick={handleDeleteIdea}
+                            className="font-bold"
+                        >
+                            {isDeleting && (
+                                <Loader2 className="me-2 size-4 animate-spin" />
+                            )}
+                            تأكيد الحذف النهائي
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </>
     );
 }

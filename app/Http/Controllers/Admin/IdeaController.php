@@ -107,4 +107,11 @@ class IdeaController extends Controller
 
         return back();
     }
+
+    public function destroy(Idea $idea): RedirectResponse
+    {
+        $idea->delete();
+
+        return to_route('admin.ideas.index')->with('status', 'idea-deleted');
+    }
 }

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Concerns\HasMedia;
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -47,7 +47,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'role' => \App\Enums\UserRole::class,
+            'role' => UserRole::class,
             'is_active' => 'boolean',
             'two_factor_confirmed_at' => 'datetime',
             'country_id' => 'integer',
