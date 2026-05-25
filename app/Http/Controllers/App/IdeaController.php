@@ -133,8 +133,12 @@ class IdeaController extends Controller
 
         event(new IdeaSubmitted($idea));
 
-        return redirect()->route('app.ideas.index')
-            ->with('success', __('messages.idea_submitted_successfully'));
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('messages.messages.idea_submitted_successfully'),
+        ]);
+
+        return redirect()->route('app.ideas.index');
     }
 
     public function edit(Idea $idea): Response|RedirectResponse
@@ -143,8 +147,8 @@ class IdeaController extends Controller
             abort(403);
         }
 
-        if (! in_array($idea->status, [IdeaStatus::PENDING, IdeaStatus::REJECTED])) {
-            return redirect()->route('app.ideas.index')->with('error', __('messages.edit_not_allowed'));
+        if ($idea->is_winner || ! in_array($idea->status, [IdeaStatus::PENDING, IdeaStatus::REJECTED])) {
+            return redirect()->route('app.ideas.index')->with('error', __('messages.messages.edit_not_allowed'));
         }
 
         return Inertia::render('app/pages/idea/edit', [
@@ -200,8 +204,12 @@ class IdeaController extends Controller
             }
         });
 
-        return redirect()->route('app.ideas.index')
-            ->with('success', __('messages.idea_updated_successfully'));
+        Inertia::flash('toast', [
+            'type' => 'success',
+            'message' => __('messages.messages.idea_updated_successfully'),
+        ]);
+
+        return redirect()->route('app.ideas.index');
     }
 
     public function show(Request $request, Idea $idea): Response
@@ -303,7 +311,7 @@ class IdeaController extends Controller
         }
 
         if ($idea->is_winner) {
-            return back()->with('error', __('messages.idea_deletion_error_winner'));
+            return back()->with('error', __('messages.messages.idea_deletion_error_winner'));
         }
 
         // Deleting the idea will trigger the Media deleting hook via the relationship
@@ -311,6 +319,6 @@ class IdeaController extends Controller
         $idea->delete();
 
         return redirect()->route('app.ideas.index')
-            ->with('success', __('messages.idea_deleted_successfully'));
+            ->with('success', __('messages.messages.idea_deleted_successfully'));
     }
 }

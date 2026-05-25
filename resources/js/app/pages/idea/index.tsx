@@ -284,7 +284,7 @@ export default function MyIdeas({
                         {ideas.data.map((idea) => (
                             <div
                                 key={idea.id}
-                                className={`group flex h-full flex-col rounded-2xl border transition-all duration-300 hover:shadow-lg ${
+                                className={`group flex h-full min-w-0 flex-col rounded-2xl border transition-all duration-300 hover:shadow-lg ${
                                     idea.status === IdeaStatus.WINNER
                                         ? 'relative overflow-hidden border-2 border-primary/30 bg-surface-container-lowest shadow-lg dark:bg-card'
                                         : 'border-outline-variant/10 bg-surface-container-lowest dark:bg-card'
@@ -320,10 +320,10 @@ export default function MyIdeas({
                                     )}
                                 </Link>
 
-                                <div className="flex flex-grow flex-col p-6">
-                                    <div className="relative z-10 mb-4 flex items-start justify-between">
+                                <div className="flex min-w-0 flex-grow flex-col p-6">
+                                    <div className="relative z-10 mb-4 flex min-w-0 items-start justify-between gap-3">
                                         <span
-                                            className={`rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase ${
+                                            className={`min-w-0 rounded-lg px-2.5 py-1 text-xs font-black tracking-widest uppercase break-words [overflow-wrap:anywhere] ${
                                                 idea.status ===
                                                 IdeaStatus.WINNER
                                                     ? 'bg-primary/10 text-primary'
@@ -336,7 +336,7 @@ export default function MyIdeas({
                                                     : idea.category.name_en
                                                 : idea.category}
                                         </span>
-                                        <div className="flex items-center gap-2 transition-opacity group-hover:opacity-100 md:opacity-0">
+                                        <div className="flex shrink-0 items-center gap-2 transition-opacity group-hover:opacity-100 md:opacity-0">
                                             {([IdeaStatus.PENDING, IdeaStatus.REJECTED] as string[]).includes(idea.status) && (
                                                 <Link
                                                     href={app.ideas.edit.url(
@@ -371,16 +371,16 @@ export default function MyIdeas({
                                     <Link
                                         href={app.ideas.show.url(idea.id)}
                                         prefetch
-                                        className="group block"
+                                        className="group block min-w-0"
                                     >
-                                        <h3 className="mb-3 text-lg leading-tight font-black text-on-surface transition-colors group-hover:text-primary dark:text-white">
+                                        <h3 className="mb-3 text-lg leading-tight font-black break-words text-on-surface transition-colors group-hover:text-primary dark:text-white [overflow-wrap:anywhere]">
                                             {idea.title}
                                         </h3>
                                     </Link>
 
-                                    <div className="relative z-10 mb-5 flex items-center gap-2">
+                                    <div className="relative z-10 mb-5 flex min-w-0 items-center gap-2">
                                         <span
-                                            className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase ${
+                                            className={`inline-flex min-w-0 items-center rounded-full px-3 py-1 text-[10px] font-black tracking-tight uppercase break-words [overflow-wrap:anywhere] ${
                                                 idea.status ===
                                                 IdeaStatus.PENDING
                                                     ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
@@ -413,14 +413,14 @@ export default function MyIdeas({
                                             )}
                                             {getStatusLabel(idea.status)}
                                         </span>
-                                        <span className="ms-auto text-xs font-bold text-on-surface-variant dark:text-slate-400">
+                                        <span className="ms-auto shrink-0 text-xs font-bold text-on-surface-variant dark:text-slate-400">
                                             {idea.date}
                                         </span>
                                     </div>
 
                                     <div className="relative z-10 mt-auto">
-                                        <div className="mb-2 flex items-end justify-between">
-                                            <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
+                                        <div className="mb-2 flex min-w-0 items-end justify-between gap-3">
+                                            <span className="min-w-0 text-xs font-black tracking-wider text-on-surface-variant uppercase break-words dark:text-slate-400 [overflow-wrap:anywhere]">
                                                 {idea.status ===
                                                 IdeaStatus.WINNER
                                                     ? __(
@@ -430,7 +430,7 @@ export default function MyIdeas({
                                                           'messages.my_ideas.current_votes',
                                                       )}
                                             </span>
-                                            <span className="text-sm font-black text-primary">
+                                            <span className="shrink-0 text-sm font-black text-primary">
                                                 {idea.votes_count.toLocaleString()}
                                                 {idea.target_votes &&
                                                     ` / ${idea.target_votes}`}
@@ -445,8 +445,8 @@ export default function MyIdeas({
                                             ></div>
                                         </div>{' '}
                                         {idea.funded && (
-                                            <div className="mt-4 flex items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-xs font-black tracking-widest text-primary uppercase">
-                                                <span className="material-symbols-outlined text-sm">
+                                            <div className="mt-4 flex min-w-0 items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-center text-xs font-black tracking-widest text-primary uppercase break-words [overflow-wrap:anywhere]">
+                                                <span className="material-symbols-outlined shrink-0 text-sm">
                                                     workspace_premium
                                                 </span>
                                                 {__(

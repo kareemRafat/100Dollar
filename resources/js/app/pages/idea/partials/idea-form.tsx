@@ -14,7 +14,7 @@ import {
     Heart,
 } from 'lucide-react';
 import type { ChangeEvent, SubmitEvent, DragEvent } from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { CountrySelect } from '@/app/components/country-select';
 import { Button } from '@/app/components/ui/button';
 import InputError from '@/components/input-error';
@@ -143,12 +143,15 @@ export default function IdeaForm({
     const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (initialData) {
-            post(app.ideas.update.url(initialData.id), {
-                preserveScroll: true,
+            post(ideasRoute.update.url(initialData.id), {
+                preserveScroll: false,
+                onSuccess: () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
             });
         } else {
-            post(app.ideas.store.url(), {
-                preserveScroll: true,
+            post(ideasRoute.store.url(), {
+                preserveScroll: false,
             });
         }
     };
@@ -281,7 +284,7 @@ export default function IdeaForm({
                                     onCheckedChange={(checked) => {
                                         const newValue = checked
                                             ? [...data.marketing_channel, channel]
-                                            : data.marketing_channel.filter((c) => c !== channel);
+                                            : data.marketing_channel.filter((c: string) => c !== channel);
                                         setData('marketing_channel', newValue);
                                     }}
                                 />

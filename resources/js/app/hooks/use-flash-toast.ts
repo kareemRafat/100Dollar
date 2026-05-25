@@ -6,7 +6,8 @@ import type { FlashToast } from '@/types/ui';
 export function useFlashToast(): void {
     useEffect(() => {
         return router.on('flash', (event) => {
-            const flash = (event as CustomEvent).detail?.flash;
+            const detail = (event as CustomEvent).detail;
+            const flash = detail?.flash ?? detail?.page?.props?.flash;
             const data = flash?.toast as FlashToast | undefined;
 
             if (!data) {

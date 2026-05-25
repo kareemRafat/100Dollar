@@ -3,8 +3,9 @@
 namespace App\Http\Requests\App;
 
 use App\Enums\IdeaStatus;
+use App\Models\Idea;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class IdeaRequest extends FormRequest
 {
@@ -18,12 +19,13 @@ class IdeaRequest extends FormRequest
         // For update, ensure the user owns the idea and it's in a valid state
         if ($this->isMethod('patch') || ($this->isMethod('post') && $idea)) {
             // If route model binding didn't happen for some reason (e.g. in tests)
-            if ($idea && ! $idea instanceof \App\Models\Idea) {
-                $idea = \App\Models\Idea::find($idea);
+            if ($idea && ! $idea instanceof Idea) {
+                $idea = Idea::find($idea);
             }
 
-            return $idea && $idea->user_id === auth()->id() && 
-                   in_array($idea->status, [IdeaStatus::PENDING, IdeaStatus::REJECTED]);
+            return $idea && $idea->user_id === auth()->id()
+                && ! $idea->is_winner
+                && in_array($idea->status, [IdeaStatus::PENDING, IdeaStatus::REJECTED]);
         }
 
         return auth()->check();
@@ -32,11 +34,12 @@ class IdeaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         $isUpdate = $this->isMethod('patch') || ($this->isMethod('post') && $this->route('idea'));
+        $termsRules = $isUpdate ? ['nullable'] : ['required', 'accepted'];
 
         return [
             'title' => ['required', 'string', 'max:255'],
@@ -46,12 +49,12 @@ class IdeaRequest extends FormRequest
             'city' => ['required', 'string'],
             'image' => ['nullable', 'image', 'max:2048'], // 2MB
             'pdf_file' => ['nullable', 'file', 'mimes:pdf', 'max:5120'], // 5MB
-            
-            // Terms are only required for the store action
-            'agreed_terms' => [Rule::requiredIf(! $isUpdate), 'accepted'],
-            'agreed_privacy' => [Rule::requiredIf(! $isUpdate), 'accepted'],
-            'agreed_legal' => [Rule::requiredIf(! $isUpdate), 'accepted'],
-            
+
+            // Terms are only required for the store action.
+            'agreed_terms' => $termsRules,
+            'agreed_privacy' => $termsRules,
+            'agreed_legal' => $termsRules,
+
             'marketing_channel' => ['required', 'array', 'min:1'],
             'marketing_channel.*' => ['string', 'in:social_media,word_of_mouth,physical,whatsapp,other'],
             'target_audience' => ['required', 'array', 'min:1'],
