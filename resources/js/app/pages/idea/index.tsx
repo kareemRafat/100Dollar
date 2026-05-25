@@ -9,11 +9,16 @@ import {
     PlusCircle,
     AlertTriangle,
     Loader2,
+    LayoutGrid,
+    Clock,
+    CheckCircle,
+    Trophy,
+    Award,
+    XCircle,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
-import { Input } from '@/components/ui/input';
 import {
     Dialog,
     DialogContent,
@@ -22,7 +27,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
+import { cn } from '@/lib/utils';
 import app from '@/routes/app';
 import { IdeaStatus } from '@/types';
 import type { Idea } from '@/types';
@@ -58,7 +65,7 @@ export default function MyIdeas({
     const iconMap: Record<string, any> = {
         lightbulb: Lightbulb,
         vote: VoteIcon,
-        emoji_events: 'emoji_events',
+        emoji_events: Trophy,
     };
 
     const getStatusLabel = (status: string) => {
@@ -94,7 +101,9 @@ export default function MyIdeas({
     };
 
     const handleDelete = () => {
-        if (!ideaToDelete) return;
+        if (!ideaToDelete) {
+            return;
+        }
 
         router.delete(app.ideas.destroy.url(ideaToDelete.id), {
             preserveScroll: true,
@@ -179,13 +188,7 @@ export default function MyIdeas({
                                     <div className="absolute -top-2 -right-2 h-20 w-20 rounded-full bg-primary/5 blur-xl transition-colors group-hover:bg-primary/10"></div>
                                     <div className="relative z-10 flex items-center justify-between">
                                         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                                            {typeof Icon === 'string' ? (
-                                                <span className="material-symbols-outlined text-2xl">
-                                                    {Icon}
-                                                </span>
-                                            ) : (
-                                                <Icon size={24} />
-                                            )}
+                                            <Icon size={24} />
                                         </div>
                                         <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
                                             {stat.label}
@@ -218,18 +221,25 @@ export default function MyIdeas({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <div className="no-scrollbar flex w-full gap-3 overflow-x-auto pb-2 md:w-auto md:pb-0">
+                        <div className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 md:w-auto md:pb-0">
                             <Button
-                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
+                                className={cn(
+                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
+                                    !filters.status && 'shadow-md shadow-primary/20',
+                                )}
                                 variant={
                                     !filters.status ? 'default' : 'secondary'
                                 }
                                 onClick={() => handleFilter(null)}
                             >
+                                <LayoutGrid className={cn("size-4 transition-transform duration-300", !filters.status ? "scale-110" : "opacity-60")} />
                                 {__('messages.my_ideas.filter_all')}
                             </Button>
                             <Button
-                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
+                                className={cn(
+                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
+                                    filters.status === IdeaStatus.PENDING && 'shadow-md shadow-primary/20',
+                                )}
                                 variant={
                                     filters.status === IdeaStatus.PENDING
                                         ? 'default'
@@ -237,10 +247,14 @@ export default function MyIdeas({
                                 }
                                 onClick={() => handleFilter(IdeaStatus.PENDING)}
                             >
+                                <Clock className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.PENDING ? "scale-110" : "opacity-60")} />
                                 {__('messages.my_ideas.filter_pending')}
                             </Button>
                             <Button
-                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
+                                className={cn(
+                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
+                                    filters.status === IdeaStatus.APPROVED && 'shadow-md shadow-primary/20',
+                                )}
                                 variant={
                                     filters.status === IdeaStatus.APPROVED
                                         ? 'default'
@@ -250,10 +264,14 @@ export default function MyIdeas({
                                     handleFilter(IdeaStatus.APPROVED)
                                 }
                             >
+                                <CheckCircle className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.APPROVED ? "scale-110" : "opacity-60")} />
                                 {__('messages.my_ideas.filter_approved')}
                             </Button>
                             <Button
-                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
+                                className={cn(
+                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
+                                    filters.status === IdeaStatus.WINNER && 'shadow-md shadow-primary/20',
+                                )}
                                 variant={
                                     filters.status === IdeaStatus.WINNER
                                         ? 'default'
@@ -261,10 +279,14 @@ export default function MyIdeas({
                                 }
                                 onClick={() => handleFilter(IdeaStatus.WINNER)}
                             >
+                                <Trophy className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.WINNER ? "scale-110" : "opacity-60")} />
                                 {__('messages.my_ideas.filter_winner')}
                             </Button>
                             <Button
-                                className="h-10 cursor-pointer rounded-full px-6 text-xs font-black"
+                                className={cn(
+                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
+                                    filters.status === IdeaStatus.REJECTED && 'shadow-md shadow-primary/20',
+                                )}
                                 variant={
                                     filters.status === IdeaStatus.REJECTED
                                         ? 'default'
@@ -274,6 +296,7 @@ export default function MyIdeas({
                                     handleFilter(IdeaStatus.REJECTED)
                                 }
                             >
+                                <XCircle className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.REJECTED ? "scale-110" : "opacity-60")} />
                                 {__('messages.my_ideas.filter_rejected')}
                             </Button>
                         </div>
@@ -446,9 +469,7 @@ export default function MyIdeas({
                                         </div>{' '}
                                         {idea.funded && (
                                             <div className="mt-4 flex min-w-0 items-center justify-center gap-2 border-t border-outline-variant/10 pt-3 text-center text-xs font-black tracking-widest text-primary uppercase break-words [overflow-wrap:anywhere]">
-                                                <span className="material-symbols-outlined shrink-0 text-sm">
-                                                    workspace_premium
-                                                </span>
+                                                <Award className="shrink-0 size-4" />
                                                 {__(
                                                     'messages.my_ideas.funded_success',
                                                 )}

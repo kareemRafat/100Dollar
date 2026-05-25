@@ -79,7 +79,12 @@ export function NotificationBell() {
             open &&
             (!hasLoadedNotifications || lastLoadedUnreadCount !== unreadCount)
         ) {
-            void loadNotifications();
+            // Use a slight delay to avoid synchronous setState in effect
+            const timer = setTimeout(() => {
+                void loadNotifications();
+            }, 0);
+
+            return () => clearTimeout(timer);
         }
     }, [
         hasLoadedNotifications,

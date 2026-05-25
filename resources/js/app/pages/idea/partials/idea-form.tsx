@@ -105,7 +105,10 @@ export default function IdeaForm({
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) processImage(file);
+
+        if (file) {
+processImage(file);
+}
     };
 
     const handleDragEnter = (e: DragEvent) => {
@@ -130,6 +133,7 @@ export default function IdeaForm({
         e.stopPropagation();
         setDragCounter(0);
         const file = e.dataTransfer.files?.[0];
+
         if (file && file.type.startsWith('image/')) {
             processImage(file);
         }
@@ -137,11 +141,15 @@ export default function IdeaForm({
 
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
-        if (file) setData('pdf_file', file);
+
+        if (file) {
+setData('pdf_file', file);
+}
     };
 
     const submit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         if (initialData) {
             post(ideasRoute.update.url(initialData.id), {
                 preserveScroll: false,
@@ -201,6 +209,7 @@ export default function IdeaForm({
                     <SelectContent>
                         {categories.map((category) => {
                             const Icon = categoryIcons[category.icon] || MoreHorizontal;
+
                             return (
                                 <SelectItem key={category.id} value={category.id.toString()}>
                                     <div className="flex items-center gap-2">
