@@ -34,7 +34,7 @@ Systematically decompose the largest React components (300–950 lines) into foc
 
 These follow the same pattern as the ideas show refactor — inline CRUD dialogs are extracted to `components/` subdirectories.
 
-### M1-P0: `admin/pages/users/index.tsx` (858→~300 lines)
+### M1-P0: `admin/pages/users/index.tsx` (858→~150 lines) ✅
 
 **Current responsibilities:**
 - Search bar + role/status/country filters
@@ -44,13 +44,13 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Delete user confirmation dialog
 
 **Files to create** (`resources/js/admin/pages/users/components/`):
-- [ ] `user-filters.tsx` — Search input, role/status/country dropdowns, debounced URL sync
-- [ ] `users-table.tsx` — Paginated table with avatar, name, email, country, role badge, status badge, action buttons
-- [ ] `create-user-dialog.tsx` — 7-field form (name, email, password, country, role, phone, active toggle)
-- [ ] `edit-user-dialog.tsx` — Same form, prefilled with existing data
-- [ ] `delete-user-dialog.tsx` — Confirmation dialog with user name
+- [x] `user-filters.tsx` — Search input, role/status/country dropdowns, debounced URL sync
+- [x] `users-table.tsx` — Paginated table with avatar, name, email, country, role badge, status badge, action buttons
+- [x] `create-user-dialog.tsx` — 7-field form (name, email, password, country, role, phone, active toggle)
+- [x] `edit-user-dialog.tsx` — Same form, prefilled with existing data
+- [x] `delete-user-dialog.tsx` — Confirmation dialog with user name
 
-### M1-P1: `admin/pages/sponsors/index.tsx` (772→~300 lines)
+### M1-P1: `admin/pages/sponsors/index.tsx` (772→~230 lines) ✅
 
 **Current responsibilities:**
 - Sponsors table with logo, day_of_week, contract dates, counts
@@ -60,11 +60,11 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Inline active status toggle via PATCH
 
 **Files to create** (`resources/js/admin/pages/sponsors/components/`):
-- [ ] `sponsors-table.tsx` — Table with logo avatar, day badges, dates, counts, toggle switch
-- [ ] `sponsor-form-fields.tsx` — Shared form fields (name, day select, date pickers, logo upload with preview, active toggle)
-- [ ] `create-sponsor-dialog.tsx` — Wraps form fields in dialog with create logic
-- [ ] `edit-sponsor-dialog.tsx` — Wraps form fields in dialog with edit logic, prefilled
-- [ ] `delete-sponsor-dialog.tsx` — Confirmation dialog with sponsor name
+- [x] `sponsors-table.tsx` — Table with logo avatar, day badges, dates, counts, toggle switch
+- [x] `sponsor-form-fields.tsx` — Shared form fields (name, day select, date pickers, logo upload with preview, active toggle)
+- [x] `create-sponsor-dialog.tsx` — Wraps form fields in dialog with create logic
+- [x] `edit-sponsor-dialog.tsx` — Wraps form fields in dialog with edit logic, prefilled
+- [x] `delete-sponsor-dialog.tsx` — Confirmation dialog with sponsor name
 
 ### M1-P8: `admin/pages/ideas/index.tsx` (432→~200 lines)
 
