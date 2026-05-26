@@ -1,9 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
-import { Head, usePage, router, WhenVisible } from '@inertiajs/react';
+import { usePage, WhenVisible } from '@inertiajs/react';
 import {
-    Bell,
-    UserPlus,
-    Check,
     Image as ImageIcon,
     Lightbulb,
     Megaphone,
@@ -18,29 +15,21 @@ import {
     GraduationCap,
     Heart,
     MoreHorizontal,
-    AlertTriangle,
 } from 'lucide-react';
 import { useState, useRef, lazy, Suspense } from 'react';
 import { Button } from '@/app/components/ui/button';
 import { Skeleton } from '@/app/components/ui/skeleton';
-import { toast } from '@/app/components/ui/toast';
 import { useIdeaVote } from '@/app/hooks/use-idea-vote';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import ideasRoute from '@/routes/app/ideas';
-import usersRoute from '@/routes/app/users';
-import { login as loginRoute } from '@/routes/index';
 import type { Idea, Paginated, Comment } from '@/types';
 import { IdeaStatus } from '@/types';
 
-// Partials
 import { CommentSection } from './partials/comment-section';
+import { FollowActions } from './partials/follow-actions';
 import { HeroSection } from './partials/hero-section';
+import { IdeaImageModal } from './partials/idea-image-modal';
+import { IdeaMetaHead } from './partials/idea-meta-head';
 import { OwnerCard } from './partials/owner-card';
+import { RejectionNotice } from './partials/rejection-notice';
 import { SocialShare } from './partials/social-share';
 import { VotingCard } from './partials/voting-card';
 
@@ -107,216 +96,26 @@ export default function IdeaShow({
         setIsPinModalOpen,
     } = useIdeaVote(idea.id, idea.votes_count);
 
-    const toggleFollowIdea = () => {
-        if (!auth.user) {
-            router.visit(
-                loginRoute.url({
-                    query: { redirect: window.location.pathname },
-                }),
-            );
-
-            return;
-        }
-
-        router
-            .optimistic((props: Props) => ({
-                isFollowingIdea: !props.isFollowingIdea,
-            }))
-            .post(
-                ideasRoute.follow(idea.id).url,
-                {},
-                {
-                    preserveScroll: true,
-                    showProgress: false,
-                    only: [
-                        'idea',
-                        'isFollowingIdea',
-                        'isFollowingOwner',
-                        'auth',
-                        'flash',
-                        'errors',
-                    ],
-                    onSuccess: () => {
-                        toast.success(
-                            !isFollowingIdea
-                                ? __('messages.archive.follow_idea_success')
-                                : __('messages.archive.unfollow_idea_success'),
-                        );
-                    },
-                },
-            );
-    };
-
-    const toggleFollowOwner = () => {
-        if (!auth.user) {
-            router.visit(
-                loginRoute.url({
-                    query: { redirect: window.location.pathname },
-                }),
-            );
-
-            return;
-        }
-
-        if (!idea.user_id || isOwner) {
-            return;
-        }
-
-        router
-            .optimistic((props: Props) => ({
-                isFollowingOwner: !props.isFollowingOwner,
-            }))
-            .post(
-                usersRoute.follow(idea.user_id).url,
-                {},
-                {
-                    preserveScroll: true,
-                    showProgress: false,
-                    only: [
-                        'idea',
-                        'isFollowingIdea',
-                        'isFollowingOwner',
-                        'auth',
-                        'flash',
-                        'errors',
-                    ],
-                    onSuccess: () => {
-                        toast.success(
-                            !isFollowingOwner
-                                ? __('messages.archive.follow_user_success')
-                                : __('messages.archive.unfollow_user_success'),
-                        );
-                    },
-                },
-            );
-    };
-
     if (!idea) {
         return null;
     }
 
     return (
         <>
-            <Head>
-                <title>{idea.title}</title>
-                <meta
-                    head-key="description"
-                    name="description"
-                    content={shareMeta.description}
-                />
-
-                {/* Open Graph / Facebook / WhatsApp */}
-                <meta head-key="og:type" property="og:type" content="article" />
-                <meta
-                    head-key="og:site_name"
-                    property="og:site_name"
-                    content={appName as string}
-                />
-                <meta
-                    head-key="og:url"
-                    property="og:url"
-                    content={shareMeta.url}
-                />
-                <meta
-                    head-key="og:title"
-                    property="og:title"
-                    content={shareMeta.title}
-                />
-                <meta
-                    head-key="og:description"
-                    property="og:description"
-                    content={shareMeta.description}
-                />
-                {shareMeta.image && (
-                    <>
-                        <meta
-                            head-key="og:image"
-                            property="og:image"
-                            content={shareMeta.image}
-                        />
-                        <meta
-                            head-key="og:image:secure_url"
-                            property="og:image:secure_url"
-                            content={shareMeta.image}
-                        />
-                        {shareMeta.image_type && (
-                            <meta
-                                head-key="og:image:type"
-                                property="og:image:type"
-                                content={shareMeta.image_type}
-                            />
-                        )}
-                        <meta
-                            head-key="og:image:width"
-                            property="og:image:width"
-                            content="1200"
-                        />
-                        <meta
-                            head-key="og:image:height"
-                            property="og:image:height"
-                            content="630"
-                        />
-                    </>
-                )}
-
-                {/* Twitter */}
-                <meta
-                    head-key="twitter:card"
-                    name="twitter:card"
-                    content="summary_large_image"
-                />
-                <meta
-                    head-key="twitter:url"
-                    name="twitter:url"
-                    content={shareMeta.url}
-                />
-                <meta
-                    head-key="twitter:title"
-                    name="twitter:title"
-                    content={shareMeta.title}
-                />
-                <meta
-                    head-key="twitter:description"
-                    name="twitter:description"
-                    content={shareMeta.description}
-                />
-                {shareMeta.image && (
-                    <meta
-                        head-key="twitter:image"
-                        name="twitter:image"
-                        content={shareMeta.image}
-                    />
-                )}
-            </Head>
+            <IdeaMetaHead
+                title={idea.title}
+                appName={appName as string}
+                shareMeta={shareMeta}
+            />
 
             <main className="pb-24">
                 <HeroSection idea={{ ...idea, votes_count: votesCount }} />
 
                 <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-8 px-6 lg:grid-cols-12">
-                    {isOwner && idea.status === IdeaStatus.REJECTED && (
-                        <div className="lg:col-span-12">
-                            <div className="rounded-3xl border border-red-200 bg-red-50/30 p-6 dark:border-red-900/30 dark:bg-red-950/10">
-                                <div className="flex items-start gap-4">
-                                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400">
-                                        <AlertTriangle className="h-6 w-6" />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <h3 className="font-headline text-lg font-black text-red-950 dark:text-red-50">
-                                            {__(
-                                                'messages.idea_detail.rejection_notice',
-                                            )}
-                                        </h3>
-                                        <p className="text-base leading-relaxed text-red-900/80 dark:text-red-200/80">
-                                            {idea.rejection_reason ||
-                                                __(
-                                                    'messages.idea_detail.no_reason_provided',
-                                                )}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <RejectionNotice
+                        show={isOwner && idea.status === IdeaStatus.REJECTED}
+                        reason={idea.rejection_reason}
+                    />
 
                     {/* Sidebar */}
                     <aside className="order-1 space-y-6 lg:order-2 lg:col-span-4">
@@ -332,53 +131,12 @@ export default function IdeaShow({
 
                         <OwnerCard idea={idea} />
 
-                        {/* Follow Actions */}
-                        {!isOwner && (
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={toggleFollowIdea}
-                                    className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingIdea ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                                >
-                                    <div
-                                        className={`rounded-lg p-2 transition-colors ${isFollowingIdea ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
-                                    >
-                                        {isFollowingIdea ? (
-                                            <Check className="h-5 w-5" />
-                                        ) : (
-                                            <Bell className="h-5 w-5" />
-                                        )}
-                                    </div>
-                                    <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
-                                        {isFollowingIdea
-                                            ? __('messages.archive.following')
-                                            : __(
-                                                  'messages.archive.follow_idea',
-                                              )}
-                                    </span>
-                                </button>
-                                <button
-                                    onClick={toggleFollowOwner}
-                                    className={`group flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border bg-surface-container-lowest p-4 shadow-sm transition-all ${isFollowingOwner ? 'border-transparent' : 'border-outline-variant/10 hover:border-primary'}`}
-                                >
-                                    <div
-                                        className={`rounded-lg p-2 transition-colors ${isFollowingOwner ? 'bg-primary text-on-primary' : 'border border-primary/20 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-on-primary'}`}
-                                    >
-                                        {isFollowingOwner ? (
-                                            <Check className="h-5 w-5" />
-                                        ) : (
-                                            <UserPlus className="h-5 w-5" />
-                                        )}
-                                    </div>
-                                    <span className="text-[10px] font-black tracking-wider text-on-surface uppercase">
-                                        {isFollowingOwner
-                                            ? __('messages.archive.following')
-                                            : __(
-                                                  'messages.archive.follow_owner',
-                                              )}
-                                    </span>
-                                </button>
-                            </div>
-                        )}
+                        <FollowActions
+                            isFollowingIdea={isFollowingIdea}
+                            isFollowingOwner={isFollowingOwner}
+                            ideaId={idea.id}
+                            ownerUserId={idea.user_id}
+                        />
 
                         <SocialShare idea={idea} />
                     </aside>
@@ -549,25 +307,12 @@ export default function IdeaShow({
             </main>
 
             {/* Image Modal */}
-            <Dialog open={isImageModalOpen} onOpenChange={setIsImageModalOpen}>
-                <DialogContent className="max-w-[95vw] border-none bg-transparent p-0 shadow-none outline-none sm:max-w-[90vw] md:max-w-[85vw]">
-                    <DialogHeader className="hidden">
-                        <DialogTitle>{idea.title}</DialogTitle>
-                    </DialogHeader>
-                    <div className="group relative">
-                        <div className="flex items-center justify-center overflow-hidden rounded-2xl bg-surface-container-low/50 backdrop-blur-sm">
-                            {idea.image && (
-                                <img
-                                    src={idea.image}
-                                    alt={idea.title}
-                                    className="block h-auto max-h-[90vh] w-auto max-w-full cursor-zoom-out object-contain"
-                                    onClick={() => setIsImageModalOpen(false)}
-                                />
-                            )}
-                        </div>
-                    </div>
-                </DialogContent>
-            </Dialog>
+            <IdeaImageModal
+                open={isImageModalOpen}
+                onOpenChange={setIsImageModalOpen}
+                image={idea.image}
+                title={idea.title}
+            />
 
             <Suspense fallback={null}>
                 {isPinModalOpen && (

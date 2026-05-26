@@ -151,10 +151,10 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Image modal (full-screen dialog) → `<IdeaImageModal />`
 
 **Files to create or modify** (`resources/js/app/pages/idea/`):
-- [ ] `partials/idea-meta-head.tsx` — All OG/Twitter meta tag logic extracted from `<Head>`
-- [ ] `partials/rejection-notice.tsx` — Rejection banner with reason
-- [ ] `partials/follow-actions.tsx` — Both follow-idea and follow-owner buttons with optimistic updates
-- [ ] `partials/idea-image-modal.tsx` — Full-screen image dialog
+- [x] `partials/idea-meta-head.tsx` — All OG/Twitter meta tag logic extracted from `<Head>`
+- [x] `partials/rejection-notice.tsx` — Rejection banner with reason
+- [x] `partials/follow-actions.tsx` — Both follow-idea and follow-owner buttons with optimistic updates
+- [x] `partials/idea-image-modal.tsx` — Full-screen image dialog
 
 ### M2-P4: `app/pages/idea/index.tsx` (546→~250 lines)
 
