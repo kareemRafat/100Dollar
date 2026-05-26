@@ -26,7 +26,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                             tooltip={{ children: item.title }}
                             className="font-semibold data-[active=true]:bg-sky-700 data-[active=true]:text-white"
                         >
-                            <Link href={item.href} prefetch>
+                            <Link href={item.href} prefetch="hover">
                                 {item.icon && <item.icon />}
                                 <span>{item.title}</span>
                             </Link>
