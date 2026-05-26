@@ -64,6 +64,6 @@ class SponsorshipRequestController extends Controller
     {
         $sponsorship_request->delete();
 
-        return back()->with('status', 'request-deleted');
+        return redirect()->route('admin.sponsorship-requests.index')->with('status', 'request-deleted');
     }
 }

@@ -1,59 +1,34 @@
 import { Head, router, Link } from '@inertiajs/react';
-import {
-    CheckCircle,
-    Clock,
-    Loader2,
-    XCircle,
-    Globe,
-    Mail,
-    Phone,
-    Building2,
-    Trash2,
-    Image as ImageIcon,
-    ExternalLink,
-    ArrowRight,
-    Calendar,
-    MapPin,
-    FileText,
-    Eye,
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
 import admin from '@/routes/admin';
 import type { SponsorshipRequest } from '@/types';
+import DeleteRequestDialog from './components/delete-request-dialog';
+import RequestInfoCard from './components/request-info-card';
+import RequestStatusActions from './components/request-status-actions';
 
 interface SponsorshipRequestShowProps {
     request: SponsorshipRequest;
 }
 
-export default function SponsorshipRequestShow({
-    request,
-}: SponsorshipRequestShowProps) {
+const statusLabels: Record<string, { label: string; variant: 'default' | 'destructive' | 'secondary' }> = {
+    pending: { label: 'قيد المراجعة', variant: 'secondary' },
+    approved: { label: 'تم القبول', variant: 'default' },
+    rejected: { label: 'مرفوض', variant: 'destructive' },
+};
+
+export default function SponsorshipRequestShow({ request }: SponsorshipRequestShowProps) {
     const [isProcessing, setIsProcessing] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-    const handleUpdateStatus = (
-        status: 'approved' | 'rejected' | 'pending',
-    ) => {
+    const handleUpdateStatus = (status: 'approved' | 'rejected' | 'pending') => {
         setIsProcessing(true);
         router.patch(
             admin.sponsorshipRequests.updateStatus(request.id).url,
-            {
-                status: status,
-            },
+            { status },
             {
                 onSuccess: () => {
                     toast.success('تم تحديث حالة الطلب بنجاح');
@@ -71,6 +46,8 @@ export default function SponsorshipRequestShow({
         });
     };
 
+    const badge = statusLabels[request.status] || statusLabels.pending;
+
     return (
         <>
             <Head title={`طلب رعاية: ${request.company_name}`} />
@@ -84,344 +61,33 @@ export default function SponsorshipRequestShow({
                             <ArrowRight className="size-5" />
                         </Link>
                         <div>
-                            <h1 className="text-2xl font-bold">
-                                {request.company_name}
-                            </h1>
+                            <h1 className="text-2xl font-bold">{request.company_name}</h1>
                             <div className="mt-1 flex items-center gap-2">
-                                <Badge
-                                    variant={
-                                        request.status === 'approved'
-                                            ? 'default'
-                                            : request.status === 'rejected'
-                                              ? 'destructive'
-                                              : 'secondary'
-                                    }
-                                    className="font-bold"
-                                >
-                                    {request.status === 'approved'
-                                        ? 'تم القبول'
-                                        : request.status === 'rejected'
-                                          ? 'مرفوض'
-                                          : 'قيد المراجعة'}
-                                </Badge>
+                                <Badge variant={badge.variant} className="font-bold">{badge.label}</Badge>
                                 <span className="text-sm font-semibold text-muted-foreground">
-                                    تاريخ التقديم:{' '}
-                                    {new Date(
-                                        request.created_at,
-                                    ).toLocaleDateString('ar-EG')}
+                                    تاريخ التقديم: {new Date(request.created_at).toLocaleDateString('ar-EG')}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                        {request.status === 'pending' && (
-                            <>
-                                <Button
-                                    variant="destructive"
-                                    onClick={() =>
-                                        handleUpdateStatus('rejected')
-                                    }
-                                    disabled={isProcessing}
-                                    className="font-bold"
-                                >
-                                    {isProcessing ? (
-                                        <Loader2 className="me-2 size-4 animate-spin" />
-                                    ) : (
-                                        <XCircle className="me-2 size-4" />
-                                    )}
-                                    رفض الطلب
-                                </Button>
-                                <Button
-                                    onClick={() =>
-                                        handleUpdateStatus('approved')
-                                    }
-                                    disabled={isProcessing}
-                                    className="bg-green-600 font-bold hover:bg-green-700"
-                                >
-                                    {isProcessing ? (
-                                        <Loader2 className="me-2 size-4 animate-spin" />
-                                    ) : (
-                                        <CheckCircle className="me-2 size-4" />
-                                    )}
-                                    قبول الطلب
-                                </Button>
-                            </>
-                        )}
-                        {request.status !== 'pending' && (
-                            <Button
-                                variant="outline"
-                                onClick={() => handleUpdateStatus('pending')}
-                                disabled={isProcessing}
-                                className="font-bold"
-                            >
-                                إعادة تعيين الحالة
-                            </Button>
-                        )}
-                        <Separator
-                            orientation="vertical"
-                            className="mx-1 h-8"
-                        />
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setIsDeleteModalOpen(true)}
-                            className="text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600"
-                        >
-                            <Trash2 className="size-5" />
-                        </Button>
-                    </div>
+                    <RequestStatusActions
+                        status={request.status}
+                        isProcessing={isProcessing}
+                        onUpdateStatus={handleUpdateStatus}
+                        onDeleteClick={() => setIsDeleteModalOpen(true)}
+                    />
                 </div>
 
-                <div className="grid gap-6 lg:grid-cols-3">
-                    <div className="space-y-6 lg:col-span-2">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 font-bold">
-                                    <FileText className="size-5 text-primary" />
-                                    الرسالة المرفقة
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="prose prose-sm dark:prose-invert max-w-none">
-                                <p className="text-base leading-relaxed font-semibold whitespace-pre-wrap">
-                                    {request.message}
-                                </p>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="flex items-center gap-2 text-base font-bold">
-                                    <Building2 className="size-4 text-primary" />
-                                    معلومات التواصل
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid gap-6 sm:grid-cols-2">
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <Mail className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                                                البريد الإلكتروني
-                                            </p>
-                                            <p className="max-w-[200px] truncate font-bold">
-                                                {request.email}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <Phone className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                                                رقم الهاتف
-                                            </p>
-                                            <p className="font-bold" dir="ltr">
-                                                {request.phone}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {request.website && (
-                                        <div className="flex items-start gap-3 sm:col-span-2">
-                                            <div className="rounded-lg bg-primary/10 p-2">
-                                                <Globe className="size-4 text-primary" />
-                                            </div>
-                                            <div>
-                                                <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                                                    الموقع الإلكتروني
-                                                </p>
-                                                <a
-                                                    href={request.website}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center gap-1 font-bold text-primary hover:underline"
-                                                >
-                                                    {request.website}
-                                                    <ExternalLink className="size-3" />
-                                                </a>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="font-bold">
-                                    تفاصيل الطلب
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="grid gap-6 sm:grid-cols-2">
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <Building2 className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold text-muted-foreground">
-                                                اسم الشركة
-                                            </p>
-                                            <p className="font-bold">
-                                                {request.company_name}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <MapPin className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold text-muted-foreground">
-                                                الدولة
-                                            </p>
-                                            <p className="font-bold">
-                                                {request.country?.name_ar ||
-                                                    'غير محدد'}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <Calendar className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold text-muted-foreground">
-                                                تاريخ التقديم
-                                            </p>
-                                            <p className="font-bold">
-                                                {new Date(
-                                                    request.created_at,
-                                                ).toLocaleDateString('ar-EG')}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start gap-3">
-                                        <div className="rounded-lg bg-primary/10 p-2">
-                                            <Clock className="size-4 text-primary" />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-semibold text-muted-foreground">
-                                                الحالة الحالية
-                                            </p>
-                                            <p className="font-bold">
-                                                {request.status === 'pending'
-                                                    ? 'بانتظار المراجعة'
-                                                    : request.status ===
-                                                        'approved'
-                                                      ? 'مقبول'
-                                                      : 'مرفوض'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    <div className="space-y-6">
-                        <Card className="overflow-hidden">
-                            <CardHeader className="border-b bg-muted/10 px-6 py-4">
-                                <CardTitle className="flex items-center gap-2 text-lg font-bold">
-                                    <ImageIcon className="size-5 text-primary" />
-                                    شعار الشركة
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="p-6">
-                                {request.logo ? (
-                                    <div className="group relative aspect-square overflow-hidden rounded-xl border bg-white shadow-sm dark:bg-zinc-950">
-                                        <img
-                                            src={request.logo}
-                                            alt={request.company_name}
-                                            className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-110"
-                                        />
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                                            <Button
-                                                variant="secondary"
-                                                size="sm"
-                                                asChild
-                                                className="font-bold shadow-lg"
-                                            >
-                                                <a
-                                                    href={request.logo}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <Eye className="me-2 size-4" />
-                                                    عرض الشعار كاملاً
-                                                </a>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex h-40 items-center justify-center rounded-xl border-2 border-dashed border-muted bg-muted/5 text-muted-foreground">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <div className="rounded-full bg-muted/50 p-3">
-                                                <ImageIcon className="size-8 opacity-40" />
-                                            </div>
-                                            <span className="text-sm font-bold">
-                                                لا يوجد شعار مرفق
-                                            </span>
-                                        </div>
-                                    </div>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
+                <RequestInfoCard request={request} />
             </div>
 
-            {/* Delete Confirmation */}
-            <Dialog
+            <DeleteRequestDialog
                 open={isDeleteModalOpen}
                 onOpenChange={setIsDeleteModalOpen}
-            >
-                <DialogContent className="p-6" dir="rtl">
-                    <div className="space-y-4">
-                        <DialogHeader>
-                            <DialogTitle className="text-start font-bold">
-                                حذف الطلب
-                            </DialogTitle>
-                            <DialogDescription className="text-start font-semibold">
-                                هل أنت متأكد من حذف طلب الرعاية الخاص بـ{' '}
-                                <span className="font-bold text-foreground">
-                                    {request.company_name}
-                                </span>
-                                ؟ لا يمكن التراجع عن هذا الإجراء.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter className="mt-6 flex flex-row items-center justify-start gap-2">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                onClick={() => setIsDeleteModalOpen(false)}
-                                className="font-bold"
-                            >
-                                إلغاء
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="destructive"
-                                onClick={handleDeleteSubmit}
-                                className="font-bold"
-                            >
-                                {isProcessing && (
-                                    <Loader2 className="me-2 size-4 animate-spin" />
-                                )}
-                                حذف نهائي
-                            </Button>
-                        </DialogFooter>
-                    </div>
-                </DialogContent>
-            </Dialog>
+                companyName={request.company_name}
+                onConfirm={handleDeleteSubmit}
+            />
         </>
     );
 }

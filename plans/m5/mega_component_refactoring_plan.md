@@ -78,7 +78,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `ideas-table.tsx` — Paginated table with title, user, status badge, date, actions
 - [x] Existing `delete-idea-dialog.tsx` from show.tsx refactor reused
 
-### M1-P7: `admin/pages/sponsorship-requests/show.tsx` (448→~200 lines)
+### M1-P7: `admin/pages/sponsorship-requests/show.tsx` (448→~150 lines) ✅
 
 **Current responsibilities:**
 - Request details display (company info, message, logo)
@@ -86,9 +86,9 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Delete modal
 
 **Files to create** (`resources/js/admin/pages/sponsorship-requests/components/`):
-- [ ] `request-info-card.tsx` — Company name, email, phone, website, message, logo display
-- [ ] `request-status-actions.tsx` — Approve/reject buttons with processing state
-- [ ] `delete-request-dialog.tsx` — Confirmation dialog
+- [x] `request-info-card.tsx` — Company name, email, phone, website, message, logo display
+- [x] `request-status-actions.tsx` — Approve/reject buttons with processing state
+- [x] `delete-request-dialog.tsx` — Confirmation dialog
 
 ### M1-P11: `admin/pages/prizes/index.tsx` (376→~200 lines)
 
