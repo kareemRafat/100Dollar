@@ -66,7 +66,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `edit-sponsor-dialog.tsx` — Wraps form fields in dialog with edit logic, prefilled
 - [x] `delete-sponsor-dialog.tsx` — Confirmation dialog with sponsor name
 
-### M1-P8: `admin/pages/ideas/index.tsx` (432→~200 lines)
+### M1-P8: `admin/pages/ideas/index.tsx` (432→~180 lines) ✅
 
 **Current responsibilities:**
 - Search bar + status filter tabs
@@ -74,9 +74,9 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Delete idea dialog
 
 **Files to create** (`resources/js/admin/pages/ideas/components/`):
-- [ ] `idea-search-header.tsx` — Search input + status filter tabs (shared with existing)
-- [ ] `ideas-table.tsx` — Paginated table with title, user, status badge, date, actions
-- [ ] Existing `delete-idea-dialog.tsx` from show.tsx refactor can be reused
+- [x] `idea-search-header.tsx` — Status filter tabs with count badges
+- [x] `ideas-table.tsx` — Paginated table with title, user, status badge, date, actions
+- [x] Existing `delete-idea-dialog.tsx` from show.tsx refactor reused
 
 ### M1-P7: `admin/pages/sponsorship-requests/show.tsx` (448→~200 lines)
 

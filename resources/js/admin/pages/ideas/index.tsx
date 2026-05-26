@@ -1,44 +1,16 @@
-import { Head, Link, router, WhenVisible } from '@inertiajs/react';
-import {
-    Eye,
-    Search,
-    Lightbulb,
-    User as UserIcon,
-    Calendar,
-    CheckCircle,
-    XCircle,
-    Clock,
-    Loader2,
-    Trash2,
-} from 'lucide-react';
+import { Head, router, WhenVisible } from '@inertiajs/react';
+import { Search } from 'lucide-react';
 import React, { useState, useEffect, useRef } from 'react';
 import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Pagination } from '@/components/ui/pagination';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import { cn } from '@/lib/utils';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, Idea, Paginated } from '@/types';
 import { IdeaStatus } from '@/types';
+import { DeleteIdeaDialog } from './components/delete-idea-dialog';
+import IdeaSearchHeader from './components/idea-search-header';
+import IdeasTable from './components/ideas-table';
 
 interface IdeasProps {
     ideas: Paginated<Idea>;
@@ -59,27 +31,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'إدارة الأفكار',
         href: admin.ideas.index().url,
-    },
-];
-
-const statusTabs = [
-    {
-        id: IdeaStatus.PENDING,
-        label: 'في انتظار المراجعة',
-        icon: Clock,
-        color: 'text-amber-500',
-    },
-    {
-        id: IdeaStatus.APPROVED,
-        label: 'تمت الموافقة',
-        icon: CheckCircle,
-        color: 'text-green-500',
-    },
-    {
-        id: IdeaStatus.REJECTED,
-        label: 'مرفوضة',
-        icon: XCircle,
-        color: 'text-red-500',
     },
 ];
 
@@ -113,36 +64,8 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
         return () => clearTimeout(timeout);
     }, [search, status]);
 
-    const getStatusBadge = (status: IdeaStatus) => {
-        switch (status) {
-            case IdeaStatus.APPROVED:
-                return (
-                    <Badge className="bg-green-100 font-bold text-green-800 hover:bg-green-100">
-                        تمت الموافقة
-                    </Badge>
-                );
-            case IdeaStatus.REJECTED:
-                return (
-                    <Badge variant="destructive" className="font-bold">
-                        مرفوضة
-                    </Badge>
-                );
-            default:
-                return (
-                    <Badge
-                        variant="secondary"
-                        className="bg-amber-100 font-bold text-amber-800 hover:bg-amber-100"
-                    >
-                        قيد الانتظار
-                    </Badge>
-                );
-        }
-    };
-
     const handleDeleteIdea = () => {
-        if (!ideaToDelete) {
-            return;
-        }
+        if (!ideaToDelete) return;
 
         setIsDeleting(true);
         router.delete(admin.ideas.destroy(ideaToDelete.id).url, {
@@ -168,57 +91,19 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                 </div>
 
                 <div className="flex flex-col gap-4">
-                    <div className="flex flex-wrap gap-2 border-b pb-4">
-                        {statusTabs.map((tab) => {
-                            const Icon = tab.icon;
-                            const isActive = status === tab.id;
+                    <IdeaSearchHeader
+                        status={status}
+                        counts={counts}
+                        onStatusChange={setStatus}
+                    />
 
-                            return (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => setStatus(tab.id)}
-                                    className={cn(
-                                        'flex cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all',
-                                        isActive
-                                            ? 'bg-primary text-primary-foreground shadow-sm'
-                                            : 'bg-muted/50 text-muted-foreground hover:bg-muted',
-                                    )}
-                                >
-                                    <Icon
-                                        className={cn(
-                                            'size-4',
-                                            !isActive && tab.color,
-                                        )}
-                                    />
-                                    {tab.label}
-                                    <Badge
-                                        variant={
-                                            isActive ? 'secondary' : 'outline'
-                                        }
-                                        className={cn(
-                                            'ms-1.5 flex h-4.5 min-w-6 items-center justify-center px-1 py-0 text-[10px] font-bold transition-all',
-                                            isActive
-                                                ? 'border-none bg-white/20 text-white'
-                                                : 'bg-muted text-muted-foreground',
-                                        )}
-                                    >
-                                        {counts ? (
-                                            (counts as any)[tab.id]
-                                        ) : (
-                                            <Loader2 className="size-2.5 animate-spin opacity-70" />
-                                        )}
-                                    </Badge>
-                                </button>
-                            );
-                        })}
-                        {!counts && (
-                            <WhenVisible
-                                data="counts"
-                                children={undefined}
-                                fallback={undefined}
-                            />
-                        )}
-                    </div>
+                    {!counts && (
+                        <WhenVisible
+                            data="counts"
+                            children={undefined}
+                            fallback={undefined}
+                        />
+                    )}
 
                     <Card>
                         <CardHeader className="flex flex-col space-y-4 pb-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
@@ -239,190 +124,23 @@ export default function IdeasPage({ ideas, filters, counts }: IdeasProps) {
                             </div>
                         </CardHeader>
                         <CardContent className="p-0 sm:p-6 sm:pt-0">
-                            <div className="overflow-x-auto">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead className="w-12 text-center font-bold">
-                                                #
-                                            </TableHead>
-                                            <TableHead className="min-w-50 font-bold">
-                                                الفكرة وصاحبها
-                                            </TableHead>
-                                            <TableHead className="min-w-25 font-bold">
-                                                التصنيف
-                                            </TableHead>
-                                            <TableHead className="min-w-30 font-bold">
-                                                تاريخ التقديم
-                                            </TableHead>
-                                            <TableHead className="min-w-25 font-bold">
-                                                الحالة
-                                            </TableHead>
-                                            <TableHead className="min-w-25 text-end font-bold">
-                                                الإجراءات
-                                            </TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {ideas.data.length === 0 ? (
-                                            <TableRow>
-                                                <TableCell
-                                                    colSpan={6}
-                                                    className="h-72 text-center"
-                                                >
-                                                    <div className="flex flex-col items-center justify-center space-y-4">
-                                                        <div className="rounded-full bg-muted p-4">
-                                                            <Lightbulb className="h-10 w-10 text-muted-foreground" />
-                                                        </div>
-                                                        <div className="space-y-1">
-                                                            <p className="text-xl font-bold">
-                                                                لا توجد أفكار
-                                                            </p>
-                                                            <p className="text-sm font-semibold text-muted-foreground">
-                                                                لا توجد أفكار
-                                                                تطابق المعايير
-                                                                المختارة حالياً.
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </TableCell>
-                                            </TableRow>
-                                        ) : (
-                                            ideas.data.map((idea, index) => (
-                                                <TableRow key={idea.id}>
-                                                    <TableCell className="text-center font-bold text-muted-foreground">
-                                                        {(ideas.meta
-                                                            .current_page -
-                                                            1) *
-                                                            ideas.meta
-                                                                .per_page +
-                                                            index +
-                                                            1}
-                                                    </TableCell>
-                                                    <TableCell className="font-bold">
-                                                        <div className="flex flex-col gap-1">
-                                                            <span className="text-sm md:text-base">
-                                                                {idea.title}
-                                                            </span>
-                                                            <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-                                                                <UserIcon className="size-3.5" />
-                                                                {
-                                                                    idea.user
-                                                                        ?.name
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <Badge
-                                                            variant="outline"
-                                                            className="font-bold"
-                                                        >
-                                                            {typeof idea.category ===
-                                                            'object'
-                                                                ? idea.category
-                                                                      ?.name_ar
-                                                                : idea.category}
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-                                                            <Calendar className="size-3" />
-                                                            {idea.date}
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {getStatusBadge(
-                                                            idea.status,
-                                                        )}
-                                                    </TableCell>
-                                                    <TableCell className="text-end">
-                                                        <div className="flex items-center justify-end gap-2">
-                                                            <Link
-                                                                href={
-                                                                    admin.ideas.show(
-                                                                        idea.id,
-                                                                    ).url
-                                                                }
-                                                                data={filters}
-                                                                prefetch
-                                                                className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-4 text-sm font-bold text-primary transition-colors hover:bg-primary/20"
-                                                            >
-                                                                <Eye className="me-2 h-4 w-4" />
-                                                                مراجعة
-                                                            </Link>
-                                                            <Button
-                                                                variant="ghost"
-                                                                size="icon"
-                                                                onClick={() =>
-                                                                    setIdeaToDelete(
-                                                                        idea,
-                                                                    )
-                                                                }
-                                                                className="h-9 w-9 text-red-500 hover:bg-red-50 hover:text-red-600"
-                                                            >
-                                                                <Trash2 className="size-4" />
-                                                            </Button>
-                                                        </div>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))
-                                        )}
-                                    </TableBody>
-                                </Table>
-                            </div>
-                            <div className="mt-6">
-                                <Pagination links={ideas.meta.links} />
-                            </div>
+                            <IdeasTable
+                                ideas={ideas}
+                                filters={filters as Record<string, string | undefined>}
+                                onDeleteClick={(idea) => setIdeaToDelete(idea)}
+                            />
                         </CardContent>
                     </Card>
                 </div>
             </div>
 
-            {/* Delete Confirmation Modal */}
-            <Dialog
+            <DeleteIdeaDialog
                 open={ideaToDelete !== null}
                 onOpenChange={(open) => !open && setIdeaToDelete(null)}
-            >
-                <DialogContent dir="rtl">
-                    <DialogHeader>
-                        <DialogTitle className="text-start font-bold">
-                            حذف الفكرة نهائياً
-                        </DialogTitle>
-                        <DialogDescription className="text-start font-semibold break-words">
-                            هل أنت متأكد من رغبتك في حذف الفكرة "
-                            <span className="font-bold text-foreground inline-block" title={ideaToDelete?.title}>
-                                {ideaToDelete?.title}
-                            </span>
-                            "؟ سيتم حذف جميع البيانات المتعلقة بها (التعليقات،
-                            التصويتات، الملفات) نهائياً ولا يمكن التراجع عن هذا
-                            الإجراء.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="mt-4">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setIdeaToDelete(null)}
-                            className="font-bold"
-                        >
-                            إلغاء
-                        </Button>
-                        <Button
-                            type="button"
-                            variant="destructive"
-                            disabled={isDeleting}
-                            onClick={handleDeleteIdea}
-                            className="font-bold"
-                        >
-                            {isDeleting && (
-                                <Loader2 className="me-2 size-4 animate-spin" />
-                            )}
-                            تأكيد الحذف النهائي
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                onConfirm={handleDeleteIdea}
+                isDeleting={isDeleting}
+                ideaTitle={ideaToDelete?.title || ''}
+            />
         </>
     );
 }
