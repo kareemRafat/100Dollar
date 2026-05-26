@@ -90,16 +90,16 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `request-status-actions.tsx` — Approve/reject buttons with processing state
 - [x] `delete-request-dialog.tsx` — Confirmation dialog
 
-### M1-P11: `admin/pages/prizes/index.tsx` (376→~200 lines)
+### M1-P11: `admin/pages/prizes/index.tsx` (376→~150 lines) ✅
 
 **Current responsibilities:**
 - Prizes table with filters
 - Payout confirmation dialog
 
 **Files to create** (`resources/js/admin/pages/prizes/components/`):
-- [ ] `prizes-table.tsx` — Paginated table with idea, sponsor, amount, status
-- [ ] `payout-confirm-dialog.tsx` — Confirmation with amount display
-- [ ] `prize-filters.tsx` — Status/date filters
+- [x] `prizes-table.tsx` — Paginated table with idea, sponsor, amount, status
+- [x] `payout-confirm-dialog.tsx` — Confirmation with amount display
+- [x] `prize-filters.tsx` — Status/date filters
 
 ### M1-P12: `admin/pages/contacts/show.tsx` (372→~200 lines)
 
