@@ -113,7 +113,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `reply-form.tsx` — Textarea + send button
 - [x] `delete-contact-dialog.tsx` — Confirmation dialog
 
-### M1-P13: `admin/pages/users/show.tsx` (363→~200 lines)
+### M1-P13: `admin/pages/users/show.tsx` (363→~150 lines) ✅
 
 **Current responsibilities:**
 - User detail display
@@ -121,9 +121,9 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - User's votes table
 
 **Files to create** (`resources/js/admin/pages/users/components/`):
-- [ ] `user-profile-card.tsx` — Avatar, name, email, country, role, dates
-- [ ] `user-ideas-table.tsx` — User's ideas list with status badges
-- [ ] `user-votes-table.tsx` — Votes history list
+- [x] `user-profile-card.tsx` — Avatar, name, email, country, role, dates
+- [x] `user-ideas-table.tsx` — User's ideas list with status badges, client-side pagination (10/page)
+- [x] `user-votes-table.tsx` — Votes history list, client-side pagination (10/page)
 
 ### M1-P17: `admin/pages/winners/preview.tsx` (334→~180 lines)
 
