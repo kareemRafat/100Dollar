@@ -101,7 +101,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `payout-confirm-dialog.tsx` — Confirmation with amount display
 - [x] `prize-filters.tsx` — Status/date filters
 
-### M1-P12: `admin/pages/contacts/show.tsx` (372→~200 lines)
+### M1-P12: `admin/pages/contacts/show.tsx` (372→~150 lines) ✅
 
 **Current responsibilities:**
 - Contact message detail display
@@ -109,9 +109,9 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Delete dialog
 
 **Files to create** (`resources/js/admin/pages/contacts/components/`):
-- [ ] `contact-message-display.tsx` — Sender info, subject, message body
-- [ ] `reply-form.tsx` — Textarea + send button
-- [ ] `delete-contact-dialog.tsx` — Confirmation dialog
+- [x] `contact-message-display.tsx` — Sender info, subject, message body
+- [x] `reply-form.tsx` — Textarea + send button
+- [x] `delete-contact-dialog.tsx` — Confirmation dialog
 
 ### M1-P13: `admin/pages/users/show.tsx` (363→~200 lines)
 

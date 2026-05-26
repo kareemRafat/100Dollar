@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import {
     CheckCircle2,
     Clock3,
@@ -6,10 +6,13 @@ import {
     Mail,
     MessageSquare,
     Search,
+    Trash2,
 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 import AdminLayout from '@/admin/layouts/admin-layout';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Pagination } from '@/components/ui/pagination';
@@ -30,6 +33,7 @@ import {
 } from '@/components/ui/table';
 import admin from '@/routes/admin';
 import type { BreadcrumbItem, ContactMessage, Paginated } from '@/types';
+import DeleteContactDialog from './components/delete-contact-dialog';
 
 interface ContactsIndexProps {
     contactMessages: Paginated<ContactMessage>;
@@ -81,6 +85,24 @@ export default function ContactsIndexPage({
 
         return () => clearTimeout(timeout);
     }, [search, status]);
+
+    const deleteForm = useForm({});
+    const [deletingId, setDeletingId] = useState<number | null>(null);
+
+    const handleDelete = () => {
+        if (!deletingId) return;
+
+        deleteForm.delete(admin.contacts.destroy(deletingId).url, {
+            onSuccess: () => {
+                toast.success('تم حذف رسالة التواصل بنجاح.');
+                setDeletingId(null);
+            },
+            onError: () => {
+                toast.error('تعذر حذف الرسالة حالياً.');
+                setDeletingId(null);
+            },
+        });
+    };
 
     return (
         <>
@@ -233,17 +255,31 @@ export default function ContactsIndexPage({
                                                         )}
                                                     </TableCell>
                                                     <TableCell className="text-end">
-                                                        <Link
-                                                            href={
-                                                                admin.contacts.show(
-                                                                    contactMessage.id,
-                                                                ).url
-                                                            }
-                                                            className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-3 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
-                                                        >
-                                                            <Eye className="me-1.5 size-3.5" />
-                                                            عرض
-                                                        </Link>
+                                                        <div className="flex items-center justify-end gap-2">
+                                                            <Link
+                                                                href={
+                                                                    admin.contacts.show(
+                                                                        contactMessage.id,
+                                                                    ).url
+                                                                }
+                                                                className="inline-flex h-9 items-center justify-center rounded-md bg-primary/10 px-3 text-xs font-bold text-primary transition-colors hover:bg-primary/20"
+                                                            >
+                                                                <Eye className="me-1.5 size-3.5" />
+                                                                عرض
+                                                            </Link>
+                                                            <Button
+                                                                variant="ghost"
+                                                                size="icon"
+                                                                onClick={() =>
+                                                                    setDeletingId(
+                                                                        contactMessage.id,
+                                                                    )
+                                                                }
+                                                                className="h-9 w-9 text-muted-foreground hover:bg-red-50 hover:text-red-600"
+                                                            >
+                                                                <Trash2 className="size-4" />
+                                                            </Button>
+                                                        </div>
                                                     </TableCell>
                                                 </TableRow>
                                             ),
@@ -259,6 +295,13 @@ export default function ContactsIndexPage({
                     </CardContent>
                 </Card>
             </div>
+
+            <DeleteContactDialog
+                open={!!deletingId}
+                onOpenChange={(open) => !open && setDeletingId(null)}
+                onDelete={handleDelete}
+                processing={deleteForm.processing}
+            />
         </>
     );
 }
