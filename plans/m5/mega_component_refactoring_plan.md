@@ -125,16 +125,16 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `user-ideas-table.tsx` — User's ideas list with status badges, client-side pagination (10/page)
 - [x] `user-votes-table.tsx` — Votes history list, client-side pagination (10/page)
 
-### M1-P17: `admin/pages/winners/preview.tsx` (334→~180 lines)
+### M1-P17: `admin/pages/winners/preview.tsx` (334→~130 lines) ✅
 
 **Current responsibilities:**
 - Weekly winners grid display
 - Confirm winner dialog per day
 
 **Files to create** (`resources/js/admin/pages/winners/components/`):
-- [ ] `winners-grid.tsx` — Grid of day-based winner cards
-- [ ] `confirm-winner-dialog.tsx` — Confirmation with idea details
-- [ ] `winner-card.tsx` — Individual day winner card (extract from inline)
+- [x] `winners-grid.tsx` — Grid of day-based winner cards (sorts by weekOrder, renders WinnerCards)
+- [x] `confirm-winner-dialog.tsx` — Confirmation with idea details
+- [x] `winner-card.tsx` — Individual day winner card (3 states: announced winner / leading / empty)
 
 ---
 
