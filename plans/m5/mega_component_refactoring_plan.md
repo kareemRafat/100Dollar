@@ -156,7 +156,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - [x] `partials/follow-actions.tsx` — Both follow-idea and follow-owner buttons with optimistic updates
 - [x] `partials/idea-image-modal.tsx` — Full-screen image dialog
 
-### M2-P4: `app/pages/idea/index.tsx` (546→~250 lines)
+### M2-P4: `app/pages/idea/index.tsx` (546→~350 lines) ✅
 
 **Current responsibilities:**
 - Hero section with background image
@@ -166,13 +166,13 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Idea cards listing
 - Delete confirmation dialog
 
-**Files to create** (`resources/js/app/pages/idea/components/` or `partials/`):
-- [ ] `partials/my-ideas-hero.tsx` — Hero section with background
-- [ ] `partials/stats-cards.tsx` — Statistics display row
-- [ ] `partials/idea-search-bar.tsx` — Search input + status tabs
-- [ ] `delete-idea-dialog.tsx` — Confirmation dialog (can share with admin version)
+**Files to create** (`resources/js/app/pages/idea/partials/`):
+- [x] `my-ideas-hero.tsx` — Hero section with background
+- [x] `stats-cards.tsx` — Statistics display row
+- [x] `idea-search-bar.tsx` — Search input + status tabs
+- [x] `delete-idea-dialog.tsx` — Confirmation dialog
 
-### M2-P5: `app/pages/sponsors/apply.tsx` (496→~300 lines)
+### M2-P5: `app/pages/sponsors/apply.tsx` (496→~230 lines) ✅
 
 **Current responsibilities:**
 - Company information form (name, email, phone, website)
@@ -180,40 +180,40 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Country selector
 - Form validation errors
 
-**Files to create** (`resources/js/app/pages/sponsors/components/`):
-- [ ] `company-info-fields.tsx` — Name, email, phone, website inputs
-- [ ] `sponsor-logo-uploader.tsx` — Drag-and-drop / click-to-upload with preview and validation
-- [ ] `apply-form-actions.tsx` — Submit/cancel buttons with loading state
+**Files to create** (`resources/js/app/pages/sponsors/partials/`):
+- [x] `company-info-fields.tsx` — Name, email, phone, website inputs
+- [x] `sponsor-logo-uploader.tsx` — Drag-and-drop / click-to-upload with preview and validation
+- [x] `apply-form-actions.tsx` — Submit/cancel buttons with loading state
 
-### M2-P14: `app/pages/sponsors/index.tsx` (369→~200 lines)
+### ✅ M2-P14: `app/pages/sponsors/index.tsx` (369→77 lines)
 
 **Current responsibilities:**
 - Week-organized sponsor listing
 - Benefits section
 
-**Files to create** (`resources/js/app/pages/sponsors/components/`):
-- [ ] `sponsor-week-grid.tsx` — Week-by-week sponsor cards
-- [ ] `benefits-section.tsx` — Benefits display
+**Files created** (`resources/js/app/pages/sponsors/partials/`):
+- [x] `sponsor-week-grid.tsx` — Week-by-week sponsor cards
+- [x] `benefits-section.tsx` — Benefits display
 
-### M2-P18: `app/pages/profile.tsx` (326→~200 lines)
+### ✅ M2-P18: `app/pages/profile.tsx` (326→86 lines)
 
 **Current responsibilities:**
 - Tab-based profile page
 - Lazy-loaded sections
 
-**Files to create** (`resources/js/app/pages/profile/`):
-- [ ] `partials/profile-tabs.tsx` — Tab navigation
-- [ ] `partials/profile-details.tsx` — Profile info display/edit
+**Files created** (`resources/js/app/pages/profile/partials/`):
+- [x] `profile-tabs.tsx` — Tab navigation (SideNav + MobileBottomNav items)
+- [x] `profile-details.tsx` — Profile main content with back link, header, tab rendering
 
-### M2-P19: `app/pages/contact.tsx` (322→~180 lines)
+### ✅ M2-P19: `app/pages/contact.tsx` (322→85 lines)
 
 **Current responsibilities:**
 - Contact form with subject select
 - Toast notification
 
-**Files to create** (`resources/js/app/pages/contact/components/`):
-- [ ] `contact-form.tsx` — Form fields with subject selector
-- [ ] `contact-info-card.tsx` — Contact info sidebar
+**Files created** (`resources/js/app/pages/contact/partials/`):
+- [x] `contact-form.tsx` — Form fields with subject selector
+- [x] `contact-info-card.tsx` — Contact info sidebar
 
 ---
 

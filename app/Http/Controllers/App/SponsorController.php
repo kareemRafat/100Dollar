@@ -43,7 +43,7 @@ class SponsorController extends Controller
             'phone' => ['required', 'string', 'max:20'],
             'website' => ['nullable', 'url', 'max:255'],
             'country_id' => ['required', 'exists:countries,id'],
-            'logo' => ['nullable', 'image', 'max:2048'],
+            'logo' => ['required', 'image', 'max:2048'],
             'message' => ['required', 'string', 'max:2000'],
         ]);
 

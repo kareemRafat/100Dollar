@@ -2,37 +2,21 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     Lightbulb,
-    Vote as VoteIcon,
-    Search,
     Trash2,
     Pencil,
     PlusCircle,
-    AlertTriangle,
-    Loader2,
-    LayoutGrid,
-    Clock,
-    CheckCircle,
-    Trophy,
     Award,
-    XCircle,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { Button } from '@/app/components/ui/button';
 import { toast } from '@/app/components/ui/toast';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-
-import { cn } from '@/lib/utils';
 import app from '@/routes/app';
 import { IdeaStatus } from '@/types';
 import type { Idea } from '@/types';
+
+import { DeleteIdeaDialog } from './partials/delete-idea-dialog';
+import { IdeaSearchBar } from './partials/idea-search-bar';
+import { MyIdeasHero } from './partials/my-ideas-hero';
+import { StatsCards } from './partials/stats-cards';
 
 interface FilterProps {
     search?: string;
@@ -61,12 +45,6 @@ export default function MyIdeas({
     const [search, setSearch] = useState(filters.search || '');
     const [ideaToDelete, setIdeaToDelete] = useState<Idea | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
-
-    const iconMap: Record<string, any> = {
-        lightbulb: Lightbulb,
-        vote: VoteIcon,
-        emoji_events: Trophy,
-    };
 
     const getStatusLabel = (status: string) => {
         switch (status) {
@@ -144,163 +122,18 @@ export default function MyIdeas({
             <Head title="أفكاري" />
 
             <main className="flex-grow">
-                {/* Hero Section */}
-                <section className="relative flex h-[320px] items-center justify-center overflow-hidden md:h-[400px]">
-                    <div className="absolute inset-0 z-0">
-                        <img
-                            alt="My Ideas Background"
-                            className="h-full w-full object-cover brightness-50 grayscale"
-                            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2000"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/80 to-slate-900" />
-                    </div>
-                    <div className="relative z-10 mx-auto max-w-4xl px-8 text-center">
-                        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-primary-fixed backdrop-blur-md">
-                            <span className="relative flex h-2 w-2">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
-                                <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
-                            </span>
-                            <span className="text-xs font-black tracking-wider uppercase">
-                                {__('messages.my_ideas.hero_badge')}
-                            </span>
-                        </div>
-                        <h1 className="mb-5 font-headline text-4xl leading-tight font-black text-white md:text-5xl">
-                            {__('messages.my_ideas.hero_title')}
-                        </h1>
-                        <p className="mx-auto max-w-2xl text-lg leading-relaxed text-slate-300">
-                            {__('messages.my_ideas.hero_desc')}
-                        </p>
-                    </div>
-                </section>
+                <MyIdeasHero />
 
                 {/* Main Content Area */}
                 <div className="relative z-20 mx-auto -mt-12 max-w-7xl px-8 pb-16">
-                    {/* Stats Row */}
-                    <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-                        {stats.map((stat) => {
-                            const Icon = iconMap[stat.icon];
+                    <StatsCards stats={stats} />
 
-                            return (
-                                <div
-                                    key={stat.label}
-                                    className="group relative flex flex-col gap-2 overflow-hidden rounded-2xl border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-xl shadow-black/5 dark:bg-surface-container-low"
-                                >
-                                    <div className="absolute -top-2 -right-2 h-20 w-20 rounded-full bg-primary/5 blur-xl transition-colors group-hover:bg-primary/10"></div>
-                                    <div className="relative z-10 flex items-center justify-between">
-                                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                                            <Icon size={24} />
-                                        </div>
-                                        <span className="text-xs font-black tracking-wider text-on-surface-variant uppercase dark:text-slate-400">
-                                            {stat.label}
-                                        </span>
-                                    </div>
-                                    <div className="relative z-10 mt-2 flex items-baseline gap-2">
-                                        <span className="text-3xl font-black tracking-tight text-on-surface dark:text-white">
-                                            {stat.value}
-                                        </span>
-                                        <span className="text-xs font-bold text-on-surface-variant dark:text-slate-400">
-                                            {stat.unit}
-                                        </span>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    {/* Filter & Search Section */}
-                    <div className="mb-8 flex flex-col items-center justify-between gap-6 rounded-2xl bg-surface-container-low p-5 md:flex-row dark:bg-surface-container-high">
-                        <div className="relative w-full md:w-96">
-                            <Search className="absolute end-3 top-1/2 size-4 -translate-y-1/2 text-on-surface-variant/60" />
-                            <Input
-                                type="search"
-                                className="h-10 border-none bg-surface-container-lowest ps-4 pe-10 text-sm focus-visible:ring-1 focus-visible:ring-primary dark:bg-surface-container-low dark:text-white"
-                                placeholder={__(
-                                    'messages.my_ideas.search_placeholder',
-                                )}
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </div>
-                        <div className="no-scrollbar flex w-full gap-2 overflow-x-auto pb-2 md:w-auto md:pb-0">
-                            <Button
-                                className={cn(
-                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
-                                    !filters.status && 'shadow-md shadow-primary/20',
-                                )}
-                                variant={
-                                    !filters.status ? 'default' : 'secondary'
-                                }
-                                onClick={() => handleFilter(null)}
-                            >
-                                <LayoutGrid className={cn("size-4 transition-transform duration-300", !filters.status ? "scale-110" : "opacity-60")} />
-                                {__('messages.my_ideas.filter_all')}
-                            </Button>
-                            <Button
-                                className={cn(
-                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
-                                    filters.status === IdeaStatus.PENDING && 'shadow-md shadow-primary/20',
-                                )}
-                                variant={
-                                    filters.status === IdeaStatus.PENDING
-                                        ? 'default'
-                                        : 'secondary'
-                                }
-                                onClick={() => handleFilter(IdeaStatus.PENDING)}
-                            >
-                                <Clock className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.PENDING ? "scale-110" : "opacity-60")} />
-                                {__('messages.my_ideas.filter_pending')}
-                            </Button>
-                            <Button
-                                className={cn(
-                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
-                                    filters.status === IdeaStatus.APPROVED && 'shadow-md shadow-primary/20',
-                                )}
-                                variant={
-                                    filters.status === IdeaStatus.APPROVED
-                                        ? 'default'
-                                        : 'secondary'
-                                }
-                                onClick={() =>
-                                    handleFilter(IdeaStatus.APPROVED)
-                                }
-                            >
-                                <CheckCircle className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.APPROVED ? "scale-110" : "opacity-60")} />
-                                {__('messages.my_ideas.filter_approved')}
-                            </Button>
-                            <Button
-                                className={cn(
-                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
-                                    filters.status === IdeaStatus.WINNER && 'shadow-md shadow-primary/20',
-                                )}
-                                variant={
-                                    filters.status === IdeaStatus.WINNER
-                                        ? 'default'
-                                        : 'secondary'
-                                }
-                                onClick={() => handleFilter(IdeaStatus.WINNER)}
-                            >
-                                <Trophy className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.WINNER ? "scale-110" : "opacity-60")} />
-                                {__('messages.my_ideas.filter_winner')}
-                            </Button>
-                            <Button
-                                className={cn(
-                                    'h-11 cursor-pointer rounded-xl px-5 text-xs font-black transition-all duration-300 flex items-center gap-2.5 shrink-0',
-                                    filters.status === IdeaStatus.REJECTED && 'shadow-md shadow-primary/20',
-                                )}
-                                variant={
-                                    filters.status === IdeaStatus.REJECTED
-                                        ? 'default'
-                                        : 'secondary'
-                                }
-                                onClick={() =>
-                                    handleFilter(IdeaStatus.REJECTED)
-                                }
-                            >
-                                <XCircle className={cn("size-4 transition-transform duration-300", filters.status === IdeaStatus.REJECTED ? "scale-110" : "opacity-60")} />
-                                {__('messages.my_ideas.filter_rejected')}
-                            </Button>
-                        </div>
-                    </div>
+                    <IdeaSearchBar
+                        search={search}
+                        onSearchChange={setSearch}
+                        filters={filters}
+                        onFilterChange={handleFilter}
+                    />
 
                     {/* Ideas Grid */}
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -499,48 +332,13 @@ export default function MyIdeas({
                 </div>
             </main>
 
-            <Dialog
-                open={!!ideaToDelete}
-                onOpenChange={(open) => !open && setIdeaToDelete(null)}
-            >
-                <DialogContent className="max-w-md" dir={isRtl ? 'rtl' : 'ltr'}>
-                    <DialogHeader>
-                        <DialogTitle className="flex items-center gap-2 text-destructive">
-                            <AlertTriangle className="size-5" />
-                            {__('messages.my_ideas.delete_confirm_title')}
-                        </DialogTitle>
-                        <DialogDescription className="pt-2 text-start">
-                            {__(
-                                'messages.my_ideas.delete_confirm_desc',
-                            ).replace(':title', ideaToDelete?.title || '')}
-                        </DialogDescription>
-                    </DialogHeader>
-
-                    <DialogFooter className="mt-6 flex gap-3">
-                        <Button
-                            variant="secondary"
-                            onClick={() => setIdeaToDelete(null)}
-                            disabled={isDeleting}
-                            className="flex-1"
-                        >
-                            {__('messages.common.cancel')}
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleDelete}
-                            disabled={isDeleting}
-                            className="flex-1"
-                        >
-                            {isDeleting ? (
-                                <Loader2 className="mr-2 size-4 animate-spin" />
-                            ) : (
-                                <Trash2 className="mr-2 size-4" />
-                            )}
-                            {__('messages.common.delete')}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <DeleteIdeaDialog
+                isOpen={!!ideaToDelete}
+                onOpenChange={(open) => { if (!open) setIdeaToDelete(null); }}
+                ideaTitle={ideaToDelete?.title ?? null}
+                onDelete={handleDelete}
+                isDeleting={isDeleting}
+            />
         </>
     );
 }
