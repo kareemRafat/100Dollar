@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\SponsorshipStatus;
+use App\Events\SponsorshipRequestApproved;
+use App\Events\SponsorshipRequestRejected;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateSponsorshipRequestStatusRequest;
 use App\Http\Resources\Admin\SponsorshipRequestResource;
@@ -52,7 +55,34 @@ class SponsorshipRequestController extends Controller
      */
     public function updateStatus(UpdateSponsorshipRequestStatusRequest $request, SponsorshipRequest $sponsorship_request): RedirectResponse
     {
-        $sponsorship_request->update($request->validated());
+        $validated = $request->validated();
+
+        if ($validated['status'] === SponsorshipStatus::APPROVED->value) {
+            $sponsorship_request->update([
+                'status' => SponsorshipStatus::APPROVED,
+                'rejection_reason' => null,
+            ]);
+
+            event(new SponsorshipRequestApproved($sponsorship_request));
+
+            return back()->with('status', 'request-approved');
+        }
+
+        if ($validated['status'] === SponsorshipStatus::REJECTED->value) {
+            $sponsorship_request->update([
+                'status' => SponsorshipStatus::REJECTED,
+                'rejection_reason' => $validated['rejection_reason'],
+            ]);
+
+            event(new SponsorshipRequestRejected($sponsorship_request, $validated['rejection_reason']));
+
+            return back()->with('status', 'request-rejected');
+        }
+
+        $sponsorship_request->update([
+            'status' => SponsorshipStatus::PENDING,
+            'rejection_reason' => null,
+        ]);
 
         return back()->with('status', 'request-status-updated');
     }

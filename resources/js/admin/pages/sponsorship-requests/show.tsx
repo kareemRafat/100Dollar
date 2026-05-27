@@ -1,4 +1,4 @@
-import { Head, router, Link } from '@inertiajs/react';
+import { Head, router, useForm, Link } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'sonner';
@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import admin from '@/routes/admin';
 import type { SponsorshipRequest } from '@/types';
 import DeleteRequestDialog from './components/delete-request-dialog';
+import RejectSponsorshipRequestDialog from './components/reject-sponsorship-request-dialog';
 import RequestInfoCard from './components/request-info-card';
 import RequestStatusActions from './components/request-status-actions';
 
@@ -23,8 +24,20 @@ const statusLabels: Record<string, { label: string; variant: 'default' | 'destru
 export default function SponsorshipRequestShow({ request }: SponsorshipRequestShowProps) {
     const [isProcessing, setIsProcessing] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isRejectDialogOpen, setIsRejectDialogOpen] = useState(false);
+
+    const rejectForm = useForm({
+        status: 'rejected',
+        rejection_reason: request.rejection_reason || '',
+    });
 
     const handleUpdateStatus = (status: 'approved' | 'rejected' | 'pending') => {
+        if (status === 'rejected') {
+            setIsRejectDialogOpen(true);
+
+            return;
+        }
+
         setIsProcessing(true);
         router.patch(
             admin.sponsorshipRequests.updateStatus(request.id).url,
@@ -36,6 +49,16 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                 onFinish: () => setIsProcessing(false),
             },
         );
+    };
+
+    const handleRejectSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        rejectForm.patch(admin.sponsorshipRequests.updateStatus(request.id).url, {
+            onSuccess: () => {
+                setIsRejectDialogOpen(false);
+                toast.success('تم رفض الطلب وإرسال إشعار للمتقدم');
+            },
+        });
     };
 
     const handleDeleteSubmit = () => {
@@ -87,6 +110,16 @@ export default function SponsorshipRequestShow({ request }: SponsorshipRequestSh
                 onOpenChange={setIsDeleteModalOpen}
                 companyName={request.company_name}
                 onConfirm={handleDeleteSubmit}
+            />
+
+            <RejectSponsorshipRequestDialog
+                open={isRejectDialogOpen}
+                onOpenChange={setIsRejectDialogOpen}
+                rejectionReason={rejectForm.data.rejection_reason}
+                onRejectionReasonChange={(value) => rejectForm.setData('rejection_reason', value)}
+                error={rejectForm.errors.rejection_reason}
+                processing={rejectForm.processing}
+                onSubmit={handleRejectSubmit}
             />
         </>
     );

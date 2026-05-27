@@ -47,7 +47,10 @@ class SponsorController extends Controller
             'message' => ['required', 'string', 'max:2000'],
         ]);
 
-        $sponsorshipRequest = SponsorshipRequest::create($validated);
+        $sponsorshipRequest = SponsorshipRequest::create(array_merge(
+            $validated,
+            ['locale' => app()->getLocale()]
+        ));
 
         if ($request->hasFile('logo')) {
             $path = $request->file('logo')->store('sponsorships/logos', 'public');

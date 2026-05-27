@@ -811,6 +811,18 @@ return [
         'new_contact_message_line1' => 'لقد تلقيت رسالة تواصل جديدة من :name.',
         'new_contact_message_action' => 'عرض الرسالة',
 
+        'sponsorship_approved_mail_subject' => 'تم قبول طلب الرعاية',
+        'sponsorship_approved_mail_greeting' => 'عزيزي :company،',
+        'sponsorship_approved_mail_line1' => 'تهانينا! تم قبول طلب الرعاية الخاص بـ :company.',
+        'sponsorship_approved_mail_line2' => 'لا تتردد في التواصل معنا من خلال صفحة اتصل بنا لأي استفسارات أخرى.',
+        'sponsorship_approved_mail_action' => 'اتصل بنا',
+
+        'sponsorship_rejected_mail_subject' => 'تحديث بخصوص طلب الرعاية الخاص بك',
+        'sponsorship_rejected_mail_greeting' => 'عزيزي :company،',
+        'sponsorship_rejected_mail_line1' => 'شكراً لاهتمامك بالرعاية على منصتنا. لقد راجعنا طلبك المقدم من :company.',
+        'sponsorship_rejected_mail_line2' => 'للأسف، لا يستوفي طلب الرعاية الخاص بك متطلباتنا الحالية للسبب التالي:',
+        'sponsorship_rejected_mail_reason_label' => 'سبب الرفض',
+
         'whoops' => 'عذراً!',
         'hello' => 'مرحباً!',
         'regards' => 'مع أطيب التحيات،',

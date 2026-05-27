@@ -814,6 +814,18 @@ return [
         'new_contact_message_line1' => 'You have received a new contact message from :name.',
         'new_contact_message_action' => 'View Message',
 
+        'sponsorship_approved_mail_subject' => 'Sponsorship Request Approved',
+        'sponsorship_approved_mail_greeting' => 'Dear :company,',
+        'sponsorship_approved_mail_line1' => 'Congratulations! Your sponsorship request for :company has been approved.',
+        'sponsorship_approved_mail_line2' => 'Please feel free to contact us through our contact page for any further inquiries.',
+        'sponsorship_approved_mail_action' => 'Contact Us',
+
+        'sponsorship_rejected_mail_subject' => 'Update Regarding Your Sponsorship Request',
+        'sponsorship_rejected_mail_greeting' => 'Dear :company,',
+        'sponsorship_rejected_mail_line1' => 'Thank you for your interest. We have reviewed your application from :company.',
+        'sponsorship_rejected_mail_line2' => 'Unfortunately, your request does not meet our current requirements for the following reason:',
+        'sponsorship_rejected_mail_reason_label' => 'Reason for Rejection',
+
         'whoops' => 'Whoops!',
         'hello' => 'Hello!',
         'regards' => 'Regards,',

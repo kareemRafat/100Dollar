@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enums\SponsorshipStatus;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,15 +16,17 @@ class UpdateSponsorshipRequestStatusRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
             'status' => ['required', Rule::enum(SponsorshipStatus::class)],
+            'rejection_reason' => [
+                Rule::requiredIf($this->status === SponsorshipStatus::REJECTED->value),
+                'nullable',
+                'string',
+                'min:5',
+                'max:1000',
+            ],
         ];
     }
 }

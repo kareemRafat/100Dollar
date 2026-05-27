@@ -71,6 +71,8 @@ export interface SponsorshipRequest {
     country?: Country;
     message: string;
     status: SponsorshipStatus;
+    rejection_reason?: string;
+    locale?: string;
     logo?: string;
     created_at: string;
 }

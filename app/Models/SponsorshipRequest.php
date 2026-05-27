@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'country_id',
     'message',
     'status',
+    'rejection_reason',
+    'locale',
 ])]
 class SponsorshipRequest extends Model
 {
