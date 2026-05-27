@@ -1,38 +1,49 @@
 # Milestone 5: Image Optimization Plan
 
 ## Overview
-Implement a dynamic image optimization system that reduces server disk usage and improves frontend performance through resizing and WebP conversion.
+Optimize images through efficient upload handling and proper frontend rendering. The focus is on high-impact, low-complexity changes rather than a full dynamic resizing pipeline.
 
 ## Goals
-1. **Reduce Disk Usage:** Automatically resize "Original" uploads to a sane maximum (1920px).
-2. **Improve Performance:** Serve optimized thumbnails (WebP) via dynamic middleware.
-3. **Seamless Integration:** Use existing `Media` model and `HasMedia` trait.
+1. **Reduce Disk Usage:** Resize original uploads to a sane maximum (1920px) and convert to WebP.
+2. **Improve Performance:** Generate a compressed WebP thumbnail per image at upload time for card/list views.
+3. **Eliminate CLS:** Add explicit dimensions to all `<img>` elements.
+4. **Lazy Loading:** Add `loading="lazy"` to below-fold images.
 
 ---
 
 ## Phase 1: Infrastructure
-- [ ] **Install Dependencies:** Add `intervention/image` (v3) to the project.
+- [ ] **Install Dependencies:** Add `intervention/image-laravel` to the project.
 - [ ] **Configure Storage:** Ensure a cache directory exists for optimized images (e.g., `storage/app/public/cache`).
-- [ ] **Middleware Skeleton:** Create `App\Http\Middleware\ImageOptimizerMiddleware`.
 
-## Phase 2: Sane Max Upload Logic
-- [ ] **Intercept Uploads:** Update the media upload logic (to be identified in controllers/actions) to resize images to a maximum of 1920px width/height before saving to disk.
-- [ ] **Format Conversion:** Convert original uploads to high-quality WebP to save further space.
+## Phase 2: Server-Side Upload Optimization
+- [ ] **Intercept Uploads:** Create a service class or job that:
+  - Resizes images to max 1920px width/height before saving.
+  - Converts the master file to WebP (~80% quality).
+  - Generates a 400px-wide WebP thumbnail prefixed with `thumb_` for list views.
+- [ ] **Model Helper:** Add `thumbnailUrl()` method to `App\Models\Media` returning the thumb path.
+- [ ] **Trait Helper:** Update `HasMedia` trait to include a `thumbnail` attribute.
 
-## Phase 3: Dynamic Resizing Middleware
-- [ ] **Route Definition:** Add a signed or open route `/img/{path}` that points to the middleware/controller.
-- [ ] **Middleware Implementation:**
-    - Parse `w` (width), `h` (height), and `q` (quality).
-    - Check for existing cached version.
-    - If missing: Use Intervention Image to resize original and save to cache.
-    - Serve the file with proper headers (`image/webp`, cache-control).
+## Phase 3: Frontend CLS & Performance Fixes
+- [ ] **Add explicit dimensions:** Audit all `<img>` tags in React components and ensure parent containers have explicit `w-`/`h-` or `aspect-` classes:
+  - Hero banners (13 unsplash.com / googleusercontent images)
+  - User avatars in idea-card, winner-card, comment-section, top-nav-bar, mobile-nav-sheet
+  - Idea images in idea-card
+  - Sponsor logos in sponsor-week-grid
+  - Logo previews in sponsor-logo-uploader
+- [ ] **Add `loading="lazy"`** to all below-fold `<img>` elements.
+- [ ] **Update Resources:** Update `IdeaResource`, `PublicUserResource`, and `SponsorResource` to include `thumbnail_url`.
+- [ ] **Component updates:** Replace direct image URLs with thumbnail URLs in card/list views (keep full-res for detail pages).
 
-## Phase 4: Frontend & Model Integration
-- [ ] **Model Helper:** Add `thumbnailUrl(int $width, int $height)` method to `App\Models\Media`.
-- [ ] **Trait Helper:** Add `thumbnail` attribute to `HasMedia` trait.
-- [ ] **Resource Update:** Update `IdeaResource`, `PublicUserResource`, and `SponsorResource` to include optimized URLs.
-- [ ] **Component Update:** Update React components to use optimized thumbnails instead of original images where appropriate.
+## Phase 4: Cleanup & Maintenance
+- [ ] **Re-optimize existing uploads:** Create an Artisan command to retro-process existing media (resize + WebP + thumbnails).
+- [ ] **Testing:** Add tests for the upload resizing logic.
 
-## Phase 5: Cleanup & Maintenance
-- [ ] **Cache Clearing Command:** Create an Artisan command to clear the optimized image cache.
-- [ ] **Testing:** Add Pest tests for the optimization route and upload logic.
+---
+
+## Key Design Decisions
+
+**Why not a dynamic resizing middleware?**
+A dynamic middleware (signed routes, Intervention on every request) adds significant complexity — cache management, cache invalidation, route setup — with minimal benefit for the current upload volume (~3 images). Resizing at upload time is simpler, produces predictable files, and doesn't require a request-time processing pipeline.
+
+**Why a 400px thumbnail for lists?**
+Idea cards, sponsor cards, and user avatars are rendered in containers of 300-400px wide. Serving a 400px WebP instead of the original 2MB image reduces transfer by ~90% with no visible quality loss in those contexts.
