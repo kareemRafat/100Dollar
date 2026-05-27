@@ -219,7 +219,7 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 
 ## Milestone 3: Shared Components & Partials
 
-### M3-P3: `app/components/top-nav-bar.tsx` (578→~250 lines)
+### ✅ M3-P3: `app/components/top-nav-bar.tsx` (578→96 lines)
 
 **Current responsibilities:**
 - Mobile sheet menu with full navigation, auth state, dark mode, CTAs
@@ -229,12 +229,12 @@ These follow the same pattern as the ideas show refactor — inline CRUD dialogs
 - Notification bell embedded
 - RTL awareness
 
-**Files to create** (`resources/js/app/components/`):
-- [ ] `mobile-nav-sheet.tsx` — Mobile sheet with navigation + auth actions
-- [ ] `desktop-nav-links.tsx` — Centered nav with animated indicator
-- [ ] `user-nav-dropdown.tsx` — Profile/my ideas/appearance/logout dropdown
-- [ ] `guest-nav-actions.tsx` — Submit idea, login, register buttons
-- [ ] `appearance-nav-item.tsx` — Appearance toggle in dropdown
+**Files created** (`resources/js/app/components/nav/`):
+- [x] `mobile-nav-sheet.tsx` — Mobile sheet with navigation + auth actions
+- [x] `desktop-nav-links.tsx` — Centered nav with animated indicator
+- [x] `user-nav-dropdown.tsx` — Profile/my ideas/appearance/logout dropdown
+- [x] `guest-nav-actions.tsx` — Submit idea, login, register buttons
+- [x] `appearance-nav-item.tsx` — Appearance toggle in dropdown
 
 ### M3-P6: `app/pages/idea/partials/idea-form.tsx` (469→~250 lines)
 
