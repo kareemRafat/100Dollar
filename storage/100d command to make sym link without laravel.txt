@@ -1,0 +1,1 @@
+ln -s /home/kareem/100d/storage/app/public /home/kareem/public_html/storage
