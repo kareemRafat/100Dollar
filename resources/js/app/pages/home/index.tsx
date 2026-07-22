@@ -50,7 +50,7 @@ export default function Home({
 
             <DayTabs weekDays={weekDays} currentDay={currentDay} />
 
-            <IdeaList ideas={ideas} votedIdeaId={votedIdeaId} />
+            <IdeaList key={currentDay} ideas={ideas} votedIdeaId={votedIdeaId} />
 
             <WhenVisible
                 data="previousWinners"

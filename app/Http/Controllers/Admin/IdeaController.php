@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateIdeaStatusRequest;
 use App\Http\Resources\Admin\IdeaResource;
 use App\Models\Idea;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -84,7 +85,7 @@ class IdeaController extends Controller
                 'status' => IdeaStatus::APPROVED,
                 'submission_day' => $validated['submission_day'],
                 'approved_at' => now(),
-                'voting_ends_at' => now()->addDays(7),
+                'voting_ends_at' => now()->isFriday() ? now()->endOfDay() : now()->next(Carbon::FRIDAY)->endOfDay(),
                 'rejection_reason' => null,
             ]);
 

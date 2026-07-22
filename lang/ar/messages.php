@@ -97,6 +97,7 @@ return [
         'people_voted' => '{count} شخص قاموا بالتصويت',
         'one_hundred_dollars' => '100 دولار',
         'prize_label' => 'الجائزة',
+        'days' => 'يوم',
         'hours' => 'ساعة',
         'minutes' => 'دقيقة',
         'seconds' => 'ثانية',

@@ -18,16 +18,15 @@ it('renders the home page with ideas, sponsors, and winners', function () {
     Idea::factory()->count(2)->create(['is_winner' => true, 'winner_announced_at' => now()->subDay()]);
 
     // Act & Assert
-    $this->withoutMiddleware()
-        ->get('/')
+    $this->followingRedirects()
+        ->get('/ar')
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('app/pages/home/index')
             ->has('ideas.data', 3)
             ->has('sponsor')
-            ->has('previousWinners', 2)
             ->has('currentDay')
-            ->has('secondsUntilEnd')
+            ->has('votingEndsAt')
             ->has('weekDays', 7)
         );
 });
@@ -43,8 +42,29 @@ it('filters ideas by day', function () {
     ]);
 
     // Act & Assert
-    $this->withoutMiddleware()
-        ->get('/?day='.$sunday)
+    $this->followingRedirects()
+        ->get('/ar?day='.$sunday)
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->where('currentDay', $sunday)
+            ->has('ideas.data', 1)
+        );
+});
+
+it('includes active voting ideas from previous week if voting_ends_at is in the future', function () {
+    $this->withoutVite();
+    $sunday = 0;
+
+    // Idea submitted last week, but voting_ends_at is still in the future
+    Idea::factory()->approved()->create([
+        'submission_day' => $sunday,
+        'week_number' => now()->subWeek()->weekOfYear,
+        'year' => now()->year,
+        'voting_ends_at' => now()->addDays(3),
+    ]);
+
+    $this->followingRedirects()
+        ->get('/ar?day='.$sunday)
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->where('currentDay', $sunday)

@@ -25,9 +25,14 @@ class HomeController extends Controller
         $ideasQuery = Idea::with(['user:id,name', 'user.media', 'category', 'country', 'media'])
             ->withCount('comments')
             ->where('submission_day', $currentDay)
-            ->where('week_number', $currentWeek)
-            ->where('year', $currentYear)
-            ->where('status', IdeaStatus::APPROVED);
+            ->where('status', IdeaStatus::APPROVED)
+            ->where(function ($q) use ($now, $currentWeek, $currentYear) {
+                $q->where('voting_ends_at', '>', $now)
+                    ->orWhere(function ($q2) use ($currentWeek, $currentYear) {
+                        $q2->where('week_number', $currentWeek)
+                            ->where('year', $currentYear);
+                    });
+            });
 
         $maxVotesCount = (int) ((clone $ideasQuery)->max('votes_count') ?? 0);
         $request->attributes->set('idea_max_votes', $maxVotesCount);
@@ -49,21 +54,24 @@ class HomeController extends Controller
             ->get(['id', 'user_id', 'sponsor_id', 'title', 'winner_announced_at'])
             ->values());
 
-        // Calculate countdown to the end of the day (no cache needed)
-        $endOfDay = $now->copy()->endOfDay();
-        $votingEndsAt = $endOfDay->toISOString();
+        // Calculate countdown to the end of the voting week (Friday end of day or max active voting_ends_at)
+        $maxVotingEndsAt = (clone $ideasQuery)->where('voting_ends_at', '>', $now)->max('voting_ends_at');
+        $targetEndsAt = $maxVotingEndsAt
+            ? Carbon::parse($maxVotingEndsAt)
+            : ($now->isFriday() ? $now->copy()->endOfDay() : $now->copy()->next(Carbon::FRIDAY)->endOfDay());
+        $votingEndsAt = $targetEndsAt->toISOString();
 
-        // Find if user/IP already voted for an idea today
+        // Find if user/IP already voted for an active idea for this day
         $votedIdeaId = null;
         $voterEmail = auth()->check() ? auth()->user()->email : null;
 
         $votedIdeaId = Vote::whereNotNull('otp_verified_at')
             ->when($voterEmail, fn ($q) => $q->where('voter_email', $voterEmail), fn ($q) => $q->where('ip_address', $request->ip()))
-            ->whereHas('idea', function ($query) use ($currentDay, $currentWeek, $currentYear) {
+            ->whereHas('idea', function ($query) use ($currentDay) {
                 $query->where('submission_day', $currentDay)
-                    ->where('week_number', $currentWeek)
-                    ->where('year', $currentYear);
+                    ->where('status', IdeaStatus::APPROVED);
             })
+            ->latest()
             ->value('idea_id');
 
         return Inertia::render('app/pages/home/index', [

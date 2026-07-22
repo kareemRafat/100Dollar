@@ -17,7 +17,7 @@ beforeEach(function () {
 test('user can request an otp for voting', function () {
     Mail::fake();
 
-    $idea = Idea::factory()->create();
+    $idea = Idea::factory()->approved()->create();
     $email = 'voter@example.com';
 
     $response = postJson(route('app.ideas.vote.send-otp', ['locale' => 'en', 'idea' => $idea]), [
@@ -39,7 +39,7 @@ test('user can request an otp for voting', function () {
 
 test('user is blocked after 5 failed otp requests', function () {
     Mail::fake();
-    $idea = Idea::factory()->create();
+    $idea = Idea::factory()->approved()->create();
     $email = 'voter@example.com';
 
     for ($i = 0; $i < 5; $i++) {
@@ -52,7 +52,7 @@ test('user is blocked after 5 failed otp requests', function () {
 });
 
 test('user is blocked after 5 failed verification attempts', function () {
-    $idea = Idea::factory()->create();
+    $idea = Idea::factory()->approved()->create();
     $email = 'voter@example.com';
 
     Vote::create([
@@ -78,7 +78,7 @@ test('user is blocked after 5 failed verification attempts', function () {
 });
 
 test('successful vote clears the block counter', function () {
-    $idea = Idea::factory()->create();
+    $idea = Idea::factory()->approved()->create();
     $email = 'voter@example.com';
     $otp = '123456';
 
@@ -106,22 +106,22 @@ test('successful vote clears the block counter', function () {
     $response->assertOk();
 
     // Counter should be cleared, next request should work
-    $anotherIdea = Idea::factory()->create();
+    $anotherIdea = Idea::factory()->approved()->create();
     postJson(route('app.ideas.vote.send-otp', ['locale' => 'en', 'idea' => $anotherIdea]), ['email' => $email])->assertOk();
 });
 
 test('user cannot vote more than once per competition day', function () {
-    $sundayIdea1 = Idea::factory()->create([
+    $sundayIdea1 = Idea::factory()->approved()->create([
         'submission_day' => 0,
         'week_number' => now()->weekOfYear,
         'year' => now()->year,
     ]);
-    $sundayIdea2 = Idea::factory()->create([
+    $sundayIdea2 = Idea::factory()->approved()->create([
         'submission_day' => 0,
         'week_number' => now()->weekOfYear,
         'year' => now()->year,
     ]);
-    $mondayIdea = Idea::factory()->create([
+    $mondayIdea = Idea::factory()->approved()->create([
         'submission_day' => 1,
         'week_number' => now()->weekOfYear,
         'year' => now()->year,

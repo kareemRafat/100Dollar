@@ -7,6 +7,7 @@ type Props = {
 };
 
 type TimeLeft = {
+    days: number;
     hours: number;
     minutes: number;
     seconds: number;
@@ -16,11 +17,12 @@ function calculateTimeLeft(target: Date): TimeLeft {
     const diff = target.getTime() - Date.now();
 
     if (diff <= 0) {
-        return { hours: 0, minutes: 0, seconds: 0 };
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
     }
 
     return {
-        hours: Math.floor(diff / (1000 * 60 * 60)),
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((diff / (1000 * 60)) % 60),
         seconds: Math.floor((diff / 1000) % 60),
     };
@@ -64,6 +66,7 @@ export function CountdownTimer({ targetDate }: Props) {
     );
 
     useEffect(() => {
+        setTimeLeft(calculateTimeLeft(targetDate));
         const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft(targetDate));
         }, 1000);
@@ -73,6 +76,13 @@ export function CountdownTimer({ targetDate }: Props) {
 
     return (
         <div className="flex gap-4" dir="ltr">
+            {timeLeft.days > 0 && (
+                <TimeBlock
+                    value={timeLeft.days}
+                    label={__('messages.home.days')}
+                    locale={locale}
+                />
+            )}
             <TimeBlock
                 value={timeLeft.hours}
                 label={__('messages.home.hours')}
@@ -91,3 +101,4 @@ export function CountdownTimer({ targetDate }: Props) {
         </div>
     );
 }
+

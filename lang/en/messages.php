@@ -97,6 +97,7 @@ return [
         'people_voted' => '{count} people voted',
         'one_hundred_dollars' => '$100',
         'prize_label' => 'Prize',
+        'days' => 'Days',
         'hours' => 'Hours',
         'minute' => 'Minute',
         'minutes' => 'Minutes',
