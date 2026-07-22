@@ -38,7 +38,7 @@ export default function EditIdea({
                     <img
                         alt="Background"
                         className="h-full w-full object-cover opacity-20 mix-blend-luminosity"
-                        src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=2000"
+                        src="/images/idea.create.webp"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/70 to-deep-navy/90" />
                 </div>

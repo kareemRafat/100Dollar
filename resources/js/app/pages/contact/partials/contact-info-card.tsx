@@ -51,7 +51,7 @@ export function ContactInfoCard() {
                     <img
                         alt="Modern collaborative space"
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDajC8yjkqysfCz6mqaKhjI-hDDpBiWe02Jzt39vG2lLz1VemVnPjWRRTLd3qhNFOeb-0_fBQ9DEMMOOQvons-Km57oC8YgyLi68fd63zNBETjr5Vx4w-FgiMbV0ZEaLU57reIxcZ-qWbC3K4rBZjY-YK3YlTAfsJF2X63oZt6p2UuaKojTGoOyI7sTi5bK2FSGsdg-KFGknkvNja9sS3nwaqYlZXoT6nv9lgrlv_mBylZmOwbsi2KboK-P-zqNmn-Tl6Sq7pdQkvs"
+                        src="/images/contactsidebar.webp"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/60 to-transparent" />
                 </div>

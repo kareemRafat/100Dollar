@@ -9,7 +9,7 @@ export function MyIdeasHero() {
                 <img
                     alt="My Ideas Background"
                     className="h-full w-full object-cover brightness-50 grayscale"
-                    src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=2000"
+                    src="/images/myideas.webp"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/80 to-slate-900" />
             </div>

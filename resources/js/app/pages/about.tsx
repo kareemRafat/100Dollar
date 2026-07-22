@@ -44,7 +44,7 @@ export default function About() {
                     <img
                         alt="About Us Background"
                         className="h-full w-full object-cover brightness-50 grayscale"
-                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=2000"
+                        src="/images/aboutus.webp"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/80 to-slate-900" />
                 </div>
@@ -196,7 +196,7 @@ export default function About() {
                             <img
                                 alt="Founder Portrait"
                                 className="editorial-shadow relative z-10 rounded-3xl"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRWXYBtDY5262YQECmriYAZMWZx9NgZoqDXOE5FlJgrnHzt0WHO3mjKBQGkD2TUGnLu6qwNK2vsGBhDkk8S-sUyr1wTJ-f8N2HPMaCdqR-PjTFkjeszpXu4nXubtiyQSUkakXhXD5HVZgHulQLjhuLbFQyy4y_hvFoQwPMvkNAZXr2rDyELxRhyRo50ET7HKHU_vFMMwscXQePz-AKkd2V13kfiXNe8rlf8aTt6cmVWkvMIT_ITMYnvxLC_To9-6jWz4MZ65ZgUoA"
+                                src="/images/founderportrait.webp"
                             />
                         </div>
                     </div>

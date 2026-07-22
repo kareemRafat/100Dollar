@@ -47,7 +47,7 @@ export const HeroSection = React.memo(({ idea }: HeroSectionProps) => {
                 className="absolute inset-0 z-0 bg-cover bg-fixed bg-center"
                 style={{
                     backgroundImage:
-                        "url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=2000')",
+                        "url('/images/idea-partial.webp')",
                 }}
             >
                 <div

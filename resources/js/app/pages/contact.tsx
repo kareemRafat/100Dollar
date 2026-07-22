@@ -46,7 +46,7 @@ export default function Contact() {
                     <img
                         alt="Modern customer support team"
                         className="h-full w-full object-cover object-center opacity-40"
-                        src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&q=80&w=2000"
+                        src="/images/contactus.webp"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-deep-navy/80 via-deep-navy/40 to-deep-navy/90" />
                 </div>
