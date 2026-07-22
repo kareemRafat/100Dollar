@@ -13,6 +13,9 @@ interface WinnerDay {
     leading_idea: Idea | null;
     announced_winner: Idea | null;
     is_today: boolean;
+    is_tied?: boolean;
+    voting_status?: 'voting_open' | 'completed' | null;
+    remaining_days?: number | null;
 }
 
 interface WinnersPreviewProps {

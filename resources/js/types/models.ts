@@ -32,6 +32,7 @@ export interface Idea {
     is_winner: boolean;
     rejection_reason?: string;
     approved_at?: string;
+    voting_ends_at?: string;
     winner_announced_at?: string;
     created_at: string;
     date: string;

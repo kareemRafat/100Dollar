@@ -9,77 +9,83 @@ use Illuminate\Console\Command;
 
 class AnnounceWinner extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:announce-winner {day? : The day of week (0-6) to announce for. Defaults to yesterday.}';
+    protected $signature = 'app:announce-winner';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Automatically announce the winner for a specific day based on highest votes.';
+    protected $description = 'Auto-determine winners for groups where all ideas have completed their 7-day voting window.';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(ConfirmWinner $confirmWinner): int
     {
-        $day = $this->argument('day');
+        $groups = Idea::where('status', IdeaStatus::APPROVED)
+            ->where('is_winner', false)
+            ->selectRaw('submission_day, week_number, year')
+            ->groupBy('submission_day', 'week_number', 'year')
+            ->get();
 
-        // If no day provided, default to yesterday
-        if ($day === null) {
-            $day = now()->subDay()->dayOfWeek;
-            $targetDate = now()->subDay();
-        } else {
-            $day = (int) $day;
-            // Find the most recent date for this day of week
-            $targetDate = now()->next($day)->subWeek();
-            if ($targetDate->isFuture()) {
-                $targetDate = $targetDate->subWeek();
+        $anyAction = false;
+
+        foreach ($groups as $group) {
+            $day = $group->submission_day;
+            $week = $group->week_number;
+            $year = $group->year;
+
+            $ideas = Idea::where('submission_day', $day)
+                ->where('week_number', $week)
+                ->where('year', $year)
+                ->where('status', IdeaStatus::APPROVED)
+                ->where('is_winner', false)
+                ->get();
+
+            // Skip if any idea in the group still has its voting window open
+            $allClosed = $ideas->every(fn ($idea) => $idea->voting_ends_at && $idea->voting_ends_at->isPast());
+
+            if (! $allClosed) {
+                $this->info("Group (day:{$day}, week:{$week}, year:{$year}): waiting for all ideas to complete voting window.");
+
+                continue;
             }
+
+            // Skip if winner already exists for this group
+            $hasWinner = Idea::where('submission_day', $day)
+                ->where('week_number', $week)
+                ->where('year', $year)
+                ->where('is_winner', true)
+                ->exists();
+
+            if ($hasWinner) {
+                $this->info("Group (day:{$day}, week:{$week}, year:{$year}): winner already exists.");
+
+                continue;
+            }
+
+            // Sort by votes_count DESC, approved_at ASC
+            $sorted = $ideas->sortByDesc('votes_count')->sortBy('approved_at');
+
+            $topIdea = $sorted->first();
+
+            if (! $topIdea || $topIdea->votes_count === 0) {
+                $this->warn("Group (day:{$day}, week:{$week}, year:{$year}): top idea has 0 votes — skipping.");
+
+                continue;
+            }
+
+            // Check for tie
+            $topVotes = $topIdea->votes_count;
+            $tied = $sorted->filter(fn ($idea) => $idea->votes_count === $topVotes);
+
+            if ($tied->count() > 1) {
+                $this->warn("Group (day:{$day}, week:{$week}, year:{$year}): tie detected among ".$tied->count()." ideas with {$topVotes} votes — admin must decide manually.");
+
+                continue;
+            }
+
+            $this->info("Group (day:{$day}, week:{$week}, year:{$year}): winner is {$topIdea->title} with {$topIdea->votes_count} votes.");
+            $confirmWinner->execute($topIdea);
+            $anyAction = true;
         }
 
-        $weekNumber = $targetDate->weekOfYear;
-        $year = $targetDate->year;
-
-        $this->info("Checking for winner on day {$day}, week {$weekNumber}, year {$year}...");
-
-        // Check if winner already exists
-        $existingWinner = Idea::where('submission_day', $day)
-            ->where('week_number', $weekNumber)
-            ->where('year', $year)
-            ->where('is_winner', true)
-            ->exists();
-
-        if ($existingWinner) {
-            $this->warn('A winner has already been announced for this day.');
-
-            return Command::SUCCESS;
+        if (! $anyAction) {
+            $this->info('No groups qualified for auto-winner determination.');
         }
-
-        // Find leading idea
-        $leadingIdea = Idea::where('submission_day', $day)
-            ->where('week_number', $weekNumber)
-            ->where('year', $year)
-            ->where('status', IdeaStatus::APPROVED)
-            ->orderByDesc('votes_count')
-            ->first();
-
-        if (! $leadingIdea) {
-            $this->error('No approved ideas found for this day.');
-
-            return Command::FAILURE;
-        }
-
-        $this->info("Selected Winner: {$leadingIdea->title} by {$leadingIdea->user->name} with {$leadingIdea->votes_count} votes.");
-
-        $confirmWinner->execute($leadingIdea);
-
-        $this->info('Winner successfully announced!');
 
         return Command::SUCCESS;
     }

@@ -18,6 +18,9 @@ interface WinnerDay {
     leading_idea: Idea | null;
     announced_winner: Idea | null;
     is_today: boolean;
+    is_tied?: boolean;
+    voting_status?: 'voting_open' | 'completed' | null;
+    remaining_days?: number | null;
 }
 
 interface WinnerCardProps {
@@ -44,14 +47,24 @@ export default function WinnerCard({
             <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{dayName}</CardTitle>
-                    {day.is_today && (
-                        <Badge
-                            variant="outline"
-                            className="border-bg-orange-700/20 bg-orange-700/10 text-base font-bold text-orange-700"
-                        >
-                            اليوم
-                        </Badge>
-                    )}
+                    <div className="flex items-center gap-2">
+                        {day.is_tied && (
+                            <Badge
+                                variant="outline"
+                                className="border-amber-500/30 bg-amber-500/10 text-xs font-bold text-amber-600"
+                            >
+                                تعادل
+                            </Badge>
+                        )}
+                        {day.is_today && (
+                            <Badge
+                                variant="outline"
+                                className="border-bg-orange-700/20 bg-orange-700/10 text-base font-bold text-orange-700"
+                            >
+                                اليوم
+                            </Badge>
+                        )}
+                    </div>
                 </div>
                 <CardDescription className="flex items-center gap-2">
                     {day.sponsor ? (
@@ -70,6 +83,22 @@ export default function WinnerCard({
                     )}
                 </CardDescription>
             </CardHeader>
+            {day.voting_status && !day.announced_winner && day.leading_idea && (
+                <div className="px-6">
+                    <Badge
+                        variant="outline"
+                        className={
+                            day.voting_status === 'voting_open'
+                                ? 'border-green-500/30 bg-green-500/10 text-xs font-bold text-green-600'
+                                : 'border-gray-500/30 bg-gray-500/10 text-xs font-bold text-gray-600'
+                        }
+                    >
+                        {day.voting_status === 'voting_open'
+                            ? `التصويت مفتوح - ${day.remaining_days} أيام متبقية`
+                            : 'التصويت مغلق'}
+                    </Badge>
+                </div>
+            )}
             <CardContent className="flex-1 space-y-4">
                 {day.announced_winner ? (
                     <div className="h-full rounded-lg border border-green-100 bg-green-50 p-4 dark:border-green-900/30 dark:bg-green-950/20">
@@ -133,9 +162,9 @@ export default function WinnerCard({
                     <Button
                         onClick={() => onConfirm(day.leading_idea!)}
                         className="w-full gap-2"
-                        disabled={!day.sponsor}
+                        disabled={!day.sponsor || day.is_tied}
                     >
-                        تأكيد الفائز
+                        {day.is_tied ? 'تعادل - يلزم اختيار يدوي' : 'تأكيد الفائز'}
                     </Button>
                 ) : (
                     <Button disabled variant="secondary" className="w-full">

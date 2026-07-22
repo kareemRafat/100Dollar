@@ -84,6 +84,7 @@ class IdeaController extends Controller
                 'status' => IdeaStatus::APPROVED,
                 'submission_day' => $validated['submission_day'],
                 'approved_at' => now(),
+                'voting_ends_at' => now()->addDays(7),
                 'rejection_reason' => null,
             ]);
 

@@ -25,6 +25,10 @@ class VoteController extends Controller
             abort(404);
         }
 
+        if ($idea->voting_ends_at && $idea->voting_ends_at->isPast()) {
+            return response()->json(['message' => 'Voting period has ended'], 400);
+        }
+
         $request->validate([
             'email' => ['required', 'email'],
         ]);
@@ -130,6 +134,10 @@ class VoteController extends Controller
     {
         if ($idea->status !== IdeaStatus::APPROVED) {
             abort(404);
+        }
+
+        if ($idea->voting_ends_at && $idea->voting_ends_at->isPast()) {
+            return response()->json(['message' => 'Voting period has ended'], 400);
         }
 
         $request->validate([

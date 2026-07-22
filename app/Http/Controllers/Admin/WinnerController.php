@@ -49,12 +49,36 @@ class WinnerController extends Controller
                 ->where('is_winner', true)
                 ->first();
 
+            // Check for tie among top ideas
+            $isTied = false;
+            if ($leadingIdea && ! $announcedWinner) {
+                $topVotes = $leadingIdea->votes_count;
+                $tiedCount = Idea::where('submission_day', $i)
+                    ->where('week_number', $currentWeek)
+                    ->where('year', $currentYear)
+                    ->where('status', IdeaStatus::APPROVED)
+                    ->where('votes_count', $topVotes)
+                    ->count();
+                $isTied = $tiedCount > 1;
+            }
+
+            $votingStatus = $leadingIdea?->voting_ends_at
+                ? ($leadingIdea->voting_ends_at->isPast() ? 'completed' : 'voting_open')
+                : null;
+
+            $remainingDays = $leadingIdea?->voting_ends_at?->isFuture()
+                ? now()->diffInDays($leadingIdea->voting_ends_at)
+                : null;
+
             $days[] = [
                 'day_index' => $i,
                 'sponsor' => $sponsor,
                 'leading_idea' => $leadingIdea,
                 'announced_winner' => $announcedWinner,
                 'is_today' => now()->dayOfWeek === $i,
+                'is_tied' => $isTied,
+                'voting_status' => $votingStatus,
+                'remaining_days' => $remainingDays,
             ];
         }
 

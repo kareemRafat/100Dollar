@@ -48,6 +48,7 @@ class IdeaResource extends JsonResource
             'votes_count' => $votesCount,
             'comments_count' => (int) ($this->comments_count ?? $this->comments()->count()),
             'user' => new PublicUserResource($this->whenLoaded('user')),
+            'voting_ends_at' => $this->voting_ends_at?->toISOString(),
             'user_id' => $this->user_id,
             'status' => $this->is_winner ? 'winner' : $this->status,
             'rejection_reason' => $this->rejection_reason,

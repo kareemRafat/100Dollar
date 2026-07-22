@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Concerns\HasMedia;
 use App\Enums\IdeaStatus;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'is_winner',
     'rejection_reason',
     'approved_at',
+    'voting_ends_at',
     'winner_announced_at',
     'marketing_channel',
     'target_audience',
@@ -59,6 +61,7 @@ class Idea extends Model
             'is_winner' => 'boolean',
             'status' => IdeaStatus::class,
             'approved_at' => 'datetime',
+            'voting_ends_at' => 'datetime',
             'winner_announced_at' => 'datetime',
             'target_audience' => 'array',
             'marketing_channel' => 'array',
@@ -114,5 +117,20 @@ class Idea extends Model
     public function prizeRecords(): HasMany
     {
         return $this->hasMany(PrizeRecord::class);
+    }
+
+    public function scopeVotingOpen(Builder $query): void
+    {
+        $query->where('voting_ends_at', '>', now());
+    }
+
+    public function scopeVotingClosed(Builder $query): void
+    {
+        $query->where('voting_ends_at', '<=', now());
+    }
+
+    public function isVotingOpen(): bool
+    {
+        return $this->voting_ends_at && $this->voting_ends_at->isFuture();
     }
 }

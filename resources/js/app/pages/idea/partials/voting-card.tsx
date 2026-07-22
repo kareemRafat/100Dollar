@@ -1,6 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { usePage } from '@inertiajs/react';
-import { Loader2, Award, ThumbsUp } from 'lucide-react';
+import { Clock, Hourglass, Loader2, Award, ThumbsUp } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
 import { formatDuration } from '@/lib/utils';
 import type { Idea } from '@/types';
@@ -146,6 +146,36 @@ export const VotingCard = ({
                         </>
                     )}
                 </Button>
+
+                {/* Voting Window Status */}
+                {idea.voting_ends_at && (
+                    <div className="mb-4 flex items-center justify-center gap-2 rounded-xl bg-surface-container-high px-4 py-2">
+                        {new Date(idea.voting_ends_at) > new Date() ? (
+                            <>
+                                <Hourglass className="size-4 text-primary" />
+                                <span className="text-xs font-bold text-on-surface-variant">
+                                    {__('messages.home.voting_ends_in', {
+                                        days: Math.max(
+                                            0,
+                                            Math.ceil(
+                                                (new Date(idea.voting_ends_at).getTime() -
+                                                    new Date().getTime()) /
+                                                    (1000 * 60 * 60 * 24),
+                                            ),
+                                        ),
+                                    })}
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <Clock className="size-4 text-outline" />
+                                <span className="text-xs font-bold text-outline">
+                                    {__('messages.home.voting_ended')}
+                                </span>
+                            </>
+                        )}
+                    </div>
+                )}
 
                 <div className="mb-2 flex items-center gap-3">
                     <div className="flex -space-x-2">
