@@ -15,7 +15,7 @@ interface Props {
     sponsor?: Sponsor;
     previousWinners: Idea[] | null;
     currentDay: number;
-    secondsUntilEnd: number;
+    votingEndsAt: string;
     weekDays: { id: number; name: string }[];
     votedIdeaId: number | null;
 }
@@ -30,7 +30,7 @@ export default function Home({
     sponsor,
     previousWinners,
     currentDay,
-    secondsUntilEnd,
+    votingEndsAt,
     weekDays,
     votedIdeaId,
 }: Props) {
@@ -45,7 +45,7 @@ export default function Home({
 
             <section className="mx-auto mb-16 grid max-w-7xl grid-cols-1 gap-6 px-6 md:grid-cols-12">
                 <MemoizedSponsorBanner sponsor={sponsor} />
-                <MemoizedVotingCountdown secondsUntilEnd={secondsUntilEnd} />
+                <MemoizedVotingCountdown votingEndsAt={votingEndsAt} />
             </section>
 
             <DayTabs weekDays={weekDays} currentDay={currentDay} />

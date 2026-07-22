@@ -51,7 +51,7 @@ class HomeController extends Controller
 
         // Calculate countdown to the end of the day (no cache needed)
         $endOfDay = $now->copy()->endOfDay();
-        $secondsUntilEnd = $now->diffInSeconds($endOfDay);
+        $votingEndsAt = $endOfDay->toISOString();
 
         // Find if user/IP already voted for an idea today
         $votedIdeaId = null;
@@ -71,7 +71,7 @@ class HomeController extends Controller
             'sponsor' => $sponsor,
             'previousWinners' => $previousWinners,
             'currentDay' => $currentDay,
-            'secondsUntilEnd' => $secondsUntilEnd,
+            'votingEndsAt' => $votingEndsAt,
             'weekDays' => $this->getWeekDays(),
             'votedIdeaId' => (int) $votedIdeaId ?: null,
         ]);

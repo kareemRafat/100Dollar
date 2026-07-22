@@ -1,27 +1,18 @@
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { lazy, Suspense } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import AdminAuthLayout from '@/admin/layouts/admin-auth-layout';
-import AdminLayout from '@/admin/layouts/admin-layout';
-import AdminSettingsLayout from '@/admin/layouts/settings-layout';
-import AppLayout from '@/app/layouts/app-layout';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme, applyTheme } from '@/hooks/use-appearance';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const absolutePages = import.meta.glob('/resources/js/**/*.tsx');
-const relativePages = import.meta.glob('./**/*.tsx');
+const pages = import.meta.glob('/resources/js/{app,admin}/pages/**/*.tsx');
 
-const pages = {
-    ...absolutePages,
-    ...Object.fromEntries(
-        Object.entries(relativePages).map(([key, importer]) => [
-            `/resources/js/${key.replace(/^\.\//, '')}`,
-            importer,
-        ]),
-    ),
-};
+const AdminAuthLayout = lazy(() => import('@/admin/layouts/admin-auth-layout'));
+const AdminLayout = lazy(() => import('@/admin/layouts/admin-layout'));
+const AdminSettingsLayout = lazy(() => import('@/admin/layouts/settings-layout'));
+const AppLayout = lazy(() => import('@/app/layouts/app-layout'));
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -29,8 +20,6 @@ createInertiaApp({
         resolvePageComponent(`/resources/js/${name}.tsx`, pages) as any,
     layout: (name) => {
         switch (true) {
-            case name === 'welcome':
-                return null;
             case name.startsWith('admin/pages/auth/'):
                 return AdminAuthLayout;
             case name.startsWith('admin/pages/settings/'):
@@ -89,7 +78,9 @@ createInertiaApp({
 
         const content = (
             <TooltipProvider delayDuration={0}>
-                <App {...props} />
+                <Suspense fallback={null}>
+                    <App {...props} />
+                </Suspense>
             </TooltipProvider>
         );
 
