@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
+import { Rocket } from 'lucide-react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { ParticlesBackground } from '@/app/components/particles-background';
 import { Button } from '@/app/components/ui/button';
@@ -28,9 +29,7 @@ export default function Hero({ auth }: Props) {
             <ParticlesBackground />
             <div className="relative z-10 flex w-full flex-col items-center">
                 <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-primary-fixed px-4 py-2 text-sm font-semibold text-on-primary-fixed">
-                    <span className="material-symbols-outlined text-sm">
-                        rocket_launch
-                    </span>
+                    <Rocket className="size-3.5" />
                     {__('messages.welcome')}
                 </div>
                 <h1 className="mb-8 max-w-4xl font-headline text-5xl leading-tight font-black text-on-surface md:text-7xl dark:text-white">
