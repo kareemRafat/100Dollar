@@ -1,7 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import AppearanceSwitcher from '@/components/appearance-switcher';
-import LanguageSwitcher from '@/components/language-switcher';
 
 import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
 
@@ -186,10 +185,7 @@ export function Footer() {
                         © {new Date().getFullYear()} {__('messages.ideas_100')}.{' '}
                         {__('messages.footer.rights_reserved')}
                     </p>
-                    <div className="flex items-center gap-3">
-                        <AppearanceSwitcher />
-                        <LanguageSwitcher variant="standalone" />
-                    </div>
+                    <AppearanceSwitcher />
                 </div>
             </div>
         </footer>

@@ -13,10 +13,10 @@ import {
 } from '@/routes/app';
 import type { NavItem } from '@/types';
 
-import { MobileNavSheet } from './nav/mobile-nav-sheet';
 import { DesktopNavLinks } from './nav/desktop-nav-links';
-import { UserNavDropdown } from './nav/user-nav-dropdown';
 import { GuestNavActions } from './nav/guest-nav-actions';
+import { MobileNavSheet } from './nav/mobile-nav-sheet';
+import { UserNavDropdown } from './nav/user-nav-dropdown';
 
 type Props = {
     activeRoute?: string;
@@ -136,7 +136,7 @@ export function TopNavBar({ activeRoute }: Props) {
                             />
                         </div>
                     ) : (
-                        <GuestNavActions locale={locale} />
+                        <GuestNavActions />
                     )}
                 </div>
             </nav>

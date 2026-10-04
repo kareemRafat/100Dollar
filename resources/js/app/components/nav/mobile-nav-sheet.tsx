@@ -3,6 +3,7 @@ import { Link } from '@inertiajs/react';
 import { LogOut, Menu } from 'lucide-react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
 import { Button } from '@/app/components/ui/button';
+import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     Sheet,
@@ -13,10 +14,10 @@ import {
     SheetTrigger,
 } from '@/components/ui/sheet';
 import { Switch } from '@/components/ui/switch';
+import type { Appearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { logout, login, register } from '@/routes';
 import { personalInfo as profilePersonalInfo } from '@/routes/app/profile';
-import type { Appearance } from '@/hooks/use-appearance';
 import type { NavItem } from '@/types';
 
 interface MobileNavSheetProps {
@@ -111,12 +112,20 @@ export function MobileNavSheet({
                             <Switch
                                 checked={appearance === 'dark'}
                                 onCheckedChange={(checked) =>
-                                    updateAppearance(
-                                        checked ? 'dark' : 'light',
-                                    )
+                                    updateAppearance(checked ? 'dark' : 'light')
                                 }
                             />
                         </div>
+
+                        {/* Logged-in users reach language via the avatar dropdown, which is visible on every viewport */}
+                        {!auth.user && (
+                            <div className="flex items-center justify-between gap-3">
+                                <span className="text-xs font-bold text-on-surface-variant dark:text-gray-400">
+                                    {__('messages.ui.language')}
+                                </span>
+                                <LanguageSwitcher variant="segmented" />
+                            </div>
+                        )}
                     </div>
 
                     <div className="mt-8 flex flex-col gap-3">
@@ -206,25 +215,6 @@ export function MobileNavSheet({
                             </div>
                         ) : (
                             <div className="flex flex-col gap-2">
-                                <SheetClose asChild>
-                                    <Button
-                                        asChild
-                                        className="h-9 rounded-xl text-xs font-bold transition-all active:scale-[0.98]"
-                                    >
-                                        <Link
-                                            href={login.url({
-                                                query: {
-                                                    redirect:
-                                                        window.location.pathname,
-                                                },
-                                            })}
-                                        >
-                                            {__(
-                                                'messages.ui.submit_your_idea',
-                                            )}
-                                        </Link>
-                                    </Button>
-                                </SheetClose>
                                 <div className="grid grid-cols-2 gap-2">
                                     <SheetClose asChild>
                                         <Button
@@ -252,9 +242,7 @@ export function MobileNavSheet({
                                             className="h-9 rounded-xl text-xs font-bold"
                                         >
                                             <Link href={register.url()}>
-                                                {__(
-                                                    'messages.auth.register',
-                                                )}
+                                                {__('messages.auth.register')}
                                             </Link>
                                         </Button>
                                     </SheetClose>

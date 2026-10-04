@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import { LogOut, User as UserIcon, Lightbulb } from 'lucide-react';
+import { LanguageMenuGroup } from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     DropdownMenu,
@@ -10,11 +11,11 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import type { Appearance } from '@/hooks/use-appearance';
+import { logout } from '@/routes';
 import { index } from '@/routes/app/ideas';
 import { personalInfo as profilePersonalInfo } from '@/routes/app/profile';
-import { logout } from '@/routes';
 
-import type { Appearance } from '@/hooks/use-appearance';
 import { AppearanceNavItem } from './appearance-nav-item';
 
 interface UserNavDropdownProps {
@@ -49,10 +50,7 @@ export function UserNavDropdown({
                         </span>
                     </div>
                     <Avatar className="size-7">
-                        <AvatarImage
-                            src={user.avatar}
-                            alt={user.name}
-                        />
+                        <AvatarImage src={user.avatar} alt={user.name} />
                         <AvatarFallback className="bg-primary text-[9px] font-bold text-white">
                             {getInitials(user.name)}
                         </AvatarFallback>
@@ -87,9 +85,7 @@ export function UserNavDropdown({
                             className="flex w-full items-center gap-2.5"
                         >
                             <UserIcon className="size-3.5" />
-                            <span>
-                                {__('messages.auth.profile')}
-                            </span>
+                            <span>{__('messages.auth.profile')}</span>
                         </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -101,9 +97,7 @@ export function UserNavDropdown({
                             className="flex w-full items-center gap-2.5"
                         >
                             <Lightbulb className="size-3.5" />
-                            <span>
-                                {__('messages.auth.my_ideas')}
-                            </span>
+                            <span>{__('messages.auth.my_ideas')}</span>
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
@@ -115,6 +109,12 @@ export function UserNavDropdown({
                         appearance={appearance}
                         updateAppearance={updateAppearance}
                     />
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator className="bg-outline-variant/10" />
+
+                <DropdownMenuGroup>
+                    <LanguageMenuGroup />
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator className="bg-outline-variant/10" />
@@ -133,9 +133,7 @@ export function UserNavDropdown({
                         className="flex w-full items-center gap-2.5"
                     >
                         <LogOut className="size-3.5" />
-                        <span>
-                            {__('messages.auth.logout')}
-                        </span>
+                        <span>{__('messages.auth.logout')}</span>
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuContent>
