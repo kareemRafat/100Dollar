@@ -244,28 +244,7 @@ export default function Register({ canLogin, countries }: Props) {
                 </Button>
             </form>
 
-            <div className="mt-6 flex flex-col items-center gap-5">
-                <div className="flex w-full items-center gap-4">
-                    <div className="h-px flex-1 bg-outline-variant/30" />
-                    <span className="text-[10px] font-medium text-on-surface-variant">
-                        {__('messages.login.or_continue_with')}
-                    </span>
-                    <div className="h-px flex-1 bg-outline-variant/30" />
-                </div>
-                <div className="w-full">
-                    <Button
-                        variant="outline"
-                        className="h-10 w-full bg-surface-container-lowest text-sm font-bold dark:bg-surface-container-low"
-                        type="button"
-                    >
-                        <img
-                            alt="Google"
-                            className="h-4 w-4"
-                            src="https://www.google.com/favicon.ico"
-                        />
-                        <span>{__('messages.login.google_login')}</span>
-                    </Button>
-                </div>
+            <div className="mt-6 flex flex-col items-center">
                 {canLogin && (
                     <p className="text-xs text-on-surface-variant">
                         {__('messages.register.have_account')}{' '}

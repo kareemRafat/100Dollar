@@ -1,5 +1,6 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
+import { BrandLogo } from '@/app/components/brand-logo';
 import AppearanceSwitcher from '@/components/appearance-switcher';
 
 import { sponsors as sponsorsIndex, home as homeIndex } from '@/routes/app';
@@ -14,13 +15,14 @@ export function Footer() {
                 <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-4">
                     <div className="space-y-6">
                         <Link
-                            className="block font-headline text-2xl font-black text-white"
+                            className="block"
                             href={homeIndex().url}
                         >
-                            {__('messages.ideas')}{' '}
-                            <span className="text-primary-fixed-dim">
-                                {__('messages.for_100')}
-                            </span>
+                            <BrandLogo
+                                alt={__('messages.ideas_100')}
+                                className="h-10"
+                                tone="dark"
+                            />
                         </Link>
                         <p className="max-w-xs text-sm leading-relaxed text-gray-400">
                             {__('messages.footer.description')}

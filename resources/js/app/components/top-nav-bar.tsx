@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link, usePage } from '@inertiajs/react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { BrandLogo } from '@/app/components/brand-logo';
 import { NotificationBell } from '@/app/components/notification-bell';
 import { Button } from '@/app/components/ui/button';
 import { useAppearance } from '@/hooks/use-appearance';
@@ -90,13 +91,10 @@ export function TopNavBar({ activeRoute }: Props) {
 
                 <div className="flex items-center">
                     <Link
-                        className="font-headline text-xl font-black tracking-tighter text-secondary transition-all hover:opacity-80 dark:text-white"
+                        className="transition-opacity hover:opacity-80"
                         href={homeIndex().url}
                     >
-                        <span className="text-primary">
-                            {__('messages.ideas')}
-                        </span>{' '}
-                        {__('messages.for_100')}
+                        <BrandLogo className="h-11" />
                     </Link>
                 </div>
 

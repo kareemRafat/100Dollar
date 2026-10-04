@@ -64,7 +64,7 @@
         </style>
 
         <link rel="icon" href="/images/favico.png" sizes="any">
-        <link rel="apple-touch-icon" href="/images/favico.png">
+        <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

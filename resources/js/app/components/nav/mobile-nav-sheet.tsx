@@ -2,6 +2,7 @@ import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import { LogOut, Menu } from 'lucide-react';
 import { create } from '@/actions/App/Http/Controllers/App/IdeaController';
+import { BrandLogo } from '@/app/components/brand-logo';
 import { Button } from '@/app/components/ui/button';
 import LanguageSwitcher from '@/components/language-switcher';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -70,14 +71,13 @@ export function MobileNavSheet({
                 <SheetHeader className="relative border-b border-outline-variant/10 p-5 dark:border-white/5">
                     <SheetTitle
                         className={cn(
-                            'font-headline text-lg font-black tracking-tighter text-secondary dark:text-white',
                             isRtl ? 'text-right' : 'text-left',
                         )}
                     >
-                        <span className="text-primary">
-                            {__('messages.ideas')}
-                        </span>{' '}
-                        {__('messages.for_100')}
+                        <BrandLogo
+                            alt={__('messages.ideas_100')}
+                            className="h-8"
+                        />
                     </SheetTitle>
                 </SheetHeader>
 

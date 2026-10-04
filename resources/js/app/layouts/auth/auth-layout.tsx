@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
+import { BrandLogo } from '@/app/components/brand-logo';
 import { Toaster as AppToaster } from '@/app/components/ui/toast';
 import AppearanceSwitcher from '@/components/appearance-switcher';
 import LanguageSwitcher from '@/components/language-switcher';
@@ -41,18 +42,12 @@ export default function AuthLayout({ children, maxWidth = 'max-w-md' }: Props) {
                     />
                 </div>
                 <div className="relative z-10">
-                    <Link className="mb-16 flex items-center gap-3" href="/">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary shadow-lg shadow-primary/20">
-                            <span
-                                className="material-symbols-outlined text-white"
-                                style={{ fontVariationSettings: "'FILL' 1" }}
-                            >
-                                account_balance
-                            </span>
-                        </div>
-                        <span className="font-headline text-2xl font-bold tracking-tight text-inverse-primary dark:text-[#f7bd48]">
-                            {__('messages.ideas_100')}
-                        </span>
+                    <Link className="mb-16 flex items-center" href="/">
+                        <BrandLogo
+                            alt={__('messages.ideas_100')}
+                            className="h-10"
+                            tone="dark"
+                        />
                     </Link>
                     <div className="space-y-8">
                         <h1 className="font-headline text-4xl leading-tight font-extrabold">

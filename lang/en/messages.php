@@ -478,8 +478,6 @@ return [
         'forgot_password' => 'Forgot your password?',
         'remember_me' => 'Remember me on this device',
         'login_button' => 'Login',
-        'or_continue_with' => 'Or continue with',
-        'google_login' => 'Continue with Google',
         'no_account' => "Don't have an account?",
         'create_account' => 'Create a new account',
     ],

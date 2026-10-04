@@ -475,8 +475,6 @@ return [
         'forgot_password' => 'نسيت كلمة المرور؟',
         'remember_me' => 'تذكرني على هذا الجهاز',
         'login_button' => 'تسجيل الدخول',
-        'or_continue_with' => 'أو المتابعة عبر',
-        'google_login' => 'المتابعة باستخدام Google',
         'no_account' => 'ليس لديك حساب؟',
         'create_account' => 'إنشاء حساب جديد',
     ],

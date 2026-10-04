@@ -1,6 +1,7 @@
 import { useLang } from '@erag/lang-sync-inertia/react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { RefreshCw } from 'lucide-react';
+import { BrandLogo } from '@/app/components/brand-logo';
 import { Button } from '@/app/components/ui/button';
 
 interface Props {
@@ -46,6 +47,17 @@ export default function Error({ status }: Props) {
             <Head title={`${status} - ${__('messages.ideas_100')}`} />
 
             <main className="error-page-card">
+                <Link
+                    aria-label={__('messages.ideas_100')}
+                    className="mx-auto w-fit"
+                    href="/"
+                >
+                    <BrandLogo
+                        alt={__('messages.ideas_100')}
+                        className="h-12"
+                    />
+                </Link>
+
                 <div className="error-page-copy">
                     <h1 className="error-page-status">{status}</h1>
                     <h2 className="error-page-title">{content.title}</h2>

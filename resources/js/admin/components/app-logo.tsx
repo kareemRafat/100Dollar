@@ -1,16 +1,10 @@
-import AppLogoIcon from '@/admin/components/app-logo-icon';
+import { BrandLogo } from '@/app/components/brand-logo';
 
 export default function AppLogo() {
     return (
         <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">
-                    100Dollar
-                </span>
-            </div>
+            <BrandLogo alt="100Dollar" className="h-8" scope="admin" />
+            <span className="sr-only">100Dollar</span>
         </>
     );
 }

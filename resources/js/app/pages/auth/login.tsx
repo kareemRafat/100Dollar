@@ -143,28 +143,7 @@ export default function Login({
                 </Button>
             </form>
 
-            <div className="mt-8 flex flex-col items-center gap-6">
-                <div className="flex w-full items-center gap-4">
-                    <div className="h-px flex-1 bg-outline-variant/30" />
-                    <span className="text-xs font-medium text-on-surface-variant">
-                        {__('messages.login.or_continue_with')}
-                    </span>
-                    <div className="h-px flex-1 bg-outline-variant/30" />
-                </div>
-                <div className="w-full">
-                    <Button
-                        variant="outline"
-                        className="h-12 w-full bg-surface-container-lowest font-bold dark:bg-surface-container-low"
-                        type="button"
-                    >
-                        <img
-                            alt="Google"
-                            className="h-5 w-5"
-                            src="https://www.google.com/favicon.ico"
-                        />
-                        <span>{__('messages.login.google_login')}</span>
-                    </Button>
-                </div>
+            <div className="mt-8 flex flex-col items-center">
                 {canRegister && (
                     <p className="text-sm text-on-surface-variant">
                         {__('messages.login.no_account')}{' '}
